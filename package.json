@@ -1,0 +1,21 @@
+{
+  "name": "codaby-sanctuary",
+  "version": "1.0.0",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Joel David",
+  "license": "ISC",
+  "description": "Sanctuary is an application that will help you store your private data locally, using secure cryptographic techniques",
+  "devDependencies": {
+    "@electron/packager": "^18.3.6",
+    "electron": "^30.0.8",
+    "standard": "^17.1.0"
+  },
+  "eslintConfig": {
+    "extends": "standard"
+  }
+}

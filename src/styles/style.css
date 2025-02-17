@@ -1,0 +1,395 @@
+/*
+ * Estilo global de la aplicación. 
+ *
+ * El objetivo de este archivo es estilizar los elementos
+ * mas básicos que se usan en multiples vistas. De esta
+ * forma, todos estos elementos tendrán el mismo diseño y
+ * mantendrán coherencia visual y estética, sin necesidad
+ * repetir código de CSS.
+ */
+
+
+/* Carga de tipografías personalizadas. */
+@font-face {
+    font-family: Varela;
+    src: url(../assets/fonts/VarelaRound-Regular.ttf);
+}
+
+@font-face {
+    font-family: IBM_plex_mono;
+    src: url(../assets/fonts/IBMPlexMono-Regular.ttf);
+}
+
+@font-face {
+    font-family: Nunito;
+    src: url(../assets/fonts/NunitoSans-Regular.ttf);
+}
+
+@font-face {
+    font-family: major_mono;
+    src: url(../assets/fonts/MajorMonoDisplay-Regular.ttf);
+}
+
+@font-face {
+    font-family: oswald;
+    src: url(../assets/fonts/Oswald-Bold.ttf);
+}
+
+@font-face {
+    font-family: inter;
+    src: url(../assets/fonts/Inter-ExtraBold.ttf);
+}
+
+@font-face {
+    font-family: source_code;
+    src: url(../assets/fonts/SourceCodePro-VariableFont_wght.ttf);
+}
+
+/* Desactiva el scroll bar. */
+body::-webkit-scrollbar {
+    display: none;
+}
+
+/* Reinicia el diseño de la página. */
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+}
+
+/* Estilos generales para la aplicación web en modo claro */
+body {
+    font-family: Nunito;
+    font-size: 16px;
+    background: rgb(245, 245, 245);
+    color: black;
+}
+
+/* Estilos primitivos que se repiten. */
+.brand-text {
+    font-family: Varela;
+    width: min-content;
+    height: min-content;
+    grid-column: 2;
+}
+
+.large-text {
+    font-size: 24px;
+    font-family: inter;
+}
+
+.medium-text {
+    font-size: 20px;
+}
+
+.small-text {
+    font-size: 14px;
+}
+
+.mayus {
+    text-transform: uppercase;
+}
+
+.normal-rounded {
+    border-radius: 10px;
+}
+
+.logo-img {
+    width: 17px;
+    height: 17px;
+    background-image: url(../assets/ico/Logo.svg);
+    /* Asegura que la imagen cubra todo el contenedor */
+    background-size: cover;
+    /* Centra la imagen */
+    background-position: center;
+    /* Evita que la imagen se repita */
+    background-repeat: no-repeat;
+    margin-right: 5px;
+}
+
+.logo {
+    display: grid;
+    grid-template-columns: min-content;
+    width: min-content;
+    height: min-content;
+    align-items: center;
+}
+
+.colored-blur {
+    background: rgba(245, 245, 245, 0.75);
+    filter: saturate(5);
+    backdrop-filter: blur(30px);
+}
+
+.saturate-blur {
+    background: transparent;
+    filter: saturate(2);
+    backdrop-filter: blur(30px);
+}
+
+.blur {
+    background: transparent;
+    backdrop-filter: blur(30px);
+}
+
+.input-rounded {
+    border-radius: 10px;
+    height: 40px;
+    text-align: center;
+    background-color: rgb(245, 245, 245);
+    border: 1px solid rgb(180, 180, 180);
+}
+
+.normal-btn-ico {
+    width: 30px;
+    height: 30px;
+    padding: 5px;
+    background: transparent;
+    border: transparent;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.normal-btn-ico:hover {
+    border: solid 1px;
+}
+
+.normal-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.horizontal_elem-area {
+    display: flex;
+    gap: 10px; /* Espacio entre botones */
+}
+
+.vertical-elem-area {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Espacio entre botones */
+}
+
+.reverse {
+    justify-content: flex-end; /* Alinea los botones a la derecha */
+}
+
+.modal {
+    display: none;  /* Oculto por defecto */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.modal-content {
+    width: 50%;
+    margin: 10% auto;
+    border-radius: 10px;
+    background-color: rgb(245, 245, 245);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between; /* Distribuye los elementos en los extremos */
+    align-items: center; /* Alinea verticalmente */
+    padding: 15px;
+}
+
+.scrolleable {
+    overflow-y: auto; /* Hace que el contenido sea scrolleable */
+    max-height: 60vh; /* Define el tamaño máximo antes de activar el scroll */
+    padding: 15px;
+}
+
+.scrolleable::-webkit-scrollbar {
+    width: 8px;
+}
+
+.scrolleable::-webkit-scrollbar-thumb {
+    background: rgb(130, 130, 130);
+    border-radius: 4px;
+}
+
+.scrolleable::-webkit-scrollbar-track {
+    display: none;
+}
+
+.narrow-margin {
+    margin: 5px;
+}
+
+.normal-margin {
+    margin: 20px;
+}
+
+.normal-padding {
+    padding: 20px;
+}
+
+.list-margin {
+    margin-top: 10px;
+}
+
+/* Espacio en blanco que está atras de head al inicio de la página. */
+.space {
+    height: 64px;
+}
+
+/* Sección donde se muestran mis proyectos en forma de tarjetas. */
+.projects {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.box-sb {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-picture {
+    height: 150px;
+    background: url(img/costos.jpg) no-repeat center;
+    background-size: cover;
+    margin-top: 10px;
+}
+
+.yellow {
+    background: rgb(255, 217, 0);
+    box-shadow: 0px 0px 30px rgba(255, 217, 0, 0.5);
+}
+
+.purple {
+    background: rgb(159, 57, 255);
+    box-shadow: 0px 0px 30px rgba(159, 57, 255, 0.5);
+}
+
+.green {
+    background: rgb(59, 253, 134);
+    box-shadow: 0px 0px 30px rgba(59, 253, 134, 0.5);
+}
+
+.blue {
+    background: rgb(95, 178, 255);
+    box-shadow: 0px 0px 30px rgba(95, 178, 255, 0.5);
+}
+
+/*
+.price {
+    background: url(img/costos.jpg) no-repeat center;
+    background-attachment: fixed;
+    background-size: cover;
+    text-align: center;
+}
+*/
+/* Responsive */
+@media (max-width: 750px) {
+    .shape-head {
+        justify-content: center;
+        padding: 0;
+    }
+
+    .navbar {
+        display: none;
+    }
+
+    .header {
+        flex-direction: column-reverse;
+        align-items: baseline;
+    }
+
+    .name {
+        font-size: 30px;
+    }
+
+    .about {
+        flex-direction: column;
+    }
+
+    .skils {
+        width: fit-content;
+    }
+
+    .resume {
+        width: fit-content;
+    }
+}
+
+/* Estilos específicos para modo oscuro */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: rgb(10, 10, 10);
+        color: white;
+    }
+
+    .logo-img {
+        filter: invert(1);
+    }
+
+    .input-rounded {
+        background-color: rgb(0, 0, 0);
+        color: white;
+        border:1px solid rgb(60, 60, 60);
+    }
+
+    .modal-content {
+        background-color: rgb(10, 10, 10);
+    }
+
+    .normal-btn-ico:hover {
+        border: solid 1px white;
+    }
+    
+    .normal-icon {
+        filter: invert(1);
+    }
+
+    .btn {
+        color: #f1f1f1;
+        border: solid 1px #8a8a8a;
+    }
+
+    .btn:hover {
+        background: #ff2828;
+        border-color: #ff2828;
+    }
+
+    .colored-blur {
+        background: rgba(10, 10, 10, 0.75);
+    }
+
+    .yellow {
+        color: rgb(17, 17, 17);
+    }
+
+    .purple {
+        color: #111111;
+    }
+
+    .green {
+        color: #111111;
+    }
+
+    .blue {
+        color: #111111;
+    }
+}

@@ -1,0 +1,64 @@
+electron-app/
+├── src/
+│   ├── main.js             # Código principal de Electron (Proceso principal)
+│   ├── preload.js          # Código que se ejecuta antes de cargar la ventana (Preload Script)
+│   ├── renderer/
+│   │   ├── renderer.js     # Código de la interfaz gráfica (Proceso de renderizado)
+│   ├── assets/             # Recursos estáticos como imágenes y fuentes
+│   │   ├── fonts           # Carpeta con fuentes tipográficas
+│   │   ├── ico             # Carpeta con iconos
+│   │   ├── img             # Carpeta con imágenes
+│   ├── styles/             # Archivos CSS
+│   │   ├── styles.css      # Estilos generales
+│   │   ├── settings.css    # Estilos específicos para settings.html
+│   ├── windows/            # Configuraciones de ventanas
+│   │   ├── mainWindow.js   # Configuración de la ventana principal
+│   ├── utils/
+│   │   ├── helpers.js      # Funciones auxiliares
+│   │   ├── fileManager.js  # Manejo de archivos
+│   ├── views/
+│   │   ├── index.html      # Página principal
+│   │   ├── settings.html   # Página de configuración
+├── package.json
+
+
+
+Otra forma (no en uso):
+
+my-electron-app/
+├── node_modules/
+├── dist/                 # Archivos generados después de compilar la aplicación
+├── src/
+│   ├── main/             # Código principal de la aplicación (processo principal)
+│   │   ├── main.js       # Archivo de entrada principal
+│   │   ├── menu.js       # Definición de menús
+│   │   ├── preload.js    # Preload scripts para la seguridad
+│   │   ├── windows/      # Código para manejar ventanas
+│   │   │   ├── mainWindow.js
+│   │   │   └── settingsWindow.js
+│   │   └── utils/        # Utilidades específicas del proceso principal
+│   │       └── logger.js
+│   ├── renderer/         # Código del renderizador (processo de renderizado)
+│   │   ├── index.html    # Página HTML principal
+│   │   ├── renderer.js   # Código JavaScript del renderizador
+│   ├── styles/           # Archivos CSS
+│   │   └── main.css
+│   │   ├── components/   # Componentes de UI
+│   │   │   └── header.js
+│   │   └── utils/        # Utilidades específicas del renderizador
+│   │       └── api.js
+│   ├── assets/           # Recursos estáticos como imágenes y fuentes
+│   │   └── logo.png
+│   ├── config/           # Archivos de configuración
+│   │   ├── config.js
+│   │   └── config.json
+│   └── preload/          # Preload scripts para el renderizador
+│       └── contextBridge.js
+├── test/                 # Archivos de prueba
+│   ├── main/             # Pruebas del proceso principal
+│   ├── renderer/         # Pruebas del proceso de renderizado
+│   └── e2e/              # Pruebas end-to-end
+├── .gitignore            # Ignorar archivos de git
+├── package.json          # Dependencias y scripts del proyecto
+├── README.md             # Documentación del proyecto
+└── webpack.config.js     # Configuración de Webpack (si estás usando Webpack)

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="../styles/bloqueo.css">
+    <script src="../renderer/bloqueoRenderer.js"></script>
+    <title>Codaby Sanctuary | 🔒</title>
+</head>
+
+<body>
+    <!-- Contenedor del fondo -->
+    <video autoplay loop muted playsinline class="video-background">
+        <source src="../assets/vid/Kristian Aleksandrov Pixabay.mp4" type="video/mp4">
+        Tu navegador no soporta videos.
+    </video>
+
+    <!-- Contenedor de todo -->
+    <div class="bloqueo-content">
+        <!-- Panel de login con saludo -->
+        <div class="normal-padding colored-blur login-panel">
+            <div class="logo">
+                <div class="logo-img"></div>
+                <p class="brand-text" href="#">Codaby</p>
+            </div>
+            <h1 class="large-text greetings login-element">Buenas noches, Joel David C.</h1>
+            <label class="normal-text pass-label login-element">Password:</label>
+            <input class="input-rounded login-element" type="password" id="password" name="password" required>
+        </div>
+
+        <!-- Panel de botón superior y área de notificaciones -->
+        <div class="normal-margin info-panel">
+            <!-- Área de botones superior -->
+            <div class="horizontal_elem-area reverse">
+                <button id="open-about" class="normal-btn-ico saturate-blur info-btn">
+                    <img src="../assets/ico/feather/info.svg" class="normal-icon info-ico">
+                </button>
+            </div>
+
+            <!-- Área de notificaciones -->
+            <div class="vertical-elem-area reverse">
+
+                <div class="colored-blur normal-rounded horizontal_elem-area notification">
+                    <div class="horizontal_elem-area">
+                        <img src="../assets/ico/feather/message-circle.svg" class="normal-icon">
+                        <p>Esta es una notificación</p>
+                    </div>
+                    <p>Clic para leer</p>
+                </div>
+
+                <div class="colored-blur normal-rounded horizontal_elem-area notification">
+                    <div class="horizontal_elem-area">
+                        <img src="../assets/ico/feather/message-circle.svg" class="normal-icon">
+                        <p>Esta es una notificación</p>
+                    </div>
+                    <p>Clic para leer</p>
+                </div>
+
+            </div>
+
+            <!-- Área de información de versión -->
+            <p class="small-text version">Codaby | Sanctuary 4 Draconis for Windows</p>
+        </div>
+
+        <!-- Modal de información acerca de -->
+        <div id="modal-about" class="modal blur">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Acerca de Codaby Sanctuary</h2>
+                    <button id="close-about" class="normal-btn-ico">
+                        <img src="../assets/ico/feather/x-circle.svg" class="normal-icon">
+                    </button>
+                </div>
+                <div id="about-body" class="vertical-elem-area scrolleable small-text">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
