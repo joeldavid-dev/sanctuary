@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self';
+    style-src 'self';
+    font-src 'self';
+    ">
+    <title>App de Cifrado con Contraseña</title>
+</head>
+
+<body>
+    <h1>App de Cifrado con Contraseña</h1>
+    <input type="text" id="inputText" placeholder="Escribe algo">
+    <input type="password" id="passwordInput" placeholder="Contraseña">
+    <button id="encryptButton">Cifrar</button>
+    <button id="decryptButton">Descifrar</button>
+    <p id="encryptedText"></p>
+    <p id="decryptedText"></p>
+    <script src="../renderer/cryptoTest.js"></script>
+</body>
+
+</html>

@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (error) {
             aboutBody.innerHTML = '<p>Error al cargar el contenido.</p>';
         }
+        //window.electron.openExternal('https://colebemis.com/');
     });
 
     // Clic en el botón para cerrar el modal de acerca de

@@ -1,9 +1,34 @@
-const { app, BrowserWindow } = require('electron')
-const { createMainWindow } = require('./windows/mainWindow')
+const { app, BrowserWindow, ipcMain, shell} = require('electron')
+const path = require('node:path')
+const { encrypt, decrypt } = require('./utils/crypto.js');
+
+const createMainWindow = () => {
+    const mainWindow = new BrowserWindow({
+        width: 900,
+        height: 600,
+        minWidth: 550,
+        minHeight: 450,
+        autoHideMenuBar: true,
+        webPreferences: {
+            nodeIntegration: false, // Desactiva integración directa por seguridad
+            enableRemoteModule: false, // Evita el uso de remote module
+            contextIsolation: true, // Necesario para usar preload. Aísla el contexto de ejecución
+            sandbox: true, // Asegura la ejecución en un entorno aislado
+
+            // La cadena __dirname apunta a la ruta del script
+            // actualmente en ejecución
+            preload: path.join(__dirname, 'preload.js')
+            // La API path.join une varios segmentos de rutas,
+            // creando una cadena de ruta combinada
+        }
+    });
+    // Desactivar en producción
+    mainWindow.webContents.openDevTools();
+    mainWindow.loadFile('src/views/splash-screen.html');
+}
 
 app.whenReady().then(() => {
     createMainWindow()
-    
     // Crear una ventana si no hay una cuando se activa la aplicación
     // en MacOS
     app.on('activate', () => {
@@ -17,3 +42,17 @@ app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit()
 });
 
+// Abrir enlaces en navegador externo
+ipcMain.on('open-external-link', (event, url) => {
+    shell.openExternal(url);
+});
+
+// Manejar el cifrado con una contraseña proporcionada por el usuario
+ipcMain.handle('encrypt-data', (event, text, password) => {
+    return encrypt(text, password);
+});
+
+// Manejar el descifrado con la misma contraseña
+ipcMain.handle('decrypt-data', (event, encryptedData, password, salt, iv) => {
+    return decrypt(encryptedData, password, salt, iv);
+});

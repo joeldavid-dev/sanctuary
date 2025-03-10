@@ -59,11 +59,22 @@ body::-webkit-scrollbar {
     vertical-align: baseline;
 }
 
+/* Definición de colores */
+:root{
+    --app_light: rgb(245, 245, 245);
+    --app_light_transparent: rgba(245, 245, 245, 0.75);
+    --app_dark: rgb(10, 10, 10);
+    --app_dark_transparent: rgba(10, 10, 10, 0.75);
+    --neutral_grey: rgb(130, 130, 130);
+
+    --blue: rgb(0, 122, 223);
+}
+
 /* Estilos generales para la aplicación web en modo claro */
 body {
     font-family: Nunito;
     font-size: 16px;
-    background: rgb(245, 245, 245);
+    background: var(--app_light);
     color: black;
 }
 
@@ -118,7 +129,7 @@ body {
 }
 
 .colored-blur {
-    background: rgba(245, 245, 245, 0.75);
+    background: var(--app_light_transparent);
     filter: saturate(5);
     backdrop-filter: blur(30px);
 }
@@ -138,8 +149,8 @@ body {
     border-radius: 10px;
     height: 40px;
     text-align: center;
-    background-color: rgb(245, 245, 245);
-    border: 1px solid rgb(180, 180, 180);
+    background-color: var(--app_light);
+    border: 1px solid var(--neutral_grey);
 }
 
 .normal-btn-ico {
@@ -164,6 +175,11 @@ body {
 .normal-icon {
     width: 20px;
     height: 20px;
+}
+
+.large-icon {
+    width: 25%;
+    height: 25%;
 }
 
 .horizontal_elem-area {
@@ -194,7 +210,7 @@ body {
     width: 50%;
     margin: 10% auto;
     border-radius: 10px;
-    background-color: rgb(245, 245, 245);
+    background-color: var(--app_light);
 }
 
 .modal-header {
@@ -215,7 +231,7 @@ body {
 }
 
 .scrolleable::-webkit-scrollbar-thumb {
-    background: rgb(130, 130, 130);
+    background: var(--neutral_grey);
     border-radius: 4px;
 }
 
@@ -235,109 +251,14 @@ body {
     padding: 20px;
 }
 
-.list-margin {
-    margin-top: 10px;
-}
-
-/* Espacio en blanco que está atras de head al inicio de la página. */
-.space {
-    height: 64px;
-}
-
-/* Sección donde se muestran mis proyectos en forma de tarjetas. */
-.projects {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    text-align: center;
-}
-
-.card {
-    display: flex;
-    flex-direction: column;
-    width: 350px;
-    border-radius: 20px;
-    padding: 20px;
-}
-
-.box-sb {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.card-picture {
-    height: 150px;
-    background: url(img/costos.jpg) no-repeat center;
-    background-size: cover;
-    margin-top: 10px;
-}
-
-.yellow {
-    background: rgb(255, 217, 0);
-    box-shadow: 0px 0px 30px rgba(255, 217, 0, 0.5);
-}
-
-.purple {
-    background: rgb(159, 57, 255);
-    box-shadow: 0px 0px 30px rgba(159, 57, 255, 0.5);
-}
-
-.green {
-    background: rgb(59, 253, 134);
-    box-shadow: 0px 0px 30px rgba(59, 253, 134, 0.5);
-}
-
-.blue {
-    background: rgb(95, 178, 255);
-    box-shadow: 0px 0px 30px rgba(95, 178, 255, 0.5);
-}
-
-/*
-.price {
-    background: url(img/costos.jpg) no-repeat center;
-    background-attachment: fixed;
-    background-size: cover;
-    text-align: center;
-}
-*/
 /* Responsive */
 @media (max-width: 750px) {
-    .shape-head {
-        justify-content: center;
-        padding: 0;
-    }
-
-    .navbar {
-        display: none;
-    }
-
-    .header {
-        flex-direction: column-reverse;
-        align-items: baseline;
-    }
-
-    .name {
-        font-size: 30px;
-    }
-
-    .about {
-        flex-direction: column;
-    }
-
-    .skils {
-        width: fit-content;
-    }
-
-    .resume {
-        width: fit-content;
-    }
 }
 
 /* Estilos específicos para modo oscuro */
 @media (prefers-color-scheme: dark) {
     body {
-        background-color: rgb(10, 10, 10);
+        background-color: var(--app_dark);
         color: white;
     }
 
@@ -346,13 +267,13 @@ body {
     }
 
     .input-rounded {
-        background-color: rgb(0, 0, 0);
+        background-color: black;
         color: white;
-        border:1px solid rgb(60, 60, 60);
+        border:1px solid var(--neutral_grey);
     }
 
     .modal-content {
-        background-color: rgb(10, 10, 10);
+        background-color: var(--app_dark);
     }
 
     .normal-btn-ico:hover {
@@ -363,33 +284,11 @@ body {
         filter: invert(1);
     }
 
-    .btn {
-        color: #f1f1f1;
-        border: solid 1px #8a8a8a;
-    }
-
-    .btn:hover {
-        background: #ff2828;
-        border-color: #ff2828;
+    .large-icon {
+        filter: invert(1);
     }
 
     .colored-blur {
-        background: rgba(10, 10, 10, 0.75);
-    }
-
-    .yellow {
-        color: rgb(17, 17, 17);
-    }
-
-    .purple {
-        color: #111111;
-    }
-
-    .green {
-        color: #111111;
-    }
-
-    .blue {
-        color: #111111;
+        background: var(--app_dark_transparent);
     }
 }
