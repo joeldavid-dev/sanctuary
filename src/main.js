@@ -1,9 +1,11 @@
-const { app, BrowserWindow, ipcMain, shell} = require('electron')
+const { app, BrowserWindow, ipcMain, shell } = require('electron')
 const path = require('node:path')
 const { encrypt, decrypt } = require('./utils/crypto.js');
 
+let mainWindow;
+
 const createMainWindow = () => {
-    const mainWindow = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         width: 900,
         height: 600,
         minWidth: 550,
@@ -40,6 +42,11 @@ app.whenReady().then(() => {
 // todas las ventanas, excepto en MacOS
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit()
+});
+
+// Escucha el evento de cambio de vista
+ipcMain.on('change-view', (event, newView) => {
+    mainWindow.loadFile(newView);
 });
 
 // Abrir enlaces en navegador externo

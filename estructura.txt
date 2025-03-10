@@ -21,6 +21,22 @@ electron-app/
 │   │   ├── settings.html   # Página de configuración
 ├── package.json
 
+Proceso Principal (main):
+- Es el proceso que ejecuta Node.js en segundo plano.
+- Se encarga de crear y administrar las ventanas (BrowserWindow).
+- Tiene acceso completo a las APIs del sistema operativo (filesystem, procesos, etc.).
+- Puede comunicarse con los procesos de renderizado mediante ipcMain y ipcRenderer.
+
+Proceso de Renderizado (renderer):
+- Es un proceso separado para cada ventana que se abre.
+- Se encarga de la interfaz gráfica (HTML, CSS, JavaScript).
+- Funciona como una página web dentro de la ventana.
+- No tiene acceso directo a las APIs del sistema operativo, pero puede comunicarse con el proceso principal mediante ipcRenderer.
+
+Preload (preload):
+- Es un script que se ejecuta antes de que el proceso de renderizado cargue la página web.
+- Sirve como un puente seguro entre el proceso principal y el proceso de renderizado.
+- Permite exponer funciones seguras del sistema al renderer sin exponer completamente Node.js.
 
 
 Otra forma (no en uso):

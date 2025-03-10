@@ -1,5 +1,10 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
+// Expone el cambio de vista
+contextBridge.exposeInMainWorld('electronAPI', {
+    changeView: (newView) => ipcRenderer.send('change-view', newView),
+});
+
 // Para abrir links en el navegador externo en cualquier parte de la aplicación.
 contextBridge.exposeInMainWorld('electron', {
     openExternal: (url) => ipcRenderer.send('open-external-link', url)
