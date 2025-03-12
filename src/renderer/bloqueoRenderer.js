@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const closeModal = document.getElementById('close-about');
 
     // Clic en el botón para abrir el modal de acerca de
-    openModal.addEventListener('click', async() => {
+    openModal.addEventListener('click', async () => {
         // Abrir modal
         modalAbout.style.display = 'block';
         // Cargar contenido externo con fetch()
