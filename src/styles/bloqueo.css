@@ -1,27 +1,28 @@
-/*.background {
-    display: flex;
-    height: 100vh;
-    background: url(../assets/img/fondo2.jpg);
-    background-size: cover;
-    background-repeat: no-repeat;
-    /* Evita que la imagen se repita
-}*/
-
-.bloqueo-content {
-    position: relative;
-    display: flex;
-    height: 100vh;
-    z-index: 1; /* Asegura que el contenido esté sobre el video */
+.img-background {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .video-background {
-    position: fixed; /* Fija el video en toda la ventana */
+    position: fixed;
+    /* Fija el video en toda la ventana */
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Ajusta el video sin deformarlo */
+    object-fit: cover;
+    /* Ajusta el video sin deformarlo */
+}
+
+.bloqueo-content {
+    position: relative;
+    display: flex;
+    height: 100vh;
+    z-index: 1;
+    /* Asegura que el contenido esté sobre el video */
 }
 
 /* Barra que siempre permanece a la izquierda y contiene los elementos de login. */
@@ -54,18 +55,23 @@
     margin: 0px 10px 0px 10px;
 }
 
-.info-ico {
+.bloqueo-ico {
     filter: invert(1);
 }
 
-.info-btn:hover {
+.bloqueo-btn:hover {
     border-color: white;
+}
+
+.top-buttons {
+    justify-content: space-between;
 }
 
 .notification {
     justify-content: space-between;
     padding: 10px;
 }
+
 .version {
     color: white;
     text-align: center;

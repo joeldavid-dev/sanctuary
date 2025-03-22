@@ -17,11 +17,16 @@
 </head>
 
 <body>
-    <!-- Contenedor del fondo -->
-    <video autoplay loop muted playsinline class="video-background">
-        <source src="../assets/vid/Maximilian Nemec Pixabay.mp4" type="video/mp4">
-        Tu navegador no soporta videos.
-    </video>
+    <!-- fondo -->
+    <div id="visual-background">
+        <!--
+        <img class="img-background" src="../assets/img/Yakup Ipek Pixabay.jpg">
+        -->
+        <video autoplay loop muted playsinline class="video-background">
+            <source src="../assets/vid/Yakup Ipek Pixabay.mp4" type="video/mp4">
+            Tu navegador no soporta videos.
+        </video>
+    </div>
 
     <!-- Contenedor de todo -->
     <div class="bloqueo-content">
@@ -36,25 +41,30 @@
             <input class="input-rounded login-element" type="password" id="password" name="password" required>
         </div>
 
-        <!-- Panel de botón superior y área de notificaciones -->
-        <div class="normal-margin info-panel">
+        <!-- Panel de botones superiores y área de notificaciones -->
+        <div class="normal-padding info-panel draggable">
             <!-- Área de botones superior -->
-            <div class="horizontal_elem-area reverse">
-                <button id="open-about" class="normal-btn-ico saturate-blur info-btn">
-                    <img src="../assets/ico/feather/info.svg" class="normal-icon info-ico">
+            <div class="horizontal_elem-area top-buttons">
+                <button id="open-about" class="normal-btn-ico saturate-blur bloqueo-btn">
+                    <img src="../assets/ico/feather/info.svg" class="normal-icon bloqueo-ico {
+                        ">
                 </button>
+
+                <div class="horizontal_elem-area">
+                    <button id="minimize" class="normal-btn-ico saturate-blur bloqueo-btn">
+                        <img src="../assets/ico/feather/minus-circle.svg" class="normal-icon bloqueo-ico">
+                    </button>
+                    <button id="maximize" class="normal-btn-ico saturate-blur bloqueo-btn">
+                        <img src="../assets/ico/feather/maximize.svg" class="normal-icon bloqueo-ico">
+                    </button>
+                    <button id="close" class="normal-btn-ico saturate-blur bloqueo-btn">
+                        <img src="../assets/ico/feather/x-circle.svg" class="normal-icon bloqueo-ico">
+                    </button>
+                </div>
             </div>
 
             <!-- Área de notificaciones -->
             <div class="vertical-elem-area reverse">
-
-                <div class="colored-blur normal-rounded horizontal_elem-area notification">
-                    <div class="horizontal_elem-area">
-                        <img src="../assets/ico/feather/message-circle.svg" class="normal-icon">
-                        <p>Esta es una notificación</p>
-                    </div>
-                    <p>Clic para leer</p>
-                </div>
 
                 <div class="colored-blur normal-rounded horizontal_elem-area notification">
                     <div class="horizontal_elem-area">

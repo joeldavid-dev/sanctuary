@@ -10,7 +10,12 @@ const createMainWindow = () => {
         height: 600,
         minWidth: 550,
         minHeight: 450,
-        autoHideMenuBar: true,
+        autoHideMenuBar: true, // Oculta el menú de opciones de electrón
+        //frame: false,
+        titleBarStyle: 'hidden', // oculta la barra de título
+        // expose window controlls in Windows/Linux
+        //...(process.platform !== 'darwin' ? { titleBarOverlay: true } : {}),
+
         webPreferences: {
             nodeIntegration: false, // Desactiva integración directa por seguridad
             enableRemoteModule: false, // Evita el uso de remote module
@@ -25,7 +30,7 @@ const createMainWindow = () => {
         }
     });
     // Desactivar en producción
-    mainWindow.webContents.openDevTools();
+    //mainWindow.webContents.openDevTools();
     mainWindow.loadFile('src/views/splash-screen.html');
 }
 
@@ -40,8 +45,23 @@ app.whenReady().then(() => {
 
 // Implementa el cierre de toda la aplicación al cerrar
 // todas las ventanas, excepto en MacOS
-app.on('window-all-closed', () => {
+app.on('window-all-closed', (event) => {
     if (process.platform !== 'darwin') app.quit()
+});
+
+// Escuchar los eventos de manejo de ventana
+ipcMain.on('minimize-window', () => {
+    mainWindow.minimize();
+});
+ipcMain.on('maximize-window', () => {
+    if (mainWindow.isMaximized()) {
+        mainWindow.unmaximize();
+    } else {
+        mainWindow.maximize();
+    }
+});
+ipcMain.on('close-window', () => {
+    mainWindow.close();
 });
 
 // Escucha el evento de cambio de vista

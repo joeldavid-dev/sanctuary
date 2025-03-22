@@ -70,12 +70,17 @@ body::-webkit-scrollbar {
     --blue: rgb(0, 122, 223);
 }
 
+.draggable {
+    -webkit-app-region: drag;
+}
+
 /* Estilos generales para la aplicación web en modo claro */
 body {
     font-family: Nunito;
     font-size: 16px;
     background: var(--app_light);
     color: black;
+    user-select: none;
 }
 
 /* Estilos primitivos que se repiten. */
@@ -166,6 +171,7 @@ body {
     cursor: pointer;
     transition: 0.3s;
     cursor: pointer;
+    -webkit-app-region: no-drag; /* Permite hacer clic en los botones */
 }
 
 .normal-btn-ico:hover {
