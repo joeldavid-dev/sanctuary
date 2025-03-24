@@ -51,6 +51,10 @@
     text-align: center;
 }
 
+.pass-input {
+    height: 40px;
+}
+
 .login-element {
     margin: 0px 10px 0px 10px;
 }

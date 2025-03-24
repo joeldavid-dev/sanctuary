@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self';
+    style-src 'self';
+    font-src 'self';
+    ">
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="stylesheet" href="../styles/id.css">
+    <title>Sanctuary ID</title>
+
+</head>
+
+<body>
+    <div id="tittle-bar" class="normal-padding horizontal_elem-area draggable spaced centered">
+        <h2>Sanctuary ID</h2>
+        <div class="horizontal_elem-area">
+            <button id="minimize" class="normal-btn-ico saturate-blur bloqueo-btn">
+                <img src="../assets/ico/feather/minus-circle.svg" class="normal-icon bloqueo-ico">
+            </button>
+            <button id="maximize" class="normal-btn-ico saturate-blur bloqueo-btn">
+                <img src="../assets/ico/feather/maximize.svg" class="normal-icon bloqueo-ico">
+            </button>
+            <button id="close" class="normal-btn-ico saturate-blur bloqueo-btn">
+                <img src="../assets/ico/feather/x-circle.svg" class="normal-icon bloqueo-ico">
+            </button>
+        </div>
+    </div>
+    <div class="vertical-elem-area centered-content">
+        <h1 class="centered-text">Hola</h1>
+        <p class="centered-text">Gracias por usar Sanctuary. El siguiente paso es crear un ID.</p>
+        <div class="vertical-elem-area">
+            <label class="small-text">Nombre:</label>
+            <input class="rounded-input name" id="userName" name="userName" required>
+        </div>
+        <div class="vertical-elem-area">
+            <label class="small-text">Contraseña:</label>
+            <input class="rounded-input name" type="password" id="userName" name="userName" required>
+        </div>
+        <div class="vertical-elem-area">
+            <label class="small-text">Repite tu Contraseña:</label>
+            <input class="rounded-input name" type="password" id="userName" name="userName" required>
+        </div>
+        <div class="vertical-elem-area">
+            <label class="small-text">Genero:</label>
+
+            <div class="horizontal_elem-area spaced">
+                <label class="custom-radio small-text">
+                    Hombre
+                    <input type="radio" name="opcion" value="1">
+                    <div class="radio-ico"></div>
+                </label>
+
+                <label class="custom-radio small-text">
+                    Mujer
+                    <input type="radio" name="opcion" value="2">
+                    <div class="radio-ico"></div>
+                </label>
+
+                <label class="custom-radio small-text">
+                    Neutro
+                    <input type="radio" name="opcion" value="3">
+                    <div class="radio-ico"></div>
+                </label>
+            </div>
+            
+            <button class="custom-btn">Listo</button>
+        </div>
+    </div>
+</body>
+
+</html>

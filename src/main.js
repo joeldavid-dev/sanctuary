@@ -32,6 +32,7 @@ const createMainWindow = () => {
     // Desactivar en producción
     //mainWindow.webContents.openDevTools();
     mainWindow.loadFile('src/views/splash-screen.html');
+    //mainWindow.loadFile('src/views/id.html');
 }
 
 app.whenReady().then(() => {

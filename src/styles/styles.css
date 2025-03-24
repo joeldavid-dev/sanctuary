@@ -60,7 +60,7 @@ body::-webkit-scrollbar {
 }
 
 /* Definición de colores */
-:root{
+:root {
     --app_light: rgb(245, 245, 245);
     --app_light_transparent: rgba(245, 245, 245, 0.75);
     --app_dark: rgb(10, 10, 10);
@@ -70,6 +70,7 @@ body::-webkit-scrollbar {
     --blue: rgb(0, 122, 223);
 }
 
+/* Permite arrastrar la app */
 .draggable {
     -webkit-app-region: drag;
 }
@@ -91,13 +92,17 @@ body {
     grid-column: 2;
 }
 
-.large-text {
+h1 {
     font-size: 24px;
     font-family: inter;
 }
 
-.medium-text {
-    font-size: 20px;
+h2 {
+    font-size: 16px;
+}
+
+h3 {
+    font-size: 14px;
 }
 
 .small-text {
@@ -108,6 +113,11 @@ body {
     text-transform: uppercase;
 }
 
+.centered-text {
+    text-align: center;
+}
+
+/* Redondeo de elementos */
 .normal-rounded {
     border-radius: 10px;
 }
@@ -150,9 +160,8 @@ body {
     backdrop-filter: blur(30px);
 }
 
-.input-rounded {
+.rounded-input {
     border-radius: 10px;
-    height: 40px;
     text-align: center;
     background-color: var(--app_light);
     border: 1px solid var(--neutral_grey);
@@ -170,8 +179,8 @@ body {
     justify-content: center;
     cursor: pointer;
     transition: 0.3s;
-    cursor: pointer;
-    -webkit-app-region: no-drag; /* Permite hacer clic en los botones */
+    /* Permite hacer clic en los botones */
+    -webkit-app-region: no-drag;
 }
 
 .normal-btn-ico:hover {
@@ -190,26 +199,93 @@ body {
 
 .horizontal_elem-area {
     display: flex;
-    gap: 10px; /* Espacio entre botones */
+    gap: 10px;
+    /* Espacio entre elementos */
 }
 
 .vertical-elem-area {
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Espacio entre botones */
+    gap: 10px;
+    /* Espacio entre elementos */
+}
+
+.centered {
+    align-items: center;
 }
 
 .reverse {
-    justify-content: flex-end; /* Alinea los botones a la derecha */
+    justify-content: flex-end;
+    /* Alinea los botones a la derecha */
+}
+
+.spaced {
+    justify-content: space-between;
+}
+
+/* Elementos complejos */
+.custom-btn {
+    background: transparent;
+    border: solid 1px;
+    border-radius: 10px;
+    padding: 5px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.custom-btn:hover {
+    background-color: black;
+    color: white;
+}
+
+.custom-radio {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    border: solid 1px;
+    padding: 5px;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.custom-radio input {
+    display: none;
+    /*Oculta el radio button original */
+}
+
+.custom-radio:has(input:checked) {
+    background-color: black;
+    color: white;
+}
+
+.custom-radio input:checked+.radio-ico {
+    background-image: url('../assets/ico/feather/check-circle.svg');
+    filter: invert(1);
+}
+
+.radio-ico {
+    width: 20px;
+    height: 20px;
+    background-image: url('../assets/ico/feather/circle.svg');
+    /* Asegura que la imagen cubra todo el contenedor */
+    background-size: cover;
+    /* Centra la imagen */
+    background-position: center;
+    /* Evita que la imagen se repita */
+    background-repeat: no-repeat;
+    transition: 0.3s;
 }
 
 .modal {
-    display: none;  /* Oculto por defecto */
+    display: none;
+    /* Oculto por defecto */
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    -webkit-app-region: no-drag;
 }
 
 .modal-content {
@@ -221,14 +297,18 @@ body {
 
 .modal-header {
     display: flex;
-    justify-content: space-between; /* Distribuye los elementos en los extremos */
-    align-items: center; /* Alinea verticalmente */
+    justify-content: space-between;
+    /* Distribuye los elementos en los extremos */
+    align-items: center;
+    /* Alinea verticalmente */
     padding: 15px;
 }
 
 .scrolleable {
-    overflow-y: auto; /* Hace que el contenido sea scrolleable */
-    max-height: 60vh; /* Define el tamaño máximo antes de activar el scroll */
+    overflow-y: auto;
+    /* Hace que el contenido sea scrolleable */
+    max-height: 60vh;
+    /* Define el tamaño máximo antes de activar el scroll */
     padding: 15px;
 }
 
@@ -258,8 +338,7 @@ body {
 }
 
 /* Responsive */
-@media (max-width: 750px) {
-}
+@media (max-width: 750px) {}
 
 /* Estilos específicos para modo oscuro */
 @media (prefers-color-scheme: dark) {
@@ -272,10 +351,10 @@ body {
         filter: invert(1);
     }
 
-    .input-rounded {
+    .rounded-input {
         background-color: black;
         color: white;
-        border:1px solid var(--neutral_grey);
+        border: 1px solid var(--neutral_grey);
     }
 
     .modal-content {
@@ -285,7 +364,7 @@ body {
     .normal-btn-ico:hover {
         border: solid 1px white;
     }
-    
+
     .normal-icon {
         filter: invert(1);
     }
