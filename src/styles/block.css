@@ -72,8 +72,10 @@
 }
 
 .notification {
-    justify-content: space-between;
-    padding: 10px;
+    cursor: pointer;
+    align-items: center;
+    /* Permite hacer clic en los botones */
+    -webkit-app-region: no-drag;
 }
 
 .version {

@@ -336,6 +336,9 @@ h3 {
     margin: 20px;
 }
 
+.narrow-padding {
+    padding: 10px;
+}
 .normal-padding {
     padding: 20px;
 }

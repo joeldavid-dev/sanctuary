@@ -16,7 +16,7 @@ db.run(`CREATE TABLE IF NOT EXISTS user (
     userID INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     password TEXT NOT NULL,
-    gender INTEGER
+    gender TEXT NOT NULL
 )`);
 
 db.run(`CREATE TABLE IF NOT EXISTS passData (
@@ -27,17 +27,31 @@ db.run(`CREATE TABLE IF NOT EXISTS passData (
     web TEXT,
     favorite BOOLEAN,
     userID INTEGER
-)`);
+    )`);
 
+// Verificar si hay mas de 0 registros en la tabla de usuario
+function isIdCreated() {
+    return new Promise((resolve, reject) => {
+        db.get("SELECT COUNT(*) AS count FROM user", (err, result) => {
+            if (err) {
+                console.error("Error al contar registros:", err);
+                resolve(false); // En caso de error, se asume que no hay registros
+            }
+            else {
+                resolve(result.count > 0); // Devuelve true si hay registros, false si no
+            }
+        });
+    });
+}
 
-// Función para insertar un usuario
+// Función para crear un usuario
 function addUser(name, password, gender) {
     return new Promise((resolve, reject) => {
-        db.run(`INSERT INTO users (name, password, gender) VALUES (?, ?, ?)`, [name, password, gender], function (err) {
+        db.run(`INSERT INTO user (name, password, gender) VALUES (?, ?, ?)`, [name, password, gender], function (err) {
             if (err) {
                 reject(err.message);
             } else {
-                resolve({ id: this.lastID, name, age });
+                resolve({ id: this.lastID, name, gender });
             }
         });
     });
@@ -56,24 +70,6 @@ function getUsers() {
     });
 }
 
-// Verificar si el ID esta creado, devolver true o false
-// Verifica que el número de registros en la tabla sea >= 1.
-function isIdCreated() {
-    db.get("SELECT COUNT(*) AS total FROM user", (err, result) => {
-        if (err) {
-            console.error("Error al contar registros:", err);
-            return false;
-        } else {
-            if (result.total == 1) {
-                console.log(`La tabla tiene ${result.total} registros.`);
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
-    });
-}
 
 // Guardar datos encriptados
 function saveEncryptedData(encryptedText) {

@@ -32,7 +32,7 @@ const createMainWindow = () => {
         }
     });
     // Desactivar en producción
-    //mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
     mainWindow.loadFile('src/views/splash-screen.html');
     //mainWindow.loadFile('src/views/id.html');
 }
@@ -88,17 +88,12 @@ ipcMain.on('open-external-link', (event, url) => {
 });
 
 // BASE DE DATOS
-ipcMain.handle('isIdCreated', async (event) => {
+ipcMain.handle('createID', async (event, name, password, gender) => {
+    return await db.addUser(name, password, gender);
+});
+
+ipcMain.handle('get-user-status', async () => {
     return await db.isIdCreated();
-});
-
-// Manejar solicitudes desde el renderer
-ipcMain.handle('add-user', async (event, name, age) => {
-    return await db.addUser(name, age);
-});
-
-ipcMain.handle('get-users', async () => {
-    return await db.getUsers();
 });
 
 

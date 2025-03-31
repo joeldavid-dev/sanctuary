@@ -62,8 +62,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Acciones cuando los datos son correctos
         else if (name != '' && pass1 != '' && pass1 == pass2 && gender) {
-            await window.electronAPI.showWarning('Advertencia', 'Todo chido.');
-            return;
+            const result = await window.electronAPI.createID(name, pass1, gender);
+            console.log(result);
+            window.electronAPI.changeView('src/views/block.html');
         }
     })
 });
