@@ -117,7 +117,7 @@ h3 {
     text-align: center;
 }
 
-/* Redondeo de elementos */
+/* Redondeo de elementos grandes*/
 .normal-rounded {
     border-radius: 10px;
 }
@@ -161,7 +161,7 @@ h3 {
 }
 
 .rounded-input {
-    border-radius: 10px;
+    border-radius: 8px;
     text-align: center;
     background-color: var(--app_light);
     border: 1px solid var(--neutral_grey);
@@ -227,7 +227,7 @@ h3 {
 .custom-btn {
     background: transparent;
     border: solid 1px;
-    border-radius: 10px;
+    border-radius: 8px;
     padding: 5px;
     transition: 0.3s;
     cursor: pointer;
@@ -245,7 +245,7 @@ h3 {
     cursor: pointer;
     border: solid 1px;
     padding: 5px;
-    border-radius: 10px;
+    border-radius: 8px;
     transition: 0.3s;
 }
 
@@ -289,8 +289,11 @@ h3 {
 }
 
 .modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 50%;
-    margin: 10% auto;
     border-radius: 10px;
     background-color: var(--app_light);
 }

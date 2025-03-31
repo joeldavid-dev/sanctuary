@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -12,6 +12,7 @@
     ">
     <link rel="stylesheet" href="../styles/styles.css">
     <link rel="stylesheet" href="../styles/id.css">
+    <script src="../renderer/idRenderer.js"></script>
     <title>Sanctuary ID</title>
 
 </head>
@@ -36,15 +37,15 @@
         <p class="centered-text">Gracias por usar Sanctuary. El siguiente paso es crear un ID.</p>
         <div class="vertical-elem-area">
             <label class="small-text">Nombre:</label>
-            <input class="rounded-input name" id="userName" name="userName" required>
+            <input id="user-name" class="rounded-input inputs">
         </div>
         <div class="vertical-elem-area">
             <label class="small-text">Contraseña:</label>
-            <input class="rounded-input name" type="password" id="userName" name="userName" required>
+            <input id="user-pass1" class="rounded-input inputs" type="password">
         </div>
         <div class="vertical-elem-area">
             <label class="small-text">Repite tu Contraseña:</label>
-            <input class="rounded-input name" type="password" id="userName" name="userName" required>
+            <input id="user-pass2" class="rounded-input inputs" type="password">
         </div>
         <div class="vertical-elem-area">
             <label class="small-text">Genero:</label>
@@ -52,24 +53,24 @@
             <div class="horizontal_elem-area spaced">
                 <label class="custom-radio small-text">
                     Hombre
-                    <input type="radio" name="opcion" value="1">
+                    <input id="gender1" type="radio" name="gender" value="male">
                     <div class="radio-ico"></div>
                 </label>
 
                 <label class="custom-radio small-text">
                     Mujer
-                    <input type="radio" name="opcion" value="2">
+                    <input id="gender2" type="radio" name="gender" value="female">
                     <div class="radio-ico"></div>
                 </label>
 
                 <label class="custom-radio small-text">
                     Neutro
-                    <input type="radio" name="opcion" value="3">
+                    <input id="gender3" type="radio" name="gender" value="neutral">
                     <div class="radio-ico"></div>
                 </label>
             </div>
             
-            <button class="custom-btn">Listo</button>
+            <button id="done-btn" class="custom-btn done-btn">Listo</button>
         </div>
     </div>
 </body>

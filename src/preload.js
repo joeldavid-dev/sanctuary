@@ -10,13 +10,20 @@ contextBridge.exposeInMainWorld('electron', {
     openExternal: (url) => ipcRenderer.send('open-external-link', url),
 })
 
-// Expone el cambio de vista
 contextBridge.exposeInMainWorld('electronAPI', {
+    // Expone el cambio de vista
     changeView: (newView) => ipcRenderer.send('change-view', newView),
+    // Dialogos
+    showWarning: (title, message) => ipcRenderer.invoke('show-warning', title, message),
+    // Exponer las funciones de la base de datos
+    isIdCreated: () => ipcRenderer.invoke('isIdCreated'),
+    addUser: (name, age) => ipcRenderer.invoke('add-user', name, age),
+    getUsers: () => ipcRenderer.invoke('get-users')
 });
+
 
 // Exponer a los renderizadores las funciones de encriptar y desencriptar.
 contextBridge.exposeInMainWorld('cryptoAPI', {
     encrypt: (text, password) => ipcRenderer.invoke('encrypt-data', text, password),
     decrypt: (encryptedData, password, salt, iv) => ipcRenderer.invoke('decrypt-data', encryptedData, password, salt, iv),
-})
+});

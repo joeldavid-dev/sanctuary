@@ -17,5 +17,8 @@
   },
   "eslintConfig": {
     "extends": "standard"
+  },
+  "dependencies": {
+    "sqlite3": "^5.1.7"
   }
 }
