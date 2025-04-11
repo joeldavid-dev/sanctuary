@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const minimize = document.getElementById('minimize');
     const maximize = document.getElementById('maximize');
     const close = document.getElementById('close');
@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const aboutBody = document.getElementById('about-body');
     const openModal = document.getElementById('open-about');
     const closeModal = document.getElementById('close-about');
+    const greeting = document.getElementById('greeting');
 
     // Clic en botón minimizar
     minimize.addEventListener('click', () => {
@@ -19,6 +20,9 @@ document.addEventListener("DOMContentLoaded", () => {
     close.addEventListener('click', () => {
         window.electron.close();
     });
+
+    // Acciones al inicio de la pantalla
+    greeting.textContent = await window.electronAPI.getGreeting();
 
     // Clic en el botón para abrir el modal de acerca de
     openModal.addEventListener('click', async () => {

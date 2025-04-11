@@ -2,6 +2,8 @@ const { app, BrowserWindow, ipcMain, shell, dialog } = require('electron')
 const path = require('node:path')
 const { encrypt, decrypt } = require('./utils/crypto.js');
 const db = require('./utils/database.js');
+const now = new Date();
+const hours = now.getHours();
 
 let mainWindow, superUser, masterKey;
 
@@ -135,6 +137,19 @@ ipcMain.handle('get-user-status', async () => {
 
 // Obtener saludo
 ipcMain.handle('get-greeting', async () => {
+    if (hours >= 0 && hours < 7) {
+        // Madrugada
+        return 'Es hora de descansar, ' + superUser.name;
+    } else if (hours >= 7 && hours < 12) {
+        // Dia
+        return '¡Buenos días, ' + superUser.name + '!';
+    } else if (hours >= 12 && hours < 19) {
+        // Tarde
+        return '¡Buenas tardes, ' + superUser.name + '!';
+    } else {
+        // Noche
+        return '¡Buenas noches, ' + superUser.name + '!';
+    }
 });
 
 // Manejar el cifrado con una contraseña proporcionada por el usuario
