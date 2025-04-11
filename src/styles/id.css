@@ -1,3 +1,26 @@
+.animated-background {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    --x: calc(var(--posX, 0) * 1px);
+    --y: calc(var(--posY, 0) * 1px);
+    background-image:
+        linear-gradient(115deg, rgb(124, 255, 135), black),
+        radial-gradient( 90% 100% at calc( 50% + var(--x)) calc( 0% + var(--y)), rgb(200 200 200), rgb(022 000 045)),
+        radial-gradient(100% 100% at calc( 80% - var(--x)) calc( 0% - var(--y)), rgb(17, 0, 255), rgb(214, 250, 255)), 
+        linear-gradient(60deg, rgb(0, 204, 255), rgb(255, 0, 0));
+    background-blend-mode: overlay, overlay, difference, difference, difference, normal;
+}
+
+.overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+
 .inputs {
     height: 30px;
 }
@@ -12,4 +35,5 @@
 
 .done-btn {
     height: 40px;
+    margin-top: 20px;
 }

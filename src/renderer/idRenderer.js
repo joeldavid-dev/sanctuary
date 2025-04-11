@@ -9,6 +9,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let name, pass1, pass2, gender = '';
 
+    // Fondo animado
+    document.body.addEventListener("pointermove", (e) => {
+        const { currentTarget: el, clientX: x, clientY: y } = e;
+        const { top: t, left: l, width: w, height: h } = el.getBoundingClientRect();
+        el.style.setProperty('--posX', x - l - w / 2);
+        el.style.setProperty('--posY', y - t - h / 2);
+    })
+
     // Clic en botón minimizar
     minimize.addEventListener('click', () => {
         window.electron.minimize();

@@ -149,6 +149,10 @@ h3 {
     backdrop-filter: blur(30px);
 }
 
+.colored-overlay {
+    background: var(--app_light_transparent);
+}
+
 .saturate-blur {
     background: transparent;
     filter: saturate(2);
@@ -234,8 +238,9 @@ h3 {
 }
 
 .custom-btn:hover {
-    background-color: black;
     color: white;
+    background-color: black;
+    border-color: black;
 }
 
 .custom-radio {
@@ -250,13 +255,14 @@ h3 {
 }
 
 .custom-radio input {
-    display: none;
     /*Oculta el radio button original */
+    display: none;
 }
 
 .custom-radio:has(input:checked) {
-    background-color: black;
     color: white;
+    background-color: black;
+    border-color: black;
 }
 
 .custom-radio input:checked+.radio-ico {
@@ -381,5 +387,33 @@ h3 {
 
     .colored-blur {
         background: var(--app_dark_transparent);
+    }
+
+    .colored-overlay {
+        background: var(--app_dark_transparent);
+    }
+
+    .custom-radio:has(input:checked) {
+        color: black;
+        background-color: white;
+        border-color: white;
+    }
+
+    .radio-ico {
+        filter: invert(1);
+    }
+
+    .custom-radio input:checked+.radio-ico {
+        filter: invert(0);
+    }
+
+    .custom-btn {
+        color: white;
+    }
+    
+    .custom-btn:hover {
+        color: black;
+        background-color: white;
+        border-color: white;
     }
 }
