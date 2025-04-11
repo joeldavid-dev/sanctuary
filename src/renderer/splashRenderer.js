@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', async () => {
     (async () => {
         try {
-            const hasRecords = await window.electronAPI.isIdCreated();
-            console.log("¿Existen registros?:", hasRecords); // Depuración
+            const status = await window.electronAPI.getUserStatus();
+            console.log("Datos obtenidos:", status); // Depuración
 
-            let ruta = hasRecords ? 'src/views/block.html' : 'src/views/id.html';
+            let ruta = status ? 'src/views/block.html' : 'src/views/id.html';
             console.log("Ruta seleccionada:", ruta); // Depuración
 
             setTimeout(() => {

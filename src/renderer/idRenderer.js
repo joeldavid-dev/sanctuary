@@ -70,9 +70,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Acciones cuando los datos son correctos
         else if (name != '' && pass1 != '' && pass1 == pass2 && gender) {
-            const result = await window.electronAPI.createID(name, pass1, gender);
-            console.log(result);
-            window.electronAPI.changeView('src/views/block.html');
+            const response = await window.electronAPI.createID(name, pass1, gender);
+
+            if (response.success) {
+                console.log(response.message);
+                window.electronAPI.changeView('src/views/block.html');
+            } else {
+                console.error(response.message, response.error);
+            }
         }
     })
 });

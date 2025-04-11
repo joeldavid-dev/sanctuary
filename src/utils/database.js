@@ -15,8 +15,10 @@ const db = new sqlite3.Database(dbPath, (err) => {
 db.run(`CREATE TABLE IF NOT EXISTS user (
     userID INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
+    gender TEXT NOT NULL,
     password TEXT NOT NULL,
-    gender TEXT NOT NULL
+    salt TEXT NOT NULL,
+    iv TEXT NOT NULL
 )`);
 
 db.run(`CREATE TABLE IF NOT EXISTS passData (
@@ -29,29 +31,28 @@ db.run(`CREATE TABLE IF NOT EXISTS passData (
     userID INTEGER
     )`);
 
-// Verificar si hay mas de 0 registros en la tabla de usuario
-function isIdCreated() {
+// Función para crear un usuario
+function addUser(name, gender, password, salt, iv) {
     return new Promise((resolve, reject) => {
-        db.get("SELECT COUNT(*) AS count FROM user", (err, result) => {
+        db.run(`INSERT INTO user (name, gender, password, salt, iv) VALUES (?, ?, ?, ?, ?)`, [name, gender, password, salt, iv], function (err) {
             if (err) {
-                console.error("Error al contar registros:", err);
-                resolve(false); // En caso de error, se asume que no hay registros
-            }
-            else {
-                resolve(result.count > 0); // Devuelve true si hay registros, false si no
+                reject(err);
+            } else {
+                resolve({ name, gender, password, salt, iv });
             }
         });
     });
 }
 
-// Función para crear un usuario
-function addUser(name, password, gender) {
+// Función para obtener el usuario
+// Verificar si hay mas de 0 registros en la tabla de usuario
+function getUser() {
     return new Promise((resolve, reject) => {
-        db.run(`INSERT INTO user (name, password, gender) VALUES (?, ?, ?)`, [name, password, gender], function (err) {
+        db.get("SELECT * FROM user ORDER BY ROWID ASC LIMIT 1", (err, result) => {
             if (err) {
-                reject(err.message);
+                reject(err);
             } else {
-                resolve({ id: this.lastID, name, gender });
+                resolve(result);
             }
         });
     });
@@ -70,7 +71,6 @@ function getUsers() {
     });
 }
 
-
 // Guardar datos encriptados
 function saveEncryptedData(encryptedText) {
     db.run("INSERT INTO encrypted_data (data) VALUES (?)", [encryptedText]);
@@ -88,4 +88,4 @@ function getEncryptedData(callback) {
     });
 }
 
-module.exports = { addUser, getUsers, isIdCreated, saveEncryptedData, getEncryptedData };
+module.exports = { addUser, getUser };

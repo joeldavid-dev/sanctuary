@@ -3,7 +3,7 @@ const path = require('node:path')
 const { encrypt, decrypt } = require('./utils/crypto.js');
 const db = require('./utils/database.js');
 
-let mainWindow;
+let mainWindow, superUser, masterKey;
 
 const createMainWindow = () => {
     mainWindow = new BrowserWindow({
@@ -32,7 +32,7 @@ const createMainWindow = () => {
         }
     });
     // Desactivar en producción
-    mainWindow.webContents.openDevTools();
+    //mainWindow.webContents.openDevTools();
     mainWindow.loadFile('src/views/splash-screen.html');
     //mainWindow.loadFile('src/views/id.html');
 }
@@ -88,14 +88,54 @@ ipcMain.on('open-external-link', (event, url) => {
 });
 
 // BASE DE DATOS
+// Encripta la contraseña del usuario y almacena en la base de datos
+// toda la información obtenida. Almacena el usuario en la variable local
+// "superUser".
 ipcMain.handle('createID', async (event, name, password, gender) => {
-    return await db.addUser(name, password, gender);
+    try {
+        const encryptPass = encrypt(password, password)
+        const result = await db.addUser(
+            name,
+            gender,
+            encryptPass.encryptedData,
+            encryptPass.salt,
+            encryptPass.iv
+        );
+        // Todo salío bien
+        superUser = result;
+        return {
+            success: true,
+            message: 'Usuario creado correctamente'
+        };
+    }
+    // Hay errores
+    catch (error) {
+        return {
+            success: false,
+            message: 'No se pudo crear el usuario',
+            error: error.message
+        };
+    }
 });
 
+// Obtiene el primer registro de user, si es indefinido entonces no
+// existe usuario. Si existe, se guarda en la variable local "superUser"
 ipcMain.handle('get-user-status', async () => {
-    return await db.isIdCreated();
+    try {
+        const result = await db.getUser();
+        if (result) {
+            superUser = result;
+            return true;
+        } else return false;
+    }
+    catch (error) {
+        return false;
+    }
 });
 
+// Obtener saludo
+ipcMain.handle('get-greeting', async () => {
+});
 
 // Manejar el cifrado con una contraseña proporcionada por el usuario
 ipcMain.handle('encrypt-data', (event, text, password) => {

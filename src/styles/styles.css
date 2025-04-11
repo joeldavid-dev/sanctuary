@@ -84,6 +84,10 @@ body {
     user-select: none;
 }
 
+button {
+    color: black;
+}
+
 /* Estilos primitivos que se repiten. */
 .brand-text {
     font-family: Varela;
@@ -356,6 +360,10 @@ h3 {
 @media (prefers-color-scheme: dark) {
     body {
         background-color: var(--app_dark);
+        color: white;
+    }
+
+    button {
         color: white;
     }
 

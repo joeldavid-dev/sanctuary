@@ -15,9 +15,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
     changeView: (newView) => ipcRenderer.send('change-view', newView),
     // Dialogos
     showWarning: (title, message) => ipcRenderer.invoke('show-warning', title, message),
-    // Exponer las funciones de la base de datos
+    // Exponer las funciones de manejo de datos
     createID: (name, password, gender) => ipcRenderer.invoke('createID', name, password, gender),
-    isIdCreated: () => ipcRenderer.invoke('get-user-status'),
+    getUserStatus: () => ipcRenderer.invoke('get-user-status'),
 });
 
 // Exponer a los renderizadores las funciones de encriptar y desencriptar.
