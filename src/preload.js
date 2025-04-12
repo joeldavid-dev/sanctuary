@@ -18,6 +18,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     // Exponer las funciones de manejo de datos
     createID: (name, password, gender) => ipcRenderer.invoke('createID', name, password, gender),
     getUserStatus: () => ipcRenderer.invoke('get-user-status'),
+    verifyPassword: (password) => ipcRenderer.invoke('verify-password', password),
     // Exponer función de saludo
     getGreeting: () => ipcRenderer.invoke('get-greeting'),
 });

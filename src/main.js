@@ -1,6 +1,6 @@
 const { app, BrowserWindow, ipcMain, shell, dialog } = require('electron')
 const path = require('node:path')
-const { encrypt, decrypt } = require('./utils/crypto.js');
+const { encrypt, decrypt, encryptWithSaltIV } = require('./utils/crypto.js');
 const db = require('./utils/database.js');
 const now = new Date();
 const hours = now.getHours();
@@ -135,8 +135,24 @@ ipcMain.handle('get-user-status', async () => {
     }
 });
 
+// Verificar la contraseña obtenida con la del usuario guardado.
+ipcMain.handle('verify-password', (event, password) => {
+    const result = encryptWithSaltIV(password, password, superUser.salt, superUser.iv);
+    if (result.encryptedData == superUser.password) {
+        masterKey = password;
+        mainWindow.loadFile('src/views/cryptoTest.html');
+        return {
+            verified: true,
+            message: 'La contraseña es autentica',
+        }
+    } else return {
+        verified: false,
+        message: 'La contraseña no es autentica',
+    }
+});
+
 // Obtener saludo
-ipcMain.handle('get-greeting', async () => {
+ipcMain.handle('get-greeting', () => {
     if (hours >= 0 && hours < 7) {
         // Madrugada
         return 'Es hora de descansar, ' + superUser.name;

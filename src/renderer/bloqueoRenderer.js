@@ -1,3 +1,5 @@
+let count = 5;
+
 document.addEventListener("DOMContentLoaded", async () => {
     const minimize = document.getElementById('minimize');
     const maximize = document.getElementById('maximize');
@@ -7,6 +9,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const openModal = document.getElementById('open-about');
     const closeModal = document.getElementById('close-about');
     const greeting = document.getElementById('greeting');
+    const passLabel = document.getElementById('pass-label');
+    const inputPassword = document.getElementById('password');
 
     // Clic en botón minimizar
     minimize.addEventListener('click', () => {
@@ -23,6 +27,25 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Acciones al inicio de la pantalla
     greeting.textContent = await window.electronAPI.getGreeting();
+
+    // Enter en el input de contraseña
+    inputPassword.addEventListener('keydown', async (event) => {
+        if (event.key === 'Enter') {
+            if (inputPassword.value != '') {
+                const response = await window.electronAPI.verifyPassword(inputPassword.value);
+                console.log(response);
+
+                if (!response.verified) {
+                    count--;
+                    passLabel.textContent = 'Contraseña incorrecta, te quedan ' + count.toString() + ' intentos';
+                    inputPassword.value = '';
+                    if (count == 0) {
+                        inputPassword.disabled = true;
+                    }
+                }
+            }
+        }
+    });
 
     // Clic en el botón para abrir el modal de acerca de
     openModal.addEventListener('click', async () => {
