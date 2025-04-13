@@ -86,6 +86,8 @@ body {
 
 button {
     color: black;
+    /* Permite hacer clic en los botones sobre una area draggable*/
+    -webkit-app-region: no-drag;
 }
 
 /* Estilos primitivos que se repiten. */
@@ -110,6 +112,10 @@ h3 {
 }
 
 .small-text {
+    font-size: 12px;
+}
+
+.medium-text {
     font-size: 14px;
 }
 
@@ -187,8 +193,6 @@ h3 {
     justify-content: center;
     cursor: pointer;
     transition: 0.3s;
-    /* Permite hacer clic en los botones */
-    -webkit-app-region: no-drag;
 }
 
 .normal-btn-ico:hover {
@@ -207,19 +211,28 @@ h3 {
 
 .horizontal_elem-area {
     display: flex;
-    gap: 10px;
     /* Espacio entre elementos */
+    gap: 10px;
 }
 
 .vertical-elem-area {
     display: flex;
     flex-direction: column;
-    gap: 10px;
     /* Espacio entre elementos */
+    gap: 10px;
+}
+
+.vertical-flex {
+    display: flex;
+    flex-direction: column;
 }
 
 .centered {
     align-items: center;
+}
+
+.big-spaced {
+    gap: 30px;
 }
 
 .reverse {
@@ -229,6 +242,11 @@ h3 {
 
 .spaced {
     justify-content: space-between;
+}
+
+.always-front {
+    /* Asegura que el elemento esté siempre al frente */
+    z-index: 10;
 }
 
 /* Elementos complejos */
@@ -318,10 +336,10 @@ h3 {
 }
 
 .scrolleable {
-    overflow-y: auto;
     /* Hace que el contenido sea scrolleable */
-    max-height: 60vh;
+    overflow-y: auto;
     /* Define el tamaño máximo antes de activar el scroll */
+    max-height: 60vh;
     padding: 15px;
 }
 
@@ -343,18 +361,23 @@ h3 {
 }
 
 .normal-margin {
-    margin: 20px;
+    margin: 15px;
 }
 
 .narrow-padding {
     padding: 10px;
 }
+
 .normal-padding {
-    padding: 20px;
+    padding: 15px;
 }
 
 /* Responsive */
-@media (max-width: 750px) {}
+@media (max-width: 1200px) {
+    .hide-in-small {
+        display: none;
+    }
+}
 
 /* Estilos específicos para modo oscuro */
 @media (prefers-color-scheme: dark) {
@@ -418,7 +441,7 @@ h3 {
     .custom-btn {
         color: white;
     }
-    
+
     .custom-btn:hover {
         color: black;
         background-color: white;

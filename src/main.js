@@ -11,8 +11,8 @@ const createMainWindow = () => {
     mainWindow = new BrowserWindow({
         width: 900,
         height: 600,
-        minWidth: 550,
-        minHeight: 450,
+        minWidth: 580,
+        minHeight: 400,
         autoHideMenuBar: true, // Oculta el menú de opciones de electrón
         //frame: false,
         titleBarStyle: 'hidden', // oculta la barra de título
@@ -140,7 +140,7 @@ ipcMain.handle('verify-password', (event, password) => {
     const result = encryptWithSaltIV(password, password, superUser.salt, superUser.iv);
     if (result.encryptedData == superUser.password) {
         masterKey = password;
-        mainWindow.loadFile('src/views/cryptoTest.html');
+        mainWindow.loadFile('src/views/home.html');
         return {
             verified: true,
             message: 'La contraseña es autentica',
@@ -158,13 +158,13 @@ ipcMain.handle('get-greeting', () => {
         return 'Es hora de descansar, ' + superUser.name;
     } else if (hours >= 7 && hours < 12) {
         // Dia
-        return '¡Buenos días, ' + superUser.name + '!';
+        return 'Buenos días, ' + superUser.name;
     } else if (hours >= 12 && hours < 19) {
         // Tarde
-        return '¡Buenas tardes, ' + superUser.name + '!';
+        return 'Buenas tardes, ' + superUser.name;
     } else {
         // Noche
-        return '¡Buenas noches, ' + superUser.name + '!';
+        return 'Buenas noches, ' + superUser.name;
     }
 });
 

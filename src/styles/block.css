@@ -6,49 +6,35 @@
 }
 
 .video-background {
-    position: fixed;
     /* Fija el video en toda la ventana */
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
     height: 100%;
-    object-fit: cover;
     /* Ajusta el video sin deformarlo */
+    object-fit: cover;
 }
 
 .bloqueo-content {
     position: relative;
     display: flex;
     height: 100vh;
+    /* Asegura que el contenido esté sobre el video o imagen*/
     z-index: 1;
-    /* Asegura que el contenido esté sobre el video */
 }
 
 /* Barra que siempre permanece a la izquierda y contiene los elementos de login. */
 .login-panel {
     max-width: 260px;
-    /*
-    width: 250;
-    
-    min-width: 220px;
-    
-     Porcentaje de altura para cada fila */
     display: grid;
     grid-template-rows: 30% 35% 10% 10%;
-
-    /* Reservado para el proximo diseño
-    margin: 10px;
-    border-radius: 15px;*/
 }
 
 .info-panel {
-    flex: 2;
+    flex: 1;
     display: grid;
-}
-
-.pass-label {
-    text-align: center;
 }
 
 .pass-input {
@@ -67,10 +53,6 @@
     border-color: white;
 }
 
-.top-buttons {
-    justify-content: space-between;
-}
-
 .notification {
     cursor: pointer;
     align-items: center;
@@ -82,4 +64,11 @@
     color: white;
     text-align: center;
     align-self: flex-end;
+}
+
+/* Responsive */
+@media (min-width: 800px) {
+    .notification {
+        min-width: 500px;
+    }
 }

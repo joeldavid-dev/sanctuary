@@ -1,0 +1,37 @@
+.layout {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    position: sticky;
+    left: 0px;
+    top: 0px;
+    border-right: 1px solid var(--neutral_grey);
+    overflow: hidden;
+}
+
+.main-content {
+    position: flex;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.main-content::-webkit-scrollbar {
+    /* Oculta la barra de desplazamiento */
+    display: none;
+}
+
+.title-bar {
+    position: sticky;
+    top: 0;
+    left: 0;
+}
+
+.botton-bar {
+    position: sticky;
+    bottom: 15px;
+    max-width: min-content;
+    margin: auto; 
+}
+
