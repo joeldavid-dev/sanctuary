@@ -185,45 +185,117 @@
                     </button>
                 </div>
 
-                <div class="normal-padding">
-                    <p>Mollit aliquip aliqua commodo occaecat reprehenderit duis cillum nulla culpa. Ex laborum et ut et
-                        commodo. Voluptate magna nulla enim est mollit. Adipisicing consequat ex ea ipsum nostrud
-                        reprehenderit ipsum reprehenderit excepteur sit mollit duis irure. Laborum aliqua velit eu
-                        cillum
-                        commodo est occaecat duis. Elit incididunt in enim ut eiusmod dolor voluptate veniam ipsum elit
-                        do
-                        Lorem.</p>
-                    <p>Mollit aliquip aliqua commodo occaecat reprehenderit duis cillum nulla culpa. Ex laborum et ut et
-                        commodo. Voluptate magna nulla enim est mollit. Adipisicing consequat ex ea ipsum nostrud
-                        reprehenderit ipsum reprehenderit excepteur sit mollit duis irure. Laborum aliqua velit eu
-                        cillum
-                        commodo est occaecat duis. Elit incididunt in enim ut eiusmod dolor voluptate veniam ipsum elit
-                        do
-                        Lorem.</p>
-                    <p>Mollit aliquip aliqua commodo occaecat reprehenderit duis cillum nulla culpa. Ex laborum et ut et
-                        commodo. Voluptate magna nulla enim est mollit. Adipisicing consequat ex ea ipsum nostrud
-                        reprehenderit ipsum reprehenderit excepteur sit mollit duis irure. Laborum aliqua velit eu
-                        cillum
-                        commodo est occaecat duis. Elit incididunt in enim ut eiusmod dolor voluptate veniam ipsum elit
-                        do
-                        Lorem.</p>
-                    <p>Mollit aliquip aliqua commodo occaecat reprehenderit duis cillum nulla culpa. Ex laborum et ut et
-                        commodo. Voluptate magna nulla enim est mollit. Adipisicing consequat ex ea ipsum nostrud
-                        reprehenderit ipsum reprehenderit excepteur sit mollit duis irure. Laborum aliqua velit eu
-                        cillum
-                        commodo est occaecat duis. Elit incididunt in enim ut eiusmod dolor voluptate veniam ipsum elit
-                        do
-                        Lorem.</p>
-                    <p>Mollit aliquip aliqua commodo occaecat reprehenderit duis cillum nulla culpa. Ex laborum et ut et
-                        commodo. Voluptate magna nulla enim est mollit. Adipisicing consequat ex ea ipsum nostrud
-                        reprehenderit ipsum reprehenderit excepteur sit mollit duis irure. Laborum aliqua velit eu
-                        cillum
-                        commodo est occaecat duis. Elit incididunt in enim ut eiusmod dolor voluptate veniam ipsum elit
-                        do
-                        Lorem.</p>
+                <div class=" horizontal-flex">
+
+                    <div class="vertical-elem-area normal-padding normal-rounded normal-margin preview-options">
+                        <label for="name-new-pass">Nombre:</label>
+                        <input type="text" id="name-new-pass" class="custom-input minimal-rounded" placeholder="Nombre">
+                        <label for="user-new-pass">Usuario:</label>
+                        <input type="text" id="user-new-pass" class="custom-input minimal-rounded"
+                            placeholder="Usuario (opcional)">
+                        <label for="pass-new-pass">Contraseña:</label>
+                        <input type="password" id="pass-new-pass" class="custom-input minimal-rounded"
+                            placeholder="Contraseña">
+                        <label for="url-new-pass">URL:</label>
+                        <input type="text" id="url-new-pass" class="custom-input minimal-rounded"
+                            placeholder="URL (opcional)">
+                        <label>Color:</label>
+                        <div class="horizontal_elem-area">
+                            <label class="custom-radio2 minimal-rounded minimal-padding">
+                                <input id="color1" type="radio" name="color" value="color1">
+                                <div class="radio-color color1 minimal-rounded"></div>
+                            </label>
+
+                            <label class="custom-radio2 minimal-rounded minimal-padding">
+                                <input id="color2" type="radio" name="color" value="color2">
+                                <div class="radio-color color2 minimal-rounded"></div>
+                            </label>
+
+                            <label class="custom-radio2 minimal-rounded minimal-padding">
+                                <input id="color3" type="radio" name="color" value="color3">
+                                <div class="radio-color color3 minimal-rounded"></div>
+                            </label>
+
+                            <label class="custom-radio2 minimal-rounded minimal-padding">
+                                <input id="color4" type="radio" name="color" value="color4">
+                                <div class="radio-color color4 minimal-rounded"></div>
+                            </label>
+
+                            <label class="custom-radio2 minimal-rounded minimal-padding">
+                                <input id="color5" type="radio" name="color" value="color5">
+                                <div class="radio-color color5 minimal-rounded"></div>
+                            </label>
+                        </div>
+
+                        <div class="horizontal_elem-area">
+                            <label class="custom-radio2 minimal-rounded minimal-padding">
+                                <input id="color6" type="radio" name="color" value="color6">
+                                <div class="radio-color color6 minimal-rounded"></div>
+                            </label>
+
+                            <label class="custom-radio2 minimal-rounded minimal-padding">
+                                <input id="color7" type="radio" name="color" value="color7">
+                                <div class="radio-color color7 minimal-rounded"></div>
+                            </label>
+
+                            <label class="custom-radio2 minimal-rounded minimal-padding">
+                                <input id="color8" type="radio" name="color" value="color8">
+                                <div class="radio-color color8 minimal-rounded"></div>
+                            </label>
+
+                            <label class="custom-radio2 minimal-rounded minimal-padding">
+                                <input id="color9" type="radio" name="color" value="color9">
+                                <div class="radio-color color9 minimal-rounded"></div>
+                            </label>
+
+                            <label class="custom-radio2 minimal-rounded minimal-padding">
+                                <input id="color10" type="radio" name="color" value="color10">
+                                <div class="radio-color color10 minimal-rounded"></div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="vertical-elem-area spaced normal-padding">
+                        <label for="preview-card">Vista previa:</label>
+
+                        <div id="preview-card" class="card color1">
+                            <label id="name-preview" class="normal-text">Nueva contraseña</label>
+
+                            <label class="minimum-text vertical-flex">
+                                Usuario:
+                                <p id="user-preview" class="small-text"></p>
+                            </label>
+
+                            <label class="minimum-text vertical-elem-area">
+                                Contraseña:
+                                <p id="pass-preview-new" class="small-text"></p>
+                            </label>
+
+                            <label class="minimum-text vertical-elem-area">
+                                URL:
+                                <a id="url-preview-new"
+                                    class="small-text"></a>
+                            </label>
+
+                            <div class="horizontal-flex spaced centered">
+                                <button id="like-preview" class="card-btn">
+                                    <img src="../assets/ico/feather/heart.svg" class="card-icon">
+                                </button>
+
+                                <p class="minimum-text">1 de 1</p>
+
+                                <button id="view-preview" class="card-btn">
+                                    <img src="../assets/ico/feather/eye-off.svg" class="card-icon">
+                                </button>
+                            </div>
+                        </div>
+
+                        <button id="done-new-pass" class="custom-btn narrow-padding minimal-rounded">Listo</button>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
 </body>
 
 </html>

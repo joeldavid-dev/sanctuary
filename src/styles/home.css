@@ -7,7 +7,7 @@
     position: sticky;
     left: 0px;
     top: 0px;
-    border-right: 1px solid var(--neutral_grey);
+    border-right: 1px solid var(--light_gray);
 }
 
 .main-content {
@@ -32,10 +32,17 @@
     bottom: 15px;
     max-width: min-content;
     margin: auto; 
+    box-shadow: 0px 0px 30px 8px rgba(0, 0, 0, 0.20);
 }
 
 .modal-content {
-    width: 60%;
-    /* Define el tamaño máximo antes de activar el scroll */
-    max-height: 70vh;
+    max-height: 100vh
+}
+
+.custom-input {
+    height: 30px;
+}
+
+.preview-options {
+    background-color: var(--light_gray);
 }

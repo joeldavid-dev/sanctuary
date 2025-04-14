@@ -45,6 +45,11 @@
     src: url(../assets/fonts/SourceCodePro-VariableFont_wght.ttf);
 }
 
+@font-face {
+    font-family: jetBrains_mono;
+    src: url(../assets/fonts/JetBrainsMono-VariableFont_wght.ttf);
+}
+
 /* Desactiva el scroll bar. */
 body::-webkit-scrollbar {
     display: none;
@@ -66,8 +71,19 @@ body::-webkit-scrollbar {
     --app_dark: rgb(10, 10, 10);
     --app_dark_transparent: rgba(10, 10, 10, 0.75);
     --neutral_grey: rgb(130, 130, 130);
+    --light_gray: rgb(230, 230, 230);
 
-    --blue: rgb(0, 122, 223);
+    /* Colores de las tarjetas */
+    --color1: rgb(30, 35, 40);
+    --color2: rgb(50, 20, 75);
+    --color3: rgb(0, 100, 255);
+    --color4: rgb(0, 255, 150);
+    --color5: rgb(0, 175, 60);
+    --color6: rgb(250, 190, 0);
+    --color7: rgb(215, 60, 15);
+    --color8: rgb(220, 0, 50);
+    --color9: rgb(230, 10, 20);
+    --color10: rgb(150, 0, 0);
 }
 
 /* Permite arrastrar la app */
@@ -111,12 +127,20 @@ h3 {
     font-size: 14px;
 }
 
+.minimum-text {
+    font-size: 10px;
+}
+
 .small-text {
     font-size: 12px;
 }
 
 .medium-text {
     font-size: 14px;
+}
+
+.large-text {
+    font-size: 18px;
 }
 
 .mayus {
@@ -130,6 +154,11 @@ h3 {
 /* Redondeo de elementos grandes*/
 .normal-rounded {
     border-radius: 10px;
+}
+
+/* Redondeo de elementos pequeños*/
+.minimal-rounded {
+    border-radius: 6px;
 }
 
 .logo-img {
@@ -174,40 +203,6 @@ h3 {
     backdrop-filter: blur(30px);
 }
 
-.rounded-input {
-    border-radius: 8px;
-    text-align: center;
-    background-color: var(--app_light);
-    border: 1px solid var(--neutral_grey);
-}
-
-.normal-btn-ico {
-    width: 30px;
-    height: 30px;
-    padding: 5px;
-    background: transparent;
-    border: transparent;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.normal-btn-ico:hover {
-    border: solid 1px;
-}
-
-.normal-icon {
-    width: 20px;
-    height: 20px;
-}
-
-.large-icon {
-    width: 25%;
-    height: 25%;
-}
 
 .horizontal_elem-area {
     display: flex;
@@ -254,12 +249,62 @@ h3 {
     z-index: 10;
 }
 
-/* Elementos complejos */
+/* Colores */
+.color1 {
+    background-color: var(--color1);
+}
+
+.color2 {
+    background-color: var(--color2);
+}
+
+.color3 {
+    background-color: var(--color3);
+}
+
+.color4 {
+    background-color: var(--color4);
+}
+
+.color5 {
+    background-color: var(--color5);
+}
+
+.color6 {
+    background-color: var(--color6);
+}
+
+.color7 {
+    background-color: var(--color7);
+}
+
+.color8 {
+    background-color: var(--color8);
+}
+
+.color9 {
+    background-color: var(--color9);
+}
+
+.color10 {
+    background-color: var(--color10);
+}
+
+/* ======================= Elementos complejos ======================= */
+.card {
+    font-family: jetBrains_mono;
+    display: flex;
+    flex-direction: column;
+    max-width: 220px;
+    border-radius: 30px;
+    color: white;
+    padding: 40px 15px 15px 15px;
+    gap: 15px;
+}
+
 .custom-btn {
     background: transparent;
     border: solid 1px;
-    border-radius: 8px;
-    padding: 5px;
     transition: 0.3s;
     cursor: pointer;
 }
@@ -273,11 +318,8 @@ h3 {
 .custom-radio {
     display: flex;
     align-items: center;
-    gap: 10px;
     cursor: pointer;
     border: solid 1px;
-    padding: 5px;
-    border-radius: 8px;
     transition: 0.3s;
 }
 
@@ -310,6 +352,75 @@ h3 {
     transition: 0.3s;
 }
 
+.custom-radio2 {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border: solid 1px;
+    border-color: transparent;
+    transition: 0.3s;
+}
+
+.custom-radio2 input {
+    /*Oculta el radio button original */
+    display: none;
+}
+
+.custom-radio2:has(input:checked) {
+    border-color: black;
+}
+
+.radio-color {
+    width: 20px;
+    height: 20px;
+}
+
+.custom-input {
+    text-align: center;
+    background-color: var(--app_light);
+    border: 1px solid var(--neutral_grey);
+}
+
+.normal-btn-ico {
+    width: 30px;
+    height: 30px;
+    padding: 5px;
+    background: transparent;
+    border: transparent;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.normal-btn-ico:hover {
+    border: solid 1px;
+}
+
+.normal-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.card-btn {
+    background: transparent;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.card-icon {
+    width: 20px;
+    height: 20px;
+    filter: invert(1);
+}
+
+.large-icon {
+    width: 25%;
+    height: 25%;
+}
+
+/* Estilos para el modal */
 .modal {
     display: none;
     /* Oculto por defecto */
@@ -329,6 +440,7 @@ h3 {
     background-color: var(--app_light);
     /* Hace que el contenido sea scrolleable */
     overflow-y: auto;
+    box-shadow: 0px 0px 60px 8px rgba(0, 0, 0, 0.20);
 }
 
 .modal-content::-webkit-scrollbar {
@@ -344,6 +456,7 @@ h3 {
     justify-content: space-between;
     /* Alinea verticalmente */
     align-items: center;
+    -webkit-app-region: drag;
 }
 
 .scrolleable {
@@ -376,6 +489,10 @@ h3 {
     margin: 15px;
 }
 
+.minimal-padding {
+    padding: 5px;
+}
+
 .narrow-padding {
     padding: 10px;
 }
@@ -406,7 +523,7 @@ h3 {
         filter: invert(1);
     }
 
-    .rounded-input {
+    .custom-input {
         background-color: black;
         color: white;
         border: 1px solid var(--neutral_grey);
