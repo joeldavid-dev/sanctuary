@@ -11,8 +11,8 @@
     font-src 'self';
     ">
     <link rel="stylesheet" href="../styles/styles.css">
-    <link rel="stylesheet" href="../styles/block.css">
-    <script src="../renderer/bloqueoRenderer.js"></script>
+    <link rel="stylesheet" href="../styles/lock.css">
+    <script src="../renderer/lockRenderer.js"></script>
     <title>Codaby Sanctuary | 🔒</title>
 </head>
 
@@ -37,7 +37,8 @@
             </div>
             <h1 id="greeting" class="login-element">¡Saludos, terricola!</h1>
             <label id="pass-label" class="medium-text centered-text login-element">Contraseña:</label>
-            <input class="rounded-input pass-input login-element" type="password" id="password" name="password" required>
+            <input class="rounded-input pass-input login-element" type="password" id="password" name="password"
+                required>
         </div>
 
         <!-- Panel de botones superiores y área de notificaciones -->
@@ -80,14 +81,14 @@
 
         <!-- Modal de información acerca de -->
         <div id="modal-about" class="modal blur">
-            <div class="modal-content">
-                <div class="modal-header">
+            <div class="modal-content normal-rounded">
+                <div class="modal-header normal-padding colored-blur">
                     <h2>Acerca de Codaby Sanctuary</h2>
                     <button id="close-about" class="normal-btn-ico">
                         <img src="../assets/ico/feather/x-circle.svg" class="normal-icon">
                     </button>
                 </div>
-                <div id="about-body" class="vertical-elem-area scrolleable">
+                <div id="about-body" class="normal-padding">
                 </div>
             </div>
         </div>

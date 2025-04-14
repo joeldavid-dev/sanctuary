@@ -66,6 +66,11 @@
     align-self: flex-end;
 }
 
+.modal-content {
+    width: 60%;
+    max-height: 70vh;
+}
+
 /* Responsive */
 @media (min-width: 800px) {
     .notification {

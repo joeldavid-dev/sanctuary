@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const status = await window.electronAPI.getUserStatus();
             console.log("Datos obtenidos:", status); // Depuración
 
-            let ruta = status ? 'src/views/block.html' : 'src/views/id.html';
+            let ruta = status ? 'src/views/lock.html' : 'src/views/id.html';
             console.log("Ruta seleccionada:", ruta); // Depuración
 
             setTimeout(() => {

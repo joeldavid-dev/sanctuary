@@ -227,6 +227,11 @@ h3 {
     flex-direction: column;
 }
 
+.horizontal-flex {
+    display: flex;
+    flex-direction: row;
+}
+
 .centered {
     align-items: center;
 }
@@ -321,26 +326,29 @@ h3 {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 50%;
-    border-radius: 10px;
     background-color: var(--app_light);
+    /* Hace que el contenido sea scrolleable */
+    overflow-y: auto;
+}
+
+.modal-content::-webkit-scrollbar {
+    display: none;
 }
 
 .modal-header {
+    position: sticky;
+    top: 0px;
     display: flex;
-    justify-content: space-between;
+    flex-direction: row;
     /* Distribuye los elementos en los extremos */
-    align-items: center;
+    justify-content: space-between;
     /* Alinea verticalmente */
-    padding: 15px;
+    align-items: center;
 }
 
 .scrolleable {
     /* Hace que el contenido sea scrolleable */
     overflow-y: auto;
-    /* Define el tamaño máximo antes de activar el scroll */
-    max-height: 60vh;
-    padding: 15px;
 }
 
 .scrolleable::-webkit-scrollbar {
@@ -354,6 +362,10 @@ h3 {
 
 .scrolleable::-webkit-scrollbar-track {
     display: none;
+}
+
+.no-scrolleable {
+    overflow: hidden;
 }
 
 .narrow-margin {
