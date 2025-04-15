@@ -312,6 +312,7 @@ p {
     color: white;
     padding: 40px 15px 15px 15px;
     gap: 15px;
+    justify-content: space-between;
     /* permite cortar palabras largas */
     word-wrap: break-word;
 }

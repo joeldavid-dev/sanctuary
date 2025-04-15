@@ -166,11 +166,11 @@ ipcMain.handle('get-greeting', () => {
     }
 });
 
-// Crear una nueva contraseña
+// Crear una nueva tarjeta
 ipcMain.handle('create-card', async (event, name, user, password, web, color, favorite) => {
     try {
         const encryptedCard = cr.encryptCard(masterKey, user, password);
-        const result = await db.addPassword(
+        const result = await db.addCard(
             name,
             encryptedCard.userEncrypted,
             encryptedCard.passwordEncrypted,
@@ -198,6 +198,15 @@ ipcMain.handle('create-card', async (event, name, user, password, web, color, fa
                 favorite,
             },
         };
+    }
+});
+
+ipcMain.handle('get-all-cards', async () => {
+    try {
+        const cards = await db.getAllCards();
+        return { success: true, data: cards };
+    } catch (error) {
+        return { success: false, error: error.message };
     }
 });
 

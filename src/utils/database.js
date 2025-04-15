@@ -19,7 +19,7 @@ db.run(`CREATE TABLE IF NOT EXISTS user (
     hash TEXT NOT NULL
 )`);
 
-db.run(`CREATE TABLE IF NOT EXISTS passwordsData (
+db.run(`CREATE TABLE IF NOT EXISTS cardsData (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     user TEXT,
@@ -57,10 +57,14 @@ function getUser() {
     });
 }
 
-// Función para crear una contraseña
-function addPassword(name, user, password, web, color, favorite, salt, iv) {
+// Función para crear una tarjeta
+function addCard(name, user, password, web, color, favorite, salt, iv) {
     return new Promise((resolve, reject) => {
-        db.run(`INSERT INTO passwordsData (name, user, password, web, color, favorite, salt, iv) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, [name, user, password, web, color, favorite, salt, iv], function (err) {
+        const query = `INSERT INTO cardsData 
+        (name, user, password, web, color, favorite, salt, iv) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+
+        db.run(query, [name, user, password, web, color, favorite, salt, iv], function (err) {
             if (err) {
                 reject(err);
             } else {
@@ -70,12 +74,13 @@ function addPassword(name, user, password, web, color, favorite, salt, iv) {
     });
 }
 
-// Función para obtener todos los usuarios
-function getUsers() {
+// Función para obtener todas las tarjetas
+function getAllCards() {
     return new Promise((resolve, reject) => {
-        db.all(`SELECT * FROM users`, [], (err, rows) => {
+        const query = `SELECT * FROM cardsData`;
+        db.all(query, [], (err, rows) => {
             if (err) {
-                reject(err.message);
+                reject(err);
             } else {
                 resolve(rows);
             }
@@ -100,4 +105,4 @@ function getEncryptedData(callback) {
     });
 }
 
-module.exports = { addUser, getUser, addPassword };
+module.exports = { addUser, getUser, addCard, getAllCards };

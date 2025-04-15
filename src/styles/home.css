@@ -27,6 +27,13 @@
     left: 0;
 }
 
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
 .botton-bar {
     position: sticky;
     bottom: 15px;

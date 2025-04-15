@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const lock = document.getElementById('lock');
 
+    const cardsContainer = document.getElementById('cards-container');
+
     const newCard = document.getElementById('new-card');
 
     // Modal para agregar nueva contraseña
@@ -30,6 +32,70 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let colorSelected = 'var(--color1)';
     let newFavorite = 0;
+
+    showAllCard(); // Traer todas las tarjetas al iniciar la vista
+
+    // Traer los datos al iniciar la vista
+    async function showAllCard() {
+        try {
+            const cards = await window.electronAPI.getAllCards();
+            console.log(cards);
+            showCards(cards);
+        } catch (error) {
+            console.error('Error al obtener las tarjetas:', error);
+        }
+    }
+
+    function showCards(cards) {
+        // Limpiar el contenedor de tarjetas antes de agregar nuevas
+        cardsContainer.innerHTML = '';
+        if (cards.success) {
+            cards.data.forEach(card => {
+                const cardDiv = document.createElement('div');
+                cardDiv.classList.add('card'); // clase para estilos
+                cardDiv.style.backgroundColor = card.color; // Cambia el color de fondo de la tarjeta
+
+                // Crea el contenido de la tarjeta (ajústalo según tus columnas)
+                cardDiv.innerHTML = `
+                    <div class="horizontal_elem-area spaced centered">
+                        <p class="normal-text">${card.name}</p>
+                        <img src="../assets/ico/feather/heart.svg" class="card-icon2">
+                    </div>
+
+                    <label class="minimum-text vertical-flex">
+                        Usuario:
+                        <p class="small-text">${card.user}</p>
+                    </label>
+
+                    <label class="minimum-text vertical-elem-area">
+                        Contraseña:
+                        <p class="small-text">${card.password}</p>
+                    </label>
+
+                    <label class="minimum-text vertical-elem-area">
+                        URL:
+                        <p class="small-text">${card.web}</p>
+                    </label>
+
+                    <div class="horizontal-flex spaced centered">
+                        <button class="card-btn">
+                            <img src="../assets/ico/feather/external-link.svg" class="card-icon">
+                        </button>
+
+                        <p class="minimum-text">1 de 1</p>
+
+                        <button class="card-btn">
+                            <img src="../assets/ico/feather/eye.svg" class="card-icon">
+                        </button>
+                    </div>
+                `;
+
+                cardsContainer.appendChild(cardDiv);
+            });
+        } else {
+            cardsContainer.textContent = 'No se pudieron cargar las tarjetas 😕';
+        }
+    }
 
     // Clic en botón minimizar
     minimize.addEventListener('click', () => {
@@ -155,6 +221,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Cerrar modal
             if (result.success) {
                 modalNew.style.display = 'none';
+                showAllCard(); // Actualizar la vista de tarjetas
             }
         } else {
             window.electronAPI.showWarning('Problema', 'Es necesario al menos un nombre y una contraseña para continuar.');
