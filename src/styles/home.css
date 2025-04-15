@@ -51,3 +51,14 @@
 .custom-btn {
     width: 200px;
 }
+
+/* Estilos específicos para modo oscuro */
+@media (prefers-color-scheme: dark) {
+    .botton-bar {
+        box-shadow: 0px 0px 60px 8px rgba(255, 255, 255, 0.2);
+    }
+
+    .preview-options {
+        background-color: var(--dark_gray);
+    }
+}
