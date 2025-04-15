@@ -127,6 +127,11 @@ h3 {
     font-size: 14px;
 }
 
+p {
+    /* permite cortar palabras largas */
+    word-wrap: break-word;
+}
+
 .minimum-text {
     font-size: 10px;
 }
@@ -295,11 +300,13 @@ h3 {
     font-family: jetBrains_mono;
     display: flex;
     flex-direction: column;
-    max-width: 220px;
+    max-width: 50vw;
     border-radius: 30px;
     color: white;
     padding: 40px 15px 15px 15px;
     gap: 15px;
+    /* permite cortar palabras largas */
+    word-wrap: break-word;
 }
 
 .custom-btn {
@@ -367,7 +374,7 @@ h3 {
 }
 
 .custom-radio2:has(input:checked) {
-    border-color: black;
+    border-color: var(--neutral_grey);
 }
 
 .radio-color {
@@ -387,7 +394,7 @@ h3 {
     padding: 5px;
     background: transparent;
     border: transparent;
-    border-radius: 5px;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -404,14 +411,87 @@ h3 {
     height: 20px;
 }
 
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+  }
+  
+  .switch input {
+    display: none;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    background-color: #ccc;
+    border-radius: 24px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: .4s;
+  }
+  
+  .slider::before {
+    content: "";
+    position: absolute;
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: black;
+  }
+  
+  input:checked + .slider::before {
+    transform: translateX(26px);
+  }
+
 .card-btn {
-    background: transparent;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
     cursor: pointer;
     transition: 0.3s;
 }
+
+.card-btn:hover {
+    background-color: rgb(255, 255, 255);
+}
+
+.card-btn2 {
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.card-btn2:hover {
+    background-color: rgb(255, 255, 255);
+}
+
 .card-icon {
     width: 20px;
     height: 20px;
+}
+
+.card-icon2 {
+    width: 20px;
+    height:20px;
     filter: invert(1);
 }
 
@@ -438,13 +518,7 @@ h3 {
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: var(--app_light);
-    /* Hace que el contenido sea scrolleable */
-    overflow-y: auto;
     box-shadow: 0px 0px 60px 8px rgba(0, 0, 0, 0.20);
-}
-
-.modal-content::-webkit-scrollbar {
-    display: none;
 }
 
 .modal-header {
