@@ -16,36 +16,35 @@ db.run(`CREATE TABLE IF NOT EXISTS user (
     userID INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     gender TEXT NOT NULL,
-    password TEXT NOT NULL,
-    salt TEXT NOT NULL,
-    iv TEXT NOT NULL
+    hash TEXT NOT NULL
 )`);
 
-db.run(`CREATE TABLE IF NOT EXISTS passData (
+db.run(`CREATE TABLE IF NOT EXISTS passwordsData (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
-    user TEXT NOT NULL,
+    user TEXT,
     password TEXT NOT NULL,
     web TEXT,
+    color TEXT,
     favorite BOOLEAN,
-    userID INTEGER
+    salt TEXT NOT NULL,
+    iv TEXT NOT NULL
     )`);
 
 // Función para crear un usuario
-function addUser(name, gender, password, salt, iv) {
+function addUser(name, gender, hash) {
     return new Promise((resolve, reject) => {
-        db.run(`INSERT INTO user (name, gender, password, salt, iv) VALUES (?, ?, ?, ?, ?)`, [name, gender, password, salt, iv], function (err) {
+        db.run(`INSERT INTO user (name, gender, hash) VALUES (?, ?, ?)`, [name, gender, hash], function (err) {
             if (err) {
                 reject(err);
             } else {
-                resolve({ name, gender, password, salt, iv });
+                resolve({ name, gender, hash });
             }
         });
     });
 }
 
 // Función para obtener el usuario
-// Verificar si hay mas de 0 registros en la tabla de usuario
 function getUser() {
     return new Promise((resolve, reject) => {
         db.get("SELECT * FROM user ORDER BY ROWID ASC LIMIT 1", (err, result) => {
@@ -53,6 +52,19 @@ function getUser() {
                 reject(err);
             } else {
                 resolve(result);
+            }
+        });
+    });
+}
+
+// Función para crear una contraseña
+function addPassword(name, user, password, web, color, favorite, salt, iv) {
+    return new Promise((resolve, reject) => {
+        db.run(`INSERT INTO passwordsData (name, user, password, web, color, favorite, salt, iv) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, [name, user, password, web, color, favorite, salt, iv], function (err) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve({ id: this.lastID });
             }
         });
     });
@@ -88,4 +100,4 @@ function getEncryptedData(callback) {
     });
 }
 
-module.exports = { addUser, getUser };
+module.exports = { addUser, getUser, addPassword };

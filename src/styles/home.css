@@ -54,6 +54,10 @@
 
 /* Estilos específicos para modo oscuro */
 @media (prefers-color-scheme: dark) {
+    .sidebar {
+        border-right: 1px solid var(--dark_gray);
+    }
+
     .botton-bar {
         box-shadow: 0px 0px 60px 8px rgba(255, 255, 255, 0.2);
     }

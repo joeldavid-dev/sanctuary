@@ -1,6 +1,6 @@
 const { app, BrowserWindow, ipcMain, shell, dialog } = require('electron')
 const path = require('node:path')
-const { encrypt, decrypt, encryptWithSaltIV } = require('./utils/crypto.js');
+const cr = require('./utils/crypto.js');
 const db = require('./utils/database.js');
 const now = new Date();
 const hours = now.getHours();
@@ -95,13 +95,11 @@ ipcMain.on('open-external-link', (event, url) => {
 // "superUser".
 ipcMain.handle('createID', async (event, name, password, gender) => {
     try {
-        const encryptPass = encrypt(password, password)
+        const hashPassword = await cr.hashPassword(password);
         const result = await db.addUser(
             name,
             gender,
-            encryptPass.encryptedData,
-            encryptPass.salt,
-            encryptPass.iv
+            hashPassword,
         );
         // Todo salío bien
         superUser = result;
@@ -136,9 +134,9 @@ ipcMain.handle('get-user-status', async () => {
 });
 
 // Verificar la contraseña obtenida con la del usuario guardado.
-ipcMain.handle('verify-password', (event, password) => {
-    const result = encryptWithSaltIV(password, password, superUser.salt, superUser.iv);
-    if (result.encryptedData == superUser.password) {
+ipcMain.handle('verify-password', async (event, password) => {
+    const match = await cr.verifyPassword(password, superUser.hash);
+    if (match) {
         masterKey = password;
         mainWindow.loadFile('src/views/home.html');
         return {
@@ -165,6 +163,41 @@ ipcMain.handle('get-greeting', () => {
     } else {
         // Noche
         return 'Buenas noches, ' + superUser.name;
+    }
+});
+
+// Crear una nueva contraseña
+ipcMain.handle('create-card', async (event, name, user, password, web, color, favorite) => {
+    try {
+        const encryptedCard = cr.encryptCard(masterKey, user, password);
+        const result = await db.addPassword(
+            name,
+            encryptedCard.userEncrypted,
+            encryptedCard.passwordEncrypted,
+            web,
+            color,
+            favorite,
+            encryptedCard.salt,
+            encryptedCard.iv,
+        );
+        return {
+            success: true,
+            ID: result.id,
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: 'No se pudo crear la tarjeta',
+            error: error.message,
+            data: {
+                name,
+                user,
+                password,
+                web,
+                color,
+                favorite,
+            },
+        };
     }
 });
 

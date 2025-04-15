@@ -5,15 +5,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const lock = document.getElementById('lock');
 
-    const newPass = document.getElementById('new-pass');
+    const newCard = document.getElementById('new-card');
 
     // Modal para agregar nueva contraseña
     const modalNew = document.getElementById('modal-new');
     const closeModalNew = document.getElementById('close-modal-new');
-    const newPassName = document.getElementById('new-pass-name');
-    const newPassuser = document.getElementById('new-pass-user');
-    const newPassPass = document.getElementById('new-pass-pass');
-    const newPassUrl = document.getElementById('new-pass-url');
+    const newCardName = document.getElementById('new-card-name');
+    const newCardUser = document.getElementById('new-card-user');
+    const newCardPass = document.getElementById('new-card-pass');
+    const newCardUrl = document.getElementById('new-card-url');
     const newFavoriteSwitch = document.getElementById('new-favorite-switch');
 
     const prewiewCard = document.getElementById('preview-card');
@@ -26,8 +26,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const urlPreviewSection = document.getElementById('url-preview-section');
     const urlPreview = document.getElementById('url-preview');
     const openLinkPreview = document.getElementById('open-link-preview');
+    const newCardDone = document.getElementById('new-card-done');
 
-    let colorSelected;
+    let colorSelected = 'var(--color1)';
+    let newFavorite = 0;
 
     // Clic en botón minimizar
     minimize.addEventListener('click', () => {
@@ -48,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Clic en el botón para abrir el modal de nueva contraseña
-    newPass.addEventListener('click', async () => {
+    newCard.addEventListener('click', async () => {
         // Abrir modal
         modalNew.style.display = 'block';
         // Reiniciar el estado del modal
@@ -63,45 +65,45 @@ document.addEventListener("DOMContentLoaded", () => {
         colorSelected = 'var(--color1)';
         document.querySelector('input[name="color"][value="var(--color1)"]').checked = true;
         newFavoriteSwitch.checked = false;
-        newPassName.value = '';
-        newPassuser.value = '';
-        newPassPass.value = '';
-        newPassUrl.value = '';
+        newCardName.value = '';
+        newCardUser.value = '';
+        newCardPass.value = '';
+        newCardUrl.value = '';
     });
 
-    // Modal para agregar nueva contraseña ==============================
+    // Modal para agregar nueva contraseña ===================================================
     // Clic en el botón para cerrar el modal
     closeModalNew.addEventListener('click', () => {
         modalNew.style.display = 'none';
     });
 
-    // Al escribir en los inputs de nueva contraseña
-    newPassName.addEventListener('input', () => {
-        if (newPassName.value.length > 0) {
-            namePreview.textContent = newPassName.value;
+    // Al escribir en los inputs de nueva tarjeta
+    newCardName.addEventListener('input', () => {
+        if (newCardName.value.length > 0) {
+            namePreview.textContent = newCardName.value;
         } else {
             namePreview.textContent = 'Nueva contraseña';
         }
     });
 
-    newPassuser.addEventListener('input', () => {
-        if (newPassuser.value.length > 0) {
+    newCardUser.addEventListener('input', () => {
+        if (newCardUser.value.length > 0) {
             userPreviewSection.style.display = 'block';
-            userPreview.textContent = newPassuser.value;
+            userPreview.textContent = newCardUser.value;
         } else {
             userPreviewSection.style.display = 'none';
         }
     });
 
-    newPassPass.addEventListener('input', () => {
-        passPreview.textContent = newPassPass.value;
+    newCardPass.addEventListener('input', () => {
+        passPreview.textContent = newCardPass.value;
     });
 
-    newPassUrl.addEventListener('input', () => {
-        if (newPassUrl.value.length > 0) {
+    newCardUrl.addEventListener('input', () => {
+        if (newCardUrl.value.length > 0) {
             urlPreviewSection.style.display = 'block';
             openLinkPreview.style.display = 'block';
-            urlPreview.textContent = newPassUrl.value;
+            urlPreview.textContent = newCardUrl.value;
         } else {
             urlPreviewSection.style.display = 'none';
             openLinkPreview.style.display = 'none';
@@ -128,8 +130,34 @@ document.addEventListener("DOMContentLoaded", () => {
     newFavoriteSwitch.addEventListener('change', (event) => {
         if (event.target.checked) {
             icoLove.style.display = 'block';
+            newFavorite = 1;
         } else {
             icoLove.style.display = 'none';
+            newFavorite = 0;
+        }
+    });
+
+    // Al presionar el botón "listo" del modal para agregar una nueva tarjeta
+    newCardDone.addEventListener('click', async () => {
+        // Refinar datos
+        const name = newCardName.value.trim();
+        const user = newCardUser.value.trim();
+        const password = newCardPass.value.trim();
+        const web = newCardUrl.value.trim();
+
+        console.log('datos', name, user, password, web, colorSelected, newFavorite);
+
+        // Verificar que los campos no estén vacíos
+        if (name && password) {
+            // Crear la tarjeta
+            const result = await window.electronAPI.createCard(name, user, password, web, colorSelected, newFavorite);
+            console.log(result);
+            // Cerrar modal
+            if (result.success) {
+                modalNew.style.display = 'none';
+            }
+        } else {
+            window.electronAPI.showWarning('Problema', 'Es necesario al menos un nombre y una contraseña para continuar.');
         }
     });
 });

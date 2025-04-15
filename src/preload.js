@@ -15,12 +15,13 @@ contextBridge.exposeInMainWorld('electronAPI', {
     changeView: (newView) => ipcRenderer.send('change-view', newView),
     // Dialogos
     showWarning: (title, message) => ipcRenderer.invoke('show-warning', title, message),
+    // Exponer función de saludo
+    getGreeting: () => ipcRenderer.invoke('get-greeting'),
     // Exponer las funciones de manejo de datos
     createID: (name, password, gender) => ipcRenderer.invoke('createID', name, password, gender),
     getUserStatus: () => ipcRenderer.invoke('get-user-status'),
     verifyPassword: (password) => ipcRenderer.invoke('verify-password', password),
-    // Exponer función de saludo
-    getGreeting: () => ipcRenderer.invoke('get-greeting'),
+    createCard: (name, user, password, web, color, favorite) => ipcRenderer.invoke('create-card', name, user, password, web, color, favorite),
 });
 
 // Exponer a los renderizadores las funciones de encriptar y desencriptar.

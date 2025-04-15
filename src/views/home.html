@@ -12,7 +12,7 @@
     ">
     <link rel="stylesheet" href="../styles/styles.css">
     <link rel="stylesheet" href="../styles/home.css">
-    <script src="../renderer/home.js"></script>
+    <script src="../renderer/homeRenderer.js" defer></script>
     <title>Codaby Sanctuary</title>
 </head>
 
@@ -94,22 +94,22 @@
 
             <div class="botton-bar horizontal_elem-area colored-blur narrow-padding normal-rounded big-spaced">
                 <div class="vertical-flex centered">
-                    <button id="edit-pass" class="normal-btn-ico">
+                    <button id="edit-card" class="normal-btn-ico">
                         <img src="../assets/ico/feather/edit.svg" class="normal-icon">
                     </button>
                     <label class="small-text">Editar</label>
                 </div>
 
                 <div class="vertical-flex centered">
-                    <button id="new-pass" class="normal-btn-ico">
+                    <button id="new-card" class="normal-btn-ico">
                         <img src="../assets/ico/feather/plus-circle.svg" class="normal-icon">
                     </button>
                     <label class="small-text">Nuevo</label>
                 </div>
 
                 <div class="vertical-flex centered">
-                    <button id="delete-pass" class="normal-btn-ico">
-                        <img src="../assets/ico/feather/delete.svg" class="normal-icon">
+                    <button id="delete-card" class="normal-btn-ico">
+                        <img src="../assets/ico/feather/trash.svg" class="normal-icon">
                     </button>
                     <label class="small-text">Eliminar</label>
                 </div>
@@ -130,15 +130,15 @@
 
                     <div class="vertical-elem-area normal-padding normal-rounded normal-margin preview-options">
                         <label>Nombre:</label>
-                        <input type="text" id="new-pass-name" class="custom-input minimal-rounded" placeholder="Nombre">
+                        <input type="text" id="new-card-name" class="custom-input minimal-rounded" placeholder="Nombre">
                         <label>Usuario:</label>
-                        <input type="text" id="new-pass-user" class="custom-input minimal-rounded"
+                        <input type="text" id="new-card-user" class="custom-input minimal-rounded"
                             placeholder="Usuario (opcional)">
                         <label>Contraseña:</label>
-                        <input type="text" id="new-pass-pass" class="custom-input minimal-rounded"
+                        <input type="text" id="new-card-pass" class="custom-input minimal-rounded"
                             placeholder="Contraseña">
                         <label>URL:</label>
-                        <input type="text" id="new-pass-url" class="custom-input minimal-rounded"
+                        <input type="text" id="new-card-url" class="custom-input minimal-rounded"
                             placeholder="URL (opcional)">
                         <label>Color:</label>
                         <div class="horizontal_elem-area">
@@ -242,7 +242,7 @@
                         </div>
 
                         <div class="horizontal-flex reverse">
-                            <button id="done-new-pass" class="custom-btn narrow-padding normal-rounded">Listo</button>
+                            <button id="new-card-done" class="custom-btn narrow-padding normal-rounded">Listo</button>
                         </div>
                     </div>
                 </div>
