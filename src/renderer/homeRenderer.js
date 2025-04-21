@@ -20,7 +20,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const prewiewCard = document.getElementById('preview-card');
     const icoLove = document.getElementById('ico-love');
-    const icoEye = document.getElementById('ico-eye');
     const namePreview = document.getElementById('name-preview');
     const userPreviewSection = document.getElementById('user-preview-section');
     const userPreview = document.getElementById('user-preview');
@@ -33,8 +32,21 @@ document.addEventListener("DOMContentLoaded", () => {
     let colorSelected = 'var(--color1)';
     let newFavorite = 0;
 
-    showAllCard(); // Traer todas las tarjetas al iniciar la vista
 
+    // Clic en botón minimizar
+    minimize.addEventListener('click', () => {
+        window.electron.minimize();
+    });
+    // Clic en botón maximizar
+    maximize.addEventListener('click', () => {
+        window.electron.maximize();
+    });
+    // Clic en botón cerrar
+    close.addEventListener('click', () => {
+        window.electron.close();
+    });
+
+    // Funciones del contenedor principal ====================================================
     // Traer los datos al iniciar la vista
     async function showAllCard() {
         try {
@@ -50,71 +62,122 @@ document.addEventListener("DOMContentLoaded", () => {
         // Limpiar el contenedor de tarjetas antes de agregar nuevas
         cardsContainer.innerHTML = '';
         if (cards.success) {
-            cards.data.forEach(card => {
+            cards.data.forEach((card, index) => {
                 const cardDiv = document.createElement('div');
                 cardDiv.classList.add('card'); // clase para estilos
                 cardDiv.style.backgroundColor = card.color; // Cambia el color de fondo de la tarjeta
+                if (card.color == 'var(--color4)' || card.color == 'var(--color6)') {
+                    cardDiv.style.color = 'black'; // Cambia el color del texto
+                }
 
-                // Crea el contenido de la tarjeta (ajústalo según tus columnas)
-                cardDiv.innerHTML = `
+                heartVisible = (card.favorite == 1) ? 'visible' : 'invisible'; // Cambia la visibilidad del icono de favorito
+                userVisible = (card.user == null || card.user == '') ? 'invisible' : 'visible'; // Cambia la visibilidad del usuario
+                urlVisible = (card.web == null || card.web == '') ? 'invisible' : 'visible'; // Cambia la visibilidad de la url
+
+                // Crea el contenido de la tarjeta
+                cardHTML = `
                     <div class="horizontal_elem-area spaced centered">
                         <p class="normal-text">${card.name}</p>
-                        <img src="../assets/ico/feather/heart.svg" class="card-icon2">
+                        <div class="${heartVisible}">
+                            <div class="card-static-icon">
+                                <img src="../assets/ico/feather/heart.svg" class="card-icon">
+                            </div>
+                        </div>
                     </div>
 
-                    <label class="minimum-text vertical-flex">
-                        Usuario:
-                        <p class="small-text">${card.user}</p>
-                    </label>
+                    <div class="${userVisible}">
+                        <strong class="minimum-text">Usuario:</strong>
+                        <p id="user-${card.id}" class="small-text">••••••••</p>
+                    </div>
+                    
+                    <div>
+                        <strong class="minimum-text">Contraseña:</strong>
+                        <p id="pass-${card.id}" class="small-text">••••••••</p>
+                    </div>
 
-                    <label class="minimum-text vertical-elem-area">
-                        Contraseña:
-                        <p class="small-text">${card.password}</p>
-                    </label>
-
-                    <label class="minimum-text vertical-elem-area">
-                        URL:
+                    <div class="${urlVisible}">
+                        <strong class="minimum-text">URL:</strong>
                         <p class="small-text">${card.web}</p>
-                    </label>
+                    </div>
 
                     <div class="horizontal-flex spaced centered">
-                        <button class="card-btn">
+                        <button class="external-link-btn card-btn ${urlVisible}" data-url="${card.web}"">
                             <img src="../assets/ico/feather/external-link.svg" class="card-icon">
-                        </button>
+                            </button>
 
-                        <p class="minimum-text">1 de 1</p>
+                        <strong class="minimum-text">${index + 1}</strong>
 
-                        <button class="card-btn">
+                        <button class="eye-btn card-btn" data-user="${card.user}" data-userId="user-${card.id}" data-pass="${card.password}" data-passId="pass-${card.id}">
                             <img src="../assets/ico/feather/eye.svg" class="card-icon">
-                        </button>
-                    </div>
+                            </button>
+                            </div>
                 `;
+
+                cardDiv.innerHTML = cardHTML;
 
                 cardsContainer.appendChild(cardDiv);
             });
+
+            // Activar botones de ver/ocultar
+            document.querySelectorAll('.eye-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const user = button.getAttribute('data-user');
+                    const userId = button.getAttribute('data-userId');
+                    const userView = document.getElementById(userId);
+
+                    const pass = button.getAttribute('data-pass');
+                    const passId = button.getAttribute('data-passId');
+                    const passView = document.getElementById(passId);
+
+                    const mask = '••••••••';
+
+                    // Cambiar el texto del usuario y la contraseña al hacer clic en el botón
+                    if (userView.textContent === mask) {
+                        userView.textContent = user;
+                    } else {
+                        userView.textContent = mask;
+                    }
+
+                    if (passView.textContent === mask) {
+                        passView.textContent = pass;
+                        // 🔥 Copiamos al portapapeles
+                        navigator.clipboard.writeText(pass)
+                            .then(() => {
+                                console.log('Contraseña copiada al portapapeles');
+                                // También puedes mostrar una notificación visual aquí
+                                window.electronAPI.showNotification('Contraseña copiada', 'La contraseña ha sido copiada al portapapeles.');
+                            })
+                            .catch(err => {
+                                console.error('Error al copiar', err);
+                            });
+                    } else {
+                        passView.textContent = mask;
+                    }
+                });
+            });
+
+            // Activar botones de abrir enlace externo
+            document.querySelectorAll('.external-link-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const url = button.getAttribute('data-url');
+                    if (url) {
+                        window.electron.openExternal(url);
+                    }
+                });
+            });
+
         } else {
             cardsContainer.textContent = 'No se pudieron cargar las tarjetas 😕';
         }
     }
 
-    // Clic en botón minimizar
-    minimize.addEventListener('click', () => {
-        window.electron.minimize();
-    });
-    // Clic en botón maximizar
-    maximize.addEventListener('click', () => {
-        window.electron.maximize();
-    });
-    // Clic en botón cerrar
-    close.addEventListener('click', () => {
-        window.electron.close();
-    });
-
+    // Funciones de los botones del sidebar ==================================================
     // Clic en botón bloquear
     lock.addEventListener('click', () => {
         window.electronAPI.changeView('src/views/lock.html');
     });
 
+    //Funciones de los botones de la butonbar ================================================
     // Clic en el botón para abrir el modal de nueva contraseña
     newCard.addEventListener('click', async () => {
         // Abrir modal
@@ -227,4 +290,7 @@ document.addEventListener("DOMContentLoaded", () => {
             window.electronAPI.showWarning('Problema', 'Es necesario al menos un nombre y una contraseña para continuar.');
         }
     });
+
+    // Acciones iniciales ========================================================================
+    showAllCard(); // Traer todas las tarjetas al iniciar la vista
 });

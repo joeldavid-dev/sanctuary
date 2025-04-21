@@ -15,6 +15,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
     changeView: (newView) => ipcRenderer.send('change-view', newView),
     // Dialogos
     showWarning: (title, message) => ipcRenderer.invoke('show-warning', title, message),
+    // Notificaciones
+    showNotification: (title, body) => ipcRenderer.invoke('show-notification', title, body),
     // Exponer función de saludo
     getGreeting: () => ipcRenderer.invoke('get-greeting'),
     // Exponer las funciones de manejo de datos

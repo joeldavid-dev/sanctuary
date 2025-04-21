@@ -167,6 +167,10 @@ p {
     border-radius: 6px;
 }
 
+.invisible {
+    display: none;
+}
+
 .logo-img {
     width: 17px;
     height: 17px;
@@ -308,6 +312,7 @@ p {
     display: flex;
     flex-direction: column;
     max-width: 50vw;
+    min-width: 150px;
     border-radius: 30px;
     color: white;
     padding: 40px 15px 15px 15px;
@@ -497,10 +502,15 @@ input:checked+.slider::before {
     height: 20px;
 }
 
-.card-icon2 {
-    width: 20px;
-    height: 20px;
-    filter: invert(1);
+.card-static-icon {
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 30px;
+
 }
 
 .large-icon {

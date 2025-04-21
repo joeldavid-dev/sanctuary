@@ -28,7 +28,7 @@ function deriveKey(password, salt) {
 }
 
 // Función para cifrar datos de la tarjeta usando una contraseña
-function encryptCard(masterKey, user, password) {
+function encryptCard(masterKey, user, password, web) {
     const salt = crypto.randomBytes(saltLength); // Generamos un salt aleatorio
     const iv = crypto.randomBytes(16); // Generamos un IV aleatorio
     const key = deriveKey(masterKey, salt); // Derivamos la clave desde la contraseña
@@ -46,11 +46,57 @@ function encryptCard(masterKey, user, password) {
     let passwordEncrypted = cipherPass.update(password, 'utf8', 'hex');
     passwordEncrypted += cipherPass.final('hex');
 
+    // Cifrado del enlace web (si existe)
+    let webEncrypted = null;
+    if (web !== null && web !== '') {
+        const cipherWeb = crypto.createCipheriv(algorithm, key, iv);
+        webEncrypted = cipherWeb.update(web, 'utf8', 'hex');
+        webEncrypted += cipherWeb.final('hex');
+    }
+
     return {
         salt: salt.toString('hex'), // Guardamos el salt
         iv: iv.toString('hex'), // Guardamos el IV
         userEncrypted,
         passwordEncrypted,
+        webEncrypted,
+    };
+}
+
+function decryptCard(masterKey, encryptedCard) {
+    const salt = Buffer.from(encryptedCard.salt, 'hex'); // Convertimos el salt de nuevo a binario
+    const iv = Buffer.from(encryptedCard.iv, 'hex'); // Convertimos el IV de nuevo a binario
+    const key = deriveKey(masterKey, salt); // Derivamos la clave desde la contraseña
+
+    // Descifrado del usuario (si existe)
+    let userDecrypted = null;
+    if (encryptedCard.user !== null && encryptedCard.user !== '') {
+        const decipherUser = crypto.createDecipheriv(algorithm, key, iv);
+        userDecrypted = decipherUser.update(encryptedCard.user, 'hex', 'utf8');
+        userDecrypted += decipherUser.final('utf8');
+    }
+
+    // Descifrado de la contraseña
+    const decipherPass = crypto.createDecipheriv(algorithm, key, iv);
+    let passwordDecrypted = decipherPass.update(encryptedCard.password, 'hex', 'utf8');
+    passwordDecrypted += decipherPass.final('utf8');
+
+    // Descifrado del enlace web (si existe)
+    let webDecrypted = null;
+    if (encryptedCard.web !== null && encryptedCard.web !== '') {
+        const decipherWeb = crypto.createDecipheriv(algorithm, key, iv);
+        webDecrypted = decipherWeb.update(encryptedCard.web, 'hex', 'utf8');
+        webDecrypted += decipherWeb.final('utf8');
+    }
+
+    return {
+        id: encryptedCard.id,
+        name: encryptedCard.name,
+        user: userDecrypted,
+        password: passwordDecrypted,
+        web: webDecrypted,
+        color: encryptedCard.color,
+        favorite: encryptedCard.favorite,
     };
 }
 
@@ -80,4 +126,4 @@ function encryptWithSaltIV(text, password, saltHex, ivHex) {
     return { encryptedData: encrypted };
 }
 
-module.exports = { hashPassword, verifyPassword, encryptCard };
+module.exports = { hashPassword, verifyPassword, encryptCard, decryptCard };

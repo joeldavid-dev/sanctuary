@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, shell, dialog } = require('electron')
+const { app, BrowserWindow, ipcMain, shell, dialog, Notification } = require('electron')
 const path = require('node:path')
 const cr = require('./utils/crypto.js');
 const db = require('./utils/database.js');
@@ -89,6 +89,15 @@ ipcMain.on('open-external-link', (event, url) => {
     shell.openExternal(url);
 });
 
+// Mostrar notificación del sistema
+ipcMain.handle('show-notification', (event, title, body) => {
+    const notification = new Notification({
+        title: title,
+        body: body,
+    });
+    notification.show();
+});
+
 // BASE DE DATOS
 // Encripta la contraseña del usuario y almacena en la base de datos
 // toda la información obtenida. Almacena el usuario en la variable local
@@ -169,12 +178,12 @@ ipcMain.handle('get-greeting', () => {
 // Crear una nueva tarjeta
 ipcMain.handle('create-card', async (event, name, user, password, web, color, favorite) => {
     try {
-        const encryptedCard = cr.encryptCard(masterKey, user, password);
+        const encryptedCard = cr.encryptCard(masterKey, user, password, web);
         const result = await db.addCard(
             name,
             encryptedCard.userEncrypted,
             encryptedCard.passwordEncrypted,
-            web,
+            encryptedCard.webEncrypted,
             color,
             favorite,
             encryptedCard.salt,
@@ -189,21 +198,24 @@ ipcMain.handle('create-card', async (event, name, user, password, web, color, fa
             success: false,
             message: 'No se pudo crear la tarjeta',
             error: error.message,
-            data: {
-                name,
-                user,
-                password,
-                web,
-                color,
-                favorite,
-            },
         };
     }
 });
 
 ipcMain.handle('get-all-cards', async () => {
     try {
-        const cards = await db.getAllCards();
+        const encryptedCards = await db.getAllCards();
+        
+        let cards = [];
+        // Desencriptar cada tarjeta y agregarla a la lista de tarjetas
+        encryptedCards.forEach(encryptedCard => {
+            // Desencriptar los datos de la tarjeta
+            const card = cr.decryptCard(masterKey, encryptedCard);
+
+            // Agregar la tarjeta desencriptada a la lista
+            cards.push(card);
+        });
+
         return { success: true, data: cards };
     } catch (error) {
         return { success: false, error: error.message };
