@@ -107,6 +107,10 @@ button {
     -webkit-app-region: no-drag;
 }
 
+input {
+    -webkit-app-region: no-drag;
+}
+
 /* Estilos primitivos que se repiten. */
 .brand-text {
     font-family: Varela;
@@ -414,6 +418,10 @@ p {
     border: 1px solid var(--neutral_grey);
 }
 
+.custom-input:focus {
+    border-color: black;
+}
+
 .normal-btn-ico {
     width: 30px;
     height: 30px;
@@ -435,6 +443,11 @@ p {
 .normal-icon {
     width: 20px;
     height: 20px;
+}
+
+.mini-icon {
+    width: 15px;
+    height: 15px;
 }
 
 .switch {
@@ -629,9 +642,12 @@ input:checked+.slider::before {
     }
 
     .custom-input {
-        background-color: black;
+        background-color: var(--app_dark);
         color: white;
-        border: 1px solid var(--neutral_grey);
+    }
+
+    .custom-input:focus {
+        border-color: white;
     }
 
     .modal-content {
@@ -644,6 +660,10 @@ input:checked+.slider::before {
     }
 
     .normal-icon {
+        filter: invert(1);
+    }
+
+    .mini-icon {
         filter: invert(1);
     }
 
