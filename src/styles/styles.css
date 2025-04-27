@@ -67,9 +67,9 @@ body::-webkit-scrollbar {
 /* Definición de colores */
 :root {
     --app_light: rgb(245, 245, 245);
-    --app_light_transparent: rgba(245, 245, 245, 0.75);
+    --app_light_transparent: rgba(245, 245, 245, 0.8);
     --app_dark: rgb(10, 10, 10);
-    --app_dark_transparent: rgba(10, 10, 10, 0.75);
+    --app_dark_transparent: rgba(10, 10, 10, 0.8);
     --neutral_grey: rgb(130, 130, 130);
     --light_gray: rgb(230, 230, 230);
     --dark_gray: rgb(50, 50, 50);
@@ -307,7 +307,7 @@ p {
 }
 
 /* ======================= Elementos complejos ======================= */
-.card {
+.card-body {
     font-family: jetBrains_mono;
     display: flex;
     flex-direction: column;
@@ -320,6 +320,19 @@ p {
     justify-content: space-between;
     /* permite cortar palabras largas */
     word-wrap: break-word;
+    transition: box-shadow 0.3s ease;
+}
+
+.card-body input {
+    /*Oculta el radio button original */
+    display: none;
+}
+
+/* Clase que agregaremos a la tarjeta seleccionada */
+.selected-card {
+    border: solid 2px;
+    border-color: white;
+    box-shadow: 0px 0px 50px 0px var(--card-color, #000000);
 }
 
 .custom-btn {

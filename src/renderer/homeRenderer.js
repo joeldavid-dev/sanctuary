@@ -7,7 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const cardsContainer = document.getElementById('cards-container');
 
+    const editCardBody = document.getElementById('edit-card-body');
     const newCard = document.getElementById('new-card');
+    const deleteCardBody = document.getElementById('delete-card-body');
 
     // Modal para agregar nueva contraseña
     const modalNew = document.getElementById('modal-new');
@@ -31,6 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let colorSelected = 'var(--color1)';
     let newFavorite = 0;
+    let selectedCardId = null; // Variable para almacenar el ID de la tarjeta seleccionada
 
 
     // Clic en botón minimizar
@@ -51,7 +54,6 @@ document.addEventListener("DOMContentLoaded", () => {
     async function showAllCard() {
         try {
             const cards = await window.electronAPI.getAllCards();
-            console.log(cards);
             showCards(cards);
         } catch (error) {
             console.error('Error al obtener las tarjetas:', error);
@@ -63,11 +65,13 @@ document.addEventListener("DOMContentLoaded", () => {
         cardsContainer.innerHTML = '';
         if (cards.success) {
             cards.data.forEach((card, index) => {
-                const cardDiv = document.createElement('div');
-                cardDiv.classList.add('card'); // clase para estilos
-                cardDiv.style.backgroundColor = card.color; // Cambia el color de fondo de la tarjeta
+                const cardBody = document.createElement('label');
+                cardBody.classList.add('card-body'); // clase para estilos
+                cardBody.setAttribute('id', card.id); // id para el elemento
+                cardBody.style.backgroundColor = card.color; // Cambia el color de fondo de la tarjeta
+                cardBody.style.boxShadow = '0px 0px 10px 0px' + card.color; // Cambia la sombra de la tarjeta
                 if (card.color == 'var(--color4)' || card.color == 'var(--color6)') {
-                    cardDiv.style.color = 'black'; // Cambia el color del texto
+                    cardBody.style.color = 'black'; // Cambia el color del texto
                 }
 
                 heartVisible = (card.favorite == 1) ? 'visible' : 'invisible'; // Cambia la visibilidad del icono de favorito
@@ -76,6 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // Crea el contenido de la tarjeta
                 cardHTML = `
+                    <input type="radio" name="card" value="${card.id}">
                     <div class="horizontal_elem-area spaced centered">
                         <p class="normal-text">${card.name}</p>
                         <div class="${heartVisible}">
@@ -113,9 +118,29 @@ document.addEventListener("DOMContentLoaded", () => {
                             </div>
                 `;
 
-                cardDiv.innerHTML = cardHTML;
+                cardBody.innerHTML = cardHTML;
 
-                cardsContainer.appendChild(cardDiv);
+                cardsContainer.appendChild(cardBody);
+            });
+
+            // Evento de clic a cada tarjeta
+            document.querySelectorAll('input[name="card"]').forEach((radio) => {
+                radio.addEventListener('change', (event) => {
+                    deselectAllCards(); // Deseleccionar todas las tarjetas
+
+                    // Luego agregar la clase 'selected-card' a la tarjeta seleccionada
+                    selectedCardId = event.target.value;
+                    const cardBody = document.getElementById(selectedCardId);
+
+                    // Establecer el color personalizado como una variable CSS
+                    const cardColor = cardBody.style.backgroundColor;
+                    cardBody.style.setProperty('--card-color', cardColor);
+
+                    // Agregar la clase para aplicar la sombra
+                    cardBody.classList.add('selected-card');
+
+                    showEditDeleteButtons(); // Mostrar los botones de editar y eliminar
+                });
             });
 
             // Activar botones de ver/ocultar
@@ -143,8 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         // 🔥 Copiamos al portapapeles
                         navigator.clipboard.writeText(pass)
                             .then(() => {
-                                console.log('Contraseña copiada al portapapeles');
-                                // También puedes mostrar una notificación visual aquí
+                                // Mostrar una notificación visual
                                 window.electronAPI.showNotification('Contraseña copiada', 'La contraseña ha sido copiada al portapapeles.');
                             })
                             .catch(err => {
@@ -171,6 +195,25 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    // Funcion para deseleccionar todas las tarjetas
+    function deselectAllCards() {
+        /// Quitar la clase 'selected-card' de todas las tarjetas
+        document.querySelectorAll('.card-body').forEach((card) => {
+            card.classList.remove('selected-card');
+            editCardBody.classList.remove('vertical-flex'); // Ocultar el contenedor de edición
+            editCardBody.classList.add('invisible'); // Ocultar el contenedor de edición
+            deleteCardBody.classList.remove('vertical-flex'); // Ocultar el botón de eliminar
+            deleteCardBody.classList.add('invisible'); // Ocultar el botón de eliminar
+        });
+    }
+
+    function showEditDeleteButtons() {
+        editCardBody.classList.remove('invisible'); // Mostrar el contenedor de edición
+        editCardBody.classList.add('vertical-flex'); // Mostrar el contenedor de edición
+        deleteCardBody.classList.remove('invisible'); // Mostrar el botón de eliminar
+        deleteCardBody.classList.add('vertical-flex'); // Mostrar el botón de eliminar
+    }
+
     // Funciones de los botones del sidebar ==================================================
     // Clic en botón bloquear
     lock.addEventListener('click', () => {
@@ -184,6 +227,7 @@ document.addEventListener("DOMContentLoaded", () => {
         modalNew.style.display = 'block';
         // Reiniciar el estado del modal
         icoLove.style.display = 'none';
+        newFavoriteSwitch.checked = false;
         userPreviewSection.style.display = 'none';
         urlPreviewSection.style.display = 'none';
         prewiewCard.style.backgroundColor = 'var(--color1)';
@@ -245,13 +289,6 @@ document.addEventListener("DOMContentLoaded", () => {
             colorSelected = event.target.value;
             // Cambiar color de la vista previa
             prewiewCard.style.backgroundColor = colorSelected;
-            if (colorSelected == 'var(--color4)' || colorSelected == 'var(--color6)') {
-                prewiewCard.style.color = 'black';
-                icoLove.style.filter = 'invert(0)';
-            } else {
-                prewiewCard.style.color = 'white';
-                icoLove.style.filter = 'invert(1)';
-            }
         });
     });
 
@@ -273,8 +310,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const user = newCardUser.value.trim();
         const password = newCardPass.value.trim();
         const web = newCardUrl.value.trim();
-
-        console.log('datos', name, user, password, web, colorSelected, newFavorite);
 
         // Verificar que los campos no estén vacíos
         if (name && password) {

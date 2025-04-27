@@ -94,7 +94,7 @@
 
             <!-- bottonbar -->
             <div class="botton-bar horizontal_elem-area colored-blur narrow-padding normal-rounded big-spaced">
-                <div class="vertical-flex centered">
+                <div id="edit-card-body" class="invisible centered">
                     <button id="edit-card" class="normal-btn-ico">
                         <img src="../assets/ico/feather/edit.svg" class="normal-icon">
                     </button>
@@ -108,7 +108,7 @@
                     <label class="small-text">Nuevo</label>
                 </div>
 
-                <div class="vertical-flex centered">
+                <div id="delete-card-body" class="invisible centered">
                     <button id="delete-card" class="normal-btn-ico">
                         <img src="../assets/ico/feather/trash.svg" class="normal-icon">
                     </button>
@@ -208,10 +208,14 @@
                     <div class="vertical-flex spaced normal-padding">
                         <label for="preview-card">Vista previa:</label>
 
-                        <div id="preview-card" class="card color1">
+                        <div id="preview-card" class="card-body color1">
                             <div class="horizontal_elem-area spaced centered">
                                 <p id="name-preview" class="normal-text">Nueva contraseña</p>
-                                <img id="ico-love" src="../assets/ico/feather/heart.svg" class="card-icon2">
+                                <div id="ico-love">
+                                    <div class="card-static-icon">
+                                        <img src="../assets/ico/feather/heart.svg" class="card-icon">
+                                    </div>
+                                </div>
                             </div>
 
                             <label id="user-preview-section" class="minimum-text vertical-flex">
