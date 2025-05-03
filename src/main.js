@@ -202,6 +202,26 @@ ipcMain.handle('create-card', async (event, name, user, password, web, color, fa
     }
 });
 
+// Eliminar una tarjeta
+ipcMain.handle('delete-card', async (event, id) => {
+    try {
+        const result = await db.deleteCard(id);
+        if (result) {
+            return {
+                success: true,
+                message: 'Tarjeta eliminada correctamente',
+            };
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: 'No se pudo eliminar la tarjeta',
+            error: error.message,
+        };
+    }
+});
+
+
 ipcMain.handle('get-all-cards', async () => {
     try {
         const encryptedCards = await db.getAllCards();

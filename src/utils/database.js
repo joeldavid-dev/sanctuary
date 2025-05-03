@@ -74,6 +74,20 @@ function addCard(name, user, password, web, color, favorite, salt, iv) {
     });
 }
 
+// Función para eliminar una tarjeta
+function deleteCard(id) {
+    return new Promise((resolve, reject) => {
+        const query = `DELETE FROM cardsData WHERE id = ?`;
+        db.run(query, [id], function (err) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve({ deletedId: id });
+            }
+        });
+    });
+}
+
 // Función para obtener todas las tarjetas
 function getAllCards() {
     return new Promise((resolve, reject) => {
@@ -105,4 +119,4 @@ function getEncryptedData(callback) {
     });
 }
 
-module.exports = { addUser, getUser, addCard, getAllCards };
+module.exports = { addUser, getUser, addCard, deleteCard, getAllCards };

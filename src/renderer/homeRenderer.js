@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const editCardBody = document.getElementById('edit-card-body');
     const newCard = document.getElementById('new-card');
     const deleteCardBody = document.getElementById('delete-card-body');
+    const deleteCard = document.getElementById('delete-card');
 
     // Modal para agregar nueva contraseña
     const modalNew = document.getElementById('modal-new');
@@ -30,6 +31,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const urlPreview = document.getElementById('url-preview');
     const openLinkPreview = document.getElementById('open-link-preview');
     const newCardDone = document.getElementById('new-card-done');
+
+    // Modal para eliminar tarjeta
+    const modalDelete = document.getElementById('modal-delete');
+    const closeModalDelete = document.getElementById('close-modal-delete');
 
     let colorSelected = 'var(--color1)';
     let newFavorite = 0;
@@ -242,6 +247,11 @@ document.addEventListener("DOMContentLoaded", () => {
         newCardUser.value = '';
         newCardPass.value = '';
         newCardUrl.value = '';
+    });
+
+    // Clic en el botón para eliminar la tarjeta seleccionada
+    deleteCard.addEventListener('click', async () => {
+        modalDelete.style.display = 'block';
     });
 
     // Modal para agregar nueva contraseña ===================================================

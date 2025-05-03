@@ -45,14 +45,6 @@
     margin: 0px 10px 0px 10px;
 }
 
-.bloqueo-ico {
-    filter: invert(1);
-}
-
-.bloqueo-btn:hover {
-    border-color: white;
-}
-
 .notification {
     cursor: pointer;
     align-items: center;

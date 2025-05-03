@@ -121,7 +121,7 @@
             </div>
         </div>
 
-        <!-- Modal para agregar una nueva contraseña -->
+        <!-- Modal para agregar una nueva tarjeta -->
         <div id="modal-new" class="modal blur">
             <div class="modal-content scrolleable normal-rounded">
                 <div class="modal-header normal-padding colored-blur">
@@ -251,8 +251,28 @@
                         </div>
 
                         <div class="horizontal-flex reverse">
-                            <button id="new-card-done" class="custom-btn narrow-padding normal-rounded">Listo</button>
+                            <button id="new-card-done" class="new-card-done custom-btn narrow-padding normal-rounded">Listo</button>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para eliminar una tarjeta -->
+        <div id="modal-delete" class="modal blur">
+            <div class="modal-content-warning scrolleable normal-rounded">
+                <div class="modal-header normal-padding">
+                    <h2>Eliminar contraseña</h2>
+                    <button id="close-modal-delete" class="normal-btn-ico-white">
+                        <img src="../assets/ico/feather/x-circle.svg" class="normal-icon-white">
+                    </button>
+                </div>
+
+                <div class=" vertical-elem-area normal-padding big-spaced">
+                    <label>¿Realmente quieres eliminar esta contraseña?</label>
+                    <div class="horizontal-flex distributed">
+                        <button id="cancel-delete-card" class="custom-btn-warning minimal-padding minimal-rounded">Cancelar</button>
+                        <button id="delete-card-done" class="custom-btn-warning minimal-padding minimal-rounded">Eliminar</button>
                     </div>
                 </div>
             </div>

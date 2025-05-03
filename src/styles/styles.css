@@ -199,7 +199,7 @@ p {
 .colored-blur {
     background: var(--app_light_transparent);
     filter: saturate(5);
-    backdrop-filter: blur(30px);
+    backdrop-filter: blur(50px);
 }
 
 .colored-overlay {
@@ -215,12 +215,12 @@ p {
 .saturate-blur {
     background: transparent;
     filter: saturate(2);
-    backdrop-filter: blur(30px);
+    backdrop-filter: blur(50px);
 }
 
 .blur {
     background: transparent;
-    backdrop-filter: blur(30px);
+    backdrop-filter: blur(50px);
 }
 
 
@@ -262,6 +262,10 @@ p {
 
 .spaced {
     justify-content: space-between;
+}
+
+.distributed {
+    justify-content: space-evenly;
 }
 
 .always-front {
@@ -352,6 +356,22 @@ p {
     border-color: black;
 }
 
+.custom-btn-warning {
+    color: white;
+    background: transparent;
+    width: 100px;
+    border: solid 1px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.custom-btn-warning:hover {
+    color: red;
+    background-color: white;
+    border-color: white;
+}
+
+
 .custom-radio {
     display: flex;
     align-items: center;
@@ -440,9 +460,33 @@ p {
     border: solid 1px;
 }
 
+.normal-btn-ico-white {
+    width: 30px;
+    height: 30px;
+    padding: 5px;
+    background: transparent;
+    border: transparent;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.normal-btn-ico-white:hover {
+    border: solid 1px white;
+}
+
 .normal-icon {
     width: 20px;
     height: 20px;
+}
+
+.normal-icon-white {
+    width: 20px;
+    height: 20px;
+    filter: invert(1);
 }
 
 .mini-icon {
@@ -562,6 +606,18 @@ input:checked+.slider::before {
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: var(--app_light);
+    border: 1px solid var(--neutral_grey);
+    box-shadow: 0px 0px 60px 8px rgba(0, 0, 0, 0.20);
+}
+
+.modal-content-warning {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: red;
+    color: white;
+    border: 1px solid white;
     box-shadow: 0px 0px 60px 8px rgba(0, 0, 0, 0.20);
 }
 
