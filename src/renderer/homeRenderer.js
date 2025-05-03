@@ -32,13 +32,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const openLinkPreview = document.getElementById('open-link-preview');
     const newCardDone = document.getElementById('new-card-done');
 
-    // Modal para eliminar tarjeta
-    const modalDelete = document.getElementById('modal-delete');
-    const closeModalDelete = document.getElementById('close-modal-delete');
+    // Modal warning
+    const modalWarning = document.getElementById('modal-warning');
+    const closeModalWarning = document.getElementById('close-modal-warning');
+    const warningMessage = document.getElementById('warning-message');
+    const cancelWarningBtn = document.getElementById('cancel-warning-btn');
+    const confirmWarningBtn = document.getElementById('confirm-warning-btn');
 
     let colorSelected = 'var(--color1)';
     let newFavorite = 0;
-    let selectedCardId = null; // Variable para almacenar el ID de la tarjeta seleccionada
+    let selectedCard = null; // Variable para almacenar el ID de la tarjeta seleccionada
+    let modalWarningAction = null; // Variable para almacenar la acción del modal de advertencia
+    let cards = null; // Variable para almacenar las tarjetas
 
 
     // Clic en botón minimizar
@@ -58,7 +63,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Traer los datos al iniciar la vista
     async function showAllCard() {
         try {
-            const cards = await window.electronAPI.getAllCards();
+            cards = await window.electronAPI.getAllCards();
+            console.log(cards);
             showCards(cards);
         } catch (error) {
             console.error('Error al obtener las tarjetas:', error);
@@ -73,6 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const cardBody = document.createElement('label');
                 cardBody.classList.add('card-body'); // clase para estilos
                 cardBody.setAttribute('id', card.id); // id para el elemento
+                cardBody.setAttribute('data-name', card.name);
                 cardBody.style.backgroundColor = card.color; // Cambia el color de fondo de la tarjeta
                 cardBody.style.boxShadow = '0px 0px 10px 0px' + card.color; // Cambia la sombra de la tarjeta
                 if (card.color == 'var(--color4)' || card.color == 'var(--color6)') {
@@ -134,8 +141,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     deselectAllCards(); // Deseleccionar todas las tarjetas
 
                     // Luego agregar la clase 'selected-card' a la tarjeta seleccionada
-                    selectedCardId = event.target.value;
+                    const selectedCardId = event.target.value;
                     const cardBody = document.getElementById(selectedCardId);
+                    selectedCard = {
+                        id: cardBody.getAttribute('id'),
+                        name: cardBody.getAttribute('data-name'),
+                    }
+                    console.log(selectedCard);
 
                     // Establecer el color personalizado como una variable CSS
                     const cardColor = cardBody.style.backgroundColor;
@@ -251,7 +263,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Clic en el botón para eliminar la tarjeta seleccionada
     deleteCard.addEventListener('click', async () => {
-        modalDelete.style.display = 'block';
+        modalWarning.style.display = 'block';
+        modalWarningAction = 'delete'; // Establecer la acción del modal de advertencia
+        const message = 
+        warningMessage.textContent = `¿Realmente quieres eliminar la tarjeta "${selectedCard.name}"? Esta acción es irreversible, ¡ten cuidado!`;
+        confirmWarningBtn.textContent = 'Eliminar tarjeta';
     });
 
     // Modal para agregar nueva contraseña ===================================================
@@ -333,6 +349,31 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         } else {
             window.electronAPI.showWarning('Problema', 'Es necesario al menos un nombre y una contraseña para continuar.');
+        }
+    });
+
+    // Modal warning =============================================================================
+    // Clic en el botón para cerrar el modal de advertencia
+    closeModalWarning.addEventListener('click', () => {
+        modalWarning.style.display = 'none';
+    });
+
+    // Clic en el botón para cancelar la advertencia
+    cancelWarningBtn.addEventListener('click', () => {
+        modalWarning.style.display = 'none';
+    });
+
+    // Clic en el botón para confirmar la advertencia
+    confirmWarningBtn.addEventListener('click', async () => {
+        // Eliminar la tarjeta seleccionada
+        if (modalWarningAction === 'delete') {
+            const result = await window.electronAPI.deleteCard(selectedCard.id);
+            console.log(result);
+            if (result.success) {
+                modalWarning.style.display = 'none';
+                showAllCard(); // Actualizar la vista de tarjetas
+
+            }
         }
     });
 

@@ -259,20 +259,21 @@
         </div>
 
         <!-- Modal para eliminar una tarjeta -->
-        <div id="modal-delete" class="modal blur">
+        <div id="modal-warning" class="modal blur">
             <div class="modal-content-warning scrolleable normal-rounded">
                 <div class="modal-header normal-padding">
-                    <h2>Eliminar contraseña</h2>
-                    <button id="close-modal-delete" class="normal-btn-ico-white">
+                    <img src="../assets/ico/feather/alert-triangle.svg" class="normal-icon-white">
+                    <h2>Advertencia</h2>
+                    <button id="close-modal-warning" class="normal-btn-ico-white">
                         <img src="../assets/ico/feather/x-circle.svg" class="normal-icon-white">
                     </button>
                 </div>
 
                 <div class=" vertical-elem-area normal-padding big-spaced">
-                    <label>¿Realmente quieres eliminar esta contraseña?</label>
+                    <label id="warning-message">¿Realmente quieres eliminar esta contraseña?</label>
                     <div class="horizontal-flex distributed">
-                        <button id="cancel-delete-card" class="custom-btn-warning minimal-padding minimal-rounded">Cancelar</button>
-                        <button id="delete-card-done" class="custom-btn-warning minimal-padding minimal-rounded">Eliminar</button>
+                        <button id="cancel-warning-btn" class="custom-btn-warning minimal-padding minimal-rounded">Cancelar</button>
+                        <button id="confirm-warning-btn" class="custom-btn-warning minimal-padding minimal-rounded">Eliminar</button>
                     </div>
                 </div>
             </div>

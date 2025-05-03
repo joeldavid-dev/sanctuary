@@ -359,7 +359,6 @@ p {
 .custom-btn-warning {
     color: white;
     background: transparent;
-    width: 100px;
     border: solid 1px;
     transition: 0.3s;
     cursor: pointer;
@@ -370,7 +369,6 @@ p {
     background-color: white;
     border-color: white;
 }
-
 
 .custom-radio {
     display: flex;
