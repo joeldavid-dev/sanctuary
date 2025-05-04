@@ -186,7 +186,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         navigator.clipboard.writeText(pass)
                             .then(() => {
                                 // Mostrar una notificación visual
-                                window.electronAPI.showNotification('Contraseña copiada', 'La contraseña ha sido copiada al portapapeles.');
+                                //window.electronAPI.showNotification('Contraseña copiada', 'La contraseña ha sido copiada al portapapeles.');
+                                showToast('Contraseña copiada al portapapeles'); // Mostrar el toast
                             })
                             .catch(err => {
                                 console.error('Error al copiar', err);
@@ -265,8 +266,8 @@ document.addEventListener("DOMContentLoaded", () => {
     deleteCard.addEventListener('click', async () => {
         modalWarning.style.display = 'block';
         modalWarningAction = 'delete'; // Establecer la acción del modal de advertencia
-        const message = 
-        warningMessage.textContent = `¿Realmente quieres eliminar la tarjeta "${selectedCard.name}"? Esta acción es irreversible, ¡ten cuidado!`;
+        const message =
+            warningMessage.textContent = `¿Realmente quieres eliminar la tarjeta "${selectedCard.name}"? Ten cuidado, ¡esta acción es irreversible!`;
         confirmWarningBtn.textContent = 'Eliminar tarjeta';
     });
 
@@ -376,6 +377,21 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
     });
+
+    // Función del toast notification ============================================================
+    function showToast(message) {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.classList.add('toast');
+        toast.textContent = message;
+
+        container.appendChild(toast);
+
+        // Eliminarlo después de que desaparezca
+        setTimeout(() => {
+            toast.remove();
+        }, 5000); // 5 segundos de duración total
+    }
 
     // Acciones iniciales ========================================================================
     showAllCard(); // Traer todas las tarjetas al iniciar la vista
