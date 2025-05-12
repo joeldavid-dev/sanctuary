@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain, shell, dialog, Notification } = require('el
 const path = require('node:path')
 const cr = require('./utils/crypto.js');
 const db = require('./utils/database.js');
+const fs = require('fs').promises
 const now = new Date();
 const hours = now.getHours();
 
@@ -82,6 +83,30 @@ ipcMain.handle('show-warning', async (event, title, message) => {
         message: message,
         buttons: ['OK']
     });
+});
+
+// Obtener arvhivo JSON
+ipcMain.handle('get-json-file', async () => {
+    const {canceled, filePaths} = await dialog.showOpenDialog({
+        tittle: 'Seleccionar archivo JSON',
+        filters: [{name: 'JSON', extensions: ['json']}],
+        properties: ['openFile']
+    });
+
+    if (canceled || filePaths.length === 0) {
+        console.log('Operacion "importar JSON" cancelada.');
+        return null;
+    }
+
+    const filePath = filePaths[0];
+    try {
+        const content = await fs.readFile(filePath, 'utf-8');
+        const jsonData = JSON.parse(content);
+        return jsonData;
+    } catch (error) {
+        console.error('Error al leer el archivo JSON:', error);
+        return null;
+    }
 });
 
 // Abrir enlaces en navegador externo

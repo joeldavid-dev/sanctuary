@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const pass1In = document.getElementById('user-pass1');
     const pass2In = document.getElementById('user-pass2');
     const done = document.getElementById('done-btn');
+    const importBtn = document.getElementById('import-btn');
 
     let name, pass1, pass2, gender = '';
 
@@ -70,4 +71,14 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
     })
+
+    // Clic en botón "importar"
+    importBtn.addEventListener('click', async () => {
+        const response = await window.electronAPI.getJSONFile();
+        if (response) {
+            console.log(response);
+        } else {
+            console.error('No se pudo importar el archivo JSON');
+        }
+    });
 });

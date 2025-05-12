@@ -16,7 +16,8 @@ db.run(`CREATE TABLE IF NOT EXISTS user (
     userID INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     gender TEXT NOT NULL,
-    hash TEXT NOT NULL
+    hash TEXT NOT NULL,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
 )`);
 
 db.run(`CREATE TABLE IF NOT EXISTS cardsData (
@@ -28,7 +29,8 @@ db.run(`CREATE TABLE IF NOT EXISTS cardsData (
     color TEXT,
     favorite BOOLEAN,
     salt TEXT NOT NULL,
-    iv TEXT NOT NULL
+    iv TEXT NOT NULL,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
     )`);
 
 // Función para crear un usuario
@@ -99,23 +101,6 @@ function getAllCards() {
                 resolve(rows);
             }
         });
-    });
-}
-
-// Guardar datos encriptados
-function saveEncryptedData(encryptedText) {
-    db.run("INSERT INTO encrypted_data (data) VALUES (?)", [encryptedText]);
-}
-
-// Leer el último dato encriptado
-function getEncryptedData(callback) {
-    db.get("SELECT data FROM encrypted_data ORDER BY id DESC LIMIT 1", [], (err, row) => {
-        if (err) {
-            console.error(err);
-            callback(null);
-        } else {
-            callback(row ? row.data : null);
-        }
     });
 }
 

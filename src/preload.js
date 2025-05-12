@@ -17,6 +17,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
     showWarning: (title, message) => ipcRenderer.invoke('show-warning', title, message),
     // Notificaciones
     showNotification: (title, body) => ipcRenderer.invoke('show-notification', title, body),
+    // Obtener archivo JSON
+    getJSONFile: () => ipcRenderer.invoke('get-json-file'),
     // Exponer función de saludo
     getGreeting: () => ipcRenderer.invoke('get-greeting'),
     // Exponer las funciones de manejo de datos

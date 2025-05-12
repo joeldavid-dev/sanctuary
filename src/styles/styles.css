@@ -370,6 +370,18 @@ p {
     border-color: white;
 }
 
+.simple-btn {
+    background: transparent;
+    padding: 5px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.simple-btn:hover {
+    background-color: black;
+    color: white;
+}
+
 .custom-radio {
     display: flex;
     align-items: center;
@@ -395,8 +407,8 @@ p {
 }
 
 .radio-ico {
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
     background-image: url('../assets/ico/feather/circle.svg');
     /* Asegura que la imagen cubra todo el contenedor */
     background-size: cover;
@@ -417,7 +429,7 @@ p {
 }
 
 .custom-radio2 input {
-    /*Oculta el radio button original */
+    /* Oculta el radio button original */
     display: none;
 }
 
@@ -434,6 +446,8 @@ p {
     text-align: center;
     background-color: var(--app_light);
     border: 1px solid var(--neutral_grey);
+    /* oculta el borde de seleccion por defecto */
+    outline: none;
 }
 
 .custom-input:focus {
@@ -703,7 +717,7 @@ input:checked+.slider::before {
     padding: 12px 18px;
     border-radius: 10px;
     font-size: 14px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     transform: translateX(100%);
     animation: slideIn 0.3s ease forwards, fadeOut 0.3s ease 4.7s forwards;
 }
@@ -799,6 +813,11 @@ input:checked+.slider::before {
         border-color: white;
     }
 
+    .simple-btn:hover {
+        background-color: white;
+        color: black;
+    }
+
     .slider {
         background-color: var(--neutral_grey);
     }
@@ -809,5 +828,10 @@ input:checked+.slider::before {
 
     input:checked+.slider {
         background-color: white;
+    }
+
+    .toast {
+        background-color: white;
+        color: black;
     }
 }
