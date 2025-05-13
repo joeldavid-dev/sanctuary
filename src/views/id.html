@@ -30,46 +30,59 @@
             </div>
 
             <div class="vertical-elem-area login-padding">
-                <h1 class="centered-text">Hola</h1>
-                <p class="centered-text small-text">Gracias por usar Sanctuary. El siguiente paso es crear un ID.</p>
+                <h1 id="greeting" class="centered-text">Hola</h1>
+                <p id="instructions" class="centered-text small-text">Gracias por usar Sanctuary. El siguiente paso es
+                    crear un ID.</p>
 
-                <label class="small-text">Nombre:</label>
-                <input id="user-name" class="custom-input minimal-rounded" type="text" placeholder="Nombre de usuario"
-                    required>
-                <label class="small-text">Contraseña:</label>
-                <input id="user-pass1" class="custom-input minimal-rounded" type="password" placeholder="Contraseña"
-                    required>
-                <label class="small-text">Repite tu Contraseña:</label>
-                <input id="user-pass2" class="custom-input minimal-rounded" type="password"
-                    placeholder="Repite tu Contraseña" required>
-                <label class="small-text">Genero:</label>
-                <div class="horizontal_elem-area distributed">
-                    <label class="custom-radio small-text minimal-rounded minimal-padding horizontal_elem-area">
-                        Hombre
-                        <input id="gender1" type="radio" name="gender" value="male">
-                        <div class="radio-ico"></div>
-                    </label>
+                <div id="name-container" class="vertical-elem-area">
+                    <label class="small-text">Nombre:</label>
+                    <input id="user-name" class="custom-input minimal-rounded" type="text"
+                        placeholder="Nombre de usuario" required>
+                </div>
 
-                    <label class="custom-radio small-text minimal-rounded minimal-padding horizontal_elem-area">
-                        Mujer
-                        <input id="gender2" type="radio" name="gender" value="female">
-                        <div class="radio-ico"></div>
-                    </label>
+                <div id="pass1-container" class="vertical-elem-area">
+                    <label class="small-text">Contraseña:</label>
+                    <input id="user-pass1" class="custom-input minimal-rounded" type="password" placeholder="Contraseña"
+                        required>
+                </div>
 
-                    <label class="custom-radio small-text minimal-rounded minimal-padding horizontal_elem-area">
-                        Neutro
-                        <input id="gender3" type="radio" name="gender" value="neutral">
-                        <div class="radio-ico"></div>
-                    </label>
+                <div id="pass2-container" class="vertical-elem-area">
+                    <label class="small-text">Repite tu Contraseña:</label>
+                    <input id="user-pass2" class="custom-input minimal-rounded" type="password"
+                        placeholder="Repite tu Contraseña" required>
+                </div>
+
+                <div id="gender-container" class="vertical-elem-area">
+                    <label class="small-text">Genero:</label>
+                    <div class="horizontal_elem-area distributed">
+                        <label class="custom-radio small-text minimal-rounded minimal-padding horizontal_elem-area">
+                            Hombre
+                            <input id="gender1" type="radio" name="gender" value="male">
+                            <div class="radio-ico"></div>
+                        </label>
+
+                        <label class="custom-radio small-text minimal-rounded minimal-padding horizontal_elem-area">
+                            Mujer
+                            <input id="gender2" type="radio" name="gender" value="female">
+                            <div class="radio-ico"></div>
+                        </label>
+
+                        <label class="custom-radio small-text minimal-rounded minimal-padding horizontal_elem-area">
+                            Neutro
+                            <input id="gender3" type="radio" name="gender" value="neutral">
+                            <div class="radio-ico"></div>
+                        </label>
+                    </div>
                 </div>
 
                 <button id="done-btn" class="custom-btn minimal-rounded">Listo</button>
-                <button id ="import-btn" class="simple-btn minimal-rounded small-text">Importar datos desde Sanctuary 4.2</button>
+                <button id="import-btn" class="simple-btn minimal-rounded small-text">Importar datos desde Sanctuary
+                    4.2</button>
             </div>
         </div>
     </div>
 
-
+    <div id="toast-container"></div>
 </body>
 
 </html>

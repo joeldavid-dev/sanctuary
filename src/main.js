@@ -2,11 +2,13 @@ const { app, BrowserWindow, ipcMain, shell, dialog, Notification } = require('el
 const path = require('node:path')
 const cr = require('./utils/crypto.js');
 const db = require('./utils/database.js');
+const oldCr = require('./utils/oldCrypto.js');
+const { mas } = require('node:process');
 const fs = require('fs').promises
 const now = new Date();
 const hours = now.getHours();
 
-let mainWindow, superUser, masterKey;
+let mainWindow, superUser, masterKey, oldData;
 
 const createMainWindow = () => {
     mainWindow = new BrowserWindow({
@@ -87,25 +89,52 @@ ipcMain.handle('show-warning', async (event, title, message) => {
 
 // Obtener arvhivo JSON
 ipcMain.handle('get-json-file', async () => {
-    const {canceled, filePaths} = await dialog.showOpenDialog({
+    // Mostrar un cuadro de diálogo para seleccionar el archivo JSON
+    const { canceled, filePaths } = await dialog.showOpenDialog({
         tittle: 'Seleccionar archivo JSON',
-        filters: [{name: 'JSON', extensions: ['json']}],
+        filters: [{ name: 'JSON', extensions: ['json'] }],
         properties: ['openFile']
     });
-
+    // Si se cancela la selección o no se selecciona ningún archivo, salir
     if (canceled || filePaths.length === 0) {
         console.log('Operacion "importar JSON" cancelada.');
-        return null;
+        return {
+            success: false,
+            message: 'Operación cancelada'
+        };
     }
-
+    // Leer el contenido del archivo JSON seleccionado
+    // y convertirlo a un objeto JavaScript
     const filePath = filePaths[0];
     try {
         const content = await fs.readFile(filePath, 'utf-8');
         const jsonData = JSON.parse(content);
-        return jsonData;
+
+        // Verificar que el archivo JSON tenga la estructura correcta
+        const sanctuaryKey = '120065-331450-300009-276166-92029-265686-292000-249548-309477-85124-301972-320490-99250-292792-93249-102400-278873-306799-264395-300956-287091-255610-306710-102720-290446-174340-101850-218284-266491-291804-271861-297925-294223-290602-93449-310572-102490-155025-141492-42624-';
+        const requiredKeys = ['name', 'password', 'gender', 'Sanctuary', 'cards'];
+        const hasRequiredKeys = requiredKeys.every(key => key in jsonData);
+        if (hasRequiredKeys && jsonData.Sanctuary === sanctuaryKey && Array.isArray(jsonData.cards)) {
+            oldData = jsonData;
+            return {
+                success: true,
+                message: 'El archivo JSON tiene la estructura correcta.',
+                name: jsonData.name,
+            };
+        }
+        else {
+            return {
+                success: false,
+                message: 'El archivo JSON no tiene la estructura correcta.'
+            };
+        }
     } catch (error) {
         console.error('Error al leer el archivo JSON:', error);
-        return null;
+        return {
+            success: false,
+            message: 'Error al leer el archivo JSON',
+            error: error.message
+        };
     }
 });
 
@@ -250,7 +279,7 @@ ipcMain.handle('delete-card', async (event, id) => {
 ipcMain.handle('get-all-cards', async () => {
     try {
         const encryptedCards = await db.getAllCards();
-        
+
         let cards = [];
         // Desencriptar cada tarjeta y agregarla a la lista de tarjetas
         encryptedCards.forEach(encryptedCard => {
@@ -267,12 +296,67 @@ ipcMain.handle('get-all-cards', async () => {
     }
 });
 
-// Manejar el cifrado con una contraseña proporcionada por el usuario
-ipcMain.handle('encrypt-data', (event, text, password) => {
-    return encrypt(text, password);
-});
+// Importar datos de la version anterior
+ipcMain.handle('import-data', async (event, key) => {
+    const encryptedKey = oldCr.encrypt(key, key);
+    if (encryptedKey === oldData.password) {
+        const adaptedID = oldCr.adaptOldID(oldData);
+        // Crear el usuario
+        try {
+            const hashPassword = await cr.hashPassword(key);
+            const result = await db.addUser(
+                adaptedID.name,
+                adaptedID.gender,
+                hashPassword,
+            );
+            // Todo salío bien
+            superUser = result;
+        }
+        catch (error) {
+            console.error('Error al importar el usuario:', error);
+            return {
+                success: false,
+                message: 'No se pudo crear el usuario',
+                error: error.message
+            };
+        }
 
-// Manejar el descifrado con la misma contraseña
-ipcMain.handle('decrypt-data', (event, encryptedData, password, salt, iv) => {
-    return decrypt(encryptedData, password, salt, iv);
+        // Adaptar datos de las tarjetas una por una, para
+        // garantizar el orden de creación
+        console.log('\nAdaptando e importando tarjetas desde Sanctuary 4.2...');
+        for (const oldCard of oldData.cards) {
+            console.log(oldCard.name);
+            const adaptedCard = oldCr.adaptOldCard(key, oldCard);
+            try {
+                const encryptedCard = cr.encryptCard(key, adaptedCard.user, adaptedCard.password, adaptedCard.web);
+                const result = await db.addCard(
+                    oldCard.name,
+                    encryptedCard.userEncrypted,
+                    encryptedCard.passwordEncrypted,
+                    encryptedCard.webEncrypted,
+                    adaptedCard.color,
+                    adaptedCard.favorite,
+                    encryptedCard.salt,
+                    encryptedCard.iv,
+                );
+            } catch (error) {
+                return {
+                    success: false,
+                    message: 'No se pudo crear la tarjeta',
+                    error: error.message,
+                };
+            }
+        };
+
+        // Proceso terminado de forma exitosa
+        return {
+            success: true,
+            message: 'La importación se realizó correctamente',
+        };
+    } else {
+        return {
+            success: false,
+            message: 'La contraseña es incorrecta'
+        };
+    }
 });

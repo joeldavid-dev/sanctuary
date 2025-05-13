@@ -28,10 +28,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
     createCard: (name, user, password, web, color, favorite) => ipcRenderer.invoke('create-card', name, user, password, web, color, favorite),
     deleteCard: (id) => ipcRenderer.invoke('delete-card', id),
     getAllCards: () => ipcRenderer.invoke('get-all-cards'),
-});
-
-// Exponer a los renderizadores las funciones de encriptar y desencriptar.
-contextBridge.exposeInMainWorld('cryptoAPI', {
-    encrypt: (text, password) => ipcRenderer.invoke('encrypt-data', text, password),
-    decrypt: (encryptedData, password, salt, iv) => ipcRenderer.invoke('decrypt-data', encryptedData, password, salt, iv),
+    importData: (key) => ipcRenderer.invoke('import-data', key),
 });

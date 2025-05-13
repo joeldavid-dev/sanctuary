@@ -113,17 +113,4 @@ function decrypt(encryptedData, masterKey, saltHex, ivHex) {
     return decrypted;
 }
 
-// Función para cifrar con un Salt y un IV dados
-function encryptWithSaltIV(text, password, saltHex, ivHex) {
-    const salt = Buffer.from(saltHex, 'hex'); // Convertimos el salt de nuevo a binario
-    const iv = Buffer.from(ivHex, 'hex'); // Convertimos el IV de nuevo a binario
-    const key = deriveKey(password, salt); // Derivamos la clave desde la contraseña
-
-    const cipher = crypto.createCipheriv(algorithm, key, iv);
-    let encrypted = cipher.update(text, 'utf8', 'hex');
-    encrypted += cipher.final('hex');
-
-    return { encryptedData: encrypted };
-}
-
 module.exports = { hashPassword, verifyPassword, encryptCard, decryptCard };
