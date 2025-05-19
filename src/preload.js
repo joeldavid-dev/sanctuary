@@ -26,6 +26,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     getUserStatus: () => ipcRenderer.invoke('get-user-status'),
     verifyPassword: (password) => ipcRenderer.invoke('verify-password', password),
     createCard: (newCard) => ipcRenderer.invoke('create-card', newCard),
+    decryptCard: (encryptedCard) => ipcRenderer.invoke('decrypt-card', encryptedCard),
     deleteCard: (id) => ipcRenderer.invoke('delete-card', id),
     getAllCards: () => ipcRenderer.invoke('get-all-cards'),
     importData: (key) => ipcRenderer.invoke('import-data', key),

@@ -237,12 +237,30 @@ ipcMain.handle('create-card', async (event, newCard) => {
         const result = await db.addCard(encryptedCard);
         return {
             success: true,
-            ID: result.id,
+            message: 'Tarjeta creada correctamente',
+            data: result,
         };
     } catch (error) {
         return {
             success: false,
             message: 'No se pudo crear la tarjeta',
+            error: error.message,
+        };
+    }
+});
+
+// Desencriptar una tarjeta
+ipcMain.handle('decrypt-card', async (event, encryptedCard) => {
+    try {
+        const decryptedCard = await cr.decryptCard(masterKey, encryptedCard);
+        return {
+            success: true,
+            data: decryptedCard,
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: 'Error al desencriptar la tarjeta',
             error: error.message,
         };
     }
@@ -271,18 +289,7 @@ ipcMain.handle('delete-card', async (event, id) => {
 ipcMain.handle('get-all-cards', async () => {
     try {
         const encryptedCards = await db.getAllCards();
-
-        let cards = [];
-        // Desencriptar cada tarjeta y agregarla a la lista de tarjetas
-        encryptedCards.forEach(async (encryptedCard) => {
-            // Desencriptar los datos de la tarjeta
-            const card = await cr.decryptCard(masterKey, encryptedCard);
-
-            // Agregar la tarjeta desencriptada a la lista
-            cards.push(card);
-        });
-
-        return { success: true, data: cards };
+        return { success: true, data: encryptedCards };
     } catch (error) {
         return { success: false, error: error.message };
     }

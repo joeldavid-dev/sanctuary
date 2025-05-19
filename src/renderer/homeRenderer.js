@@ -42,8 +42,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     let colorSelected = 'var(--color1)';
     let newFavorite = 0;
     let selectedCard = null; // Variable para almacenar el ID de la tarjeta seleccionada
+    let selectedCardIndex = null; // Variable para almacenar el índice de la tarjeta seleccionada
     let modalWarningAction = null; // Variable para almacenar la acción del modal de advertencia
-    let cards = null; // Variable para almacenar las tarjetas
+    let encryptedCards = null; // Variable para almacenar las tarjetas
 
 
     // Clic en botón minimizar
@@ -86,7 +87,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Crea el contenido de la tarjeta
         cardHTML = `
-            <input type="radio" name="card" value="${card.id}">
+            <input type="radio" name="card" value="${index}">
             <div class="horizontal_elem-area spaced centered">
                 <p class="normal-text">${card.name}</p>
                 <div class="${heartVisible}">
@@ -98,12 +99,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             <div class="${userVisible}">
                 <strong class="minimum-text">Usuario:</strong>
-                <p id="user-${card.id}" class="small-text">••••••••</p>
+                <p id="user-${index}" class="small-text">••••••••</p>
             </div>
             
             <div>
                 <strong class="minimum-text">Contraseña:</strong>
-                <p id="pass-${card.id}" class="small-text">••••••••</p>
+                <p id="pass-${index}" class="small-text">••••••••</p>
             </div>
 
             <div class="${urlVisible}">
@@ -118,7 +119,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 <strong class="minimum-text">${index + 1}</strong>
 
-                <button class="eye-btn card-btn" data-user="${card.user}" data-userId="user-${card.id}" data-pass="${card.password}" data-passId="pass-${card.id}">
+                <button class="eye-btn card-btn" data-index="${index}" data-userId="user-${index}" data-passId="pass-${index}">
                     <img src="../assets/ico/feather/eye.svg" class="card-icon">
                 </button>
             </div>
@@ -131,6 +132,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Limpiar el contenedor de tarjetas antes de agregar nuevas
         cardsContainer.innerHTML = '';
         if (cards.success) {
+            // Crear y agregar cada tarjeta al contenedor
             cards.data.forEach((card, index) => {
                 cardsContainer.appendChild(createCardElement(card, index));
             });
@@ -140,18 +142,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                 radio.addEventListener('change', (event) => {
                     deselectAllCards(); // Deseleccionar todas las tarjetas
 
-                    // Luego agregar la clase 'selected-card' a la tarjeta seleccionada
-                    const selectedCardId = event.target.value;
-                    const cardBody = document.getElementById(selectedCardId);
-                    selectedCard = {
-                        id: cardBody.getAttribute('id'),
-                        name: cardBody.getAttribute('data-name'),
-                    }
+                    // Obtener card seleccionada
+                    selectedCardIndex = event.target.value;
+                    selectedCard = encryptedCards.data[selectedCardIndex];
                     console.log(selectedCard);
+                    const cardBody = document.getElementById(selectedCard.id);
 
                     // Establecer el color personalizado como una variable CSS
-                    const cardColor = cardBody.style.backgroundColor;
-                    cardBody.style.setProperty('--card-color', cardColor);
+                    cardBody.style.setProperty('--card-color', cardBody.style.backgroundColor);
 
                     // Agregar la clase para aplicar la sombra
                     cardBody.classList.add('selected-card');
@@ -162,37 +160,36 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             // Activar botones de ver/ocultar
             document.querySelectorAll('.eye-btn').forEach(button => {
-                button.addEventListener('click', () => {
-                    const user = button.getAttribute('data-user');
+                button.addEventListener('click', async () => {
+                    const index = button.getAttribute('data-index');
                     const userId = button.getAttribute('data-userId');
                     const userView = document.getElementById(userId);
-
-                    const pass = button.getAttribute('data-pass');
                     const passId = button.getAttribute('data-passId');
                     const passView = document.getElementById(passId);
-
                     const mask = '••••••••';
 
-                    // Cambiar el texto del usuario y la contraseña al hacer clic en el botón
-                    if (userView.textContent === mask) {
-                        userView.textContent = user;
-                    } else {
-                        userView.textContent = mask;
-                    }
 
+                    // Cambiar el texto del usuario y la contraseña al hacer clic en el botón
                     if (passView.textContent === mask) {
-                        passView.textContent = pass;
-                        // 🔥 Copiamos al portapapeles
-                        navigator.clipboard.writeText(pass)
-                            .then(() => {
-                                // Mostrar una notificación visual
-                                //window.electronAPI.showNotification('Contraseña copiada', 'La contraseña ha sido copiada al portapapeles.');
-                                showToast('Contraseña copiada al portapapeles'); // Mostrar el toast
-                            })
-                            .catch(err => {
-                                console.error('Error al copiar', err);
-                            });
-                    } else {
+                        const card = await window.electronAPI.decryptCard(encryptedCards.data[index]);
+                        if (card.success) {
+                            userView.textContent = card.data.user;
+                            passView.textContent = card.data.password;
+                            // 🔥 Copiamos al portapapeles
+                            navigator.clipboard.writeText(card.data.password).then(() => {
+                                    // Mostrar una notificación visual
+                                    showToast('Contraseña copiada al portapapeles');
+                                }).catch(err => {
+                                    console.error(err);
+                                    showToast('Error al copiar al portapapeles');
+                                });
+                        } else {
+                            console.error(card);
+                            showToast(card.message);
+                        }
+                    }
+                    else {
+                        userView.textContent = mask;
                         passView.textContent = mask;
                     }
                 });
@@ -353,7 +350,14 @@ document.addEventListener("DOMContentLoaded", async () => {
             // Cerrar modal
             if (result.success) {
                 modalNew.style.display = 'none';
-                showAllCard(); // Actualizar la vista de tarjetas
+                // Agregar tarjeta a la lista de tarjetas encriptadas
+                console.log(result.data);
+                encryptedCards.data.push(result.data);
+                showCards(encryptedCards); // Mostrar las tarjetas en la vista
+                showToast(result.message);
+            }
+            else {
+                showToast(result.message);
             }
         } else {
             window.electronAPI.showWarning('Problema', 'Es necesario al menos un nombre y una contraseña para continuar.');
@@ -378,9 +382,16 @@ document.addEventListener("DOMContentLoaded", async () => {
             const result = await window.electronAPI.deleteCard(selectedCard.id);
             console.log(result);
             if (result.success) {
+                // Mostrar notificación de éxito
+                showToast(result.message);
                 modalWarning.style.display = 'none';
-                //showAllCard(); // Actualizar la vista de tarjetas
-
+                deselectAllCards();
+                // Eliminar la tarjeta de la lista de tarjetas encriptadas usando el índice
+                encryptedCards.data.splice(selectedCardIndex, 1);
+                showCards(encryptedCards); // Mostrar las tarjetas en la vista
+            }
+            else {
+                showToast(result.message);
             }
         }
     });
@@ -401,6 +412,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // Acciones iniciales ========================================================================
-    cards = await getAllCards(); // Obtener todas las tarjetas y almacenarlas en la variable local
-    showCards(cards); // Mostrar las tarjetas en la vista
+    encryptedCards = await getAllCards(); // Obtener todas las tarjetas y almacenarlas en la variable local
+    showCards(encryptedCards); // Mostrar las tarjetas en la vista
 });

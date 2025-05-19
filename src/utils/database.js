@@ -71,7 +71,17 @@ function addCard(card) {
             if (err) {
                 reject(err);
             } else {
-                resolve({ id: this.lastID });
+                resolve({
+                    id: this.lastID,
+                    name: card.name,
+                    user: card.user,
+                    password: card.password,
+                    web: card.web,
+                    color: card.color,
+                    favorite: card.favorite,
+                    salt: card.salt,
+                    iv: card.iv,
+                });
             }
         });
     });
