@@ -28,42 +28,37 @@ function deriveKey(password, salt) {
 }
 
 // Función para cifrar datos de la tarjeta usando una contraseña
-function encryptCard(masterKey, user, password, web) {
+async function encryptCard(masterKey, newCard) {
     const salt = crypto.randomBytes(saltLength); // Generamos un salt aleatorio
     const iv = crypto.randomBytes(16); // Generamos un IV aleatorio
     const key = deriveKey(masterKey, salt); // Derivamos la clave desde la contraseña
 
     // Cifrado del usuario (si existe)
     let userEncrypted = null;
-    if (user !== null && user !== '') {
+    if (newCard.user !== null && newCard.user !== '') {
         const cipherUser = crypto.createCipheriv(algorithm, key, iv);
-        userEncrypted = cipherUser.update(user, 'utf8', 'hex');
+        userEncrypted = cipherUser.update(newCard.user, 'utf8', 'hex');
         userEncrypted += cipherUser.final('hex');
     }
 
     // Cifrado de la contraseña
     const cipherPass = crypto.createCipheriv(algorithm, key, iv);
-    let passwordEncrypted = cipherPass.update(password, 'utf8', 'hex');
+    let passwordEncrypted = cipherPass.update(newCard.password, 'utf8', 'hex');
     passwordEncrypted += cipherPass.final('hex');
 
-    // Cifrado del enlace web (si existe)
-    let webEncrypted = null;
-    if (web !== null && web !== '') {
-        const cipherWeb = crypto.createCipheriv(algorithm, key, iv);
-        webEncrypted = cipherWeb.update(web, 'utf8', 'hex');
-        webEncrypted += cipherWeb.final('hex');
-    }
-
     return {
+        name: newCard.name,
+        user: userEncrypted,
+        password: passwordEncrypted,
+        web: newCard.web,
+        color: newCard.color,
+        favorite: newCard.favorite,
         salt: salt.toString('hex'), // Guardamos el salt
         iv: iv.toString('hex'), // Guardamos el IV
-        userEncrypted,
-        passwordEncrypted,
-        webEncrypted,
     };
 }
 
-function decryptCard(masterKey, encryptedCard) {
+async function decryptCard(masterKey, encryptedCard) {
     const salt = Buffer.from(encryptedCard.salt, 'hex'); // Convertimos el salt de nuevo a binario
     const iv = Buffer.from(encryptedCard.iv, 'hex'); // Convertimos el IV de nuevo a binario
     const key = deriveKey(masterKey, salt); // Derivamos la clave desde la contraseña
@@ -81,20 +76,12 @@ function decryptCard(masterKey, encryptedCard) {
     let passwordDecrypted = decipherPass.update(encryptedCard.password, 'hex', 'utf8');
     passwordDecrypted += decipherPass.final('utf8');
 
-    // Descifrado del enlace web (si existe)
-    let webDecrypted = null;
-    if (encryptedCard.web !== null && encryptedCard.web !== '') {
-        const decipherWeb = crypto.createDecipheriv(algorithm, key, iv);
-        webDecrypted = decipherWeb.update(encryptedCard.web, 'hex', 'utf8');
-        webDecrypted += decipherWeb.final('utf8');
-    }
-
     return {
         id: encryptedCard.id,
         name: encryptedCard.name,
         user: userDecrypted,
         password: passwordDecrypted,
-        web: webDecrypted,
+        web: encryptedCard.web,
         color: encryptedCard.color,
         favorite: encryptedCard.favorite,
     };

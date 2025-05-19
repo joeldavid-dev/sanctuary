@@ -356,6 +356,13 @@ p {
     border-color: black;
 }
 
+.custom-btn:disabled {
+    background: transparent;
+    border: solid 1px;
+    color: var(--neutral_grey);
+    cursor: not-allowed;
+}
+
 .custom-btn-warning {
     color: white;
     background: transparent;

@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const minimize = document.getElementById('minimize');
     const maximize = document.getElementById('maximize');
     const close = document.getElementById('close');
@@ -61,78 +61,78 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Funciones del contenedor principal ====================================================
     // Traer los datos al iniciar la vista
-    async function showAllCard() {
+    async function getAllCards() {
         try {
-            cards = await window.electronAPI.getAllCards();
-            console.log(cards);
-            showCards(cards);
+            return await window.electronAPI.getAllCards();
         } catch (error) {
             console.error('Error al obtener las tarjetas:', error);
         }
     }
 
-    function showCards(cards) {
+    function createCardElement(card, index) {
+        const cardBody = document.createElement('label');
+        cardBody.classList.add('card-body'); // clase para estilos
+        cardBody.setAttribute('id', card.id); // id para el elemento
+        cardBody.setAttribute('data-name', card.name);
+        cardBody.style.backgroundColor = card.color; // Cambia el color de fondo de la tarjeta
+        cardBody.style.boxShadow = '0px 0px 10px 0px' + card.color; // Cambia la sombra de la tarjeta
+        if (card.color == 'var(--color4)' || card.color == 'var(--color6)') {
+            cardBody.style.color = 'black'; // Cambia el color del texto
+        }
+
+        heartVisible = (card.favorite == 1) ? 'visible' : 'invisible'; // Cambia la visibilidad del icono de favorito
+        userVisible = (card.user == null || card.user == '') ? 'invisible' : 'visible'; // Cambia la visibilidad del usuario
+        urlVisible = (card.web == null || card.web == '') ? 'invisible' : 'visible'; // Cambia la visibilidad de la url
+
+        // Crea el contenido de la tarjeta
+        cardHTML = `
+            <input type="radio" name="card" value="${card.id}">
+            <div class="horizontal_elem-area spaced centered">
+                <p class="normal-text">${card.name}</p>
+                <div class="${heartVisible}">
+                    <div class="card-static-icon">
+                        <img src="../assets/ico/feather/heart.svg" class="card-icon">
+                    </div>
+                </div>
+            </div>
+
+            <div class="${userVisible}">
+                <strong class="minimum-text">Usuario:</strong>
+                <p id="user-${card.id}" class="small-text">••••••••</p>
+            </div>
+            
+            <div>
+                <strong class="minimum-text">Contraseña:</strong>
+                <p id="pass-${card.id}" class="small-text">••••••••</p>
+            </div>
+
+            <div class="${urlVisible}">
+                <strong class="minimum-text">URL:</strong>
+                <p class="small-text">${card.web}</p>
+            </div>
+
+            <div class="horizontal-flex spaced centered">
+                <button class="external-link-btn card-btn ${urlVisible}" data-url="${card.web}"">
+                    <img src="../assets/ico/feather/external-link.svg" class="card-icon">
+                    </button>
+
+                <strong class="minimum-text">${index + 1}</strong>
+
+                <button class="eye-btn card-btn" data-user="${card.user}" data-userId="user-${card.id}" data-pass="${card.password}" data-passId="pass-${card.id}">
+                    <img src="../assets/ico/feather/eye.svg" class="card-icon">
+                </button>
+            </div>
+        `;
+        cardBody.innerHTML = cardHTML;
+        return cardBody;
+    }
+
+    async function showCards(cards) {
         // Limpiar el contenedor de tarjetas antes de agregar nuevas
         cardsContainer.innerHTML = '';
         if (cards.success) {
             cards.data.forEach((card, index) => {
-                const cardBody = document.createElement('label');
-                cardBody.classList.add('card-body'); // clase para estilos
-                cardBody.setAttribute('id', card.id); // id para el elemento
-                cardBody.setAttribute('data-name', card.name);
-                cardBody.style.backgroundColor = card.color; // Cambia el color de fondo de la tarjeta
-                cardBody.style.boxShadow = '0px 0px 10px 0px' + card.color; // Cambia la sombra de la tarjeta
-                if (card.color == 'var(--color4)' || card.color == 'var(--color6)') {
-                    cardBody.style.color = 'black'; // Cambia el color del texto
-                }
-
-                heartVisible = (card.favorite == 1) ? 'visible' : 'invisible'; // Cambia la visibilidad del icono de favorito
-                userVisible = (card.user == null || card.user == '') ? 'invisible' : 'visible'; // Cambia la visibilidad del usuario
-                urlVisible = (card.web == null || card.web == '') ? 'invisible' : 'visible'; // Cambia la visibilidad de la url
-
-                // Crea el contenido de la tarjeta
-                cardHTML = `
-                    <input type="radio" name="card" value="${card.id}">
-                    <div class="horizontal_elem-area spaced centered">
-                        <p class="normal-text">${card.name}</p>
-                        <div class="${heartVisible}">
-                            <div class="card-static-icon">
-                                <img src="../assets/ico/feather/heart.svg" class="card-icon">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="${userVisible}">
-                        <strong class="minimum-text">Usuario:</strong>
-                        <p id="user-${card.id}" class="small-text">••••••••</p>
-                    </div>
-                    
-                    <div>
-                        <strong class="minimum-text">Contraseña:</strong>
-                        <p id="pass-${card.id}" class="small-text">••••••••</p>
-                    </div>
-
-                    <div class="${urlVisible}">
-                        <strong class="minimum-text">URL:</strong>
-                        <p class="small-text">${card.web}</p>
-                    </div>
-
-                    <div class="horizontal-flex spaced centered">
-                        <button class="external-link-btn card-btn ${urlVisible}" data-url="${card.web}"">
-                            <img src="../assets/ico/feather/external-link.svg" class="card-icon">
-                            </button>
-
-                        <strong class="minimum-text">${index + 1}</strong>
-
-                        <button class="eye-btn card-btn" data-user="${card.user}" data-userId="user-${card.id}" data-pass="${card.password}" data-passId="pass-${card.id}">
-                            <img src="../assets/ico/feather/eye.svg" class="card-icon">
-                            </button>
-                            </div>
-                `;
-
-                cardBody.innerHTML = cardHTML;
-
-                cardsContainer.appendChild(cardBody);
+                cardsContainer.appendChild(createCardElement(card, index));
             });
 
             // Evento de clic a cada tarjeta
@@ -340,8 +340,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Verificar que los campos no estén vacíos
         if (name && password) {
-            // Crear la tarjeta
-            const result = await window.electronAPI.createCard(name, user, password, web, colorSelected, newFavorite);
+            // Enviar la tarjeta al proceso principal
+            const result = await window.electronAPI.createCard({
+                name: name,
+                user: user,
+                password: password,
+                web: web,
+                color: colorSelected,
+                favorite: newFavorite,
+            });
             console.log(result);
             // Cerrar modal
             if (result.success) {
@@ -372,7 +379,7 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log(result);
             if (result.success) {
                 modalWarning.style.display = 'none';
-                showAllCard(); // Actualizar la vista de tarjetas
+                //showAllCard(); // Actualizar la vista de tarjetas
 
             }
         }
@@ -394,5 +401,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Acciones iniciales ========================================================================
-    showAllCard(); // Traer todas las tarjetas al iniciar la vista
+    cards = await getAllCards(); // Obtener todas las tarjetas y almacenarlas en la variable local
+    showCards(cards); // Mostrar las tarjetas en la vista
 });

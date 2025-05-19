@@ -230,19 +230,11 @@ ipcMain.handle('get-greeting', () => {
 });
 
 // Crear una nueva tarjeta
-ipcMain.handle('create-card', async (event, name, user, password, web, color, favorite) => {
+ipcMain.handle('create-card', async (event, newCard) => {
     try {
-        const encryptedCard = cr.encryptCard(masterKey, user, password, web);
-        const result = await db.addCard(
-            name,
-            encryptedCard.userEncrypted,
-            encryptedCard.passwordEncrypted,
-            encryptedCard.webEncrypted,
-            color,
-            favorite,
-            encryptedCard.salt,
-            encryptedCard.iv,
-        );
+        // Encriptar los datos de la tarjeta
+        const encryptedCard = await cr.encryptCard(masterKey, newCard);
+        const result = await db.addCard(encryptedCard);
         return {
             success: true,
             ID: result.id,
@@ -282,9 +274,9 @@ ipcMain.handle('get-all-cards', async () => {
 
         let cards = [];
         // Desencriptar cada tarjeta y agregarla a la lista de tarjetas
-        encryptedCards.forEach(encryptedCard => {
+        encryptedCards.forEach(async (encryptedCard) => {
             // Desencriptar los datos de la tarjeta
-            const card = cr.decryptCard(masterKey, encryptedCard);
+            const card = await cr.decryptCard(masterKey, encryptedCard);
 
             // Agregar la tarjeta desencriptada a la lista
             cards.push(card);
@@ -311,6 +303,7 @@ ipcMain.handle('import-data', async (event, key) => {
             );
             // Todo salío bien
             superUser = result;
+            console.log('Usuario creado correctamente');
         }
         catch (error) {
             console.error('Error al importar el usuario:', error);
@@ -322,23 +315,14 @@ ipcMain.handle('import-data', async (event, key) => {
         }
 
         // Adaptar datos de las tarjetas una por una, para
-        // garantizar el orden de creación
+        // garantizar el orden original
         console.log('\nAdaptando e importando tarjetas desde Sanctuary 4.2...');
         for (const oldCard of oldData.cards) {
             console.log(oldCard.name);
             const adaptedCard = oldCr.adaptOldCard(key, oldCard);
             try {
-                const encryptedCard = cr.encryptCard(key, adaptedCard.user, adaptedCard.password, adaptedCard.web);
-                const result = await db.addCard(
-                    oldCard.name,
-                    encryptedCard.userEncrypted,
-                    encryptedCard.passwordEncrypted,
-                    encryptedCard.webEncrypted,
-                    adaptedCard.color,
-                    adaptedCard.favorite,
-                    encryptedCard.salt,
-                    encryptedCard.iv,
-                );
+                const encryptedCard = await cr.encryptCard(key, adaptedCard);
+                const result = await db.addCard(encryptedCard);
             } catch (error) {
                 return {
                     success: false,

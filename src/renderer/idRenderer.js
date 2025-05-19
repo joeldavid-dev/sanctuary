@@ -82,20 +82,27 @@ document.addEventListener("DOMContentLoaded", () => {
         else if (mode == 'import') {
             // Verificar que todos los campos no esten vacíos
             if (pass1 != '' && pass1) {
+                done.textContent = 'Importando...';
+                done.disabled = true; // Deshabilitar el botón "listo" para evitar múltiples clics
                 const response = await window.electronAPI.importData(pass1);
                 if (response.success) {
                     // Cuando la contraseña es correcta y la importación es exitosa
+                    window.electronAPI.showNotification('Éxito', 'Datos importados correctamente.');
                     window.electronAPI.changeView('src/views/lock.html');
                 } else {
                     // Cuando la contraseña es incorrecta
                     await window.electronAPI.showWarning('Advertencia', 'La contraseña es incorrecta.');
                     pass1In.value = '';
                     pass1 = '';
+                    done.textContent = 'Listo';
+                    done.disabled = false; // Habilitar el botón "listo" nuevamente
                 }
             }
             // Acciones cuando no se ingresa la contraseña
             else {
                 await window.electronAPI.showWarning('Advertencia', 'Ingresa una contraseña.');
+                done.textContent = 'Listo';
+                done.disabled = false; // Habilitar el botón "listo" nuevamente
             }
         }
     });
