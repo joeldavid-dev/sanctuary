@@ -161,6 +161,16 @@ p {
     text-align: center;
 }
 
+.bold {
+    font-weight: bold;
+}
+
+.selectable-text {
+    /* Permite seleccionar el texto */
+    user-select: text;
+    cursor: text;
+}
+
 /* Redondeo de elementos grandes*/
 .normal-rounded {
     border-radius: 10px;

@@ -1,52 +1,56 @@
+import { createCardElement } from './components/card.js'; // Importar el módulo de tarjeta
+
+const minimize = document.getElementById('minimize');
+const maximize = document.getElementById('maximize');
+const close = document.getElementById('close');
+
+const lock = document.getElementById('lock');
+
+const cardsContainer = document.getElementById('cards-container');
+
+const editCardBody = document.getElementById('edit-card-body');
+const editCard = document.getElementById('edit-card');
+const newCard = document.getElementById('new-card');
+const deleteCardBody = document.getElementById('delete-card-body');
+const deleteCard = document.getElementById('delete-card');
+
+// Modal para agregar nueva contraseña
+const modalNew = document.getElementById('modal-new');
+const modalNewTitle = document.getElementById('modal-new-title');
+const closeModalNew = document.getElementById('close-modal-new');
+const newCardName = document.getElementById('new-card-name');
+const newCardUser = document.getElementById('new-card-user');
+const newCardPass = document.getElementById('new-card-pass');
+const newCardUrl = document.getElementById('new-card-url');
+const newFavoriteSwitch = document.getElementById('new-favorite-switch');
+
+const prewiewCard = document.getElementById('preview-card');
+const icoLove = document.getElementById('ico-love');
+const namePreview = document.getElementById('name-preview');
+const userPreviewSection = document.getElementById('user-preview-section');
+const userPreview = document.getElementById('user-preview');
+const passPreview = document.getElementById('pass-preview');
+const urlPreviewSection = document.getElementById('url-preview-section');
+const urlPreview = document.getElementById('url-preview');
+const openLinkPreview = document.getElementById('open-link-preview');
+const newCardDone = document.getElementById('new-card-done');
+
+// Modal warning
+const modalWarning = document.getElementById('modal-warning');
+const closeModalWarning = document.getElementById('close-modal-warning');
+const warningMessage = document.getElementById('warning-message');
+const cancelWarningBtn = document.getElementById('cancel-warning-btn');
+const confirmWarningBtn = document.getElementById('confirm-warning-btn');
+
+let colorSelected = 'var(--color1)';
+let newFavorite = 0;
+let encryptedSelectedCard = null; // Variable para almacenar el ID de la tarjeta seleccionada
+let selectedCardIndex = null; // Variable para almacenar el índice de la tarjeta seleccionada
+let modalWarningAction = null; // Variable para almacenar la acción del modal de advertencia
+let encryptedCards = null; // Variable para almacenar las tarjetas
+let modalNewMode = 'create'; // Variable para almacenar el modo del modal (crear o editar)
+
 document.addEventListener("DOMContentLoaded", async () => {
-    const minimize = document.getElementById('minimize');
-    const maximize = document.getElementById('maximize');
-    const close = document.getElementById('close');
-
-    const lock = document.getElementById('lock');
-
-    const cardsContainer = document.getElementById('cards-container');
-
-    const editCardBody = document.getElementById('edit-card-body');
-    const newCard = document.getElementById('new-card');
-    const deleteCardBody = document.getElementById('delete-card-body');
-    const deleteCard = document.getElementById('delete-card');
-
-    // Modal para agregar nueva contraseña
-    const modalNew = document.getElementById('modal-new');
-    const closeModalNew = document.getElementById('close-modal-new');
-    const newCardName = document.getElementById('new-card-name');
-    const newCardUser = document.getElementById('new-card-user');
-    const newCardPass = document.getElementById('new-card-pass');
-    const newCardUrl = document.getElementById('new-card-url');
-    const newFavoriteSwitch = document.getElementById('new-favorite-switch');
-
-    const prewiewCard = document.getElementById('preview-card');
-    const icoLove = document.getElementById('ico-love');
-    const namePreview = document.getElementById('name-preview');
-    const userPreviewSection = document.getElementById('user-preview-section');
-    const userPreview = document.getElementById('user-preview');
-    const passPreview = document.getElementById('pass-preview');
-    const urlPreviewSection = document.getElementById('url-preview-section');
-    const urlPreview = document.getElementById('url-preview');
-    const openLinkPreview = document.getElementById('open-link-preview');
-    const newCardDone = document.getElementById('new-card-done');
-
-    // Modal warning
-    const modalWarning = document.getElementById('modal-warning');
-    const closeModalWarning = document.getElementById('close-modal-warning');
-    const warningMessage = document.getElementById('warning-message');
-    const cancelWarningBtn = document.getElementById('cancel-warning-btn');
-    const confirmWarningBtn = document.getElementById('confirm-warning-btn');
-
-    let colorSelected = 'var(--color1)';
-    let newFavorite = 0;
-    let selectedCard = null; // Variable para almacenar el ID de la tarjeta seleccionada
-    let selectedCardIndex = null; // Variable para almacenar el índice de la tarjeta seleccionada
-    let modalWarningAction = null; // Variable para almacenar la acción del modal de advertencia
-    let encryptedCards = null; // Variable para almacenar las tarjetas
-
-
     // Clic en botón minimizar
     minimize.addEventListener('click', () => {
         window.electron.minimize();
@@ -70,64 +74,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    function createCardElement(card, index) {
-        const cardBody = document.createElement('label');
-        cardBody.classList.add('card-body'); // clase para estilos
-        cardBody.setAttribute('id', card.id); // id para el elemento
-        cardBody.setAttribute('data-name', card.name);
-        cardBody.style.backgroundColor = card.color; // Cambia el color de fondo de la tarjeta
-        cardBody.style.boxShadow = '0px 0px 10px 0px' + card.color; // Cambia la sombra de la tarjeta
-        if (card.color == 'var(--color4)' || card.color == 'var(--color6)') {
-            cardBody.style.color = 'black'; // Cambia el color del texto
-        }
-
-        heartVisible = (card.favorite == 1) ? 'visible' : 'invisible'; // Cambia la visibilidad del icono de favorito
-        userVisible = (card.user == null || card.user == '') ? 'invisible' : 'visible'; // Cambia la visibilidad del usuario
-        urlVisible = (card.web == null || card.web == '') ? 'invisible' : 'visible'; // Cambia la visibilidad de la url
-
-        // Crea el contenido de la tarjeta
-        cardHTML = `
-            <input type="radio" name="card" value="${index}">
-            <div class="horizontal_elem-area spaced centered">
-                <p class="normal-text">${card.name}</p>
-                <div class="${heartVisible}">
-                    <div class="card-static-icon">
-                        <img src="../assets/ico/feather/heart.svg" class="card-icon">
-                    </div>
-                </div>
-            </div>
-
-            <div class="${userVisible}">
-                <strong class="minimum-text">Usuario:</strong>
-                <p id="user-${index}" class="small-text">••••••••</p>
-            </div>
-            
-            <div>
-                <strong class="minimum-text">Contraseña:</strong>
-                <p id="pass-${index}" class="small-text">••••••••</p>
-            </div>
-
-            <div class="${urlVisible}">
-                <strong class="minimum-text">URL:</strong>
-                <p class="small-text">${card.web}</p>
-            </div>
-
-            <div class="horizontal-flex spaced centered">
-                <button class="external-link-btn card-btn ${urlVisible}" data-url="${card.web}"">
-                    <img src="../assets/ico/feather/external-link.svg" class="card-icon">
-                    </button>
-
-                <strong class="minimum-text">${index + 1}</strong>
-
-                <button class="eye-btn card-btn" data-index="${index}" data-userId="user-${index}" data-passId="pass-${index}">
-                    <img src="../assets/ico/feather/eye.svg" class="card-icon">
-                </button>
-            </div>
-        `;
-        cardBody.innerHTML = cardHTML;
-        return cardBody;
-    }
-
     async function showCards(cards) {
         // Limpiar el contenedor de tarjetas antes de agregar nuevas
         cardsContainer.innerHTML = '';
@@ -144,9 +90,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                     // Obtener card seleccionada
                     selectedCardIndex = event.target.value;
-                    selectedCard = encryptedCards.data[selectedCardIndex];
-                    console.log(selectedCard);
-                    const cardBody = document.getElementById(selectedCard.id);
+                    encryptedSelectedCard = encryptedCards.data[selectedCardIndex];
+                    console.log(encryptedSelectedCard);
+                    const cardBody = document.getElementById(encryptedSelectedCard.id);
 
                     // Establecer el color personalizado como una variable CSS
                     cardBody.style.setProperty('--card-color', cardBody.style.backgroundColor);
@@ -177,12 +123,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                             passView.textContent = card.data.password;
                             // 🔥 Copiamos al portapapeles
                             navigator.clipboard.writeText(card.data.password).then(() => {
-                                    // Mostrar una notificación visual
-                                    showToast('Contraseña copiada al portapapeles');
-                                }).catch(err => {
-                                    console.error(err);
-                                    showToast('Error al copiar al portapapeles');
-                                });
+                                // Mostrar una notificación visual
+                                showToast('Contraseña copiada al portapapeles');
+                            }).catch(err => {
+                                console.error(err);
+                                showToast('Error al copiar al portapapeles');
+                            });
                         } else {
                             console.error(card);
                             showToast(card.message);
@@ -236,11 +182,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     //Funciones de los botones de la butonbar ================================================
-    // Clic en el botón para abrir el modal de nueva contraseña
+    // Clic en el botón para crar una nueva tarjeta
     newCard.addEventListener('click', async () => {
         // Abrir modal
         modalNew.style.display = 'block';
         // Reiniciar el estado del modal
+        modalNewTitle.textContent = 'Crear nueva tarjeta';
         icoLove.style.display = 'none';
         newFavoriteSwitch.checked = false;
         userPreviewSection.style.display = 'none';
@@ -259,16 +206,56 @@ document.addEventListener("DOMContentLoaded", async () => {
         newCardUrl.value = '';
     });
 
+    // Clic en el botón para editar la tarjeta seleccionada
+    editCard.addEventListener('click', async () => {
+        if (encryptedSelectedCard) {
+            // Desencriptar la tarjeta seleccionada
+            const selectedCard = await window.electronAPI.decryptCard(encryptedSelectedCard);
+            if (selectedCard.success) {
+                // Abrir modal
+                modalNew.style.display = 'block';
+                // Adaptar el estado del modal a la tarjeta seleccionada
+                modalNewTitle.textContent = 'Editar tarjeta';
+                icoLove.style.display = (selectedCard.data.favorite == 1) ? 'block' : 'none';
+                newFavoriteSwitch.checked = (selectedCard.data.favorite == 1) ? true : false;
+                newCardName.value = selectedCard.data.name;
+                namePreview.textContent = selectedCard.data.name;
+                newCardUser.value = selectedCard.data.user || '';
+                userPreviewSection.style.display = (selectedCard.data.user) ? 'block' : 'none';
+                userPreview.textContent = selectedCard.data.user || '';
+                newCardPass.value = selectedCard.data.password;
+                passPreview.textContent = selectedCard.data.password;
+                newCardUrl.value = selectedCard.data.web || '';
+                urlPreviewSection.style.display = (selectedCard.data.web) ? 'block' : 'none';
+                openLinkPreview.style.display = (selectedCard.data.web) ? 'block' : 'none';
+                urlPreview.textContent = selectedCard.data.web || '';
+                // Establecer el color de la tarjeta
+                colorSelected = selectedCard.data.color;
+                prewiewCard.style.backgroundColor = colorSelected;
+                document.querySelector(`input[name="color"][value="${colorSelected}"]`).checked = true;
+
+                if (selectedCard.data.color == 'var(--color4)' || selectedCard.data.color == 'var(--color6)') {
+                    prewiewCard.style.color = 'black'; // Cambiar el color del texto
+                } else {
+                    prewiewCard.style.color = 'white'; // Cambiar el color del texto
+                }
+            } else {
+                console.error(card);
+                showToast(card.message);
+            }
+        }
+    });
+
     // Clic en el botón para eliminar la tarjeta seleccionada
     deleteCard.addEventListener('click', async () => {
         modalWarning.style.display = 'block';
         modalWarningAction = 'delete'; // Establecer la acción del modal de advertencia
         const message =
-            warningMessage.textContent = `¿Realmente quieres eliminar la tarjeta "${selectedCard.name}"? Ten cuidado, ¡esta acción es irreversible!`;
+            warningMessage.textContent = `¿Realmente quieres eliminar la tarjeta "${encryptedSelectedCard.name}"? Ten cuidado, ¡esta acción es irreversible!`;
         confirmWarningBtn.textContent = 'Eliminar tarjeta';
     });
 
-    // Modal para agregar nueva contraseña ===================================================
+    // Modal para agregar o editar una contraseña ===================================================
     // Clic en el botón para cerrar el modal
     closeModalNew.addEventListener('click', () => {
         modalNew.style.display = 'none';
@@ -313,6 +300,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             colorSelected = event.target.value;
             // Cambiar color de la vista previa
             prewiewCard.style.backgroundColor = colorSelected;
+            if (colorSelected == 'var(--color4)' || colorSelected == 'var(--color6)') {
+                prewiewCard.style.color = 'black'; // Cambiar el color del texto
+            } else {
+                prewiewCard.style.color = 'white'; // Cambiar el color del texto
+            }
         });
     });
 
@@ -337,27 +329,42 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Verificar que los campos no estén vacíos
         if (name && password) {
-            // Enviar la tarjeta al proceso principal
-            const result = await window.electronAPI.createCard({
-                name: name,
-                user: user,
-                password: password,
-                web: web,
-                color: colorSelected,
-                favorite: newFavorite,
-            });
-            console.log(result);
-            // Cerrar modal
-            if (result.success) {
-                modalNew.style.display = 'none';
-                // Agregar tarjeta a la lista de tarjetas encriptadas
-                console.log(result.data);
-                encryptedCards.data.push(result.data);
-                showCards(encryptedCards); // Mostrar las tarjetas en la vista
-                showToast(result.message);
+            if (modalNewMode === 'create') {
+                // Crear nueva tarjeta
+                const result = await window.electronAPI.createCard({
+                    name: name,
+                    user: user,
+                    password: password,
+                    web: web,
+                    color: colorSelected,
+                    favorite: newFavorite,
+                });
+                console.log(result);
+                // Cerrar modal
+                if (result.success) {
+                    modalNew.style.display = 'none';
+                    // Agregar tarjeta a la lista de tarjetas encriptadas
+                    console.log(result.data);
+                    encryptedCards.data.push(result.data);
+                    showCards(encryptedCards); // Mostrar las tarjetas en la vista
+                    showToast(result.message);
+                }
+                else {
+                    showToast(result.message);
+                }
             }
-            else {
-                showToast(result.message);
+            else if (modalNewMode === 'edit') {
+                // Editar tarjeta existente
+                const result = await window.electronAPI.editCard({
+                    id: encryptedSelectedCard.id,
+                    name: name,
+                    user: user,
+                    password: password,
+                    web: web,
+                    color: colorSelected,
+                    favorite: newFavorite,
+                });
+                console.log(result);
             }
         } else {
             window.electronAPI.showWarning('Problema', 'Es necesario al menos un nombre y una contraseña para continuar.');

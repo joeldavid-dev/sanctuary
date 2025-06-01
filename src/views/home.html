@@ -12,7 +12,7 @@
     ">
     <link rel="stylesheet" href="../styles/styles.css">
     <link rel="stylesheet" href="../styles/home.css">
-    <script src="../renderer/homeRenderer.js" defer></script>
+    <script type="module" src="../renderer/homeRenderer.js" defer></script>
     <title>Codaby Sanctuary</title>
 </head>
 
@@ -120,11 +120,11 @@
             </div>
         </div>
 
-        <!-- Modal para agregar una nueva tarjeta -->
+        <!-- Modal para agregar o editar una nueva tarjeta -->
         <div id="modal-new" class="modal blur">
             <div class="modal-content scrolleable normal-rounded">
                 <div class="modal-header normal-padding colored-blur">
-                    <h2>Nueva contraseña</h2>
+                    <h2 id="modal-new-title">Nueva contraseña</h2>
                     <button id="close-modal-new" class="normal-btn-ico">
                         <img src="../assets/ico/feather/x-circle.svg" class="normal-icon">
                     </button>
@@ -213,7 +213,7 @@
 
                         <div id="preview-card" class="card-body color1">
                             <div class="horizontal_elem-area spaced centered">
-                                <p id="name-preview" class="normal-text">Nueva contraseña</p>
+                                <p id="name-preview" class="bold">Nueva contraseña</p>
                                 <div id="ico-love">
                                     <div class="card-static-icon">
                                         <img src="../assets/ico/feather/heart.svg" class="card-icon">

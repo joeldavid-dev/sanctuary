@@ -1,5 +1,5 @@
-const { app, BrowserWindow, ipcMain, shell, dialog, Notification } = require('electron')
-const path = require('node:path')
+const { app, BrowserWindow, ipcMain, shell, dialog, Notification } = require('electron');
+const path = require('node:path');
 const cr = require('./utils/crypto.js');
 const db = require('./utils/database.js');
 const oldCr = require('./utils/oldCrypto.js');
