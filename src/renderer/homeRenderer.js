@@ -77,6 +77,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     async function showCards(cards) {
         // Limpiar el contenedor de tarjetas antes de agregar nuevas
         cardsContainer.innerHTML = '';
+        deselectAllCards(); // Deseleccionar todas las tarjetas
         if (cards.success) {
             // Crear y agregar cada tarjeta al contenedor
             cards.data.forEach((card, index) => {
@@ -184,6 +185,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     //Funciones de los botones de la butonbar ================================================
     // Clic en el botón para crar una nueva tarjeta
     newCard.addEventListener('click', async () => {
+        modalNewMode = 'create'; // Establecer el modo del modal a crear
         // Abrir modal
         modalNew.style.display = 'block';
         // Reiniciar el estado del modal
@@ -209,6 +211,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Clic en el botón para editar la tarjeta seleccionada
     editCard.addEventListener('click', async () => {
         if (encryptedSelectedCard) {
+            modalNewMode = 'edit'; // Establecer el modo del modal a editar
             // Desencriptar la tarjeta seleccionada
             const selectedCard = await window.electronAPI.decryptCard(encryptedSelectedCard);
             if (selectedCard.success) {
@@ -344,7 +347,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 if (result.success) {
                     modalNew.style.display = 'none';
                     // Agregar tarjeta a la lista de tarjetas encriptadas
-                    console.log(result.data);
                     encryptedCards.data.push(result.data);
                     showCards(encryptedCards); // Mostrar las tarjetas en la vista
                     showToast(result.message);
@@ -354,17 +356,30 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
             }
             else if (modalNewMode === 'edit') {
-                // Editar tarjeta existente
-                const result = await window.electronAPI.editCard({
-                    id: encryptedSelectedCard.id,
+                const updatedCard = {
                     name: name,
                     user: user,
                     password: password,
                     web: web,
                     color: colorSelected,
                     favorite: newFavorite,
-                });
+                };
+
+                console.log('Nuevos datos de tarjeta:', updatedCard);
+                // Editar tarjeta existente
+                const result = await window.electronAPI.updateCard(encryptedSelectedCard.id, updatedCard);
                 console.log(result);
+                // Cerrar modal
+                if (result.success) {
+                    modalNew.style.display = 'none';
+                    // Reemplazar tarjeta editada en la lista de tarjetas encriptadas
+                    encryptedCards.data[selectedCardIndex] = result.data; // Reemplazar la tarjeta editada
+                    showCards(encryptedCards); // Mostrar las tarjetas en la vista
+                    showToast(result.message);
+                }
+                else {
+                    showToast(result.message);
+                }
             }
         } else {
             window.electronAPI.showWarning('Problema', 'Es necesario al menos un nombre y una contraseña para continuar.');
@@ -386,7 +401,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     confirmWarningBtn.addEventListener('click', async () => {
         // Eliminar la tarjeta seleccionada
         if (modalWarningAction === 'delete') {
-            const result = await window.electronAPI.deleteCard(selectedCard.id);
+            const result = await window.electronAPI.deleteCard(encryptedSelectedCard.id);
             console.log(result);
             if (result.success) {
                 // Mostrar notificación de éxito

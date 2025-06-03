@@ -60,7 +60,7 @@ function getUser() {
 }
 
 // Función para crear una tarjeta
-function addCard(card) {
+function createCard(card) {
     return new Promise((resolve, reject) => {
         const query = `INSERT INTO cardsData 
         (name, user, password, web, color, favorite, salt, iv) 
@@ -101,6 +101,34 @@ function deleteCard(id) {
     });
 }
 
+// Función para actualizar una tarjeta
+function updateCard(id, card) {
+    return new Promise((resolve, reject) => {
+        const query = `UPDATE cardsData SET 
+        name = ?, user = ?, password = ?, web = ?, color = ?, favorite = ?, salt = ?, iv = ? 
+        WHERE id = ?`;
+
+        db.run(query, [card.name, card.user, card.password, card.web,
+        card.color, card.favorite, card.salt, card.iv, id], function (err) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve({
+                    id: id,
+                    name: card.name,
+                    user: card.user,
+                    password: card.password,
+                    web: card.web,
+                    color: card.color,
+                    favorite: card.favorite,
+                    salt: card.salt,
+                    iv: card.iv,
+                });
+            }
+        });
+    });
+}
+
 // Función para obtener todas las tarjetas
 function getAllCards() {
     return new Promise((resolve, reject) => {
@@ -115,4 +143,4 @@ function getAllCards() {
     });
 }
 
-module.exports = { addUser, getUser, addCard, deleteCard, getAllCards };
+module.exports = { addUser, getUser, createCard, deleteCard, updateCard, getAllCards };

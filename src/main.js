@@ -234,7 +234,7 @@ ipcMain.handle('create-card', async (event, newCard) => {
     try {
         // Encriptar los datos de la tarjeta
         const encryptedCard = await cr.encryptCard(masterKey, newCard);
-        const result = await db.addCard(encryptedCard);
+        const result = await db.createCard(encryptedCard);
         return {
             success: true,
             message: 'Tarjeta creada correctamente',
@@ -244,6 +244,27 @@ ipcMain.handle('create-card', async (event, newCard) => {
         return {
             success: false,
             message: 'No se pudo crear la tarjeta',
+            error: error.message,
+        };
+    }
+});
+
+// Actualizar una tarjeta
+ipcMain.handle('update-card', async (event, id, updatedCard) => {
+    try {
+        // Encriptar los datos de la tarjeta actualizada
+        const encryptedCard = await cr.encryptCard(masterKey, updatedCard);
+        console.log('Tarjeta a actualizar encriptada: ', encryptedCard);
+        const result = await db.updateCard(id, encryptedCard);
+        return {
+            success: true,
+            message: 'Tarjeta actualizada correctamente',
+            data: result,
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: 'No se pudo actualizar la tarjeta',
             error: error.message,
         };
     }
@@ -329,7 +350,7 @@ ipcMain.handle('import-data', async (event, key) => {
             const adaptedCard = oldCr.adaptOldCard(key, oldCard);
             try {
                 const encryptedCard = await cr.encryptCard(key, adaptedCard);
-                const result = await db.addCard(encryptedCard);
+                const result = await db.createCard(encryptedCard);
             } catch (error) {
                 return {
                     success: false,
