@@ -3,12 +3,12 @@ const path = require('node:path');
 const cr = require('./utils/crypto.js');
 const db = require('./utils/database.js');
 const oldCr = require('./utils/oldCrypto.js');
-const { mas } = require('node:process');
-const fs = require('fs').promises
+const fs = require('fs');
 const now = new Date();
 const hours = now.getHours();
 
 let mainWindow, superUser, masterKey, oldData;
+let translations = getTranslations('en'); // Cargar traducciones por defecto
 
 const createMainWindow = () => {
     mainWindow = new BrowserWindow({
@@ -72,6 +72,23 @@ ipcMain.on('close-window', () => {
     mainWindow.close();
 });
 
+// Obtener traducciones
+function getTranslations(lang = 'en') {
+    try {
+        const filePath = path.join(__dirname, 'locales', `${lang}.json`);
+        const raw = fs.readFileSync(filePath, 'utf8');
+        console.log('Cargando traduccion:', filePath);
+        return JSON.parse(raw);
+    } catch (err) {
+        console.error('Error al cargar traduccion:', err);
+        return {};
+    }
+}
+
+ipcMain.handle('get-translations', (event) => {
+    return translations;
+});
+
 // Escucha el evento de cambio de vista
 ipcMain.on('change-view', (event, newView) => {
     mainWindow.loadFile(newView);
@@ -87,7 +104,7 @@ ipcMain.handle('show-warning', async (event, title, message) => {
     });
 });
 
-// Obtener arvhivo JSON
+// Obtener arvhivo JSON con datos a importar desde el explorador de archivos
 ipcMain.handle('get-json-file', async () => {
     // Mostrar un cuadro de diálogo para seleccionar el archivo JSON
     const { canceled, filePaths } = await dialog.showOpenDialog({
@@ -152,6 +169,23 @@ ipcMain.handle('show-notification', (event, title, body) => {
     notification.show();
 });
 
+// Obtener saludo
+ipcMain.handle('get-greeting', () => {
+    if (hours >= 0 && hours < 7) {
+        // Madrugada
+        return 'Es hora de descansar, ' + superUser.name;
+    } else if (hours >= 7 && hours < 12) {
+        // Dia
+        return 'Buenos días, ' + superUser.name;
+    } else if (hours >= 12 && hours < 19) {
+        // Tarde
+        return 'Buenas tardes, ' + superUser.name;
+    } else {
+        // Noche
+        return 'Buenas noches, ' + superUser.name;
+    }
+});
+
 // BASE DE DATOS
 // Encripta la contraseña del usuario y almacena en la base de datos
 // toda la información obtenida. Almacena el usuario en la variable local
@@ -209,23 +243,6 @@ ipcMain.handle('verify-password', async (event, password) => {
     } else return {
         verified: false,
         message: 'La contraseña no es autentica',
-    }
-});
-
-// Obtener saludo
-ipcMain.handle('get-greeting', () => {
-    if (hours >= 0 && hours < 7) {
-        // Madrugada
-        return 'Es hora de descansar, ' + superUser.name;
-    } else if (hours >= 7 && hours < 12) {
-        // Dia
-        return 'Buenos días, ' + superUser.name;
-    } else if (hours >= 12 && hours < 19) {
-        // Tarde
-        return 'Buenas tardes, ' + superUser.name;
-    } else {
-        // Noche
-        return 'Buenas noches, ' + superUser.name;
     }
 });
 
@@ -287,7 +304,7 @@ ipcMain.handle('decrypt-card', async (event, encryptedCard) => {
     }
 });
 
-// Eliminar una tarjeta
+// Eliminar una tarjeta en la base de datos
 ipcMain.handle('delete-card', async (event, id) => {
     try {
         const result = await db.deleteCard(id);
@@ -306,7 +323,7 @@ ipcMain.handle('delete-card', async (event, id) => {
     }
 });
 
-
+// Obtener todas las tarjetas de la base de datos
 ipcMain.handle('get-all-cards', async () => {
     try {
         const encryptedCards = await db.getAllCards();

@@ -1,5 +1,3 @@
-let count = 5;
-
 document.addEventListener("DOMContentLoaded", async () => {
     const minimize = document.getElementById('minimize');
     const maximize = document.getElementById('maximize');
@@ -11,6 +9,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const greeting = document.getElementById('greeting');
     const passLabel = document.getElementById('pass-label');
     const inputPassword = document.getElementById('password');
+    const translations = await window.electronAPI.getTranslations();
+    let count = 5;
+
+    console.log(translations);
 
     // Clic en botón minimizar
     minimize.addEventListener('click', () => {
@@ -23,6 +25,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Clic en botón cerrar
     close.addEventListener('click', () => {
         window.electron.close();
+    });
+
+    // Cargar traducciones y mostrarlas en la interfaz
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[key]) {
+            el.textContent = translations[key];
+        }
     });
 
     // Acciones al inicio de la pantalla
