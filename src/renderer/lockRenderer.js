@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const greeting = document.getElementById('greeting');
     const passLabel = document.getElementById('pass-label');
     const inputPassword = document.getElementById('password');
-    const translations = await window.electronAPI.getTranslations();
+    const translations = await window.electronAPI.getTranslations('lock-view');
     const superuser = await window.electronAPI.getUserInfo();
     let count = 5;
 
@@ -43,16 +43,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Obtener el saludo dependiendo de la hora
     if (hours >= 0 && hours < 7) {
         //Madrugada
-        greeting.textContent = translate('lock-greeting-early-morning', { name: superuser.name });
+        greeting.textContent = translate('greeting-early-morning', { name: superuser.name });
     } else if (hours >= 7 && hours < 12) {
         //Mañana
-        greeting.textContent = translate('lock-greeting-morning', { name: superuser.name });
+        greeting.textContent = translate('greeting-morning', { name: superuser.name });
     } else if (hours >= 12 && hours < 19) {
         //Tarde
-        greeting.textContent = translate('lock-greeting-afternoon', { name: superuser.name });
+        greeting.textContent = translate('greeting-afternoon', { name: superuser.name });
     } else {
         //Noche
-        greeting.textContent = translate('lock-greeting-evening', { name: superuser.name });
+        greeting.textContent = translate('greeting-evening', { name: superuser.name });
     }
 
     // Enter en el input de contraseña
@@ -66,17 +66,17 @@ document.addEventListener("DOMContentLoaded", async () => {
                     count--;
                     if (count == 0) {
                         inputPassword.disabled = true;
-                        passLabel.textContent = translate('lock_locked');
+                        passLabel.textContent = translate('locked');
                     }
                     else if (count == 1) {
-                        passLabel.textContent = translate('lock_wrong-password-last', { attempts: count });
+                        passLabel.textContent = translate('wrong-password-last', { attempts: count });
                     }
                     else if (count <= 2) {
-                        greeting.textContent = translate('lock-greeting-doubting', { name: superuser.name });
-                        passLabel.textContent = translate('lock_wrong-password', { attempts: count });
+                        greeting.textContent = translate('greeting-doubting', { name: superuser.name });
+                        passLabel.textContent = translate('wrong-password', { attempts: count });
                     }
                     else {
-                        passLabel.textContent = translate('lock_wrong-password', { attempts: count });
+                        passLabel.textContent = translate('wrong-password', { attempts: count });
                     }
                     inputPassword.value = '';
                 }

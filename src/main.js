@@ -85,8 +85,8 @@ function getTranslations(lang = 'en') {
     }
 }
 
-ipcMain.handle('get-translations', (event) => {
-    return translations;
+ipcMain.handle('get-translations', (event, view) => {
+    return translations[view];
 });
 
 // Escucha el evento de cambio de vista

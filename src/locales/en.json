@@ -1,15 +1,17 @@
 {
     "appName": "Codaby Sanctuary",
-    "brandName": "Codaby",
-    "lock-greeting-early-morning": "Looks like it's time for bed, {name}",
-    "lock-greeting-morning": "Morning, {name}!",
-    "lock-greeting-afternoon": "Hi {name}, good afternoon",
-    "lock-greeting-evening": "Have a good night, {name}",
-    "lock-greeting-doubting": "Hmm... are you sure you're {name}?",
-    "lock_password": "Password:",
-    "lock_wrong-password": "Wrong password. You still have {attempts} tries left",
-    "lock_wrong-password-last": "Wrong password. This is your final try",
-    "lock_locked": "No more attempts left. The app is temporarily locked",
-    "lock_notification_btn": "Clic to read",
-    "lock_extra_info": "Codaby | Sanctuary 5 Eridani for Windows"
+    "lock-view": {
+        "brandName": "Codaby",
+        "greeting-early-morning": "Looks like it's time for bed, {name}",
+        "greeting-morning": "Morning, {name}!",
+        "greeting-afternoon": "Hi {name}, good afternoon",
+        "greeting-evening": "Have a good night, {name}",
+        "greeting-doubting": "Hmm... are you sure you're {name}?",
+        "password": "Password:",
+        "wrong-password": "Wrong password. You still have {attempts} tries left",
+        "wrong-password-last": "Wrong password. This is your final try",
+        "locked": "No more attempts left. The app is temporarily locked",
+        "notification_btn": "Clic to read",
+        "extra_info": "Codaby | Sanctuary 5 Eridani for Windows"
+    }
 }
