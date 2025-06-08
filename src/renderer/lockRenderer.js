@@ -1,3 +1,7 @@
+import { setTranslations, translate } from './utils/translate.js';
+const now = new Date();
+const hours = now.getHours();
+
 document.addEventListener("DOMContentLoaded", async () => {
     const minimize = document.getElementById('minimize');
     const maximize = document.getElementById('maximize');
@@ -10,9 +14,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const passLabel = document.getElementById('pass-label');
     const inputPassword = document.getElementById('password');
     const translations = await window.electronAPI.getTranslations();
+    const superuser = await window.electronAPI.getUserInfo();
     let count = 5;
-
-    console.log(translations);
 
     // Clic en botón minimizar
     minimize.addEventListener('click', () => {
@@ -27,16 +30,30 @@ document.addEventListener("DOMContentLoaded", async () => {
         window.electron.close();
     });
 
-    // Cargar traducciones y mostrarlas en la interfaz
+    // Cargar traducciones y mostrarlas en la interfaz estática
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (translations[key]) {
             el.textContent = translations[key];
         }
     });
+    // Cargar las traducciones para el módulo de traducción
+    setTranslations(translations);
 
-    // Acciones al inicio de la pantalla
-    greeting.textContent = await window.electronAPI.getGreeting();
+    // Obtener el saludo dependiendo de la hora
+    if (hours >= 0 && hours < 7) {
+        //Madrugada
+        greeting.textContent = translate('lock-greeting-early-morning', { name: superuser.name });
+    } else if (hours >= 7 && hours < 12) {
+        //Mañana
+        greeting.textContent = translate('lock-greeting-morning', { name: superuser.name });
+    } else if (hours >= 12 && hours < 19) {
+        //Tarde
+        greeting.textContent = translate('lock-greeting-afternoon', { name: superuser.name });
+    } else {
+        //Noche
+        greeting.textContent = translate('lock-greeting-evening', { name: superuser.name });
+    }
 
     // Enter en el input de contraseña
     inputPassword.addEventListener('keydown', async (event) => {
@@ -47,11 +64,21 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 if (!response.verified) {
                     count--;
-                    passLabel.textContent = 'Contraseña incorrecta, te quedan ' + count.toString() + ' intentos';
-                    inputPassword.value = '';
                     if (count == 0) {
                         inputPassword.disabled = true;
+                        passLabel.textContent = translate('lock_locked');
                     }
+                    else if (count == 1) {
+                        passLabel.textContent = translate('lock_wrong-password-last', { attempts: count });
+                    }
+                    else if (count <= 2) {
+                        greeting.textContent = translate('lock-greeting-doubting', { name: superuser.name });
+                        passLabel.textContent = translate('lock_wrong-password', { attempts: count });
+                    }
+                    else {
+                        passLabel.textContent = translate('lock_wrong-password', { attempts: count });
+                    }
+                    inputPassword.value = '';
                 }
             }
         }
@@ -67,7 +94,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const html = await response.text();
             aboutBody.innerHTML = html;
         } catch (error) {
-            aboutBody.innerHTML = '<p>Error al cargar el contenido.</p>';
+            aboutBody.innerHTML = '<p>//:)</p>';
         }
         //window.electron.openExternal('https://colebemis.com/');
     });

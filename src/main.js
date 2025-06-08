@@ -169,20 +169,18 @@ ipcMain.handle('show-notification', (event, title, body) => {
     notification.show();
 });
 
-// Obtener saludo
-ipcMain.handle('get-greeting', () => {
-    if (hours >= 0 && hours < 7) {
-        // Madrugada
-        return 'Es hora de descansar, ' + superUser.name;
-    } else if (hours >= 7 && hours < 12) {
-        // Dia
-        return 'Buenos días, ' + superUser.name;
-    } else if (hours >= 12 && hours < 19) {
-        // Tarde
-        return 'Buenas tardes, ' + superUser.name;
+// Retorna la información del usuario almacenado
+ipcMain.handle('get-user-info', () => {
+    if (superUser) {
+        return {
+            name: superUser.name,
+            gender: superUser.gender
+        }
     } else {
-        // Noche
-        return 'Buenas noches, ' + superUser.name;
+        return {
+            name: '¿?',
+            gender: '¿?'
+        }
     }
 });
 
