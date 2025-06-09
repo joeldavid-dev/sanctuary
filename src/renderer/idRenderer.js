@@ -1,4 +1,6 @@
-document.addEventListener("DOMContentLoaded", () => {
+import { setTranslations, translate } from './utils/translate.js';
+
+document.addEventListener("DOMContentLoaded", async () => {
     const close = document.getElementById('close');
     const greeting = document.getElementById('greeting');
     const instructions = document.getElementById('instructions');
@@ -10,9 +12,27 @@ document.addEventListener("DOMContentLoaded", () => {
     const genderContainer = document.getElementById('gender-container');
     const done = document.getElementById('done-btn');
     const importBtn = document.getElementById('import-btn');
+    const translations = await window.electronAPI.getTranslations('id-view');
+    const warningTranslations = await window.electronAPI.getTranslations('warning');
 
     let name, pass1, pass2, gender = '';
     let mode = 'create'; // Modo de creación de ID
+
+    // Clic en botón cerrar
+    close.addEventListener('click', () => {
+        window.electron.close();
+    });
+
+    // Cargar traducciones y mostrarlas en la interfaz estática
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[key]) {
+            el.textContent = translations[key];
+        }
+    });
+
+    // Cargar las traducciones para el módulo de traducción
+    setTranslations(translations);
 
     // Fondo animado
     document.body.addEventListener("pointermove", (e) => {
@@ -21,11 +41,6 @@ document.addEventListener("DOMContentLoaded", () => {
         el.style.setProperty('--posX', x - l - w / 2);
         el.style.setProperty('--posY', y - t - h / 2);
     })
-
-    // Clic en botón cerrar
-    close.addEventListener('click', () => {
-        window.electron.close();
-    });
 
     // Al editar el nombre
     nameIn.addEventListener('input', (event) => {
@@ -55,12 +70,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Verificar que todos los campos no esten vacíos
             if (name == '' || pass1 == '' || pass2 == '' || !name || !pass1 || !pass2 || !gender) {
-                await window.electronAPI.showWarning('Advertencia', 'No puede haber campos vacíos.');
+                await window.electronAPI.showWarning(warningTranslations['title'], warningTranslations['empty-fields']);
             }
 
             // Verificar que las contraseñas coincidan
             else if (pass1 != pass2) {
-                await window.electronAPI.showWarning('Advertencia', 'Las contraseñas no coinciden.');
+                await window.electronAPI.showWarning(warningTranslations['title'], warningTranslations['passwords-dont-match']);
                 pass1In.value = '';
                 pass2In.value = '';
                 pass1 = '';
@@ -82,26 +97,26 @@ document.addEventListener("DOMContentLoaded", () => {
         else if (mode == 'import') {
             // Verificar que todos los campos no esten vacíos
             if (pass1 != '' && pass1) {
-                done.textContent = 'Importando...';
+                done.textContent = translations['importing'];
                 done.disabled = true; // Deshabilitar el botón "listo" para evitar múltiples clics
                 const response = await window.electronAPI.importData(pass1);
                 if (response.success) {
                     // Cuando la contraseña es correcta y la importación es exitosa
-                    window.electronAPI.showNotification('Éxito', 'Datos importados correctamente.');
+                    window.electronAPI.showNotification(translations['success'], translations['success-info']);
                     window.electronAPI.changeView('src/views/lock.html');
                 } else {
                     // Cuando la contraseña es incorrecta
-                    await window.electronAPI.showWarning('Advertencia', 'La contraseña es incorrecta.');
+                    await window.electronAPI.showWarning(warningTranslations['title'], warningTranslations['wrong-password']);
                     pass1In.value = '';
                     pass1 = '';
-                    done.textContent = 'Listo';
+                    done.textContent = translations['done'];
                     done.disabled = false; // Habilitar el botón "listo" nuevamente
                 }
             }
             // Acciones cuando no se ingresa la contraseña
             else {
-                await window.electronAPI.showWarning('Advertencia', 'Ingresa una contraseña.');
-                done.textContent = 'Listo';
+                await window.electronAPI.showWarning(warningTranslations['title'], warningTranslations['empty-fields']);
+                done.textContent = translations['done'];
                 done.disabled = false; // Habilitar el botón "listo" nuevamente
             }
         }
@@ -114,8 +129,8 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log(response.message);
             mode = 'import'; // Cambiar a modo de importación
             // Adaptar la interfaz para importar los datos
-            greeting.textContent = `¡Hola de nuevo, ${response.name}!`;
-            instructions.textContent = 'Por favor, ingresa tu contraseña para desbloquear tu cuenta e importar tus datos a la nueva versión.';
+            greeting.textContent = translate('welcome-back', { name: response.name });
+            instructions.textContent = translations['welcome-back-info'];
             nameContainer.style.display = 'none';
             pass2Container.style.display = 'none';
             genderContainer.style.display = 'none';

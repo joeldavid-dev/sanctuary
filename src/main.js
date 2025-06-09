@@ -124,7 +124,7 @@ ipcMain.handle('get-json-file', async () => {
     // y convertirlo a un objeto JavaScript
     const filePath = filePaths[0];
     try {
-        const content = await fs.readFile(filePath, 'utf-8');
+        const content = fs.readFileSync(filePath, 'utf-8');
         const jsonData = JSON.parse(content);
 
         // Verificar que el archivo JSON tenga la estructura correcta

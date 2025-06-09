@@ -37,6 +37,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             el.textContent = translations[key];
         }
     });
+    
     // Cargar las traducciones para el módulo de traducción
     setTranslations(translations);
 
