@@ -4,11 +4,10 @@ const cr = require('./utils/crypto.js');
 const db = require('./utils/database.js');
 const oldCr = require('./utils/oldCrypto.js');
 const fs = require('fs');
-const now = new Date();
-const hours = now.getHours();
 
 let mainWindow, superUser, masterKey, oldData;
 let translations = getTranslations('en'); // Cargar traducciones por defecto
+const mainTranslations = translations['main'] || {};
 
 const createMainWindow = () => {
     mainWindow = new BrowserWindow({
@@ -108,7 +107,7 @@ ipcMain.handle('show-warning', async (event, title, message) => {
 ipcMain.handle('get-json-file', async () => {
     // Mostrar un cuadro de diálogo para seleccionar el archivo JSON
     const { canceled, filePaths } = await dialog.showOpenDialog({
-        tittle: 'Seleccionar archivo JSON',
+        tittle: mainTranslations['json-dialog-title'],
         filters: [{ name: 'JSON', extensions: ['json'] }],
         properties: ['openFile']
     });
@@ -117,7 +116,7 @@ ipcMain.handle('get-json-file', async () => {
         console.log('Operacion "importar JSON" cancelada.');
         return {
             success: false,
-            message: 'Operación cancelada'
+            message: mainTranslations['json-dialog-cancelled']
         };
     }
     // Leer el contenido del archivo JSON seleccionado
@@ -135,21 +134,21 @@ ipcMain.handle('get-json-file', async () => {
             oldData = jsonData;
             return {
                 success: true,
-                message: 'El archivo JSON tiene la estructura correcta.',
+                message: mainTranslations['json-dialog-success'],
                 name: jsonData.name,
             };
         }
         else {
             return {
                 success: false,
-                message: 'El archivo JSON no tiene la estructura correcta.'
+                message: mainTranslations['json-dialog-invalid'],
             };
         }
     } catch (error) {
         console.error('Error al leer el archivo JSON:', error);
         return {
             success: false,
-            message: 'Error al leer el archivo JSON',
+            message: mainTranslations['json-dialog-error'],
             error: error.message
         };
     }
@@ -200,14 +199,14 @@ ipcMain.handle('createID', async (event, name, password, gender) => {
         superUser = result;
         return {
             success: true,
-            message: 'Usuario creado correctamente'
+            message: mainTranslations['createID-success'],
         };
     }
     // Hay errores
     catch (error) {
         return {
             success: false,
-            message: 'No se pudo crear el usuario',
+            message: mainTranslations['createID-error'],
             error: error.message
         };
     }
@@ -236,11 +235,11 @@ ipcMain.handle('verify-password', async (event, password) => {
         mainWindow.loadFile('src/views/home.html');
         return {
             verified: true,
-            message: 'La contraseña es autentica',
+            message: mainTranslations['verify-password-success'],
         }
     } else return {
         verified: false,
-        message: 'La contraseña no es autentica',
+        message: mainTranslations['verify-password-fail'],
     }
 });
 
@@ -252,13 +251,13 @@ ipcMain.handle('create-card', async (event, newCard) => {
         const result = await db.createCard(encryptedCard);
         return {
             success: true,
-            message: 'Tarjeta creada correctamente',
+            message: mainTranslations['create-card-success'],
             data: result,
         };
     } catch (error) {
         return {
             success: false,
-            message: 'No se pudo crear la tarjeta',
+            message: mainTranslations['create-card-error'],
             error: error.message,
         };
     }
@@ -273,13 +272,13 @@ ipcMain.handle('update-card', async (event, id, updatedCard) => {
         const result = await db.updateCard(id, encryptedCard);
         return {
             success: true,
-            message: 'Tarjeta actualizada correctamente',
+            message: mainTranslations['update-card-success'],
             data: result,
         };
     } catch (error) {
         return {
             success: false,
-            message: 'No se pudo actualizar la tarjeta',
+            message: mainTranslations['update-card-error'],
             error: error.message,
         };
     }
@@ -291,12 +290,13 @@ ipcMain.handle('decrypt-card', async (event, encryptedCard) => {
         const decryptedCard = await cr.decryptCard(masterKey, encryptedCard);
         return {
             success: true,
+            message: mainTranslations['decrypt-card-success'],
             data: decryptedCard,
         };
     } catch (error) {
         return {
             success: false,
-            message: 'Error al desencriptar la tarjeta',
+            message: mainTranslations['decrypt-card-error'],
             error: error.message,
         };
     }
@@ -309,13 +309,13 @@ ipcMain.handle('delete-card', async (event, id) => {
         if (result) {
             return {
                 success: true,
-                message: 'Tarjeta eliminada correctamente',
+                message: mainTranslations['delete-card-success'],
             };
         }
     } catch (error) {
         return {
             success: false,
-            message: 'No se pudo eliminar la tarjeta',
+            message: mainTranslations['delete-card-error'],
             error: error.message,
         };
     }
@@ -352,7 +352,7 @@ ipcMain.handle('import-data', async (event, key) => {
             console.error('Error al importar el usuario:', error);
             return {
                 success: false,
-                message: 'No se pudo crear el usuario',
+                message: mainTranslations['import-data-error'],
                 error: error.message
             };
         }
@@ -369,7 +369,7 @@ ipcMain.handle('import-data', async (event, key) => {
             } catch (error) {
                 return {
                     success: false,
-                    message: 'No se pudo crear la tarjeta',
+                    message: mainTranslations['import-card-error'],
                     error: error.message,
                 };
             }
@@ -378,12 +378,12 @@ ipcMain.handle('import-data', async (event, key) => {
         // Proceso terminado de forma exitosa
         return {
             success: true,
-            message: 'La importación se realizó correctamente',
+            message: mainTranslations['import-data-success'],
         };
     } else {
         return {
             success: false,
-            message: 'La contraseña es incorrecta'
+            message: mainTranslations['import-data-wrong-password'],
         };
     }
 });

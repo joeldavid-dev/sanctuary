@@ -87,10 +87,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const response = await window.electronAPI.createID(name, pass1, gender);
 
                 if (response.success) {
-                    console.log(response.message);
                     window.electronAPI.changeView('src/views/lock.html');
                 } else {
-                    console.error(response.message, response.error);
+                    showToast(response.message);
                 }
             }
         }
@@ -105,8 +104,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                     window.electronAPI.showNotification(translations['success'], translations['success-info']);
                     window.electronAPI.changeView('src/views/lock.html');
                 } else {
-                    // Cuando la contraseña es incorrecta
-                    await window.electronAPI.showWarning(warningTranslations['title'], warningTranslations['wrong-password']);
+                    // Cuando la contraseña es incorrecta o ocurrió un error
+                    showToast(response.message);
                     pass1In.value = '';
                     pass1 = '';
                     done.textContent = translations['done'];
@@ -126,7 +125,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     importBtn.addEventListener('click', async () => {
         const response = await window.electronAPI.getJSONFile();
         if (response.success) {
-            console.log(response.message);
             mode = 'import'; // Cambiar a modo de importación
             // Adaptar la interfaz para importar los datos
             greeting.textContent = translate('welcome-back', { name: response.name });
