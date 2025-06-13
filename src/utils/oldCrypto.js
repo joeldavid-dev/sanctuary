@@ -19,7 +19,7 @@ function encrypt(texto, llave) {
 }
 
 function decrypt(texto, llave) {
-    let textoDes = '';
+    let clavesTexto = [];
     let contLlave = 0;
     let j = 0;
 
@@ -34,14 +34,13 @@ function decrypt(texto, llave) {
             (llave.length * charCodeLlave)
         );
         contLlave++;
-        textoDes += String.fromCharCode(originalCharCode);
-
+        clavesTexto.push(originalCharCode);
+        
         if (contLlave === llave.length) {
             contLlave = 0;
         }
     }
-
-    return textoDes;
+    return new TextDecoder().decode(new Uint8Array(clavesTexto));
 }
 
 // Funcion para adaptar el viejo ID a la nueva version

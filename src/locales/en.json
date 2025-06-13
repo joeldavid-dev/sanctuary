@@ -62,6 +62,6 @@
         "import-card-error": "Error importing the card.",
         "import-data-success": "Data imported successfully.",
         "import-data-error": "Error importing data.",
-        "import-data-wrong-password": "Incorrect password. Data could not be imported."
+        "import-data-wrong-password": "Incorrect password."
     }
 }

@@ -62,6 +62,6 @@
         "import-card-error": "Error al importar la tarjeta.",
         "import-data-success": "Datos importados exitosamente.",
         "import-data-error": "Error al importar los datos.",
-        "import-data-wrong-password": "Contraseña incorrecta. No se pudieron importar los datos."
+        "import-data-wrong-password": "Contraseña incorrecta."
     }
 }
