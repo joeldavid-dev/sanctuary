@@ -4,10 +4,17 @@ const cr = require('./utils/crypto.js');
 const db = require('./utils/database.js');
 const oldCr = require('./utils/oldCrypto.js');
 const fs = require('fs');
+const debug = true; // Activa el modo de depuración
+if (debug) {
+    console.log('Modo de depuración activado');
+    // Mostrar la ruta del directorio actual
+    console.log('Directorio actual:', __dirname);
+}
 
 let mainWindow, superUser, masterKey, oldData;
 let translations = getTranslations('en'); // Cargar traducciones por defecto
 const mainTranslations = translations['main'] || {};
+
 
 const createMainWindow = () => {
     mainWindow = new BrowserWindow({
@@ -76,10 +83,10 @@ function getTranslations(lang = 'en') {
     try {
         const filePath = path.join(__dirname, 'locales', `${lang}.json`);
         const raw = fs.readFileSync(filePath, 'utf8');
-        console.log('Cargando traduccion:', filePath);
+        printDebugInfo('Cargando traduccion:' + filePath);
         return JSON.parse(raw);
     } catch (err) {
-        console.error('Error al cargar traduccion:', err);
+        printDebugInfo('Error al cargar traduccion:' + err);
         return {};
     }
 }
@@ -113,7 +120,7 @@ ipcMain.handle('get-json-file', async () => {
     });
     // Si se cancela la selección o no se selecciona ningún archivo, salir
     if (canceled || filePaths.length === 0) {
-        console.log('Operacion "importar JSON" cancelada.');
+        printDebugInfo('Operacion "importar JSON" cancelada.');
         return {
             success: false,
             message: mainTranslations['json-dialog-cancelled']
@@ -268,7 +275,7 @@ ipcMain.handle('update-card', async (event, id, updatedCard) => {
     try {
         // Encriptar los datos de la tarjeta actualizada
         const encryptedCard = await cr.encryptCard(masterKey, updatedCard);
-        console.log('Tarjeta a actualizar encriptada: ', encryptedCard);
+        printDebugInfo('Tarjeta a actualizar encriptada: ' + encryptedCard.name);
         const result = await db.updateCard(id, encryptedCard);
         return {
             success: true,
@@ -346,7 +353,7 @@ ipcMain.handle('import-data', async (event, key) => {
             );
             // Todo salío bien
             superUser = result;
-            console.log('Usuario creado correctamente');
+            printDebugInfo('Usuario creado correctamente');
         }
         catch (error) {
             console.error('Error al importar el usuario:', error);
@@ -359,11 +366,10 @@ ipcMain.handle('import-data', async (event, key) => {
 
         // Adaptar datos de las tarjetas una por una, para
         // garantizar el orden original
-        console.log('\nAdaptando e importando tarjetas desde Sanctuary 4.2...');
+        printDebugInfo('Adaptando e importando tarjetas desde Sanctuary 4.2...');
         for (const oldCard of oldData.cards) {
-            console.log('\nAdaptando tarjeta:', oldCard.name);
+            printDebugInfo('\nAdaptando tarjeta:' + oldCard.name);
             const adaptedCard = oldCr.adaptOldCard(key, oldCard);
-            console.log('Tarjeta adaptada:', adaptedCard);
             try {
                 const encryptedCard = await cr.encryptCard(key, adaptedCard);
                 const result = await db.createCard(encryptedCard);
@@ -388,3 +394,9 @@ ipcMain.handle('import-data', async (event, key) => {
         };
     }
 });
+
+function printDebugInfo(info) {
+    if (debug) {
+        console.log('>> ' + info);
+    }
+}
