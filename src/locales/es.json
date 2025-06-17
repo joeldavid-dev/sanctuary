@@ -1,7 +1,7 @@
 {
-    "appName": "Codaby Sanctuary",
+    "app-name": "Codaby Sanctuary",
     "lock-view": {
-        "brandName": "Codaby",
+        "brand-name": "Codaby",
         "greeting-early-morning": "Ya es momento de dormir, {name}",
         "greeting-morning": "¡Buenos días {name}!",
         "greeting-afternoon": "Hola {name}, buenas tardes",
@@ -63,5 +63,17 @@
         "import-data-success": "Datos importados exitosamente.",
         "import-data-error": "Error al importar los datos.",
         "import-data-wrong-password": "Contraseña incorrecta."
+    },
+    "home-view": {
+        "keys": "Claves",
+        "block": "Bloquear",
+        "settings": "Configuración",
+        "messages": "Mensajes",
+        "user-info": "Usuario",
+        "random-key": "Clave aleatoria",
+        "my-keys": "Mis claves",
+        "edit": "Editar",
+        "delete": "Eliminar",
+        "new": "Nuevo"
     }
 }

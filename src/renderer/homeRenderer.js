@@ -1,3 +1,4 @@
+import { setTranslations, translate } from './utils/translate.js';
 import { createCardElement } from './components/card.js'; // Importar el módulo de tarjeta
 
 const minimize = document.getElementById('minimize');
@@ -51,6 +52,8 @@ let encryptedCards = null; // Variable para almacenar las tarjetas
 let modalNewMode = 'create'; // Variable para almacenar el modo del modal (crear o editar)
 
 document.addEventListener("DOMContentLoaded", async () => {
+    const translations = await window.electronAPI.getTranslations('home-view');
+    
     // Clic en botón minimizar
     minimize.addEventListener('click', () => {
         window.electron.minimize();
@@ -63,6 +66,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     close.addEventListener('click', () => {
         window.electron.close();
     });
+
+    // Cargar traducciones y mostrarlas en la interfaz estática
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[key]) {
+            el.textContent = translations[key];
+        }
+    });
+
+    // Cargar las traducciones para el módulo de traducción
+    setTranslations(translations);
 
     // Funciones del contenedor principal ====================================================
     // Traer los datos al iniciar la vista
