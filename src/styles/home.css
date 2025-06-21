@@ -31,15 +31,18 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 20px;
+    gap: var(--normal-margin);
 }
 
 .botton-bar {
     position: sticky;
-    bottom: 15px;
+    bottom: var(--normal-margin);
     max-width: min-content;
     margin: auto;
-    box-shadow: 0px 0px 30px 8px rgba(0, 0, 0, 0.20);
+}
+
+.botton-bar-button {
+    width: 50px;
 }
 
 .modal-content {
@@ -59,22 +62,24 @@
     min-width: 30vw;
 }
 
+/* Modal */
+.preview-area {
+    margin-left: var(--normal-margin);
+}
+
 .preview-options {
     background-color: var(--light_gray);
 }
 
 .new-card-done {
     width: 200px;
+    margin-left: var(--normal-margin);
 }
 
 /* Estilos específicos para modo oscuro */
 @media (prefers-color-scheme: dark) {
     .sidebar {
         border-right: 1px solid var(--dark_gray);
-    }
-
-    .botton-bar {
-        box-shadow: 0px 0px 60px 8px rgba(255, 255, 255, 0.2);
     }
 
     .preview-options {

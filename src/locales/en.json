@@ -63,5 +63,38 @@
         "import-data-success": "Data imported successfully.",
         "import-data-error": "Error importing data.",
         "import-data-wrong-password": "Incorrect password."
+    },
+    "home-view": {
+        "keys": "Keys",
+        "block": "Lock",
+        "settings": "Settings",
+        "messages": "Messages",
+        "user-info": "User",
+        "random-key": "Random Key",
+        "my-keys": "My Keys",
+        "edit": "Edit",
+        "delete": "Delete",
+        "new": "New"
+    },
+    "card": {
+        "user": "User:",
+        "password": "Password:",
+        "url": "URL:"
+    },
+    "modal-new-edit": {
+        "title-new": "New Key",
+        "title-edit": "Edit Key",
+        "name": "Name:",
+        "name-placeholder": "Name",
+        "user": "User:",
+        "user-placeholder": "Optional",
+        "password": "Password:",
+        "password-placeholder": "Password",
+        "url": "URL:",
+        "url-placeholder": "Optional",
+        "color": "Color:",
+        "favorite": "Favorite:",
+        "preview": "Preview:",
+        "done": "Done"
     }
 }

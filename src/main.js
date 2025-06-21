@@ -12,7 +12,7 @@ if (debug) {
 }
 
 let mainWindow, superUser, masterKey, oldData;
-let translations = getTranslations('es'); // Cargar traducciones por defecto
+let translations = getTranslations('en'); // Cargar traducciones por defecto
 const mainTranslations = translations['main'] || {};
 
 

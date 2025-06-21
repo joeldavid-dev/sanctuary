@@ -3,7 +3,7 @@
  * La tarjeta contiene un nombre, usuario, contraseña, URL y un icono de favorito. 
  */
 
-export function createCardElement(card, index) {
+export function createCardElement(card, index, translations) {
     const cardBody = document.createElement('label');
     cardBody.classList.add('card-body'); // clase para estilos
     cardBody.setAttribute('id', card.id); // id para el elemento
@@ -31,17 +31,17 @@ export function createCardElement(card, index) {
             </div>
 
             <div class="${userVisible}">
-                <strong class="minimum-text">Usuario:</strong>
+                <strong class="minimum-text">${translations['user']}</strong>
                 <p id="user-${index}" class="small-text selectable-text">••••••••</p>
             </div>
             
             <div>
-                <strong class="minimum-text">Contraseña:</strong>
+                <strong class="minimum-text">${translations['password']}</strong>
                 <p id="pass-${index}" class="small-text selectable-text">••••••••</p>
             </div>
 
             <div class="${urlVisible}">
-                <strong class="minimum-text">URL:</strong>
+                <strong class="minimum-text">${translations['url']}</strong>
                 <p class="small-text">${card.web}</p>
             </div>
 

@@ -64,7 +64,7 @@ body::-webkit-scrollbar {
     vertical-align: baseline;
 }
 
-/* Definición de colores */
+/* Definición de constantes */
 :root {
     --app_light: rgb(245, 245, 245);
     --app_light_transparent: rgba(245, 245, 245, 0.8);
@@ -73,6 +73,8 @@ body::-webkit-scrollbar {
     --neutral_grey: rgb(130, 130, 130);
     --light_gray: rgb(230, 230, 230);
     --dark_gray: rgb(50, 50, 50);
+
+    --app-contrast: rgb(0, 160, 120);
 
     /* Colores de las tarjetas */
     --color1: rgb(30, 35, 40);
@@ -85,6 +87,21 @@ body::-webkit-scrollbar {
     --color8: rgb(220, 0, 50);
     --color9: rgb(230, 10, 20);
     --color10: rgb(150, 0, 0);
+
+    /* Valores de margen y padding */
+    --normal-margin: 15px;
+    --narrow-margin: 10px;
+    --minimal-margin: 5px;
+
+    /* Valores de redondeo */
+    --minimal-radius: 6px;
+    --normal-radius: 11px;
+    --maximal-radius: 16px;
+
+    /* Redondeo exterior de un contenedor con margen minimo y elemento hijo minimo. */
+    --external-radius: calc(var(--minimal-radius) + var(--minimal-margin));
+    /* Redondeo exterior de un contenedor con margen estrecho y elemento hijo minimo. */
+    --external-radius-2: calc(var(--minimal-radius) + var(--narrow-margin));
 }
 
 /* Permite arrastrar la app */
@@ -120,8 +137,7 @@ input {
 }
 
 h1 {
-    font-size: 24px;
-    font-family: inter;
+    font-size: 16px;
 }
 
 h2 {
@@ -135,6 +151,11 @@ h3 {
 p {
     /* permite cortar palabras largas */
     word-wrap: break-word;
+}
+
+.expresive-text {
+    font-family: inter;
+    font-size: 24px;
 }
 
 .minimum-text {
@@ -171,14 +192,19 @@ p {
     cursor: text;
 }
 
-/* Redondeo de elementos grandes*/
+/* Redondeo de elementos grandes */
+.maximal-rounded {
+    border-radius: var(--maximal-radius);
+}
+
+/* Redondeo de elementos medianos*/
 .normal-rounded {
-    border-radius: 10px;
+    border-radius: var(--normal-radius);
 }
 
 /* Redondeo de elementos pequeños*/
 .minimal-rounded {
-    border-radius: 6px;
+    border-radius: var(--minimal-radius);
 }
 
 .invisible {
@@ -195,7 +221,7 @@ p {
     background-position: center;
     /* Evita que la imagen se repita */
     background-repeat: no-repeat;
-    margin-right: 5px;
+    margin-right: var(--minimal-margin);
 }
 
 .logo {
@@ -236,15 +262,16 @@ p {
 
 .horizontal_elem-area {
     display: flex;
+    flex-direction: row;
     /* Espacio entre elementos */
-    gap: 10px;
+    gap: var(--narrow-margin);
 }
 
 .vertical-elem-area {
     display: flex;
     flex-direction: column;
     /* Espacio entre elementos */
-    gap: 10px;
+    gap: var(--narrow-margin);
 }
 
 .vertical-flex {
@@ -265,6 +292,10 @@ p {
     gap: 30px;
 }
 
+.minimal-spaced {
+    gap: var(--minimal-margin);
+}
+
 .reverse {
     justify-content: flex-end;
     /* Alinea los botones a la derecha */
@@ -276,6 +307,16 @@ p {
 
 .distributed {
     justify-content: space-evenly;
+}
+
+.expanded {
+    /* Permite que el elemento ocupe todo el espacio disponible */
+    flex-grow: 1;
+}
+
+.contracted {
+    /* Permite que el elemento ocupe el espacio mínimo necesario */
+    flex: initial;
 }
 
 .always-front {
@@ -334,7 +375,7 @@ p {
     border-radius: 30px;
     color: white;
     padding: 40px 15px 15px 15px;
-    gap: 15px;
+    gap: var(--normal-margin);
     justify-content: space-between;
     /* permite cortar palabras largas */
     word-wrap: break-word;
@@ -353,27 +394,28 @@ p {
     box-shadow: 0px 0px 50px 0px var(--card-color, #000000);
 }
 
-.custom-btn {
+/* Botón de acciones. Tiene el borde definido, se vuelve sólido al pasar el mouse encima. */
+.action-btn {
     background: transparent;
     border: solid 1px;
     transition: 0.3s;
     cursor: pointer;
 }
 
-.custom-btn:hover {
+.action-btn:hover {
     color: white;
     background-color: black;
     border-color: black;
 }
 
-.custom-btn:disabled {
+.action-btn:disabled {
     background: transparent;
     border: solid 1px;
     color: var(--neutral_grey);
     cursor: not-allowed;
 }
 
-.custom-btn-warning {
+.action-btn-warning {
     color: white;
     background: transparent;
     border: solid 1px;
@@ -381,22 +423,44 @@ p {
     cursor: pointer;
 }
 
-.custom-btn-warning:hover {
+.action-btn-warning:hover {
     color: red;
     background-color: white;
     border-color: white;
 }
 
-.simple-btn {
+/* Botón de opciones. No tiene borde, se vuelve sólido al pasar el mouse encima. */
+.option-btn {
     background: transparent;
-    padding: 5px;
+    padding: var(--minimal-margin);
     transition: 0.3s;
     cursor: pointer;
 }
 
-.simple-btn:hover {
+.option-btn:hover {
     background-color: black;
     color: white;
+}
+
+/* Botón transparente para elementos que están sobre un fondo colorido.
+No tiene borde, al pasar el mouse por encima solo aparece el borde. */
+.transparent-btn {
+    background: transparent;
+    padding: var(--minimal-margin);
+    border: solid 1px transparent;
+    border-radius: var(--minimal-radius);
+    transition: 0.3s;
+    cursor: pointer;
+}
+.transparent-btn:hover {
+    border-color: black;
+}
+
+/* Contenedor flotante */
+.floating-container {
+    padding: var(--narrow-margin);
+    border-radius: calc(var(--minimal-radius) + var(--narrow-margin));
+    box-shadow: 0px 0px 30px 8px rgba(0, 0, 0, 0.20);
 }
 
 .custom-radio {
@@ -471,13 +535,14 @@ p {
     border-color: black;
 }
 
-.normal-btn-ico {
+/* Botones de iconos únicamente. Tiene un tamaño fijo para evitar movimiento al pasar el mouse. */
+.ico-btn {
     width: 30px;
     height: 30px;
-    padding: 5px;
+    padding: var(--minimal-margin);
     background: transparent;
-    border: transparent;
-    border-radius: 6px;
+    border: solid 1px transparent;
+    border-radius: var(--minimal-radius);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -485,17 +550,17 @@ p {
     transition: 0.3s;
 }
 
-.normal-btn-ico:hover {
-    border: solid 1px;
+.ico-btn:hover {
+    border: solid 1px black;
 }
 
-.normal-btn-ico-white {
+.ico-btn-white {
     width: 30px;
     height: 30px;
-    padding: 5px;
+    padding: var(--minimal-margin);
     background: transparent;
-    border: transparent;
-    border-radius: 6px;
+    border: solid 1px transparent;
+    border-radius: var(--minimal-radius);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -503,7 +568,7 @@ p {
     transition: 0.3s;
 }
 
-.normal-btn-ico-white:hover {
+.ico-btn-white:hover {
     border: solid 1px white;
 }
 
@@ -574,7 +639,7 @@ input:checked+.slider::before {
 
 .card-btn {
     background-color: rgba(255, 255, 255, 0.7);
-    padding: 5px;
+    padding: var(--minimal-margin);
     width: 30px;
     height: 30px;
     border-radius: 30px;
@@ -588,7 +653,7 @@ input:checked+.slider::before {
 
 .card-btn2 {
     background-color: rgba(255, 255, 255, 0.7);
-    padding: 5px;
+    padding: var(--minimal-margin);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -609,7 +674,7 @@ input:checked+.slider::before {
 
 .card-static-icon {
     background-color: rgba(255, 255, 255, 0.7);
-    padding: 5px;
+    padding: var(--minimal-margin);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -643,6 +708,7 @@ input:checked+.slider::before {
     background-color: var(--app_light);
     border: 1px solid var(--neutral_grey);
     box-shadow: 0px 0px 60px 8px rgba(0, 0, 0, 0.20);
+    border-radius: var(--maximal-radius);
 }
 
 .modal-content-warning {
@@ -654,6 +720,7 @@ input:checked+.slider::before {
     color: white;
     border: 1px solid white;
     box-shadow: 0px 0px 60px 8px rgba(0, 0, 0, 0.20);
+    border-radius: var(--maximal-radius);
 }
 
 .modal-header {
@@ -691,23 +758,27 @@ input:checked+.slider::before {
 }
 
 .narrow-margin {
-    margin: 5px;
+    margin: var(--narrow-margin);
 }
 
 .normal-margin {
-    margin: 15px;
+    margin: var(--normal-margin);
+}
+
+.minimal-margin {
+    margin: var(--minimal-margin);
 }
 
 .minimal-padding {
-    padding: 5px;
+    padding: var(--minimal-margin);
 }
 
 .narrow-padding {
-    padding: 10px;
+    padding: var(--narrow-margin);
 }
 
 .normal-padding {
-    padding: 15px;
+    padding: var(--normal-margin);
 }
 
 /* Responsive */
@@ -724,7 +795,7 @@ input:checked+.slider::before {
     right: 20px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: var(--narrow-margin);
     z-index: 9999;
 }
 
@@ -732,7 +803,7 @@ input:checked+.slider::before {
     background-color: black;
     color: white;
     padding: 12px 18px;
-    border-radius: 10px;
+    border-radius: var(--normal-radius);
     font-size: 14px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     transform: translateX(100%);
@@ -764,6 +835,10 @@ input:checked+.slider::before {
         color: white;
     }
 
+    .transparent-btn:hover {
+        border-color: white;
+    }
+
     .logo-img {
         filter: invert(1);
     }
@@ -782,8 +857,12 @@ input:checked+.slider::before {
         box-shadow: 0px 0px 60px 8px rgba(255, 255, 255, 0.2);
     }
 
-    .normal-btn-ico:hover {
+    .ico-btn:hover {
         border: solid 1px white;
+    }
+
+    .floating-container {
+        box-shadow: 0px 0px 60px 8px rgba(255, 255, 255, 0.2);
     }
 
     .normal-icon {
@@ -820,17 +899,17 @@ input:checked+.slider::before {
         filter: invert(0);
     }
 
-    .custom-btn {
+    .action-btn {
         color: white;
     }
 
-    .custom-btn:hover {
+    .action-btn:hover {
         color: black;
         background-color: white;
         border-color: white;
     }
 
-    .simple-btn:hover {
+    .option-btn:hover {
         background-color: white;
         color: black;
     }

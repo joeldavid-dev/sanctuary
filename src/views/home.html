@@ -19,74 +19,74 @@
 <body>
     <div class="layout">
         <!-- Sidebar -->
-        <section class="sidebar normal-padding vertical-flex centered spaced">
+        <section id="sidebar" class="sidebar normal-padding vertical-flex centered spaced">
             <div class="vertical-flex big-spaced">
                 <div class="vertical-flex centered">
-                    <button id="home" class="normal-btn-ico">
+                    <button id="home" class="ico-btn">
                         <img src="../assets/ico/feather/home.svg" class="normal-icon">
                     </button>
                     <label class="small-text hide-in-small" data-i18n="keys"></label>
                 </div>
 
                 <div class="vertical-flex centered">
-                    <button id="lock" class="normal-btn-ico">
+                    <button id="lock" class="ico-btn">
                         <img src="../assets/ico/feather/lock.svg" class="normal-icon">
                     </button>
                     <label class="small-text hide-in-small" data-i18n="block"></label>
                 </div>
 
                 <div class="vertical-flex centered">
-                    <button id="settings" class="normal-btn-ico">
+                    <button id="settings" class="ico-btn">
                         <img src="../assets/ico/feather/settings.svg" class="normal-icon">
                     </button>
                     <label class="small-text hide-in-small" data-i18n="settings"></label>
                 </div>
 
                 <div class="vertical-flex centered">
-                    <button id="messages" class="normal-btn-ico">
+                    <button id="messages" class="ico-btn">
                         <img src="../assets/ico/feather/message-square.svg" class="normal-icon">
                     </button>
                     <label class="small-text hide-in-small" data-i18n="messages"></label>
                 </div>
 
                 <div class="vertical-flex centered">
-                    <button id="user" class="normal-btn-ico">
+                    <button id="user" class="ico-btn">
                         <img src="../assets/ico/feather/user.svg " class="normal-icon">
                     </button>
                     <label class="small-text hide-in-small" data-i18n="user-info"></label>
                 </div>
 
                 <div class="vertical-flex centered">
-                    <button id="random-pass" class="normal-btn-ico">
+                    <button id="random-pass" class="ico-btn">
                         <img src="../assets/ico/feather/key.svg " class="normal-icon">
                     </button>
                     <label class="small-text hide-in-small" data-i18n="random-key"></label>
                 </div>
             </div>
 
-            <button id="App-btn" class="normal-btn-ico">
+            <button id="App-btn" class="ico-btn">
                 <img src="../assets/ico/sanctuary.png" class="normal-icon">
             </button>
         </section>
 
         <!-- Contenido -->
-        <div class="main-content">
+        <section class="main-content">
             <!-- Barra de titulo -->
             <div id="title-bar"
                 class="title-bar normal-padding horizontal_elem-area draggable spaced centered colored-blur">
-                <h2 data-i18n="my-keys"></h2>
+                <h1 data-i18n="my-keys"></h1>
                 <div class="horizontal_elem-area centered">
-                    <input id="search" type="text" class="custom-input minimal-rounded search" placeholder="Buscar...">
+                    <input id="search" type="text" class="custom-input search minimal-rounded" placeholder="Buscar...">
                     <img src="../assets/ico/feather/search.svg" class="mini-icon">
                 </div>
                 <div class="horizontal_elem-area">
-                    <button id="minimize" class="normal-btn-ico">
+                    <button id="minimize" class="ico-btn">
                         <img src="../assets/ico/feather/minus-circle.svg" class="normal-icon">
                     </button>
-                    <button id="maximize" class="normal-btn-ico">
+                    <button id="maximize" class="ico-btn">
                         <img src="../assets/ico/feather/maximize.svg" class="normal-icon">
                     </button>
-                    <button id="close" class="normal-btn-ico">
+                    <button id="close" class="ico-btn">
                         <img src="../assets/ico/feather/x-circle.svg" class="normal-icon">
                     </button>
                 </div>
@@ -96,175 +96,53 @@
             </div>
 
             <!-- bottonbar -->
-            <div class="botton-bar horizontal_elem-area colored-blur narrow-padding normal-rounded big-spaced">
-                <div id="edit-card-body" class="invisible centered">
-                    <button id="edit-card" class="normal-btn-ico">
+            <div class="botton-bar floating-container horizontal_elem-area colored-blur big-spaced">
+
+                <div class="vertical-flex centered">
+                    <button id="edit-card" class="ico-btn invisible">
                         <img src="../assets/ico/feather/edit.svg" class="normal-icon">
                     </button>
                     <label class="small-text" data-i18n="edit"></label>
                 </div>
 
                 <div class="vertical-flex centered">
-                    <button id="new-card" class="normal-btn-ico">
+                    <button id="new-card" class="ico-btn">
                         <img src="../assets/ico/feather/plus-circle.svg" class="normal-icon">
                     </button>
                     <label class="small-text" data-i18n="new"></label>
                 </div>
 
-                <div id="delete-card-body" class="invisible centered">
-                    <button id="delete-card" class="normal-btn-ico">
+                <div class="vertical-flex centered">
+                    <button id="delete-card" class="ico-btn invisible">
                         <img src="../assets/ico/feather/trash.svg" class="normal-icon">
                     </button>
                     <label class="small-text" data-i18n="delete"></label>
                 </div>
+
             </div>
-        </div>
+        </section>
 
         <!-- Modal para agregar o editar una nueva tarjeta -->
         <div id="modal-new" class="modal blur">
-            <div class="modal-content scrolleable normal-rounded">
+            <div class="modal-content scrolleable">
                 <div class="modal-header normal-padding colored-blur">
-                    <h2 id="modal-new-title">Nueva contraseña</h2>
-                    <button id="close-modal-new" class="normal-btn-ico">
+                    <h2 id="modal-new-title"></h2>
+                    <button id="close-modal-new" class="ico-btn">
                         <img src="../assets/ico/feather/x-circle.svg" class="normal-icon">
                     </button>
                 </div>
-
-                <div class=" horizontal-flex">
-
-                    <div class="vertical-elem-area normal-padding normal-rounded normal-margin preview-options">
-                        <label>Nombre:</label>
-                        <input type="text" id="new-card-name" class="custom-input minimal-rounded" placeholder="Nombre">
-                        <label>Usuario:</label>
-                        <input type="text" id="new-card-user" class="custom-input minimal-rounded"
-                            placeholder="Usuario (opcional)">
-                        <label>Contraseña:</label>
-                        <input type="text" id="new-card-pass" class="custom-input minimal-rounded"
-                            placeholder="Contraseña">
-                        <label>URL:</label>
-                        <input type="text" id="new-card-url" class="custom-input minimal-rounded"
-                            placeholder="URL (opcional)">
-                        <label>Color:</label>
-                        <div class="horizontal_elem-area">
-                            <label class="custom-radio2 minimal-rounded minimal-padding">
-                                <input id="color1" type="radio" name="color" value="var(--color1)">
-                                <div class="radio-color color1 minimal-rounded"></div>
-                            </label>
-
-                            <label class="custom-radio2 minimal-rounded minimal-padding">
-                                <input id="color2" type="radio" name="color" value="var(--color2)">
-                                <div class="radio-color color2 minimal-rounded"></div>
-                            </label>
-
-                            <label class="custom-radio2 minimal-rounded minimal-padding">
-                                <input id="color3" type="radio" name="color" value="var(--color3)">
-                                <div class="radio-color color3 minimal-rounded"></div>
-                            </label>
-
-                            <label class="custom-radio2 minimal-rounded minimal-padding">
-                                <input id="color4" type="radio" name="color" value="var(--color4)">
-                                <div class="radio-color color4 minimal-rounded"></div>
-                            </label>
-
-                            <label class="custom-radio2 minimal-rounded minimal-padding">
-                                <input id="color5" type="radio" name="color" value="var(--color5)">
-                                <div class="radio-color color5 minimal-rounded"></div>
-                            </label>
-                        </div>
-
-                        <div class="horizontal_elem-area">
-                            <label class="custom-radio2 minimal-rounded minimal-padding">
-                                <input id="color6" type="radio" name="color" value="var(--color6)">
-                                <div class="radio-color color6 minimal-rounded"></div>
-                            </label>
-
-                            <label class="custom-radio2 minimal-rounded minimal-padding">
-                                <input id="color7" type="radio" name="color" value="var(--color7)">
-                                <div class="radio-color color7 minimal-rounded"></div>
-                            </label>
-
-                            <label class="custom-radio2 minimal-rounded minimal-padding">
-                                <input id="color8" type="radio" name="color" value="var(--color8)">
-                                <div class="radio-color color8 minimal-rounded"></div>
-                            </label>
-
-                            <label class="custom-radio2 minimal-rounded minimal-padding">
-                                <input id="color9" type="radio" name="color" value="var(--color9)">
-                                <div class="radio-color color9 minimal-rounded"></div>
-                            </label>
-
-                            <label class="custom-radio2 minimal-rounded minimal-padding">
-                                <input id="color10" type="radio" name="color" value="var(--color10)">
-                                <div class="radio-color color10 minimal-rounded"></div>
-                            </label>
-                        </div>
-
-                        <div class="horizontal-flex spaced centered">
-                            <labe>Favorito:</labe>
-                            <label id="new-favorite-switch" class="switch">
-                                <input type="checkbox">
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="vertical-flex spaced normal-padding">
-                        <label for="preview-card">Vista previa:</label>
-
-                        <div id="preview-card" class="card-body color1">
-                            <div class="horizontal_elem-area spaced centered">
-                                <p id="name-preview" class="bold">Nueva contraseña</p>
-                                <div id="ico-love">
-                                    <div class="card-static-icon">
-                                        <img src="../assets/ico/feather/heart.svg" class="card-icon">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <label id="user-preview-section" class="minimum-text vertical-flex">
-                                Usuario:
-                                <p id="user-preview" class="small-text"></p>
-                            </label>
-
-                            <label class="minimum-text vertical-elem-area">
-                                Contraseña:
-                                <p id="pass-preview" class="small-text"></p>
-                            </label>
-
-                            <label id="url-preview-section" class="minimum-text vertical-elem-area">
-                                URL:
-                                <p id="url-preview" class="small-text"></p>
-                            </label>
-
-                            <div class="horizontal-flex spaced centered">
-                                <button id="open-link-preview" class="card-btn">
-                                    <img id="ico-link" src="../assets/ico/feather/external-link.svg" class="card-icon">
-                                </button>
-
-                                <p class="minimum-text">1 de 1</p>
-
-                                <button id="view-preview" class="card-btn">
-                                    <img id="ico-eye" src="../assets/ico/feather/eye.svg" class="card-icon">
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="horizontal-flex reverse">
-                            <button id="new-card-done"
-                                class="new-card-done custom-btn narrow-padding normal-rounded">Listo</button>
-                        </div>
-                    </div>
-                </div>
+                <!-- Contenido del modal -->
+                <div id="modal-body"></div>
             </div>
         </div>
 
         <!-- Modal para eliminar una tarjeta -->
         <div id="modal-warning" class="modal blur">
-            <div class="modal-content-warning scrolleable normal-rounded">
+            <div class="modal-content-warning scrolleable">
                 <div class="modal-header normal-padding">
                     <img src="../assets/ico/feather/alert-triangle.svg" class="normal-icon-white">
                     <h2>Advertencia</h2>
-                    <button id="close-modal-warning" class="normal-btn-ico-white">
+                    <button id="close-modal-warning" class="ico-btn-white">
                         <img src="../assets/ico/feather/x-circle.svg" class="normal-icon-white">
                     </button>
                 </div>
@@ -273,9 +151,9 @@
                     <label id="warning-message">¿Realmente quieres eliminar esta contraseña?</label>
                     <div class="horizontal-flex distributed">
                         <button id="cancel-warning-btn"
-                            class="custom-btn-warning minimal-padding minimal-rounded">Cancelar</button>
+                            class="action-btn-warning minimal-padding minimal-rounded">Cancelar</button>
                         <button id="confirm-warning-btn"
-                            class="custom-btn-warning minimal-padding minimal-rounded">Eliminar</button>
+                            class="action-btn-warning minimal-padding minimal-rounded">Eliminar</button>
                     </div>
                 </div>
             </div>

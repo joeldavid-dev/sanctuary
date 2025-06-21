@@ -75,5 +75,21 @@
         "edit": "Editar",
         "delete": "Eliminar",
         "new": "Nuevo"
+    },
+    "modal-new-edit": {
+        "title-new": "Nueva Clave",
+        "title-edit": "Editar Clave",
+        "name": "Nombre:",
+        "name-placeholder": "Nombre",
+        "user": "Usuario:",
+        "user-placeholder": "Usuario (opcional)",
+        "password": "Contraseña:",
+        "password-placeholder": "Contraseña",
+        "url": "URL:",
+        "url-placeholder": "https://ejemplo.com (opcional)",
+        "color": "Color:",
+        "favorite": "Favorito:",
+        "preview": "Vista previa:",
+        "done": "Listo"
     }
 }

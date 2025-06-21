@@ -1,15 +1,14 @@
 import { setTranslations, translate } from './utils/translate.js';
 import { createCardElement } from './components/card.js'; // Importar el módulo de tarjeta
+import { createModalNewEditElement } from './components/modalNewEdit.js'; // Importar el módulo de modal para agregar o editar tarjetas
 
 const minimize = document.getElementById('minimize');
 const maximize = document.getElementById('maximize');
 const close = document.getElementById('close');
 
-const lock = document.getElementById('lock');
-
+const sidebar = document.getElementById('sidebar');
 const cardsContainer = document.getElementById('cards-container');
 
-const editCardBody = document.getElementById('edit-card-body');
 const editCard = document.getElementById('edit-card');
 const newCard = document.getElementById('new-card');
 const deleteCardBody = document.getElementById('delete-card-body');
@@ -19,22 +18,23 @@ const deleteCard = document.getElementById('delete-card');
 const modalNew = document.getElementById('modal-new');
 const modalNewTitle = document.getElementById('modal-new-title');
 const closeModalNew = document.getElementById('close-modal-new');
-const newCardName = document.getElementById('new-card-name');
-const newCardUser = document.getElementById('new-card-user');
-const newCardPass = document.getElementById('new-card-pass');
-const newCardUrl = document.getElementById('new-card-url');
-const newFavoriteSwitch = document.getElementById('new-favorite-switch');
+const modalBody = document.getElementById('modal-body');
+//const newCardName = document.getElementById('new-card-name');
+//const newCardUser = document.getElementById('new-card-user');
+//const newCardPass = document.getElementById('new-card-pass');
+//const newCardUrl = document.getElementById('new-card-url');
+//const newFavoriteSwitch = document.getElementById('new-favorite-switch');
 
-const prewiewCard = document.getElementById('preview-card');
-const icoLove = document.getElementById('ico-love');
-const namePreview = document.getElementById('name-preview');
-const userPreviewSection = document.getElementById('user-preview-section');
-const userPreview = document.getElementById('user-preview');
-const passPreview = document.getElementById('pass-preview');
-const urlPreviewSection = document.getElementById('url-preview-section');
-const urlPreview = document.getElementById('url-preview');
-const openLinkPreview = document.getElementById('open-link-preview');
-const newCardDone = document.getElementById('new-card-done');
+//const prewiewCard = document.getElementById('preview-card');
+//const icoLove = document.getElementById('ico-love');
+//const namePreview = document.getElementById('name-preview');
+//const userPreviewSection = document.getElementById('user-preview-section');
+//const userPreview = document.getElementById('user-preview');
+//const passPreview = document.getElementById('pass-preview');
+//const urlPreviewSection = document.getElementById('url-preview-section');
+//const urlPreview = document.getElementById('url-preview');
+//const openLinkPreview = document.getElementById('open-link-preview');
+//const newCardDone = document.getElementById('new-card-done');
 
 // Modal warning
 const modalWarning = document.getElementById('modal-warning');
@@ -53,7 +53,9 @@ let modalNewMode = 'create'; // Variable para almacenar el modo del modal (crear
 
 document.addEventListener("DOMContentLoaded", async () => {
     const translations = await window.electronAPI.getTranslations('home-view');
-    
+    const modalNewEditTranslations = await window.electronAPI.getTranslations('modal-new-edit');
+    const cardTranslations = await window.electronAPI.getTranslations('card');
+
     // Clic en botón minimizar
     minimize.addEventListener('click', () => {
         window.electron.minimize();
@@ -95,7 +97,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (cards.success) {
             // Crear y agregar cada tarjeta al contenedor
             cards.data.forEach((card, index) => {
-                cardsContainer.appendChild(createCardElement(card, index));
+                cardsContainer.appendChild(createCardElement(card, index, cardTranslations));
             });
 
             // Evento de clic a cada tarjeta
@@ -156,16 +158,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 });
             });
 
-            // Activar botones de abrir enlace externo
-            document.querySelectorAll('.external-link-btn').forEach(button => {
-                button.addEventListener('click', () => {
-                    const url = button.getAttribute('data-url');
-                    if (url) {
-                        window.electron.openExternal(url);
-                    }
-                });
-            });
-
         } else {
             cardsContainer.textContent = 'No se pudieron cargar las tarjetas 😕';
         }
@@ -176,25 +168,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         /// Quitar la clase 'selected-card' de todas las tarjetas
         document.querySelectorAll('.card-body').forEach((card) => {
             card.classList.remove('selected-card');
-            editCardBody.classList.remove('vertical-flex'); // Ocultar el contenedor de edición
-            editCardBody.classList.add('invisible'); // Ocultar el contenedor de edición
-            deleteCardBody.classList.remove('vertical-flex'); // Ocultar el botón de eliminar
-            deleteCardBody.classList.add('invisible'); // Ocultar el botón de eliminar
+            editCard.classList.add('invisible'); // Ocultar el contenedor de edición
+            editCard.classList.remove('vertical-flex');
+            deleteCard.classList.add('invisible'); // Ocultar el botón de eliminar
+            deleteCard.classList.remove('vertical-flex');
         });
     }
 
     function showEditDeleteButtons() {
-        editCardBody.classList.remove('invisible'); // Mostrar el contenedor de edición
-        editCardBody.classList.add('vertical-flex'); // Mostrar el contenedor de edición
-        deleteCardBody.classList.remove('invisible'); // Mostrar el botón de eliminar
-        deleteCardBody.classList.add('vertical-flex'); // Mostrar el botón de eliminar
+        editCard.classList.remove('invisible'); // Mostrar el contenedor de edición
+        editCard.classList.add('vertical-flex');
+        deleteCard.classList.remove('invisible'); // Mostrar el botón de eliminar
+        deleteCard.classList.add('vertical-flex');
     }
-
-    // Funciones de los botones del sidebar ==================================================
-    // Clic en botón bloquear
-    lock.addEventListener('click', () => {
-        window.electronAPI.changeView('src/views/lock.html');
-    });
 
     //Funciones de los botones de la butonbar ================================================
     // Clic en el botón para crar una nueva tarjeta
@@ -203,23 +189,25 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Abrir modal
         modalNew.style.display = 'block';
         // Reiniciar el estado del modal
-        modalNewTitle.textContent = 'Crear nueva tarjeta';
-        icoLove.style.display = 'none';
-        newFavoriteSwitch.checked = false;
-        userPreviewSection.style.display = 'none';
-        urlPreviewSection.style.display = 'none';
-        prewiewCard.style.backgroundColor = 'var(--color1)';
-        prewiewCard.style.color = 'white';
-        namePreview.textContent = 'Nueva contraseña';
-        passPreview.textContent = '';
-        openLinkPreview.style.display = 'none';
+        modalNewTitle.textContent = modalNewEditTranslations['title-new'];
+        // Insertar contenido
+        modalBody.innerHTML = createModalNewEditElement(modalNewEditTranslations).innerHTML;
+        //icoLove.style.display = 'none';
+        //newFavoriteSwitch.checked = false;
+        //userPreviewSection.style.display = 'none';
+        //urlPreviewSection.style.display = 'none';
+        //prewiewCard.style.backgroundColor = 'var(--color1)';
+        //prewiewCard.style.color = 'white';
+        //namePreview.textContent = 'Nueva contraseña';
+        //passPreview.textContent = '';
+        //openLinkPreview.style.display = 'none';
         colorSelected = 'var(--color1)';
-        document.querySelector('input[name="color"][value="var(--color1)"]').checked = true;
-        newFavoriteSwitch.checked = false;
-        newCardName.value = '';
-        newCardUser.value = '';
-        newCardPass.value = '';
-        newCardUrl.value = '';
+        //document.querySelector('input[name="color"][value="var(--color1)"]').checked = true;
+        //newFavoriteSwitch.checked = false;
+        //newCardName.value = '';
+        //newCardUser.value = '';
+        //newCardPass.value = '';
+        //newCardUrl.value = '';
     });
 
     // Clic en el botón para editar la tarjeta seleccionada
@@ -232,29 +220,29 @@ document.addEventListener("DOMContentLoaded", async () => {
                 // Abrir modal
                 modalNew.style.display = 'block';
                 // Adaptar el estado del modal a la tarjeta seleccionada
-                modalNewTitle.textContent = 'Editar tarjeta';
-                icoLove.style.display = (selectedCard.data.favorite == 1) ? 'block' : 'none';
-                newFavoriteSwitch.checked = (selectedCard.data.favorite == 1) ? true : false;
-                newCardName.value = selectedCard.data.name;
-                namePreview.textContent = selectedCard.data.name;
-                newCardUser.value = selectedCard.data.user || '';
-                userPreviewSection.style.display = (selectedCard.data.user) ? 'block' : 'none';
-                userPreview.textContent = selectedCard.data.user || '';
-                newCardPass.value = selectedCard.data.password;
-                passPreview.textContent = selectedCard.data.password;
-                newCardUrl.value = selectedCard.data.web || '';
-                urlPreviewSection.style.display = (selectedCard.data.web) ? 'block' : 'none';
-                openLinkPreview.style.display = (selectedCard.data.web) ? 'block' : 'none';
-                urlPreview.textContent = selectedCard.data.web || '';
+                modalNewTitle.textContent = modalNewEditTranslations['title-edit'];
+                //icoLove.style.display = (selectedCard.data.favorite == 1) ? 'block' : 'none';
+                //newFavoriteSwitch.checked = (selectedCard.data.favorite == 1) ? true : false;
+                //newCardName.value = selectedCard.data.name;
+                //namePreview.textContent = selectedCard.data.name;
+                //newCardUser.value = selectedCard.data.user || '';
+                //userPreviewSection.style.display = (selectedCard.data.user) ? 'block' : 'none';
+                //userPreview.textContent = selectedCard.data.user || '';
+                //newCardPass.value = selectedCard.data.password;
+                //passPreview.textContent = selectedCard.data.password;
+                //newCardUrl.value = selectedCard.data.web || '';
+                //urlPreviewSection.style.display = (selectedCard.data.web) ? 'block' : 'none';
+                //openLinkPreview.style.display = (selectedCard.data.web) ? 'block' : 'none';
+                //urlPreview.textContent = selectedCard.data.web || '';
                 // Establecer el color de la tarjeta
                 colorSelected = selectedCard.data.color;
-                prewiewCard.style.backgroundColor = colorSelected;
+                //prewiewCard.style.backgroundColor = colorSelected;
                 document.querySelector(`input[name="color"][value="${colorSelected}"]`).checked = true;
 
                 if (selectedCard.data.color == 'var(--color4)' || selectedCard.data.color == 'var(--color6)') {
-                    prewiewCard.style.color = 'black'; // Cambiar el color del texto
+                    //prewiewCard.style.color = 'black'; // Cambiar el color del texto
                 } else {
-                    prewiewCard.style.color = 'white'; // Cambiar el color del texto
+                    //prewiewCard.style.color = 'white'; // Cambiar el color del texto
                 }
             } else {
                 console.error(card);
@@ -279,24 +267,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     // Al escribir en los inputs de nueva tarjeta
-    newCardName.addEventListener('input', () => {
+    /*newCardName.addEventListener('input', () => {
         if (newCardName.value.length > 0) {
             namePreview.textContent = newCardName.value;
         } else {
             namePreview.textContent = 'Nueva contraseña';
         }
-    });
+    });*/
 
-    newCardUser.addEventListener('input', () => {
+    /*newCardUser.addEventListener('input', () => {
         if (newCardUser.value.length > 0) {
             userPreviewSection.style.display = 'block';
             userPreview.textContent = newCardUser.value;
         } else {
             userPreviewSection.style.display = 'none';
         }
-    });
+    });*/
 
-    newCardPass.addEventListener('input', () => {
+    /*newCardPass.addEventListener('input', () => {
         passPreview.textContent = newCardPass.value;
     });
 
@@ -398,7 +386,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         } else {
             window.electronAPI.showWarning('Problema', 'Es necesario al menos un nombre y una contraseña para continuar.');
         }
-    });
+    });*/
 
     // Modal warning =============================================================================
     // Clic en el botón para cerrar el modal de advertencia
@@ -428,6 +416,34 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
             else {
                 showToast(result.message);
+            }
+        }
+    });
+
+    // Acciones de elementos mediante delegación de eventos ======================================
+    // Sidebar...................................................
+    sidebar.addEventListener('click', (event) => {
+        const buttonPressed = event.target.closest('button');
+        if (!buttonPressed) return; // Si no se hizo clic en un botón, salir
+        console.log(buttonPressed.id);
+
+        // Clic en botón bloquear
+        if (buttonPressed.id === 'lock') {
+            window.electronAPI.changeView('src/views/lock.html');
+        }
+    });
+
+    // Cards container...........................................
+    cardsContainer.addEventListener('click', (event) => {
+        const buttonPressed = event.target.closest('button');
+        if (!buttonPressed) return; // Si no se hizo clic en un botón, salir
+        console.log(buttonPressed.id);
+
+        // Si el botón es un botón de enlace externo de una tarjeta
+        if (buttonPressed.classList.contains('external-link-btn')) {
+            const url = buttonPressed.getAttribute('data-url');
+            if (url) {
+                window.electron.openExternal(url);
             }
         }
     });
