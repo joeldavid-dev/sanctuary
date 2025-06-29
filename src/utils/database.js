@@ -26,8 +26,8 @@ db.run(`CREATE TABLE IF NOT EXISTS cardsData (
     user TEXT,
     password TEXT NOT NULL,
     web TEXT,
-    color TEXT,
-    favorite BOOLEAN,
+    color TEXT NOT NULL,
+    favorite BOOLEAN NOT NULL,
     salt TEXT NOT NULL,
     iv TEXT NOT NULL,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP

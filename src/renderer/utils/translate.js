@@ -7,12 +7,10 @@ let translations = {};
 
 export function setTranslations(newTranslations) {
     translations = newTranslations;
-    console.log('Translations set:', translations);
 }
 
 export function translate(key, vars = {}) {
     let translation = translations[key] || key;
-    console.log(`Translation for key "${key}":`, translation);
     Object.keys(vars).forEach(varKey => {
         translation = translation.replace(`{${varKey}}`, vars[varKey]);
     });

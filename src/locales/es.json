@@ -76,7 +76,7 @@
         "delete": "Eliminar",
         "new": "Nuevo"
     },
-    "modal-new-edit": {
+    "new-edit": {
         "title-new": "Nueva Clave",
         "title-edit": "Editar Clave",
         "name": "Nombre:",

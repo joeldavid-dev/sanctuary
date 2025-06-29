@@ -71,7 +71,7 @@
     background-color: var(--light_gray);
 }
 
-.new-card-done {
+.new-edit-done {
     width: 200px;
     margin-left: var(--normal-margin);
 }

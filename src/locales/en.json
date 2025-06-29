@@ -37,7 +37,8 @@
         "title": "Warning",
         "empty-fields": "No fields can be left empty.",
         "passwords-dont-match": "Passwords do not match.",
-        "wrong-password": "Incorrect password."
+        "wrong-password": "Incorrect password.",
+        "name-password-required": "Name and password are required"
     },
     "main": {
         "json-dialog-title": "Select a JSON file",
@@ -79,9 +80,10 @@
     "card": {
         "user": "User:",
         "password": "Password:",
-        "url": "URL:"
+        "url": "URL:",
+        "new-card": "New Card"
     },
-    "modal-new-edit": {
+    "new-edit": {
         "title-new": "New Key",
         "title-edit": "Edit Key",
         "name": "Name:",
@@ -95,6 +97,7 @@
         "color": "Color:",
         "favorite": "Favorite:",
         "preview": "Preview:",
-        "done": "Done"
+        "done": "Done",
+        "cancelled": "Cancelled"
     }
 }

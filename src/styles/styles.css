@@ -137,7 +137,7 @@ input {
 }
 
 h1 {
-    font-size: 16px;
+    font-size: 18px;
 }
 
 h2 {
@@ -614,7 +614,7 @@ No tiene borde, al pasar el mouse por encima solo aparece el borde. */
     left: 0;
     right: 0;
     bottom: 0;
-    transition: .4s;
+    transition: .2s;
 }
 
 .slider::before {
@@ -626,7 +626,7 @@ No tiene borde, al pasar el mouse por encima solo aparece el borde. */
     bottom: 3px;
     background-color: white;
     border-radius: 50%;
-    transition: .4s;
+    transition: .2s;
 }
 
 input:checked+.slider {

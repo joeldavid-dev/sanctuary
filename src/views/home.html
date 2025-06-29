@@ -74,7 +74,7 @@
             <!-- Barra de titulo -->
             <div id="title-bar"
                 class="title-bar normal-padding horizontal_elem-area draggable spaced centered colored-blur">
-                <h1 data-i18n="my-keys"></h1>
+                <h2 data-i18n="my-keys"></h2>
                 <div class="horizontal_elem-area centered">
                     <input id="search" type="text" class="custom-input search minimal-rounded" placeholder="Buscar...">
                     <img src="../assets/ico/feather/search.svg" class="mini-icon">
@@ -98,7 +98,7 @@
             <!-- bottonbar -->
             <div class="botton-bar floating-container horizontal_elem-area colored-blur big-spaced">
 
-                <div class="vertical-flex centered">
+                <div id="edit-card-body" class="vertical-flex centered">
                     <button id="edit-card" class="ico-btn invisible">
                         <img src="../assets/ico/feather/edit.svg" class="normal-icon">
                     </button>
@@ -112,7 +112,7 @@
                     <label class="small-text" data-i18n="new"></label>
                 </div>
 
-                <div class="vertical-flex centered">
+                <div id="delete-card-body" class="vertical-flex centered">
                     <button id="delete-card" class="ico-btn invisible">
                         <img src="../assets/ico/feather/trash.svg" class="normal-icon">
                     </button>
@@ -122,12 +122,12 @@
             </div>
         </section>
 
-        <!-- Modal para agregar o editar una nueva tarjeta -->
-        <div id="modal-new" class="modal blur">
+        <!-- Modal -->
+        <div id="modal" class="modal blur">
             <div class="modal-content scrolleable">
                 <div class="modal-header normal-padding colored-blur">
-                    <h2 id="modal-new-title"></h2>
-                    <button id="close-modal-new" class="ico-btn">
+                    <h2 id="modal-title"></h2>
+                    <button id="close-modal" class="ico-btn">
                         <img src="../assets/ico/feather/x-circle.svg" class="normal-icon">
                     </button>
                 </div>
