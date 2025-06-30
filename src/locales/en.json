@@ -66,6 +66,7 @@
         "import-data-wrong-password": "Incorrect password."
     },
     "home-view": {
+        "search": "Search...",
         "keys": "Keys",
         "block": "Lock",
         "settings": "Settings",
@@ -97,14 +98,12 @@
         "color": "Color:",
         "favorite": "Favorite:",
         "preview": "Preview:",
-        "done": "Done",
-        "cancelled": "Cancelled"
+        "done": "Done"
     },
     "delete": {
         "title": "Delete Key",
         "message": "Do you really want to delete the '{name}' key? Be careful — this action is irreversible!",
         "cancel": "Cancel",
-        "delete-key": "Delete Key",
-        "cancelled": "Cancelled"
+        "delete-key": "Delete Key"
     }
 }

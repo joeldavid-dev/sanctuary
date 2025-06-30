@@ -82,10 +82,7 @@ export function showNewEditModal(mode, card) {
         // Funciones de botones
         const close = () => {
             cleanup();
-            resolve({
-                success: false,
-                message: translations['cancelled'],
-            })
+            resolve({ success: false, })
         }
         const nameAction = () => {
             (nameInput.value.length > 0) ? namePreview.textContent = nameInput.value.trim() : namePreview.textContent = cardTranslations['new-card'];

@@ -31,10 +31,7 @@ export function showDeleteModal(card) {
         // Funciones de botones
         const close = () => {
             cleanup();
-            resolve({
-                success: false,
-                message: translations['cancelled'],
-            })
+            resolve({ success: false })
         };
         const deleteCardAction = async () => {
             const result = await window.electronAPI.deleteCard(card.id);

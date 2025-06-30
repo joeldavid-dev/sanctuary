@@ -3,13 +3,16 @@ import { createCardElement } from './components/card.js'; // Importar el módulo
 import { showNewEditModal } from './components/modalNewEdit.js'; // Importar el módulo de modal para agregar o editar tarjetas
 import { showDeleteModal } from './components/modalDelete.js'; // Importar el módulo de modal para eliminar una tarjeta
 
+// Barra de título
 const minimize = document.getElementById('minimize');
 const maximize = document.getElementById('maximize');
 const close = document.getElementById('close');
+const search = document.getElementById('search');
 
 const sidebar = document.getElementById('sidebar');
+// Contenedor principal
 const cardsContainer = document.getElementById('cards-container');
-
+// Bottonbar
 const editCard = document.getElementById('edit-card');
 const editCardBody = document.getElementById('edit-card-body');
 const newCard = document.getElementById('new-card');
@@ -18,14 +21,12 @@ const deleteCardBody = document.getElementById('delete-card-body');
 
 let encryptedSelectedCard = null; // Variable para almacenar el ID de la tarjeta seleccionada
 let selectedCardIndex = null; // Variable para almacenar el índice de la tarjeta seleccionada
-let modalWarningAction = null; // Variable para almacenar la acción del modal de advertencia
 let encryptedCards = null; // Variable para almacenar las tarjetas
 let modalMode = 'create'; // Variable para almacenar el modo del modal (crear o editar)
 
 document.addEventListener("DOMContentLoaded", async () => {
     const translations = await window.electronAPI.getTranslations('home-view');
     const cardTranslations = await window.electronAPI.getTranslations('card');
-    const warningTranslations = await window.electronAPI.getTranslations('warning');
 
     // Clic en botón minimizar
     minimize.addEventListener('click', () => {
@@ -47,6 +48,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             el.textContent = translations[key];
         }
     });
+    search.placeholder = translations['search'];
 
     // Cargar las traducciones para el módulo de traducción
     setTranslations(translations);
@@ -111,7 +113,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             encryptedCards.data.push(confirm.generatedCard);
             showCards(encryptedCards);
         }
-        showToast(confirm.message);
+        if (confirm.message) showToast(confirm.message);
     });
 
     // Clic en el botón para editar la tarjeta seleccionada
@@ -126,7 +128,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     encryptedCards.data[selectedCardIndex] = confirm.editedCard;
                     showCards(encryptedCards);
                 }
-                showToast(confirm.message);
+                if (confirm.message) showToast(confirm.message);
             } else {
                 showToast(selectedCard.message);
             }
@@ -142,7 +144,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 encryptedCards.data.splice(selectedCardIndex, 1);
                 showCards(encryptedCards); // Mostrar las tarjetas en la vista
             }
-            showToast(confirm.message);
+            if (confirm.message) showToast(confirm.message);
         }
     });
 
