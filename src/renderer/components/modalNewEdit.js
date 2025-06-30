@@ -1,6 +1,6 @@
 /* Este modulo se encarga del manejo del modal de crear o editar una tarjeta.
  * Solo necesita ser llamado en un renderer cuyo html incluya un divider con el 
- * ID = "modal" y que contenga un divider con ID = "modalContent".
+ * ID = "modal" y que contenga un divider con ID = "modal-body".
  */
 
 export function showNewEditModal(mode, card) {
@@ -49,7 +49,6 @@ export function showNewEditModal(mode, card) {
             openLinkPreview.style.display = 'none';
         }
         else if (mode === 'edit') {
-            console.log(card);
             modalTitle.textContent = translations['title-edit'];
             // Actualizar los campos del formulario
             nameInput.value = card.name;
@@ -146,13 +145,11 @@ export function showNewEditModal(mode, card) {
                 color: colorSelected,
                 favorite: favoriteValue
             }
-            console.log(newEditCard);
             // Verificar que los campos no estén vacíos
             if (name && password) {
                 if (mode === 'create') {
                     // Crear nueva tarjeta
                     const result = await window.electronAPI.createCard(newEditCard);
-                    console.log(result);
                     if (result.success) {
                         cleanup();
                         resolve({
@@ -172,7 +169,6 @@ export function showNewEditModal(mode, card) {
                 else if (mode === 'edit') {
                     // Editar tarjeta existente
                     const result = await window.electronAPI.updateCard(card.id, newEditCard);
-                    console.log(result);
                     // Cerrar modal
                     if (result.success) {
                         cleanup();

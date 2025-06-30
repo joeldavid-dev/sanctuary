@@ -141,21 +141,13 @@
             <div class="modal-content-warning scrolleable">
                 <div class="modal-header normal-padding">
                     <img src="../assets/ico/feather/alert-triangle.svg" class="normal-icon-white">
-                    <h2>Advertencia</h2>
+                    <h2 id="modal-warning-title"></h2>
                     <button id="close-modal-warning" class="ico-btn-white">
                         <img src="../assets/ico/feather/x-circle.svg" class="normal-icon-white">
                     </button>
                 </div>
-
-                <div class=" vertical-elem-area normal-padding big-spaced">
-                    <label id="warning-message">¿Realmente quieres eliminar esta contraseña?</label>
-                    <div class="horizontal-flex distributed">
-                        <button id="cancel-warning-btn"
-                            class="action-btn-warning minimal-padding minimal-rounded">Cancelar</button>
-                        <button id="confirm-warning-btn"
-                            class="action-btn-warning minimal-padding minimal-rounded">Eliminar</button>
-                    </div>
-                </div>
+                <!-- Contenido del modal warning -->
+                <div id="modal-warning-body"></div>
             </div>
         </div>
     </div>

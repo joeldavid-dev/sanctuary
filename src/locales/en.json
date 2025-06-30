@@ -99,5 +99,12 @@
         "preview": "Preview:",
         "done": "Done",
         "cancelled": "Cancelled"
+    },
+    "delete": {
+        "title": "Delete Key",
+        "message": "Do you really want to delete the '{name}' key? Be careful — this action is irreversible!",
+        "cancel": "Cancel",
+        "delete-key": "Delete Key",
+        "cancelled": "Cancelled"
     }
 }

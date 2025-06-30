@@ -1,6 +1,7 @@
 import { setTranslations, translate } from './utils/translate.js';
 import { createCardElement } from './components/card.js'; // Importar el módulo de tarjeta
 import { showNewEditModal } from './components/modalNewEdit.js'; // Importar el módulo de modal para agregar o editar tarjetas
+import { showDeleteModal } from './components/modalDelete.js'; // Importar el módulo de modal para eliminar una tarjeta
 
 const minimize = document.getElementById('minimize');
 const maximize = document.getElementById('maximize');
@@ -14,13 +15,6 @@ const editCardBody = document.getElementById('edit-card-body');
 const newCard = document.getElementById('new-card');
 const deleteCard = document.getElementById('delete-card');
 const deleteCardBody = document.getElementById('delete-card-body');
-
-// Modal warning
-const modalWarning = document.getElementById('modal-warning');
-const closeModalWarning = document.getElementById('close-modal-warning');
-const warningMessage = document.getElementById('warning-message');
-const cancelWarningBtn = document.getElementById('cancel-warning-btn');
-const confirmWarningBtn = document.getElementById('confirm-warning-btn');
 
 let encryptedSelectedCard = null; // Variable para almacenar el ID de la tarjeta seleccionada
 let selectedCardIndex = null; // Variable para almacenar el índice de la tarjeta seleccionada
@@ -94,6 +88,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         selectedCardIndex = null;
         encryptedSelectedCard = null;
+
+        // Deseleccionar todos los radio
+        document.querySelectorAll('input[type="radio"][name="card"]').forEach((radio) => {
+            radio.checked = false;
+        });
     }
 
     function showEditDeleteButtons() {
@@ -103,12 +102,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         deleteCardBody.classList.add('vertical-flex');
     }
 
-    //Funciones de los botones de la butonbar ================================================
+    //Funciones de los botones de la butonbar ====================================================
     // Clic en el botón para crar una nueva tarjeta
     newCard.addEventListener('click', async () => {
         modalMode = 'create'; // Establecer el modo del modal a crear
         const confirm = await showNewEditModal(modalMode);
-        if (confirm.success){
+        if (confirm.success) {
             encryptedCards.data.push(confirm.generatedCard);
             showCards(encryptedCards);
         }
@@ -123,7 +122,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (selectedCard.success) {
                 modalMode = 'edit'; // Establecer el modo del modal a editar
                 const confirm = await showNewEditModal(modalMode, selectedCard.data);
-                if (confirm.success){
+                if (confirm.success) {
                     encryptedCards.data[selectedCardIndex] = confirm.editedCard;
                     showCards(encryptedCards);
                 }
@@ -136,41 +135,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Clic en el botón para eliminar la tarjeta seleccionada
     deleteCard.addEventListener('click', async () => {
-        modalWarning.style.display = 'block';
-        modalWarningAction = 'delete'; // Establecer la acción del modal de advertencia
-        const message =
-            warningMessage.textContent = `¿Realmente quieres eliminar la tarjeta "${encryptedSelectedCard.name}"? Ten cuidado, ¡esta acción es irreversible!`;
-        confirmWarningBtn.textContent = 'Eliminar tarjeta';
-    });
-
-    // Modal warning =============================================================================
-    // Clic en el botón para cerrar el modal de advertencia
-    closeModalWarning.addEventListener('click', () => {
-        modalWarning.style.display = 'none';
-    });
-
-    // Clic en el botón para cancelar la advertencia
-    cancelWarningBtn.addEventListener('click', () => {
-        modalWarning.style.display = 'none';
-    });
-
-    // Clic en el botón para confirmar la advertencia
-    confirmWarningBtn.addEventListener('click', async () => {
-        // Eliminar la tarjeta seleccionada
-        if (modalWarningAction === 'delete') {
-            const result = await window.electronAPI.deleteCard(encryptedSelectedCard.id);
-            if (result.success) {
-                // Mostrar notificación de éxito
-                showToast(result.message);
-                modalWarning.style.display = 'none';
-                deselectAllCards();
+        if (encryptedSelectedCard) {
+            const confirm = await showDeleteModal(encryptedSelectedCard);
+            if (confirm.success) {
                 // Eliminar la tarjeta de la lista de tarjetas encriptadas usando el índice
                 encryptedCards.data.splice(selectedCardIndex, 1);
                 showCards(encryptedCards); // Mostrar las tarjetas en la vista
             }
-            else {
-                showToast(result.message);
-            }
+            showToast(confirm.message);
         }
     });
 
