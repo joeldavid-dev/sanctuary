@@ -781,6 +781,10 @@ input:checked+.slider::before {
     padding: var(--normal-margin);
 }
 
+.btn-padding {
+    padding: var(--minimal-margin) var(--normal-margin);
+}
+
 /* Responsive */
 @media (max-width: 1200px) {
     .hide-in-small {

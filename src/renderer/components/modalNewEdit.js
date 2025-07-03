@@ -79,7 +79,7 @@ export function showNewEditModal(mode, card) {
             (card.color === 'var(--color4)' || card.color === 'var(--color6)') ? previewCard.style.color = 'black' : previewCard.style.color = 'white';
         }
 
-        // Funciones de botones
+        // Funciones de botones e inputs
         const close = () => {
             cleanup();
             resolve({ success: false, })

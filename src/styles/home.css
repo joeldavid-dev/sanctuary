@@ -34,6 +34,11 @@
     gap: var(--normal-margin);
 }
 
+.empty-image {
+    width: 50vh;
+    height: 50vh;
+}
+
 .botton-bar {
     position: sticky;
     bottom: var(--normal-margin);

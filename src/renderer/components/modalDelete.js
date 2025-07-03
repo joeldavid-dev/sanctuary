@@ -75,8 +75,8 @@ function getDeleteModalHTML() {
         <div class=" vertical-elem-area normal-margin big-spaced">
             <label id="warning-message"></label>
             <div class="horizontal-flex distributed">
-                <button id="cancel-warning-btn" class="action-btn-warning minimal-padding minimal-rounded"></button>
-                <button id="confirm-warning-btn" class="action-btn-warning minimal-padding minimal-rounded"></button>
+                <button id="cancel-warning-btn" class="action-btn-warning btn-padding minimal-rounded"></button>
+                <button id="confirm-warning-btn" class="action-btn-warning btn-padding minimal-rounded"></button>
             </div>
         </div>
         `;

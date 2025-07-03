@@ -76,7 +76,8 @@
         "my-keys": "My Keys",
         "edit": "Edit",
         "delete": "Delete",
-        "new": "New"
+        "new": "New",
+        "empty": "Oops! Nothing here yet."
     },
     "card": {
         "user": "User:",

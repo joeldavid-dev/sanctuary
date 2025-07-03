@@ -21,25 +21,12 @@ const deleteCardBody = document.getElementById('delete-card-body');
 
 let encryptedSelectedCard = null; // Variable para almacenar el ID de la tarjeta seleccionada
 let selectedCardIndex = null; // Variable para almacenar el índice de la tarjeta seleccionada
-let encryptedCards = null; // Variable para almacenar las tarjetas
+let encryptedCards = []; // Variable para almacenar las tarjetas
 let modalMode = 'create'; // Variable para almacenar el modo del modal (crear o editar)
 
 document.addEventListener("DOMContentLoaded", async () => {
     const translations = await window.electronAPI.getTranslations('home-view');
     const cardTranslations = await window.electronAPI.getTranslations('card');
-
-    // Clic en botón minimizar
-    minimize.addEventListener('click', () => {
-        window.electron.minimize();
-    });
-    // Clic en botón maximizar
-    maximize.addEventListener('click', () => {
-        window.electron.maximize();
-    });
-    // Clic en botón cerrar
-    close.addEventListener('click', () => {
-        window.electron.close();
-    });
 
     // Cargar traducciones y mostrarlas en la interfaz estática
     document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -56,10 +43,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Funciones del contenedor principal ====================================================
     // Traer los datos al iniciar la vista
     async function getAllCards() {
-        try {
-            return await window.electronAPI.getAllCards();
-        } catch (error) {
-            console.error(error);
+        const result = await window.electronAPI.getAllCards();
+        if (result.success) {
+            return result.data; // Retornar las tarjetas encriptadas
+        } else {
+            showToast(result.message);
+            return []; // Retornar una lista vacía si falla
         }
     }
 
@@ -67,13 +56,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Limpiar el contenedor de tarjetas antes de agregar nuevas
         cardsContainer.innerHTML = '';
         deselectAllCards(); // Deseleccionar todas las tarjetas
-        if (cards.success) {
+        if (cards.length > 0) {
             // Crear y agregar cada tarjeta al contenedor
-            cards.data.forEach((card, index) => {
+            cards.forEach((card, index) => {
                 cardsContainer.appendChild(createCardElement(card, index, cardTranslations));
             });
         } else {
-            cardsContainer.textContent = 'No se pudieron cargar las tarjetas 😕';
+            cardsContainer.innerHTML = `
+            <div class="vertical-flex centered">
+                <img src="../assets/illustrations/FeelingLonely.svg" alt="No cards" class="empty-image">
+                <p>${translations['empty']}</p>
+            </div>`;
         }
     }
 
@@ -104,13 +97,39 @@ document.addEventListener("DOMContentLoaded", async () => {
         deleteCardBody.classList.add('vertical-flex');
     }
 
+    // Acciones de la barra de título ============================================================
+    // Clic en botón minimizar
+    minimize.addEventListener('click', () => {
+        window.electron.minimize();
+    });
+    // Clic en botón maximizar
+    maximize.addEventListener('click', () => {
+        window.electron.maximize();
+    });
+    // Clic en botón cerrar
+    close.addEventListener('click', () => {
+        window.electron.close();
+    });
+
+    // Barra de busqueda
+    search.addEventListener('input', async (event) => {
+        const searchTerm = event.target.value.toLowerCase();
+        if (searchTerm.length > 0) {
+            const filteredCards = encryptedCards.filter(card => card.name.toLowerCase().includes(searchTerm));
+            console.log(filteredCards);
+            showCards(filteredCards);
+        } else {
+            showCards(encryptedCards); // Mostrar todas las tarjetas si no hay término de búsqueda
+        }
+    });
+
     //Funciones de los botones de la butonbar ====================================================
     // Clic en el botón para crar una nueva tarjeta
     newCard.addEventListener('click', async () => {
         modalMode = 'create'; // Establecer el modo del modal a crear
         const confirm = await showNewEditModal(modalMode);
         if (confirm.success) {
-            encryptedCards.data.push(confirm.generatedCard);
+            encryptedCards.push(confirm.generatedCard);
             showCards(encryptedCards);
         }
         if (confirm.message) showToast(confirm.message);
@@ -125,7 +144,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 modalMode = 'edit'; // Establecer el modo del modal a editar
                 const confirm = await showNewEditModal(modalMode, selectedCard.data);
                 if (confirm.success) {
-                    encryptedCards.data[selectedCardIndex] = confirm.editedCard;
+                    encryptedCards[selectedCardIndex] = confirm.editedCard;
                     showCards(encryptedCards);
                 }
                 if (confirm.message) showToast(confirm.message);
@@ -141,7 +160,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const confirm = await showDeleteModal(encryptedSelectedCard);
             if (confirm.success) {
                 // Eliminar la tarjeta de la lista de tarjetas encriptadas usando el índice
-                encryptedCards.data.splice(selectedCardIndex, 1);
+                encryptedCards.splice(selectedCardIndex, 1);
                 showCards(encryptedCards); // Mostrar las tarjetas en la vista
             }
             if (confirm.message) showToast(confirm.message);
@@ -185,7 +204,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             // Cambiar el texto del usuario y la contraseña al hacer clic en el botón
             if (passView.textContent === mask) {
-                const card = await window.electronAPI.decryptCard(encryptedCards.data[index]);
+                const card = await window.electronAPI.decryptCard(encryptedCards[index]);
                 if (card.success) {
                     userView.textContent = card.data.user;
                     passView.textContent = card.data.password;
@@ -218,7 +237,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (cardPressed.checked) {
             deselectAllCards(); // Deseleccionar todas las tarjetas
             selectedCardIndex = cardPressed.value;
-            encryptedSelectedCard = encryptedCards.data[selectedCardIndex];
+            encryptedSelectedCard = encryptedCards[selectedCardIndex];
             const cardBody = document.getElementById(encryptedSelectedCard.id);
 
             // Establecer el color personalizado como una variable CSS
