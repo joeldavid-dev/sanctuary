@@ -20,7 +20,7 @@ export function createCardElement(card, index, translations) {
 
     // Crea el contenido de la tarjeta
     const cardHTML = `
-            <input type="radio" name="card" value="${index}">
+            <input type="radio" name="card" value="${card.id}">
             <div class="horizontal_elem-area spaced centered">
                 <p class="bold">${card.name}</p>
                 <div class="${heartVisible}">
@@ -32,12 +32,12 @@ export function createCardElement(card, index, translations) {
 
             <div class="${userVisible}">
                 <strong class="minimum-text">${translations['user']}</strong>
-                <p id="user-${index}" class="small-text selectable-text">••••••••</p>
+                <p id="user-${card.id}" class="small-text selectable-text">••••••••</p>
             </div>
             
             <div>
                 <strong class="minimum-text">${translations['password']}</strong>
-                <p id="pass-${index}" class="small-text selectable-text">••••••••</p>
+                <p id="pass-${card.id}" class="small-text selectable-text">••••••••</p>
             </div>
 
             <div class="${urlVisible}">
@@ -52,7 +52,7 @@ export function createCardElement(card, index, translations) {
 
                 <strong class="minimum-text">${index + 1}</strong>
 
-                <button class="eye-btn card-btn" data-index="${index}" data-userId="user-${index}" data-passId="pass-${index}">
+                <button class="eye-btn card-btn" data-cardID="${card.id}" data-userID="user-${card.id}" data-passID="pass-${card.id}">
                     <img src="../assets/ico/feather/eye.svg" class="card-icon">
                 </button>
             </div>

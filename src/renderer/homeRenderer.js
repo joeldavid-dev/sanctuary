@@ -20,8 +20,9 @@ const deleteCard = document.getElementById('delete-card');
 const deleteCardBody = document.getElementById('delete-card-body');
 
 let encryptedSelectedCard = null; // Variable para almacenar el ID de la tarjeta seleccionada
-let selectedCardIndex = null; // Variable para almacenar el índice de la tarjeta seleccionada
+let selectedCardID = null; // Variable para almacenar el índice de la tarjeta seleccionada
 let encryptedCards = []; // Variable para almacenar las tarjetas
+let actualEncryptedCards = []; // Lista que almacena las tarjetas mostradas en la vista
 let modalMode = 'create'; // Variable para almacenar el modo del modal (crear o editar)
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -68,6 +69,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <p>${translations['empty']}</p>
             </div>`;
         }
+        actualEncryptedCards = cards; // Actualizar la lista de tarjetas mostradas en la vista
     }
 
     // Funcion para deseleccionar todas las tarjetas
@@ -81,7 +83,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         deleteCardBody.classList.add('invisible'); // Ocultar el botón de eliminar
         deleteCardBody.classList.remove('vertical-flex');
 
-        selectedCardIndex = null;
+        selectedCardID = null;
         encryptedSelectedCard = null;
 
         // Deseleccionar todos los radio
@@ -116,7 +118,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         const searchTerm = event.target.value.toLowerCase();
         if (searchTerm.length > 0) {
             const filteredCards = encryptedCards.filter(card => card.name.toLowerCase().includes(searchTerm));
-            console.log(filteredCards);
             showCards(filteredCards);
         } else {
             showCards(encryptedCards); // Mostrar todas las tarjetas si no hay término de búsqueda
@@ -144,8 +145,15 @@ document.addEventListener("DOMContentLoaded", async () => {
                 modalMode = 'edit'; // Establecer el modo del modal a editar
                 const confirm = await showNewEditModal(modalMode, selectedCard.data);
                 if (confirm.success) {
-                    encryptedCards[selectedCardIndex] = confirm.editedCard;
-                    showCards(encryptedCards);
+                    // Actualizar la tarjeta en la lista de tarjetas encriptadas que se está mostrando
+                    const actualIndex = actualEncryptedCards.findIndex(card => card.id == selectedCard.data.id);
+                    actualEncryptedCards[actualIndex] = confirm.editedCard;
+
+                    // Actualizar la tarjeta en la lista de tarjetas encriptadas
+                    const index = encryptedCards.findIndex(card => card.id == selectedCard.data.id);
+                    encryptedCards[index] = confirm.editedCard;
+
+                    showCards(actualEncryptedCards);
                 }
                 if (confirm.message) showToast(confirm.message);
             } else {
@@ -159,9 +167,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (encryptedSelectedCard) {
             const confirm = await showDeleteModal(encryptedSelectedCard);
             if (confirm.success) {
-                // Eliminar la tarjeta de la lista de tarjetas encriptadas usando el índice
-                encryptedCards.splice(selectedCardIndex, 1);
-                showCards(encryptedCards); // Mostrar las tarjetas en la vista
+                // Eliminar la tarjeta en la lista de tarjetas encriptadas que se está mostrando
+                const actualIndex = actualEncryptedCards.findIndex(card => card.id == encryptedSelectedCard.id);
+                actualEncryptedCards.splice(actualIndex, 1);
+
+                // Eliminar la tarjeta en la lista de tarjetas encriptadas
+                const index = encryptedCards.findIndex(card => card.id == encryptedSelectedCard.id);
+                encryptedCards.splice(index, 1);
+
+                showCards(actualEncryptedCards); // Mostrar las tarjetas en la vista
             }
             if (confirm.message) showToast(confirm.message);
         }
@@ -195,26 +209,27 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         // Si el botón es un botón de ojo para mostrar/ocultar contraseña
         else if (buttonPressed.classList.contains('eye-btn')) {
-            const index = buttonPressed.getAttribute('data-index');
-            const userId = buttonPressed.getAttribute('data-userId');
-            const userView = document.getElementById(userId);
-            const passId = buttonPressed.getAttribute('data-passId');
-            const passView = document.getElementById(passId);
+            const cardID = buttonPressed.getAttribute('data-cardID');
+            const userID = buttonPressed.getAttribute('data-userID');
+            const userView = document.getElementById(userID);
+            const passID = buttonPressed.getAttribute('data-passID');
+            const passView = document.getElementById(passID);
             const mask = '••••••••';
 
             // Cambiar el texto del usuario y la contraseña al hacer clic en el botón
             if (passView.textContent === mask) {
-                const card = await window.electronAPI.decryptCard(encryptedCards[index]);
+                const encryptedCard = encryptedCards.find(card => card.id == cardID);
+                const card = await window.electronAPI.decryptCard(encryptedCard);
                 if (card.success) {
                     userView.textContent = card.data.user;
                     passView.textContent = card.data.password;
                     // 🔥 Copiamos al portapapeles
                     navigator.clipboard.writeText(card.data.password).then(() => {
                         // Mostrar una notificación visual
-                        showToast('Contraseña copiada al portapapeles');
+                        showToast(translations['copied']);
                     }).catch(err => {
                         console.error(err);
-                        showToast('Error al copiar al portapapeles');
+                        showToast(translations['copied-error']);
                     });
                 } else {
                     console.error(card);
@@ -236,9 +251,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Si se selecciona una tarjeta, mostrar los botones de editar y eliminar
         if (cardPressed.checked) {
             deselectAllCards(); // Deseleccionar todas las tarjetas
-            selectedCardIndex = cardPressed.value;
-            encryptedSelectedCard = encryptedCards[selectedCardIndex];
-            const cardBody = document.getElementById(encryptedSelectedCard.id);
+            selectedCardID = cardPressed.value;
+            encryptedSelectedCard = encryptedCards.find(card => card.id == selectedCardID);
+            const cardBody = document.getElementById(selectedCardID);
 
             // Establecer el color personalizado como una variable CSS
             cardBody.style.setProperty('--card-color', cardBody.style.backgroundColor);

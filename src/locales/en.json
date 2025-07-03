@@ -77,7 +77,9 @@
         "edit": "Edit",
         "delete": "Delete",
         "new": "New",
-        "empty": "Oops! Nothing here yet."
+        "empty": "Oops! Nothing here yet.",
+        "copied": "Password copied to clipboard",
+        "copied-error": "Error copying to clipboard"
     },
     "card": {
         "user": "User:",
