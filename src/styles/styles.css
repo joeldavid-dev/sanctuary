@@ -92,6 +92,7 @@ body::-webkit-scrollbar {
     --normal-margin: 15px;
     --narrow-margin: 10px;
     --minimal-margin: 5px;
+    --nano-margin: 2px;
 
     /* Valores de redondeo */
     --minimal-radius: 6px;
@@ -446,12 +447,17 @@ p {
 No tiene borde, al pasar el mouse por encima solo aparece el borde. */
 .transparent-btn {
     background: transparent;
-    padding: var(--minimal-margin);
     border: solid 1px transparent;
     border-radius: var(--minimal-radius);
     transition: 0.3s;
     cursor: pointer;
+    /* Hacer que el botón ocupe el espacio mínimo necesario */
+    width: min-content;
+    height: min-content;
+    display: flex;
+    align-items: center;
 }
+
 .transparent-btn:hover {
     border-color: black;
 }
@@ -757,28 +763,36 @@ input:checked+.slider::before {
     overflow: hidden;
 }
 
-.narrow-margin {
-    margin: var(--narrow-margin);
-}
-
 .normal-margin {
     margin: var(--normal-margin);
+}
+
+.narrow-margin {
+    margin: var(--narrow-margin);
 }
 
 .minimal-margin {
     margin: var(--minimal-margin);
 }
 
-.minimal-padding {
-    padding: var(--minimal-margin);
+.nano-margin {
+    margin: var(--nano-margin);
+}
+
+.normal-padding {
+    padding: var(--normal-margin);
 }
 
 .narrow-padding {
     padding: var(--narrow-margin);
 }
 
-.normal-padding {
-    padding: var(--normal-margin);
+.minimal-padding {
+    padding: var(--minimal-margin);
+}
+
+.nano-padding {
+    padding: var(--nano-margin);
 }
 
 .btn-padding {

@@ -8,6 +8,7 @@ const minimize = document.getElementById('minimize');
 const maximize = document.getElementById('maximize');
 const close = document.getElementById('close');
 const search = document.getElementById('search');
+const searchClear = document.getElementById('search-clear');
 
 const sidebar = document.getElementById('sidebar');
 // Contenedor principal
@@ -19,6 +20,7 @@ const newCard = document.getElementById('new-card');
 const deleteCard = document.getElementById('delete-card');
 const deleteCardBody = document.getElementById('delete-card-body');
 
+let searching = false; // Variable para controlar si se está buscando
 let encryptedSelectedCard = null; // Variable para almacenar el ID de la tarjeta seleccionada
 let selectedCardID = null; // Variable para almacenar el índice de la tarjeta seleccionada
 let encryptedCards = []; // Variable para almacenar las tarjetas
@@ -119,8 +121,24 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (searchTerm.length > 0) {
             const filteredCards = encryptedCards.filter(card => card.name.toLowerCase().includes(searchTerm));
             showCards(filteredCards);
+            if (!searching) {
+                document.getElementById('search-clear-ico').src = '../assets/ico/feather/x.svg'; // Cambiar el icono de búsqueda a "x"
+                searching = true; // Cambiar el estado de búsqueda a verdadero
+            }
         } else {
             showCards(encryptedCards); // Mostrar todas las tarjetas si no hay término de búsqueda
+            searching = false; // Cambiar el estado de búsqueda a falso
+            document.getElementById('search-clear-ico').src = '../assets/ico/feather/search.svg'; // Cambiar el icono de búsqueda a "lupa"
+        }
+    });
+
+    // Clic en el botón de limpiar búsqueda
+    searchClear.addEventListener('click', () => {
+        if (searching) {
+            search.value = ''; // Limpiar el campo de búsqueda
+            showCards(encryptedCards); // Mostrar todas las tarjetas
+            searching = false; // Cambiar el estado de búsqueda a falso
+            document.getElementById('search-clear-ico').src = '../assets/ico/feather/search.svg'; // Cambiar el icono de búsqueda a "lupa"
         }
     });
 
