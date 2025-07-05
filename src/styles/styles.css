@@ -235,6 +235,12 @@ p {
 
 .colored-blur {
     background: var(--app_light_transparent);
+    filter: saturate(2);
+    backdrop-filter: blur(50px);
+}
+
+.colored-saturate-blur {
+    background: var(--app_light_transparent);
     filter: saturate(5);
     backdrop-filter: blur(50px);
 }
@@ -896,6 +902,10 @@ input:checked+.slider::before {
     }
 
     .colored-blur {
+        background: var(--app_dark_transparent);
+    }
+
+    .colored-saturate-blur {
         background: var(--app_dark_transparent);
     }
 
