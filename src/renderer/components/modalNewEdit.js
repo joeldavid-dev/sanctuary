@@ -220,7 +220,7 @@ export function showNewEditModal(mode, card) {
 function getModalHTML(translations, cardTranslations) {
     return `
         <div class="horizontal-flex normal-margin">
-            <div class="vertical-elem-area normal-padding normal-rounded preview-options">
+            <div class="vertical-elem-area normal-padding normal-rounded div-options">
                 <label>${translations['name']}</label>
                 <input type="text" id="name-input" class="custom-input minimal-rounded" placeholder=${translations["name-placeholder"]}>
                 <label>${translations['user']}</label>
@@ -286,7 +286,7 @@ function getModalHTML(translations, cardTranslations) {
         </div>
 
         <div id="colors-section" class="horizontal-flex normal-margin">
-            <div class="horizontal_elem-area minimal-padding normal-rounded preview-options">
+            <div class="horizontal_elem-area minimal-padding normal-rounded div-options">
                 <label class="custom-radio2 minimal-rounded minimal-padding">
                     <input id="color1" type="radio" name="color" value="var(--color1)">
                     <div class="radio-color color1 minimal-rounded"></div>

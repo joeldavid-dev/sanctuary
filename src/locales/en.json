@@ -69,11 +69,13 @@
         "search": "Search...",
         "keys": "Keys",
         "block": "Lock",
+        "notes": "Notes",
         "settings": "Settings",
         "messages": "Messages",
         "user-info": "User",
         "random-key": "Random Key",
         "my-keys": "My Keys",
+        "my-notes": "My Notes",
         "edit": "Edit",
         "delete": "Delete",
         "new": "New",
@@ -108,5 +110,21 @@
         "message": "Do you really want to delete the '{name}' key? Be careful — this action is irreversible!",
         "cancel": "Cancel",
         "delete-key": "Delete Key"
+    },
+    "settings": {
+        "edit-ID": "Edit your ID information",
+        "export-keys": "Export all keys",
+        "export-notes": "Export all notes",
+        "delete-ID": "Delete your ID",
+        "languaje": "Language",
+        "app-language": "App Language",
+        "customization": "Customization",
+        "lock-background": "Lock screen background",
+        "background-motion": "Background motion",
+        "background-motion-info": "Background motion may affect performance on some devices.",
+        "about": "About",
+        "view-info-about": "View information about Codaby Sanctuary",
+        "view-version-info": "View what's new in this version",
+        "view-license": "View license"
     }
 }

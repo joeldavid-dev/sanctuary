@@ -22,46 +22,50 @@
         <section id="sidebar" class="sidebar normal-padding vertical-flex centered spaced">
             <div class="vertical-flex big-spaced">
                 <div class="vertical-flex centered">
-                    <button id="lock" class="ico-btn">
+                    <button id="lock-btn" class="ico-btn">
                         <img src="../assets/ico/feather/lock.svg" class="normal-icon">
                     </button>
                     <label class="small-text hide-in-small" data-i18n="block"></label>
                 </div>
 
                 <div class="vertical-flex centered">
-                    <button id="home" class="ico-btn">
-                        <img src="../assets/ico/feather/home.svg" class="normal-icon">
-                    </button>
+                    <label id="keys-radio" class="transparent-ico-radio">
+                        <img src="../assets/ico/feather/key.svg" class="normal-icon">
+                        <input type="radio" name="sidebar-option" id="keys" checked>
+                    </label>
                     <label class="small-text hide-in-small" data-i18n="keys"></label>
                 </div>
 
                 <div class="vertical-flex centered">
-                    <button id="settings" class="ico-btn">
+                    <label id="notes-radio" class="transparent-ico-radio">
+                        <img src="../assets/ico/feather/book.svg" class="normal-icon">
+                        <input type="radio" name="sidebar-option" id="notes">
+                    </label>
+                    <label class="small-text hide-in-small" data-i18n="notes"></label>
+                </div>
+
+                <div class="vertical-flex centered">
+                    <label id="settings-radio" class="transparent-ico-radio">
                         <img src="../assets/ico/feather/settings.svg" class="normal-icon">
-                    </button>
+                        <input type="radio" name="sidebar-option" id="settings">
+                    </label>
                     <label class="small-text hide-in-small" data-i18n="settings"></label>
                 </div>
 
                 <div class="vertical-flex centered">
-                    <button id="messages" class="ico-btn">
+                    <button id="messages-btn" class="ico-btn">
                         <img src="../assets/ico/feather/message-square.svg" class="normal-icon">
                     </button>
                     <label class="small-text hide-in-small" data-i18n="messages"></label>
                 </div>
 
                 <div class="vertical-flex centered">
-                    <button id="user" class="ico-btn">
+                    <button id="user-btn" class="ico-btn">
                         <img src="../assets/ico/feather/user.svg " class="normal-icon">
                     </button>
                     <label class="small-text hide-in-small" data-i18n="user-info"></label>
                 </div>
 
-                <div class="vertical-flex centered">
-                    <button id="random-pass" class="ico-btn">
-                        <img src="../assets/ico/feather/key.svg " class="normal-icon">
-                    </button>
-                    <label class="small-text hide-in-small" data-i18n="random-key"></label>
-                </div>
             </div>
 
             <button id="App-btn" class="ico-btn">
@@ -74,8 +78,8 @@
             <!-- Barra de titulo -->
             <div id="title-bar"
                 class="title-bar normal-padding horizontal_elem-area draggable spaced centered colored-blur">
-                <h2 data-i18n="my-keys"></h2>
-                <div class="horizontal_elem-area centered">
+                <h2 id="title"></h2>
+                <div id="search-area" class="horizontal_elem-area centered">
                     <input id="search" type="text" class="custom-input search minimal-rounded" inputmode="search">
                     <button id="search-clear" class="transparent-btn nano-padding">
                         <img id="search-clear-ico" src="../assets/ico/feather/search.svg" class="mini-icon">
@@ -93,12 +97,12 @@
                     </button>
                 </div>
             </div>
-            <div id="cards-container" class="cards-container normal-padding">
+            <div id="main-content" class="cards-container normal-padding">
                 <!-- Aquí se insertan las tarjetas creadas -->
             </div>
 
             <!-- bottonbar -->
-            <div class="botton-bar floating-container horizontal_elem-area colored-blur big-spaced">
+            <div id="botton-bar" class="botton-bar floating-container horizontal_elem-area colored-blur big-spaced">
 
                 <div id="edit-card-body" class="vertical-flex centered">
                     <button id="edit-card" class="ico-btn invisible">

@@ -2,30 +2,38 @@ import { setTranslations, translate } from './utils/translate.js';
 import { createCardElement } from './components/card.js'; // Importar el módulo de tarjeta
 import { showNewEditModal } from './components/modalNewEdit.js'; // Importar el módulo de modal para agregar o editar tarjetas
 import { showDeleteModal } from './components/modalDelete.js'; // Importar el módulo de modal para eliminar una tarjeta
-
+import { showSettings } from './components/settings.js';
 // Barra de título
 const minimize = document.getElementById('minimize');
 const maximize = document.getElementById('maximize');
 const close = document.getElementById('close');
+const title = document.getElementById('title');
+const searchArea = document.getElementById('search-area');
 const search = document.getElementById('search');
 const searchClear = document.getElementById('search-clear');
 
+// Sidebar
 const sidebar = document.getElementById('sidebar');
+const keysRadio = document.getElementById('keys-radio');
+const notesRadio = document.getElementById('notes-radio');
+const settingsRadio = document.getElementById('settings-radio');
+
 // Contenedor principal
-const cardsContainer = document.getElementById('cards-container');
+const mainContent = document.getElementById('main-content');
 // Bottonbar
+const bottonBar = document.getElementById('botton-bar');
 const editCard = document.getElementById('edit-card');
 const editCardBody = document.getElementById('edit-card-body');
 const newCard = document.getElementById('new-card');
 const deleteCard = document.getElementById('delete-card');
 const deleteCardBody = document.getElementById('delete-card-body');
 
+let mode = 'keys'; // Variable para controlar el modo actual de la vista (llaves, notas o configuración)
 let searching = false; // Variable para controlar si se está buscando
 let encryptedSelectedCard = null; // Variable para almacenar el ID de la tarjeta seleccionada
 let selectedCardID = null; // Variable para almacenar el índice de la tarjeta seleccionada
 let encryptedCards = []; // Variable para almacenar las tarjetas
 let actualEncryptedCards = []; // Lista que almacena las tarjetas mostradas en la vista
-let modalMode = 'create'; // Variable para almacenar el modo del modal (crear o editar)
 
 document.addEventListener("DOMContentLoaded", async () => {
     const translations = await window.electronAPI.getTranslations('home-view');
@@ -57,15 +65,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     async function showCards(cards) {
         // Limpiar el contenedor de tarjetas antes de agregar nuevas
-        cardsContainer.innerHTML = '';
+        mainContent.innerHTML = '';
         deselectAllCards(); // Deseleccionar todas las tarjetas
         if (cards.length > 0) {
             // Crear y agregar cada tarjeta al contenedor
             cards.forEach((card, index) => {
-                cardsContainer.appendChild(createCardElement(card, index, cardTranslations));
+                mainContent.appendChild(createCardElement(card, index, cardTranslations));
             });
         } else {
-            cardsContainer.innerHTML = `
+            mainContent.innerHTML = `
             <div class="vertical-flex centered">
                 <img src="../assets/illustrations/FeelingLonely.svg" alt="No cards" class="empty-image">
                 <p>${translations['empty']}</p>
@@ -99,6 +107,32 @@ document.addEventListener("DOMContentLoaded", async () => {
         editCardBody.classList.add('vertical-flex');
         deleteCardBody.classList.remove('invisible'); // Mostrar el botón de eliminar
         deleteCardBody.classList.add('vertical-flex');
+    }
+
+    // Funciones de estado de la vista ============================================================
+    function showKeysView() {
+        showCards(encryptedCards); // Mostrar las tarjetas en la vista
+        title.textContent = translations['my-keys']; // Cambiar el título de la vista
+        searchArea.style.display = 'flex'; // Mostrar la barra de búsqueda en la vista de llaves
+        bottonBar.style.display = 'flex'; // Mostrar la barra de botones en la vista de llaves
+        mode = 'keys'; // Cambiar el modo a llaves
+    }
+
+    function showNotesView() {
+        console.log('Mostrar vista de notas'); // Aquí se implementaría la lógica para mostrar las notas
+        title.textContent = translations['my-notes']; // Cambiar el título de la vista
+        searchArea.style.display = 'flex'; // Mostrar la barra de búsqueda en la vista de notas
+        bottonBar.style.display = 'flex'; // Mostrar la barra de botones en la vista de notas
+        mode = 'notes'; // Cambiar el modo a notas
+    }
+
+    function showSettingsView() {
+        console.log('Mostrar vista de configuración'); // Aquí se implementaría la lógica para mostrar la configuración
+        title.textContent = translations['settings']; // Cambiar el título de la vista
+        searchArea.style.display = 'none'; // Ocultar la barra de búsqueda en la vista de configuración
+        bottonBar.style.display = 'none'; // Ocultar la barra de botones en la vista de configuración
+        mode = 'settings'; // Cambiar el modo a configuración
+        showSettings(); // Llamar a la función para mostrar la vista de configuración
     }
 
     // Acciones de la barra de título ============================================================
@@ -145,8 +179,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     //Funciones de los botones de la butonbar ====================================================
     // Clic en el botón para crar una nueva tarjeta
     newCard.addEventListener('click', async () => {
-        modalMode = 'create'; // Establecer el modo del modal a crear
-        const confirm = await showNewEditModal(modalMode);
+        const confirm = await showNewEditModal('create');
         if (confirm.success) {
             encryptedCards.push(confirm.generatedCard);
             showCards(encryptedCards);
@@ -160,8 +193,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             // Desencriptar la tarjeta seleccionada
             const selectedCard = await window.electronAPI.decryptCard(encryptedSelectedCard);
             if (selectedCard.success) {
-                modalMode = 'edit'; // Establecer el modo del modal a editar
-                const confirm = await showNewEditModal(modalMode, selectedCard.data);
+                const confirm = await showNewEditModal('edit', selectedCard.data);
                 if (confirm.success) {
                     // Actualizar la tarjeta en la lista de tarjetas encriptadas que se está mostrando
                     const actualIndex = actualEncryptedCards.findIndex(card => card.id == selectedCard.data.id);
@@ -206,15 +238,34 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (!buttonPressed) return; // Si no se hizo clic en un botón, salir
 
         // Clic en botón bloquear
-        if (buttonPressed.id === 'lock') {
+        if (buttonPressed.id === 'lock-btn') {
             window.electronAPI.changeView('src/views/lock.html');
         }
     });
 
-    // Cards container..............................................................
-    cardsContainer.addEventListener('click', async (event) => {
+    // Clic en los radios de la sidebar
+    keysRadio.addEventListener('click', () => {
+        if (keysRadio.querySelector('input[type="radio"]').checked) {
+            showKeysView(); // Mostrar la vista de llaves
+        }
+    });
+
+    notesRadio.addEventListener('click', () => {
+        if (notesRadio.querySelector('input[type="radio"]').checked) {
+            showNotesView(); // Mostrar la vista de notas
+        }
+    });
+
+    settingsRadio.addEventListener('click', () => {
+        if (settingsRadio.querySelector('input[type="radio"]').checked) {
+            showSettingsView(); // Mostrar la vista de configuración
+        }
+    });
+
+    // Main content ..............................................................
+    mainContent.addEventListener('click', async (event) => {
         const buttonPressed = event.target.closest('button');
-        if (event.target.id === 'cards-container') deselectAllCards();
+        if (event.target.id === 'main-content') deselectAllCards();
 
         else if (!buttonPressed) return; // Si no se hizo clic en un botón, salir
 
@@ -262,7 +313,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     // Escuchar cambios
-    cardsContainer.addEventListener('change', (event) => {
+    mainContent.addEventListener('change', (event) => {
         const cardPressed = event.target.closest('input[name="card"]');
         if (!cardPressed) return; // Si no se hizo clic en una tarjeta, salir
 
@@ -300,5 +351,5 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Acciones iniciales ========================================================================
     encryptedCards = await getAllCards(); // Obtener todas las tarjetas y almacenarlas en la variable local
-    showCards(encryptedCards); // Mostrar las tarjetas en la vista
+    showKeysView(); // Mostrar la vista de inicio
 });

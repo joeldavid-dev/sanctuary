@@ -72,10 +72,6 @@
     margin-left: var(--normal-margin);
 }
 
-.preview-options {
-    background-color: var(--light_gray);
-}
-
 .new-edit-done {
     width: 200px;
     margin-left: var(--normal-margin);
@@ -85,9 +81,5 @@
 @media (prefers-color-scheme: dark) {
     .sidebar {
         border-right: 1px solid var(--dark_gray);
-    }
-
-    .preview-options {
-        background-color: var(--dark_gray);
     }
 }

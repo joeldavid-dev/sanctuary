@@ -71,8 +71,8 @@ body::-webkit-scrollbar {
     --app_dark: rgb(10, 10, 10);
     --app_dark_transparent: rgba(10, 10, 10, 0.8);
     --neutral_grey: rgb(130, 130, 130);
-    --light_gray: rgb(230, 230, 230);
-    --dark_gray: rgb(50, 50, 50);
+    --light_gray: rgba(0, 0, 0, 0.1);
+    --dark_gray: rgba(255, 255, 255, 0.15);
 
     --app-contrast: rgb(0, 160, 120);
 
@@ -103,6 +103,8 @@ body::-webkit-scrollbar {
     --external-radius: calc(var(--minimal-radius) + var(--minimal-margin));
     /* Redondeo exterior de un contenedor con margen estrecho y elemento hijo minimo. */
     --external-radius-2: calc(var(--minimal-radius) + var(--narrow-margin));
+    /* Redondeo exterior de un contenedor con margen normal y elemento hijo minimo. */
+    --external-radius-3: calc(var(--minimal-radius) + var(--normal-margin));
 }
 
 /* Permite arrastrar la app */
@@ -183,6 +185,10 @@ p {
     text-align: center;
 }
 
+.left-text {
+    text-align: left;
+}
+
 .bold {
     font-weight: bold;
 }
@@ -206,6 +212,18 @@ p {
 /* Redondeo de elementos pequeños*/
 .minimal-rounded {
     border-radius: var(--minimal-radius);
+}
+
+.external-radius {
+    border-radius: var(--external-radius);
+}
+
+.external-radius-2 {
+    border-radius: var(--external-radius-2);
+}
+
+.external-radius-3 {
+    border-radius: var(--external-radius-3);
 }
 
 .invisible {
@@ -372,6 +390,10 @@ p {
     background-color: var(--color10);
 }
 
+.div-options {
+    background-color: var(--light_gray);
+}
+
 /* ======================= Elementos complejos ======================= */
 .card-body {
     font-family: jetBrains_mono;
@@ -405,7 +427,7 @@ p {
 .action-btn {
     background: transparent;
     border: solid 1px;
-    transition: 0.3s;
+    transition: 0.2s;
     cursor: pointer;
 }
 
@@ -426,7 +448,7 @@ p {
     color: white;
     background: transparent;
     border: solid 1px;
-    transition: 0.3s;
+    transition: 0.2s;
     cursor: pointer;
 }
 
@@ -440,7 +462,7 @@ p {
 .option-btn {
     background: transparent;
     padding: var(--minimal-margin);
-    transition: 0.3s;
+    transition: 0.2s;
     cursor: pointer;
 }
 
@@ -455,7 +477,7 @@ No tiene borde, al pasar el mouse por encima solo aparece el borde. */
     background: transparent;
     border: solid 1px transparent;
     border-radius: var(--minimal-radius);
-    transition: 0.3s;
+    transition: 0.2s;
     cursor: pointer;
     /* Hacer que el botón ocupe el espacio mínimo necesario */
     width: min-content;
@@ -512,6 +534,32 @@ No tiene borde, al pasar el mouse por encima solo aparece el borde. */
     transition: 0.3s;
 }
 
+.transparent-ico-radio {
+    width: 28px;
+    height: 28px;
+    background: transparent;
+    border: solid 1px transparent;
+    border-radius: var(--minimal-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.transparent-ico-radio input {
+    /*Oculta el radio button original */
+    display: none;
+}
+
+.transparent-ico-radio:has(input:checked) {
+    background-color: var(--light_gray);
+}
+
+.transparent-ico-radio:hover {
+    border-color: black;
+}
+
 .custom-radio2 {
     display: flex;
     align-items: center;
@@ -551,7 +599,6 @@ No tiene borde, al pasar el mouse por encima solo aparece el borde. */
 .ico-btn {
     width: 30px;
     height: 30px;
-    padding: var(--minimal-margin);
     background: transparent;
     border: solid 1px transparent;
     border-radius: var(--minimal-radius);
@@ -559,7 +606,7 @@ No tiene borde, al pasar el mouse por encima solo aparece el borde. */
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.2s;
 }
 
 .ico-btn:hover {
@@ -577,7 +624,7 @@ No tiene borde, al pasar el mouse por encima solo aparece el borde. */
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.2s;
 }
 
 .ico-btn-white:hover {
@@ -656,7 +703,7 @@ input:checked+.slider::before {
     height: 30px;
     border-radius: 30px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.2s;
 }
 
 .card-btn:hover {
@@ -672,7 +719,7 @@ input:checked+.slider::before {
     text-align: center;
     border-radius: 30px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.2s;
 }
 
 .card-btn2:hover {
@@ -859,6 +906,10 @@ input:checked+.slider::before {
         color: white;
     }
 
+    .div-options {
+        background-color: var(--dark_gray);
+    }
+
     .transparent-btn:hover {
         border-color: white;
     }
@@ -925,6 +976,14 @@ input:checked+.slider::before {
 
     .custom-radio input:checked+.radio-ico {
         filter: invert(0);
+    }
+
+    .transparent-ico-radio:has(input:checked) {
+        background-color: var(--dark_gray);
+    }
+
+    .transparent-ico-radio:hover {
+        border-color: white;
     }
 
     .action-btn {
