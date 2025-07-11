@@ -1,8 +1,9 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
+const { app } = require("electron");
 
 // Conexión con la base de datos
-const dbPath = path.join(__dirname, 'database.db');
+const dbPath = path.join(app.getPath("userData"), 'mydb.sqlite');
 const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
         console.error('Error al conectar con SQLite:', err.message);
