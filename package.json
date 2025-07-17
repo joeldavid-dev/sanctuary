@@ -1,10 +1,11 @@
 {
   "name": "codaby-sanctuary",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder"
+    "build": "electron-builder",
+    "publish": "electron-builder --publish always"
   },
   "build": {
     "appId": "com.codaby.sanctuary",
@@ -14,7 +15,6 @@
     },
     "files": [
       "src/**/*",
-      "node_modules/**/*",
       "package.json"
     ],
     "win": {
@@ -27,11 +27,18 @@
       "allowToChangeInstallationDirectory": false,
       "installerIcon": "build/icon.ico",
       "uninstallerIcon": "build/icon.ico",
-      "uninstallDisplayName": "Sanctuary-uninstaller",
+      "uninstallDisplayName": "Sanctuary Beta",
       "license": "LICENSE",
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true
-    }
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "joeldavid-dev",
+        "repo": "sanctuary"
+      }
+    ]
   },
   "keywords": [],
   "author": "Joel David C.",
@@ -48,6 +55,7 @@
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "electron-updater": "^6.6.2",
     "sqlite3": "^5.1.7"
   }
 }

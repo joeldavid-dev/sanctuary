@@ -1,10 +1,11 @@
 const { app, BrowserWindow, ipcMain, shell, dialog, Notification } = require('electron');
+const { autoUpdater } = require('electron-updater');
 const path = require('node:path');
 const cr = require('./utils/crypto.js');
 const db = require('./utils/database.js');
 const oldCr = require('./utils/oldCrypto.js');
 const fs = require('fs');
-const debug = true; // Activa el modo de depuración
+const debug = false; // Activa el modo de depuración
 if (debug) {
     console.log('Modo de depuración activado');
     // Mostrar la ruta del directorio actual
@@ -37,13 +38,14 @@ const createMainWindow = () => {
 
             // La cadena __dirname apunta a la ruta del script
             // actualmente en ejecución
-            preload: path.join(__dirname, 'preload.js')
+            preload: path.join(__dirname, 'preload.js'),
             // La API path.join une varios segmentos de rutas,
             // creando una cadena de ruta combinada
+
+            // Desactivar en producción
+            devTools: debug, // Activa las herramientas de desarrollo si está en modo depuración
         }
     });
-    // Desactivar en producción
-    //mainWindow.webContents.openDevTools();
     mainWindow.loadFile('src/views/splash-screen.html');
     //mainWindow.loadFile('src/views/id.html');
 }
@@ -55,6 +57,11 @@ app.whenReady().then(() => {
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) createMainWindow()
     })
+
+    // Comprobar si hay actualizaciones disponibles
+    autoUpdater.checkForUpdatesAndNotify().catch(err => {
+        printDebugInfo('Error al comprobar actualizaciones: ' + err);
+    });
 });
 
 // Implementa el cierre de toda la aplicación al cerrar
