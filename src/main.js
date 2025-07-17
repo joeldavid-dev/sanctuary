@@ -5,11 +5,13 @@ const cr = require('./utils/crypto.js');
 const db = require('./utils/database.js');
 const oldCr = require('./utils/oldCrypto.js');
 const fs = require('fs');
-const debug = false; // Activa el modo de depuración
-if (debug) {
-    console.log('Modo de depuración activado');
-    // Mostrar la ruta del directorio actual
-    console.log('Directorio actual:', __dirname);
+
+// Configuraciones globales
+const globalConfigPath = path.join(__dirname, 'config', 'globalConfig.json');
+const globalConfig = JSON.parse(fs.readFileSync(globalConfigPath, 'utf8'));
+
+if (globalConfig.debug) {
+    console.log('>>> Modo de depuracion activado <<<');
 }
 
 let mainWindow, superUser, masterKey, oldData;
@@ -43,7 +45,7 @@ const createMainWindow = () => {
             // creando una cadena de ruta combinada
 
             // Desactivar en producción
-            devTools: debug, // Activa las herramientas de desarrollo si está en modo depuración
+            devTools: globalConfig.debug, // Activa las herramientas de desarrollo si está en modo depuración
         }
     });
     mainWindow.loadFile('src/views/splash-screen.html');
@@ -90,10 +92,10 @@ function getTranslations(lang = 'en') {
     try {
         const filePath = path.join(__dirname, 'locales', `${lang}.json`);
         const raw = fs.readFileSync(filePath, 'utf8');
-        printDebugInfo('Cargando traduccion:' + filePath);
+        printDebugInfo('Cargando traduccion: ' + filePath);
         return JSON.parse(raw);
     } catch (err) {
-        printDebugInfo('Error al cargar traduccion:' + err);
+        printDebugInfo('Error al cargar traduccion: ' + err);
         return {};
     }
 }
@@ -403,7 +405,7 @@ ipcMain.handle('import-data', async (event, key) => {
 });
 
 function printDebugInfo(info) {
-    if (debug) {
+    if (globalConfig.debug) {
         console.log('>> ' + info);
     }
 }

@@ -1,9 +1,20 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const { app } = require("electron");
+// Configuraciones globales
+const globalConfigPath = path.join(__dirname, '..', 'config', 'globalConfig.json');
+const globalConfig = JSON.parse(require('fs').readFileSync(globalConfigPath, 'utf8'));
 
-// Conexión con la base de datos
-const dbPath = path.join(app.getPath("userData"), 'mydb.sqlite');
+// Variables
+let dbPath = null;
+// Determinar la ruta de la base de datos
+if (globalConfig.debug) {
+    dbPath = path.join(__dirname, globalConfig.dbPath);
+    console.log('Ruta de la base de datos:', dbPath);
+} else {
+    dbPath = path.join(app.getPath('userData'), globalConfig.dbPath);
+}
+
 const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
         console.error('Error al conectar con SQLite:', err.message);

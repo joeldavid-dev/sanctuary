@@ -1,5 +1,5 @@
 node_modules
 package-lock.json
 recursos
-src/utils/database.db
+src/utils/sanctuary.db
 out
