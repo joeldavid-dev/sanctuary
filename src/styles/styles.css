@@ -67,9 +67,9 @@ body::-webkit-scrollbar {
 /* Definición de constantes */
 :root {
     --app_light: rgb(245, 245, 245);
-    --app_light_transparent: rgba(245, 245, 245, 0.8);
+    --app_light_transparent: rgba(245, 245, 245, 0.6);
     --app_dark: rgb(10, 10, 10);
-    --app_dark_transparent: rgba(10, 10, 10, 0.8);
+    --app_dark_transparent: rgba(10, 10, 10, 0.6);
     --neutral_grey: rgb(130, 130, 130);
     --light_gray: rgba(0, 0, 0, 0.1);
     --dark_gray: rgba(255, 255, 255, 0.15);
