@@ -246,7 +246,7 @@ function getModalHTML(translations, cardTranslations) {
                 <label for="preview-card">${translations['preview']}</label>
 
                 <div id="preview-card" class="card-body color1 contracted">
-                    <div class="horizontal_elem-area spaced centered">
+                    <div class="horizontal-elem-area spaced centered">
                         <p id="name-preview" class="bold">${cardTranslations['new-card']}</p>
                         <div id="ico-love">
                             <div class="card-static-icon">
@@ -286,7 +286,7 @@ function getModalHTML(translations, cardTranslations) {
         </div>
 
         <div id="colors-section" class="horizontal-flex normal-margin">
-            <div class="horizontal_elem-area minimal-padding normal-rounded div-options">
+            <div class="horizontal-elem-area minimal-padding normal-rounded div-options">
                 <label class="custom-radio2 minimal-rounded minimal-padding">
                     <input id="color1" type="radio" name="color" value="var(--color1)">
                     <div class="radio-color color1 minimal-rounded"></div>

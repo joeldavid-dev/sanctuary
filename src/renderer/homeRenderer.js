@@ -2,7 +2,7 @@ import { setTranslations, translate } from './utils/translate.js';
 import { createCardElement } from './components/card.js'; // Importar el módulo de tarjeta
 import { showNewEditModal } from './components/modalNewEdit.js'; // Importar el módulo de modal para agregar o editar tarjetas
 import { showDeleteModal } from './components/modalDelete.js'; // Importar el módulo de modal para eliminar una tarjeta
-import { showSettings } from './components/settings.js';
+import { createSettingsPage } from './components/settings.js';
 // Barra de título
 const minimize = document.getElementById('minimize');
 const maximize = document.getElementById('maximize');
@@ -20,6 +20,8 @@ const settingsRadio = document.getElementById('settings-radio');
 
 // Contenedor principal
 const mainContent = document.getElementById('main-content');
+const settingsArea = document.getElementById('settings-area');
+
 // Bottonbar
 const bottonBar = document.getElementById('botton-bar');
 const editCard = document.getElementById('edit-card');
@@ -116,6 +118,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         searchArea.style.display = 'flex'; // Mostrar la barra de búsqueda en la vista de llaves
         bottonBar.style.display = 'flex'; // Mostrar la barra de botones en la vista de llaves
         mode = 'keys'; // Cambiar el modo a llaves
+        settingsArea.style.display = 'none'; // Ocultar el área de configuración
+        mainContent.style.display = 'flex'; // Mostrar el contenedor principal de tarjetas
     }
 
     function showNotesView() {
@@ -124,6 +128,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         searchArea.style.display = 'flex'; // Mostrar la barra de búsqueda en la vista de notas
         bottonBar.style.display = 'flex'; // Mostrar la barra de botones en la vista de notas
         mode = 'notes'; // Cambiar el modo a notas
+        settingsArea.style.display = 'none'; // Ocultar el área de configuración
+        mainContent.style.display = 'flex'; // Mostrar el contenedor principal de tarjetas
     }
 
     function showSettingsView() {
@@ -132,7 +138,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         searchArea.style.display = 'none'; // Ocultar la barra de búsqueda en la vista de configuración
         bottonBar.style.display = 'none'; // Ocultar la barra de botones en la vista de configuración
         mode = 'settings'; // Cambiar el modo a configuración
-        showSettings(); // Llamar a la función para mostrar la vista de configuración
+        settingsArea.style.display = 'flex'; // Mostrar el área de configuración
+        mainContent.style.display = 'none'; // Ocultar el contenedor principal de tarjetas
     }
 
     // Acciones de la barra de título ============================================================
@@ -352,4 +359,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Acciones iniciales ========================================================================
     encryptedCards = await getAllCards(); // Obtener todas las tarjetas y almacenarlas en la variable local
     showKeysView(); // Mostrar la vista de inicio
+    createSettingsPage(); // Crear la página de configuración
 });

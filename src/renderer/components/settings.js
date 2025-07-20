@@ -3,14 +3,14 @@
  * ID = "main-content".
  */
 
-export async function showSettings() {
+export async function createSettingsPage() {
     // Constantes y variables auxiliares
     const superuser = await window.electronAPI.getUserInfo();
     const translations = await window.electronAPI.getTranslations('settings');
     // Elementos HTML ya existentes que se usarán
-    const mainContent = document.getElementById('main-content');
+    const settingsArea = document.getElementById('settings-area');
     // Insertar el esqueleto HTML
-    mainContent.innerHTML = getSettingsHTML(translations, superuser);
+    settingsArea.innerHTML = getSettingsHTML(translations, superuser);
     // Elementos HTML insertados en el esqueleto
     // Establecer valores
     // Funciones de botones
@@ -20,13 +20,19 @@ export async function showSettings() {
 
 function getSettingsHTML(translations, superuser) {
     return `
-        <div class="vertical-flex expanded big-spaced">
-            <div class="div-options vertical-elem-area narrow-padding external-radius-2">
-                <p class="expresive-text centered-text">${superuser.name}</p>
-                <button id="edit-ID" class="option-btn minimal-rounded left-text">${translations['edit-ID']}</button>
-                <button id="export-keys" class="option-btn minimal-rounded left-text">${translations['export-keys']}</button>
-                <button id="export-notes" class="option-btn minimal-rounded left-text">${translations['export-notes']}</button>
-                <button id="delete-ID" class="option-btn minimal-rounded left-text">${translations['delete-ID']}</button>
+        <div class="vertical-flex big-spaced with-70">
+            <div class="div-options vertical-elem-area external-radius-2">
+                <div class="vertical-elem-area centered" background-image="../assets/img/Yakup Ipek Pixabay.jpg">
+                    <img src="../assets/img/Yakup Ipek Pixabay.jpg" class="large-circular-icon"></img>
+                    <p class="expresive-text">${superuser.name}</p>
+                </div>
+            
+                <div class="vertical-elem-area narrow-padding">
+                    <button id="edit-ID" class="option-btn minimal-rounded left-text">${translations['edit-ID']}</button>
+                    <button id="export-keys" class="option-btn minimal-rounded left-text">${translations['export-keys']}</button>
+                    <button id="export-notes" class="option-btn minimal-rounded left-text">${translations['export-notes']}</button>
+                    <button id="delete-ID" class="option-btn-warning minimal-rounded left-text">${translations['delete-ID']}</button>
+                </div>
             </div>
 
             <div class="vertical-elem-area">

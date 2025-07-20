@@ -31,7 +31,8 @@
         "welcome-back": "Welcome back, {name}!",
         "welcome-back-info": "Please enter your password to unlock your account and bring your data into the new version.",
         "success": "Success!",
-        "success-info": "Your data was imported successfully. You can now start using the app."
+        "success-info": "Your ID was created successfully. You can now start using the app.",
+        "success-import-info": "Your data was imported successfully. You can now start using the app."
     },
     "warning": {
         "title": "Warning",

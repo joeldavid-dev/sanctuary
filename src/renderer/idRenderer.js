@@ -87,6 +87,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const response = await window.electronAPI.createID(name, pass1, gender);
 
                 if (response.success) {
+                    window.electronAPI.showNotification(translations['success'], translations['success-info']);
                     window.electronAPI.changeView('src/views/lock.html');
                 } else {
                     showToast(response.message);
@@ -101,7 +102,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const response = await window.electronAPI.importData(pass1);
                 if (response.success) {
                     // Cuando la contraseña es correcta y la importación es exitosa
-                    window.electronAPI.showNotification(translations['success'], translations['success-info']);
+                    window.electronAPI.showNotification(translations['success'], translations['success-import-info']);
                     window.electronAPI.changeView('src/views/lock.html');
                 } else {
                     // Cuando la contraseña es incorrecta o ocurrió un error

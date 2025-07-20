@@ -21,7 +21,7 @@ export function createCardElement(card, index, translations) {
     // Crea el contenido de la tarjeta
     const cardHTML = `
             <input type="radio" name="card" value="${card.id}">
-            <div class="horizontal_elem-area spaced centered">
+            <div class="horizontal-elem-area spaced centered">
                 <p class="bold">${card.name}</p>
                 <div class="${heartVisible}">
                     <div class="card-static-icon">
