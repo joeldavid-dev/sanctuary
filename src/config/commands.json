@@ -1,0 +1,18 @@
+{
+    "commands": [
+        "change-ID-gender:male | female | other",
+        "change-ID-name:New Name",
+        "change-ID-password:old_password:new_password:confirm_password",
+        "delete-ID:password:confirm-password",
+        "exit",
+        "export-keys",
+        "export-notes",
+        "lock",
+        "relaunch",
+        "reload",
+        "set-default-settings",
+        "set-theme:black-white",
+        "set-theme:gruvbox",
+        "set-theme:princess-bubblegum"
+    ]
+}

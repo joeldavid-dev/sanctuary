@@ -3,6 +3,8 @@ import { createCardElement } from './components/card.js'; // Importar el módulo
 import { showNewEditModal } from './components/modalNewEdit.js'; // Importar el módulo de modal para agregar o editar tarjetas
 import { showDeleteModal } from './components/modalDelete.js'; // Importar el módulo de modal para eliminar una tarjeta
 import { createSettingsPage } from './components/settings.js';
+import { createOptionElement } from './components/commandOption.js';
+
 // Barra de título
 const minimize = document.getElementById('minimize');
 const maximize = document.getElementById('maximize');
@@ -18,6 +20,9 @@ const keysRadio = document.getElementById('keys-radio');
 const notesRadio = document.getElementById('notes-radio');
 const settingsRadio = document.getElementById('settings-radio');
 
+// Barra de opciones
+const optionsBar = document.getElementById('options-bar');
+
 // Contenedor principal
 const mainContent = document.getElementById('main-content');
 const settingsArea = document.getElementById('settings-area');
@@ -31,7 +36,7 @@ const deleteCard = document.getElementById('delete-card');
 const deleteCardBody = document.getElementById('delete-card-body');
 
 let mode = 'keys'; // Variable para controlar el modo actual de la vista (llaves, notas o configuración)
-let searching = false; // Variable para controlar si se está buscando
+let searchMode = 'none'; // Variable para controlar el modo de búsqueda
 let encryptedSelectedCard = null; // Variable para almacenar el ID de la tarjeta seleccionada
 let selectedCardID = null; // Variable para almacenar el índice de la tarjeta seleccionada
 let encryptedCards = []; // Variable para almacenar las tarjetas
@@ -40,6 +45,9 @@ let actualEncryptedCards = []; // Lista que almacena las tarjetas mostradas en l
 document.addEventListener("DOMContentLoaded", async () => {
     const translations = await window.electronAPI.getTranslations('home-view');
     const cardTranslations = await window.electronAPI.getTranslations('card');
+
+    // Carga los comandos disponibles
+    const commands = await window.electronAPI.getCommands();
 
     // Cargar traducciones y mostrarlas en la interfaz estática
     document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -60,7 +68,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (result.success) {
             return result.data; // Retornar las tarjetas encriptadas
         } else {
-            showToast(result.message);
+            showToast(result.message, true);
             return []; // Retornar una lista vacía si falla
         }
     }
@@ -82,6 +90,31 @@ document.addEventListener("DOMContentLoaded", async () => {
             </div>`;
         }
         actualEncryptedCards = cards; // Actualizar la lista de tarjetas mostradas en la vista
+    }
+
+    async function showCommands(commands) {
+        // Muestra la ilustración de comandos
+        mainContent.innerHTML = `
+            <div class="vertical-flex centered">
+                <img src="../assets/illustrations/Coding.svg" alt="Command mode" class="empty-image">
+                <p>${translations['command-mode']}</p>
+            </div>`;
+
+        // Mostrar la barra de opciones
+        optionsBar.style.display = 'flex';
+        // Limpiar la barra de opciones antes de agregar nuevas
+        optionsBar.innerHTML = '';
+
+        if (commands.length > 0) {
+            // Crear y agregar cada comando a la barra de opciones
+            commands.forEach(command => {
+                optionsBar.appendChild(createOptionElement(command));
+            });
+        }
+        else {
+            optionsBar.innerHTML = `
+            <p class="small-text centered-text">${translations['no-commands']}</p>`;
+        }
     }
 
     // Funcion para deseleccionar todas las tarjetas
@@ -120,6 +153,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         mode = 'keys'; // Cambiar el modo a llaves
         settingsArea.style.display = 'none'; // Ocultar el área de configuración
         mainContent.style.display = 'flex'; // Mostrar el contenedor principal de tarjetas
+        clearSearch(); // Limpiar la búsquedas
     }
 
     function showNotesView() {
@@ -130,6 +164,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         mode = 'notes'; // Cambiar el modo a notas
         settingsArea.style.display = 'none'; // Ocultar el área de configuración
         mainContent.style.display = 'flex'; // Mostrar el contenedor principal de tarjetas
+        clearSearch(); // Limpiar la búsquedas
     }
 
     function showSettingsView() {
@@ -140,6 +175,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         mode = 'settings'; // Cambiar el modo a configuración
         settingsArea.style.display = 'flex'; // Mostrar el área de configuración
         mainContent.style.display = 'none'; // Ocultar el contenedor principal de tarjetas
+        optionsBar.style.display = 'none'; // Ocultar la barra de opciones
+        clearSearch(); // Limpiar la búsquedas
     }
 
     // Acciones de la barra de título ============================================================
@@ -160,27 +197,64 @@ document.addEventListener("DOMContentLoaded", async () => {
     search.addEventListener('input', async (event) => {
         const searchTerm = event.target.value.toLowerCase();
         if (searchTerm.length > 0) {
-            const filteredCards = encryptedCards.filter(card => card.name.toLowerCase().includes(searchTerm));
-            showCards(filteredCards);
-            if (!searching) {
-                document.getElementById('search-clear-ico').src = '../assets/ico/feather/x.svg'; // Cambiar el icono de búsqueda a "x"
-                searching = true; // Cambiar el estado de búsqueda a verdadero
+            // Cambiar el icono de búsqueda a "x"
+            if (searchMode === 'none') document.getElementById('search-clear-ico').src = '../assets/ico/feather/x.svg';
+            // Si el término de búsqueda comienza con '>>', se interpreta como un comando
+            if (searchTerm.startsWith('>>')) {
+                searchMode = 'command'; // Cambiar el modo de búsqueda a "comando"
+                const filteredCommands = commands.filter(command => command.toLowerCase().includes(searchTerm.slice(2).trim()));
+                showCommands(filteredCommands);
+            }
+            else {
+                optionsBar.style.display = 'none'; // Ocultar la barra de opciones
+                const filteredCards = encryptedCards.filter(card => card.name.toLowerCase().includes(searchTerm));
+                showCards(filteredCards);
+                searchMode = 'searching'; // Cambiar el modo de búsqueda a "buscando"
             }
         } else {
             showCards(encryptedCards); // Mostrar todas las tarjetas si no hay término de búsqueda
-            searching = false; // Cambiar el estado de búsqueda a falso
+            searchMode = 'none'; // Cambiar el modo de búsqueda a "ninguno"
             document.getElementById('search-clear-ico').src = '../assets/ico/feather/search.svg'; // Cambiar el icono de búsqueda a "lupa"
         }
     });
 
-    // Clic en el botón de limpiar búsqueda
-    searchClear.addEventListener('click', () => {
-        if (searching) {
+    search.addEventListener('keydown', async (event) => {
+        // Si se presiona flecha abajo, se enfoca el primer botón de la barra de opciones
+        if (event.key === 'ArrowDown' && optionsBar.style.display === 'flex') {
+            const firstOption = optionsBar.querySelector('button');
+            if (firstOption) firstOption.focus(); // Enfocar el primer botón de la barra de opciones
+        }
+        else if (event.key === 'Escape') {
+            clearSearch(); // Limpiar la búsqueda si se presiona Escape
+        }
+        else if (event.key === 'Enter' && searchMode === 'command') {
+            const command = search.value.slice(2).trim(); // Obtener el comando ingresado
+            if (command === '') {
+                showToast(translations['empty-command'], true); // Mostrar mensaje si no hay comando
+            }
+            else {
+                // ejecutar el comando correspondiente
+                const result = await window.electronAPI.executeCommand(command);
+                (result.success) ? showToast(result.message) : showToast(result.message, true);
+            }
+            clearSearch(); // Limpiar la búsqueda
+        }
+    });
+
+    // Función para limpiar la búsqueda y mostrar todas las tarjetas
+    function clearSearch() {
+        if (searchMode !== 'none') {
             search.value = ''; // Limpiar el campo de búsqueda
+            optionsBar.style.display = 'none'; // Ocultar la barra de opciones
             showCards(encryptedCards); // Mostrar todas las tarjetas
-            searching = false; // Cambiar el estado de búsqueda a falso
+            searchMode = 'none'; // Cambiar el modo de búsqueda a "ninguno"
             document.getElementById('search-clear-ico').src = '../assets/ico/feather/search.svg'; // Cambiar el icono de búsqueda a "lupa"
         }
+    }
+
+    // Clic en el botón de limpiar búsqueda
+    searchClear.addEventListener('click', () => {
+        clearSearch();
     });
 
     //Funciones de los botones de la butonbar ====================================================
@@ -270,6 +344,27 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     // Main content ..............................................................
+    optionsBar.addEventListener('click', async (event) => {
+        const buttonPressed = event.target.closest('button');
+        if (!buttonPressed) return; // Si no se hizo clic en un botón, salir
+        else {
+            // Si se presiona un botón de opción 2
+            if (buttonPressed.classList.contains('option-btn2')) {
+                const option = buttonPressed.getAttribute('data-option');
+                search.value = `>>${option}:`; // Establecer el valor del campo de búsqueda
+                // enfocar el campo de búsqueda
+                search.focus();
+            }
+            else {
+                const option = buttonPressed.getAttribute('data-option');
+                // ejecutar el comando correspondiente
+                const result = await window.electronAPI.executeCommand(option);
+                (result.success) ? showToast(result.message) : showToast(result.message, true);
+                clearSearch(); // Limpiar la búsqueda
+            }
+        }
+    });
+
     mainContent.addEventListener('click', async (event) => {
         const buttonPressed = event.target.closest('button');
         if (event.target.id === 'main-content') deselectAllCards();
@@ -342,10 +437,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     // Función del toast notification ============================================================
-    function showToast(message) {
+    function showToast(message, error = false) {
         const container = document.getElementById('toast-container');
         const toast = document.createElement('div');
-        toast.classList.add('toast');
+        error ? toast.classList.add('toast-warning') : toast.classList.add('toast');
         toast.textContent = message;
 
         container.appendChild(toast);

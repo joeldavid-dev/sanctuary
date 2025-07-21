@@ -1,4 +1,5 @@
 {
     "debug": true,
-    "dbPath": "sanctuary.db"
+    "dbPath": "sanctuary.db",
+    "settingsPath": "settings.json"
 }

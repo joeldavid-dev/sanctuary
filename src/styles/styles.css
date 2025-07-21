@@ -476,6 +476,18 @@ p {
     color: var(--app_light);
 }
 
+.option-btn2 {
+    background: transparent;
+    padding: var(--minimal-margin);
+    border: dashed 1px transparent;
+    transition: 0.1s;
+    cursor: pointer;
+}
+
+.option-btn2:hover {
+    border: dashed 1px var(--app_dark);
+}
+
 /* Botón de opciones. No tiene borde, se vuelve sólido al pasar el mouse encima. */
 .option-btn-warning {
     background: transparent;
@@ -901,6 +913,17 @@ input:checked+.slider::before {
 .toast {
     background-color: var(--app_dark);
     color: var(--app_light);
+    padding: 12px 18px;
+    border-radius: var(--normal-radius);
+    font-size: 14px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transform: translateX(100%);
+    animation: slideIn 0.3s ease forwards, fadeOut 0.3s ease 4.7s forwards;
+}
+
+.toast-warning{
+    background-color: red;
+    color: white;
     padding: 12px 18px;
     border-radius: var(--normal-radius);
     font-size: 14px;

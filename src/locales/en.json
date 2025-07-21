@@ -64,7 +64,8 @@
         "import-card-error": "Error importing the card.",
         "import-data-success": "Data imported successfully.",
         "import-data-error": "Error importing data.",
-        "import-data-wrong-password": "Incorrect password."
+        "import-data-wrong-password": "Incorrect password.",
+        "command-not-found": "Command not found."
     },
     "home-view": {
         "search": "Search...",
@@ -82,7 +83,11 @@
         "new": "New",
         "empty": "Oops! Nothing here yet.",
         "copied": "Password copied to clipboard",
-        "copied-error": "Error copying to clipboard"
+        "copied-error": "Error copying to clipboard",
+        "command-mode": "Command Mode",
+        "no-commands": "No command matches",
+        "exe-command": "Executing command",
+        "empty-command": "No command entered"
     },
     "card": {
         "user": "User:",

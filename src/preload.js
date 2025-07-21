@@ -32,4 +32,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     deleteCard: (id) => ipcRenderer.invoke('delete-card', id),
     getAllCards: () => ipcRenderer.invoke('get-all-cards'),
     importData: (key) => ipcRenderer.invoke('import-data', key),
+    // Exponer las funciones de configuración
+    getCommands: () => ipcRenderer.invoke('get-commands'),
+    executeCommand: (command) => ipcRenderer.invoke('execute-command', command),
 });

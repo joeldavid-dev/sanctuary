@@ -244,7 +244,7 @@ ipcMain.handle('get-user-status', async () => {
 });
 
 // Verificar la contraseña obtenida con la del usuario guardado.
-ipcMain.handle('verify-password', async (event, password) => {
+async function verifyPassword(password) {
     const match = await cr.verifyPassword(password, superUser.hash);
     if (match) {
         masterKey = password;
@@ -257,6 +257,11 @@ ipcMain.handle('verify-password', async (event, password) => {
         verified: false,
         message: mainTranslations['verify-password-fail'],
     }
+}
+
+ipcMain.handle('verify-password', (event, password) => {
+    // Electron maneja "handle" como asíncrono por lo que no es necesario usar await.
+    return verifyPassword(password);
 });
 
 // Crear una nueva tarjeta
@@ -404,8 +409,42 @@ ipcMain.handle('import-data', async (event, key) => {
     }
 });
 
+// Configuraciones y comandos
+ipcMain.handle('get-commands', () => {
+    const commandsPath = path.join(__dirname, 'config', 'commands.json');
+    if (fs.existsSync(commandsPath)) {
+        return JSON.parse(fs.readFileSync(commandsPath, 'utf8')).commands;
+    } else {
+        return [];
+    }
+});
+
+// Manejo de comandos
+ipcMain.handle('execute-command', async (event, command) => {
+    const [cmd, ...args] = command.split(':');
+    switch (cmd) {
+        case 'exit':
+            app.quit();
+            break;
+        case 'reload':
+            mainWindow.reload();
+            break;
+        case 'relaunch':
+            app.relaunch();
+            app.quit();
+            break;
+        case 'lock':
+            mainWindow.loadFile('src/views/lock.html');
+            break;
+        default:
+            // Comando no reconocido
+            return { success: false, message: `${cmd}: ${mainTranslations['command-not-found']}` };
+    }
+});
+
+
 function printDebugInfo(info) {
     if (globalConfig.debug) {
-        console.log('>> ' + info);
+        console.log('(Main Debug) >> ' + info);
     }
 }
