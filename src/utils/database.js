@@ -11,16 +11,17 @@ let dbPath = null;
 // Determinar la ruta de la base de datos
 if (globalConfig.debug) {
     dbPath = path.join(__dirname, globalConfig.dbPath);
-    console.log('Ruta de la base de datos:', dbPath);
 } else {
     dbPath = path.join(app.getPath('userData'), globalConfig.dbPath);
 }
 
+printDebug('Ruta de la base de datos: ' + dbPath);
+
 const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
-        console.error('Error al conectar con SQLite:', err.message);
+        printDebug('Error al conectar con SQLite: ' + err.message);
     } else {
-        console.log('Conectado a la base de datos SQLite.');
+        printDebug('Conectado a la base de datos SQLite');
     }
 });
 
@@ -154,6 +155,10 @@ function getAllCards() {
             }
         });
     });
+}
+
+function printDebug(info){
+    if (globalConfig.debug) console.log(`(database) >> ${info}`);
 }
 
 module.exports = { addUser, getUser, createCard, deleteCard, updateCard, getAllCards };

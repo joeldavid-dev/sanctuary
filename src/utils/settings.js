@@ -8,13 +8,14 @@ const globalConfig = JSON.parse(require('fs').readFileSync(globalConfigPath, 'ut
 
 // Variables
 let settingsPath = null;
-// Determinar la ruta de la base de datos
+// Determinar la ruta del archivo de configuración
 if (globalConfig.debug) {
     settingsPath = path.join(__dirname, globalConfig.settingsPath);
-    console.log('Ruta del archivo de configuracion:', settingsPath);
 } else {
     settingsPath = path.join(app.getPath('userData'), globalConfig.settingsPath);
 }
+
+printDebug('Ruta del archivo de configuracion: ' + settingsPath);
 
 // Guardar datos en un archivo JSON
 function saveSetting(data) {
@@ -25,6 +26,10 @@ function saveSetting(data) {
 function readSettings() {
     if (!fs.existsSync(settingsPath)) return null;
     return JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
+}
+
+function printDebug(info){
+    if (globalConfig.debug) console.log(`(saveSettings) >> ${info}`);
 }
 
 module.exports = { saveSetting, readSettings };

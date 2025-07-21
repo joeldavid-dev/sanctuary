@@ -4,21 +4,24 @@ const path = require('node:path');
 const cr = require('./utils/crypto.js');
 const db = require('./utils/database.js');
 const oldCr = require('./utils/oldCrypto.js');
+const st = require('./utils/settings.js');
 const fs = require('fs');
 
 // Configuraciones globales
 const globalConfigPath = path.join(__dirname, 'config', 'globalConfig.json');
 const globalConfig = JSON.parse(fs.readFileSync(globalConfigPath, 'utf8'));
 
-if (globalConfig.debug) {
-    console.log('>>> Modo de depuracion activado <<<');
-}
+// Configuraciones por defecto
+const defaultSettingsPath = path.join(__dirname, 'config', 'defaultSettings.json');
+const defaultSettings = JSON.parse(fs.readFileSync(defaultSettingsPath, 'utf8'));
 
+// Variables
 let mainWindow, superUser, masterKey, oldData;
-let translations = getTranslations('en'); // Cargar traducciones por defecto
-const mainTranslations = translations['main'] || {};
+let settings = null;
+let translations = null;
+let mainTranslations = null;
 
-
+// Creación de la ventana principal
 const createMainWindow = () => {
     mainWindow = new BrowserWindow({
         width: 900,
@@ -62,8 +65,14 @@ app.whenReady().then(() => {
 
     // Comprobar si hay actualizaciones disponibles
     autoUpdater.checkForUpdatesAndNotify().catch(err => {
-        printDebugInfo('Error al comprobar actualizaciones: ' + err);
+        printDebug('Error al comprobar actualizaciones: ' + err);
     });
+
+    // Cargar configuraciones
+    loadSettings();
+
+    // Cargar traducciones
+    loadTranslations();
 });
 
 // Implementa el cierre de toda la aplicación al cerrar
@@ -87,20 +96,45 @@ ipcMain.on('close-window', () => {
     mainWindow.close();
 });
 
-// Obtener traducciones
-function getTranslations(lang = 'en') {
-    try {
-        const filePath = path.join(__dirname, 'locales', `${lang}.json`);
-        const raw = fs.readFileSync(filePath, 'utf8');
-        printDebugInfo('Cargando traduccion: ' + filePath);
-        return JSON.parse(raw);
-    } catch (err) {
-        printDebugInfo('Error al cargar traduccion: ' + err);
-        return {};
+// Obtener configuraciones
+function loadSettings() {
+    // Obteniendo las configuraciones. Si no existen, se guardan las default.
+    settings = st.readSettings();
+    if (!settings) {
+        settings = {
+            "customization": defaultSettings.customization,
+            "language": defaultSettings.language
+        }
+        st.saveSetting(settings);
     }
-}
+};
+
+// Obtiene traducciones según la configuración actual. 
+function loadTranslations() {
+    let language = 'en';
+
+    if (settings.language === 'system') {
+        language = app.getLocale().slice(0, 2);
+        printDebug('Idioma del sistema: ' + language);
+        if (!defaultSettings.languages.includes(language)) language = 'en';
+    }
+    else (defaultSettings.languages.includes(settings.language)) ? language = settings.language : language = 'en';
+
+    printDebug('Idioma obtenido: ' + language);
+
+    try {
+        const filePath = path.join(__dirname, 'locales', `${language}.json`);
+        const raw = fs.readFileSync(filePath, 'utf8');
+        printDebug('Cargando traduccion: ' + filePath);
+        translations = JSON.parse(raw);
+        mainTranslations = translations[main];
+    } catch (err) {
+        printDebug('Error al cargar traduccion: ' + err);
+    }
+};
 
 ipcMain.handle('get-translations', (event, view) => {
+    loadTranslations()
     return translations[view];
 });
 
@@ -129,7 +163,7 @@ ipcMain.handle('get-json-file', async () => {
     });
     // Si se cancela la selección o no se selecciona ningún archivo, salir
     if (canceled || filePaths.length === 0) {
-        printDebugInfo('Operacion "importar JSON" cancelada.');
+        printDebug('Operacion "importar JSON" cancelada.');
         return {
             success: false,
             message: mainTranslations['json-dialog-cancelled']
@@ -289,7 +323,7 @@ ipcMain.handle('update-card', async (event, id, updatedCard) => {
     try {
         // Encriptar los datos de la tarjeta actualizada
         const encryptedCard = await cr.encryptCard(masterKey, updatedCard);
-        printDebugInfo('Tarjeta a actualizar encriptada: ' + encryptedCard.name);
+        printDebug('Tarjeta a actualizar encriptada: ' + encryptedCard.name);
         const result = await db.updateCard(id, encryptedCard);
         return {
             success: true,
@@ -367,7 +401,7 @@ ipcMain.handle('import-data', async (event, key) => {
             );
             // Todo salío bien
             superUser = result;
-            printDebugInfo('Usuario creado correctamente');
+            printDebug('Usuario creado correctamente');
         }
         catch (error) {
             console.error('Error al importar el usuario:', error);
@@ -380,9 +414,9 @@ ipcMain.handle('import-data', async (event, key) => {
 
         // Adaptar datos de las tarjetas una por una, para
         // garantizar el orden original
-        printDebugInfo('Adaptando e importando tarjetas desde Sanctuary 4.2...');
+        printDebug('Adaptando e importando tarjetas desde Sanctuary 4.2...');
         for (const oldCard of oldData.cards) {
-            printDebugInfo('\nAdaptando tarjeta:' + oldCard.name);
+            printDebug('\nAdaptando tarjeta:' + oldCard.name);
             const adaptedCard = oldCr.adaptOldCard(key, oldCard);
             try {
                 const encryptedCard = await cr.encryptCard(key, adaptedCard);
@@ -443,8 +477,6 @@ ipcMain.handle('execute-command', async (event, command) => {
 });
 
 
-function printDebugInfo(info) {
-    if (globalConfig.debug) {
-        console.log('(Main Debug) >> ' + info);
-    }
+function printDebug(info) {
+    if (globalConfig.debug) console.log('(main) >> ' + info);
 }
