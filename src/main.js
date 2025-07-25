@@ -127,14 +127,19 @@ function loadTranslations() {
         const raw = fs.readFileSync(filePath, 'utf8');
         printDebug('Cargando traduccion: ' + filePath);
         translations = JSON.parse(raw);
-        mainTranslations = translations[main];
+        mainTranslations = translations["main"];
     } catch (err) {
         printDebug('Error al cargar traduccion: ' + err);
     }
 };
 
+ipcMain.on('load-translations', (event) => {
+    printDebug('Se solicitó recargar las traducciones.');
+    loadTranslations();
+});
+
 ipcMain.handle('get-translations', (event, view) => {
-    loadTranslations()
+    printDebug('La vista "' + view + '" ha solicitado traducciones.');
     return translations[view];
 });
 

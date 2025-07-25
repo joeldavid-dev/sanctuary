@@ -36,7 +36,7 @@ function getSettingsHTML(translations, superuser) {
             </div>
 
             <div class="vertical-elem-area">
-                <p class="bold">${translations['languaje']}</p>
+                <p class="bold">${translations['language']}</p>
                 <div class="div-options vertical-elem-area narrow-padding external-radius-2">
                     <button id="app-language" class="option-btn minimal-rounded left-text">${translations['app-language']}</button>
                 </div>

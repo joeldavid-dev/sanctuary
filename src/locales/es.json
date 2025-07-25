@@ -31,13 +31,15 @@
         "welcome-back": "¡Hola de nuevo, {name}!",
         "welcome-back-info": "Por favor ingresa tu contraseña para desbloquear tu cuenta e importar tus datos a la nueva versión.",
         "success": "¡Hecho!",
-        "success-info": "Tus datos han sido importados exitosamente. Ya puedes usar la aplicación."
+        "success-info": "Tu ID fue creado exitosamente. Ya puedes usar la aplicación.",
+        "success-import-info": "Tus datos han sido importados exitosamente. Ya puedes usar la aplicación."
     },
     "warning": {
         "title": "Advertencia",
         "empty-fields": "No se pueden dejar campos vacíos.",
         "passwords-dont-match": "Las contraseñas no coinciden.",
-        "wrong-password": "Contraseña incorrecta."
+        "wrong-password": "Contraseña incorrecta.",
+        "name-password-required": "Nombre y contraseña son obligatorios"
     },
     "main": {
         "json-dialog-title": "Selecciona un archivo JSON",
@@ -62,19 +64,36 @@
         "import-card-error": "Error al importar la tarjeta.",
         "import-data-success": "Datos importados exitosamente.",
         "import-data-error": "Error al importar los datos.",
-        "import-data-wrong-password": "Contraseña incorrecta."
+        "import-data-wrong-password": "Contraseña incorrecta.",
+        "command-not-found": "Comando no encontrado."
     },
     "home-view": {
+        "search": "Buscar...",
         "keys": "Claves",
         "block": "Bloquear",
+        "notes": "Notas",
         "settings": "Configuración",
         "messages": "Mensajes",
         "user-info": "Usuario",
         "random-key": "Clave aleatoria",
         "my-keys": "Mis claves",
+        "my-notes": "Mis notas",
         "edit": "Editar",
         "delete": "Eliminar",
-        "new": "Nuevo"
+        "new": "Nuevo",
+        "empty": "¡Ups! Aún no hay nada aquí.",
+        "copied": "Contraseña copiada al portapapeles",
+        "copied-error": "Error al copiar al portapapeles",
+        "command-mode": "Modo comandos",
+        "no-commands": "Ningún comando coincide",
+        "exe-command": "Ejecutando comando",
+        "empty-command": "No se ingresó ningún comando"
+    },
+    "card": {
+        "user": "Usuario:",
+        "password": "Contraseña:",
+        "url": "URL:",
+        "new-card": "Nueva Tarjeta"
     },
     "new-edit": {
         "title-new": "Nueva Clave",
@@ -91,5 +110,27 @@
         "favorite": "Favorito:",
         "preview": "Vista previa:",
         "done": "Listo"
+    },
+    "delete": {
+        "title": "Eliminar Clave",
+        "message": "¿Realmente quieres eliminar la clave '{name}'? ¡Ten cuidado, esta acción es irreversible!",
+        "cancel": "Cancelar",
+        "delete-key": "Eliminar Clave"
+    },
+    "settings": {
+        "edit-ID": "Edita los datos de tu ID",
+        "export-keys": "Exportar todas las claves",
+        "export-notes": "Exportar todas las notas",
+        "delete-ID": "Eliminar ID",
+        "language": "Idioma",
+        "app-language": "Idioma de la aplicación",
+        "customization": "Personalización",
+        "lock-background": "Fondo de bloqueo",
+        "background-motion": "Movimiento de fondo",
+        "background-motion-info": "El movimiento de fondo puede afectar el rendimiento en algunos dispositivos.",
+        "about": "Acerca de",
+        "view-info-about": "Ver información acerca de Codaby Sanctuary",
+        "view-version-info": "Ver novedades de la versión",
+        "view-license": "Ver licencia"
     }
 }

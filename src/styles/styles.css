@@ -921,7 +921,7 @@ input:checked+.slider::before {
     animation: slideIn 0.3s ease forwards, fadeOut 0.3s ease 4.7s forwards;
 }
 
-.toast-warning{
+.toast-warning {
     background-color: red;
     color: white;
     padding: 12px 18px;
@@ -1055,6 +1055,10 @@ input:checked+.slider::before {
     .option-btn:hover {
         background-color: var(--app_light);
         color: var(--app_dark);
+    }
+
+    .option-btn2:hover {
+        border: dashed 1px var(--app_light);
     }
 
     .slider {

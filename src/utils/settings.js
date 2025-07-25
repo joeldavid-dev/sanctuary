@@ -1,6 +1,7 @@
 // Almacena datos localmente en un archivo JSON. Útil para almacenar configuraciones.
 const fs = require('fs');
 const path = require('path');
+const { app } = require("electron");
 
 // Configuraciones globales
 const globalConfigPath = path.join(__dirname, '..', 'config', 'globalConfig.json');
