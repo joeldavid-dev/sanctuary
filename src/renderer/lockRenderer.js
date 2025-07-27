@@ -3,6 +3,7 @@ const now = new Date();
 const hours = now.getHours();
 
 document.addEventListener("DOMContentLoaded", async () => {
+    const visualBackground = document.getElementById('visual-background');
     const minimize = document.getElementById('minimize');
     const maximize = document.getElementById('maximize');
     const close = document.getElementById('close');
@@ -15,6 +16,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const inputPassword = document.getElementById('password');
     const translations = await window.electronAPI.getTranslations('lock-view');
     const superuser = await window.electronAPI.getUserInfo();
+    const settings = await window.electronAPI.getSettings();
     let count = 5;
 
     // Clic en botón minimizar
@@ -37,7 +39,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             el.textContent = translations[key];
         }
     });
-    
+
     // Cargar las traducciones para el módulo de traducción
     setTranslations(translations);
 
@@ -104,4 +106,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     closeModal.addEventListener('click', () => {
         modalAbout.style.display = 'none';
     });
+
+    function applySettings() {
+        // Aplicar configuraciones
+        if (settings.customization.backgroundMode === "video") {
+            visualBackground.innerHTML = `
+            <video autoplay loop muted playsinline class="video-background">
+                <source src="../assets/vid/${settings.customization.background}.mp4" type="video/mp4">
+            </video>`;
+        } else if (settings.customization.backgroundMode === "static") {
+            visualBackground.innerHTML = `<img class="img-background" src="../assets/img/${settings.customization.background}.jpg">`
+        }
+    }
+
+    // Acciones iniciales ========================================================================
+    applySettings();
 });

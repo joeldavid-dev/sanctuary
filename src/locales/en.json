@@ -2,7 +2,7 @@
     "app-name": "Codaby Sanctuary",
     "lock-view": {
         "brand-name": "Codaby",
-        "greeting-early-morning": "Looks like it's time for bed, {name}",
+        "greeting-early-morning": "Time to sleep, {name}! Sweet dreams!",
         "greeting-morning": "Morning, {name}!",
         "greeting-afternoon": "Hi {name}, good afternoon!",
         "greeting-evening": "Have a good night, {name}!",

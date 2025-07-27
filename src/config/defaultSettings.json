@@ -1,28 +1,14 @@
 {
     "customization": {
-        "background": "Yakup Ipek Pixabay",
-        "background-mode": "video",
-        "color-palette": "generate"
+        "background": "Tung_Lam_Pixabay",
+        "backgroundMode": "video",
+        "colorPalette": "generate",
+        "appLight": "rgb(245, 245, 245)",
+        "appLightTransparent": "rgba(245, 245, 245, 0.6)",
+        "appDark": "rgb(10, 10, 10)",
+        "appDarkTransparent": "rgba(10, 10, 10, 0.6)",
+        "appContrastLight": "rgb(200, 200, 200)",
+        "appContrastDark": "rgb(55, 55, 55)"
     },
-    "language": "system",
-    "languages": [
-        "en",
-        "es"
-    ],
-    "gruvbox-theme": {
-        "app_light": "rgb(249, 245, 215)",
-        "app_light_transparent": "rgba(249, 245, 215, 0.6)",
-        "app_dark": "rgb(29, 32, 33)",
-        "app_dark_transparent": "rgba(29, 32, 33, 0.6)",
-        "app_contrast_light": "rgb(137, 201, 204)",
-        "app_contrast_dark": "rgb(69, 133, 136)"
-    },
-    "black-white-theme": {
-        "app_light": "rgb(245, 245, 245)",
-        "app_light_transparent": "rgba(245, 245, 245, 0.6)",
-        "app_dark": "rgb(10, 10, 10)",
-        "app_dark_transparent": "rgba(10, 10, 10, 0.6)",
-        "app_contrast_light": "rgb(200, 200, 200)",
-        "app_contrast_dark": "rgb(55, 55, 55)"
-    }
+    "language": "system"
 }

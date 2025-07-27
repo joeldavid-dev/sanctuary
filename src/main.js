@@ -5,15 +5,16 @@ const cr = require('./utils/crypto.js');
 const db = require('./utils/database.js');
 const oldCr = require('./utils/oldCrypto.js');
 const st = require('./utils/settings.js');
+const cg = require('./utils/colorGenerator.js');
 const fs = require('fs');
 
 // Configuraciones globales
 const globalConfigPath = path.join(__dirname, 'config', 'globalConfig.json');
 const globalConfig = JSON.parse(fs.readFileSync(globalConfigPath, 'utf8'));
 
-// Configuraciones por defecto
-const defaultSettingsPath = path.join(__dirname, 'config', 'defaultSettings.json');
-const defaultSettings = JSON.parse(fs.readFileSync(defaultSettingsPath, 'utf8'));
+// Constantes
+const constantsPath = path.join(__dirname, 'config', 'constants.json');
+const constants = JSON.parse(fs.readFileSync(constantsPath, 'utf-8'));
 
 // Variables
 let mainWindow, superUser, masterKey, oldData;
@@ -23,11 +24,12 @@ let mainTranslations = null;
 
 // Creación de la ventana principal
 const createMainWindow = () => {
+    printDebug("Iniciando la creacion de ventana...");
     mainWindow = new BrowserWindow({
         width: 900,
         height: 600,
         minWidth: 580,
-        minHeight: 400,
+        minHeight: 360,
         autoHideMenuBar: true, // Oculta el menú de opciones de electrón
         //frame: false,
         titleBarStyle: 'hidden', // oculta la barra de título
@@ -55,7 +57,14 @@ const createMainWindow = () => {
     //mainWindow.loadFile('src/views/id.html');
 }
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
+    // Cargar configuraciones
+    await loadSettings();
+
+    // Cargar traducciones
+    loadTranslations();
+
+    // Crea la ventana
     createMainWindow()
     // Crear una ventana si no hay una cuando se activa la aplicación
     // en MacOS
@@ -67,12 +76,6 @@ app.whenReady().then(() => {
     autoUpdater.checkForUpdatesAndNotify().catch(err => {
         printDebug('Error al comprobar actualizaciones: ' + err);
     });
-
-    // Cargar configuraciones
-    loadSettings();
-
-    // Cargar traducciones
-    loadTranslations();
 });
 
 // Implementa el cierre de toda la aplicación al cerrar
@@ -97,17 +100,19 @@ ipcMain.on('close-window', () => {
 });
 
 // Obtener configuraciones
-function loadSettings() {
-    // Obteniendo las configuraciones. Si no existen, se guardan las default.
+async function loadSettings() {
+    // Obteniendo las configuraciones.
     settings = st.readSettings();
-    if (!settings) {
-        settings = {
-            "customization": defaultSettings.customization,
-            "language": defaultSettings.language
-        }
-        st.saveSetting(settings);
+    if (settings.customization.colorPalette === "generate"){
+        const genColors = await cg.generateColorPalette(settings.customization.background);
+        settings.customization.appContrastLight = genColors.appContrastLight;
+        settings.customization.appContrastDark = genColors.appContrastDark;
     }
 };
+
+ipcMain.handle('get-settings', (event) => {
+    return settings;
+});
 
 // Obtiene traducciones según la configuración actual. 
 function loadTranslations() {
@@ -116,11 +121,11 @@ function loadTranslations() {
     if (settings.language === 'system') {
         language = app.getLocale().slice(0, 2);
         printDebug('Idioma del sistema: ' + language);
-        if (!defaultSettings.languages.includes(language)) language = 'en';
+        if (!constants.languages.includes(language)) language = 'en';
     }
-    else (defaultSettings.languages.includes(settings.language)) ? language = settings.language : language = 'en';
+    else language = settings.language;
 
-    printDebug('Idioma obtenido: ' + language);
+    printDebug('Idioma mostrado: ' + language);
 
     try {
         const filePath = path.join(__dirname, 'locales', `${language}.json`);
@@ -182,10 +187,10 @@ ipcMain.handle('get-json-file', async () => {
         const jsonData = JSON.parse(content);
 
         // Verificar que el archivo JSON tenga la estructura correcta
-        const sanctuaryKey = '120065-331450-300009-276166-92029-265686-292000-249548-309477-85124-301972-320490-99250-292792-93249-102400-278873-306799-264395-300956-287091-255610-306710-102720-290446-174340-101850-218284-266491-291804-271861-297925-294223-290602-93449-310572-102490-155025-141492-42624-';
+        const oldSanctuaryKey = constants.oldSanctuaryKey;
         const requiredKeys = ['name', 'password', 'gender', 'Sanctuary', 'cards'];
         const hasRequiredKeys = requiredKeys.every(key => key in jsonData);
-        if (hasRequiredKeys && jsonData.Sanctuary === sanctuaryKey && Array.isArray(jsonData.cards)) {
+        if (hasRequiredKeys && jsonData.Sanctuary === oldSanctuaryKey && Array.isArray(jsonData.cards)) {
             oldData = jsonData;
             return {
                 success: true,

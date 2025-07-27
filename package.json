@@ -55,6 +55,7 @@
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "colorthief": "^2.6.0",
     "electron-updater": "^6.6.2",
     "sqlite3": "^5.1.7"
   }

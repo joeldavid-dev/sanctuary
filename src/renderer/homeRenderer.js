@@ -43,6 +43,7 @@ let encryptedCards = []; // Variable para almacenar las tarjetas
 let actualEncryptedCards = []; // Lista que almacena las tarjetas mostradas en la vista
 
 document.addEventListener("DOMContentLoaded", async () => {
+    const settings = await window.electronAPI.getSettings();
     const translations = await window.electronAPI.getTranslations('home-view');
     const cardTranslations = await window.electronAPI.getTranslations('card');
 
@@ -451,7 +452,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         }, 5000); // 5 segundos de duración total
     }
 
+    function applySettings() {
+        // Aplicar configuraciones
+        if (settings.customization.colorPalette === "generate") {
+            
+        }
+
+        // Cambiar el color de contraste
+        document.documentElement.style.setProperty('--app_contrast_light', settings.customization.appContrastLight);
+        document.documentElement.style.setProperty('--app_contrast_dark', settings.customization.appContrastDark);
+    }
+
     // Acciones iniciales ========================================================================
+    applySettings();
     encryptedCards = await getAllCards(); // Obtener todas las tarjetas y almacenarlas en la variable local
     showKeysView(); // Mostrar la vista de inicio
     createSettingsPage(); // Crear la página de configuración
