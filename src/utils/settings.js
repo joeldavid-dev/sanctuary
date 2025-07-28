@@ -13,8 +13,10 @@ const defaultSettings = JSON.parse(fs.readFileSync(defaultSettingsPath, 'utf8'))
 
 // Variables
 let settingsPath = null;
+// Detectar si la app está empaquetada
+const isPackaged = app.isPackaged;
 // Determinar la ruta del archivo de configuración
-if (globalConfig.debug) {
+if (!isPackaged) {
     settingsPath = path.join(__dirname, globalConfig.settingsPath);
 } else {
     settingsPath = path.join(app.getPath('userData'), globalConfig.settingsPath);

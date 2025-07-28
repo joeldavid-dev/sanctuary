@@ -8,8 +8,10 @@ const globalConfig = JSON.parse(require('fs').readFileSync(globalConfigPath, 'ut
 
 // Variables
 let dbPath = null;
+// Detectar si la app está empaquetada
+const isPackaged = app.isPackaged;
 // Determinar la ruta de la base de datos
-if (globalConfig.debug) {
+if (!isPackaged) {
     dbPath = path.join(__dirname, globalConfig.dbPath);
 } else {
     dbPath = path.join(app.getPath('userData'), globalConfig.dbPath);

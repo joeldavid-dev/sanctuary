@@ -2,7 +2,7 @@ import { setTranslations, translate } from './utils/translate.js';
 import { createCardElement } from './components/card.js'; // Importar el módulo de tarjeta
 import { showNewEditModal } from './components/modalNewEdit.js'; // Importar el módulo de modal para agregar o editar tarjetas
 import { showDeleteModal } from './components/modalDelete.js'; // Importar el módulo de modal para eliminar una tarjeta
-import { createSettingsPage } from './components/settings.js';
+import { createSettingsPage } from './components/settingsPage.js';
 import { createOptionElement } from './components/commandOption.js';
 
 // Barra de título

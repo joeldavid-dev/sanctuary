@@ -2,7 +2,8 @@
  * Este modulo obtiene una imagen HTML y retorna el color predominante. Se encarga
  * de todo el procesamiento de colores de la aplicación.
  */
-
+const fs = require('fs');
+const { app } = require('electron');
 const ColorThief = require('colorthief');
 const path = require('path');
 
@@ -13,9 +14,28 @@ const globalConfig = JSON.parse(require('fs').readFileSync(globalConfigPath, 'ut
 async function generateColorPalette(imgName) {
     let appContrastLight, appContrastDark;
 
-    const img = path.join(__dirname, '..', 'assets', 'img', imgName + '.jpg');
-    printDebug("Imagen analizada: " + img);
-    const dominantColor = await ColorThief.getColor(img);
+    // Detectar si la app está empaquetada
+    const isPackaged = app.isPackaged;
+    // Ruta original (dentro del asar si está empaquetado)
+    const imgAsarPath = path.join(__dirname, '..', 'assets', 'img', imgName + '.jpg');
+    // Ruta temporal (fuera del asar)
+    const tempImgDir = path.join(app.getPath('userData'), 'temp-img');
+    const tempImgPath = path.join(tempImgDir, imgName + '.jpg');
+    // Si estamos empaquetados, copiamos la imagen al file system real
+    if (isPackaged) {
+        // Crear carpeta si no existe
+        if (!fs.existsSync(tempImgDir)) {
+            fs.mkdirSync(tempImgDir, { recursive: true });
+        }
+        // Copiar solo si no existe
+        if (!fs.existsSync(tempImgPath)) {
+            fs.copyFileSync(imgAsarPath, tempImgPath);
+        }
+    }
+
+    const finalImgPath = isPackaged ? tempImgPath : imgAsarPath;
+    printDebug("Imagen analizada: " + finalImgPath);
+    const dominantColor = await ColorThief.getColor(finalImgPath);
 
     if (isLightColor(dominantColor)) {
         appContrastLight = `rgb(${dominantColor[0]}, ${dominantColor[1]}, ${dominantColor[2]})`;
