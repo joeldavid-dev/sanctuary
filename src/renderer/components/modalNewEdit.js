@@ -8,7 +8,6 @@ export function showNewEditModal(mode, card) {
         // Constantes y variables auxiliares
         let colorSelected = 'var(--color1)';
         let favoriteValue = false;
-        const settings = await window.electronAPI.getSettings();
         const translations = await window.electronAPI.getTranslations('new-edit');
         const cardTranslations = await window.electronAPI.getTranslations('card');
         const warningTranslations = await window.electronAPI.getTranslations('warning');
@@ -19,9 +18,7 @@ export function showNewEditModal(mode, card) {
         const modalTitle = document.getElementById('modal-title');
         // Insertar el esqueleto HTML
         modalBody.innerHTML = getModalHTML(translations, cardTranslations);
-        //Aplicar configuraciones
-        document.documentElement.style.setProperty('--app_contrast_light', settings.customization.appContrastLight);
-        document.documentElement.style.setProperty('--app_contrast_dark', settings.customization.appContrastDark);
+        
         // Elementos HTML insertados en el esqueleto
         // Inputs
         const nameInput = document.getElementById('name-input');

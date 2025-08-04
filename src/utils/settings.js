@@ -7,10 +7,6 @@ const { app } = require("electron");
 const globalConfigPath = path.join(__dirname, '..', 'config', 'globalConfig.json');
 const globalConfig = JSON.parse(require('fs').readFileSync(globalConfigPath, 'utf8'));
 
-// Configuraciones por defecto
-const defaultSettingsPath = path.join(__dirname, '..', 'config', 'defaultSettings.json');
-const defaultSettings = JSON.parse(fs.readFileSync(defaultSettingsPath, 'utf8'));
-
 // Variables
 let settingsPath = null;
 // Detectar si la app está empaquetada
@@ -25,21 +21,33 @@ if (!isPackaged) {
 printDebug("Ruta del archivo de configuracion: " + settingsPath);
 
 // Guardar datos en un archivo JSON
-function saveSetting(data) {
-    printDebug("configuracion guardada:", data);
-    fs.writeFileSync(settingsPath, JSON.stringify(data, null, 2));
+function writeSettings(data) {
+    try {
+        printDebug("configuracion guardada:", data);
+        fs.writeFileSync(settingsPath, JSON.stringify(data, null, 2));
+        return true;
+    } catch (error) {
+        printDebug("Error al guardar la configuracion:", error);
+        return false;
+    }
 }
 
 // Leer datos de un archivo JSON
 function readSettings() {
     if (!fs.existsSync(settingsPath)) {
-        printDebug("No se encontro el archivo de configuracion. Se usan configuraciones por defecto.");
-        saveSetting(defaultSettings);
-        return defaultSettings;
+        printDebug("No se encontro el archivo de configuracion. Se inicializa archivo JSON vacio.");
+        saveSettings({});
+        return {};
     }
-    const settings = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
-    printDebug("Configuraciones obtenidas:", settings);
-    return settings;
+
+    try {
+        const settings = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
+        printDebug("Configuraciones obtenidas:", settings);
+        return settings;
+    } catch (err) {
+        printDebug("Error al leer el archivo de configuracion:", err);
+        return {};
+    }
 }
 
 function printDebug(info, obj = null) {
@@ -49,4 +57,4 @@ function printDebug(info, obj = null) {
     }
 }
 
-module.exports = { saveSetting, readSettings };
+module.exports = { writeSettings, readSettings };

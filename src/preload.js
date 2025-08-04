@@ -33,7 +33,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
     getAllCards: () => ipcRenderer.invoke('get-all-cards'),
     importData: (key) => ipcRenderer.invoke('import-data', key),
     // Exponer las funciones de configuración
-    getSettings: () => ipcRenderer.invoke('get-settings'),
+    getSetting: (key) => ipcRenderer.invoke('get-setting', key),
+    getConstants: () => ipcRenderer.invoke('get-constants'),
     getCommands: () => ipcRenderer.invoke('get-commands'),
     executeCommand: (command) => ipcRenderer.invoke('execute-command', command),
 });

@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const inputPassword = document.getElementById('password');
     const translations = await window.electronAPI.getTranslations('lock-view');
     const superuser = await window.electronAPI.getUserInfo();
-    const settings = await window.electronAPI.getSettings();
+    const constants = await window.electronAPI.getConstants();
     let count = 5;
 
     // Clic en botón minimizar
@@ -63,8 +63,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (event.key === 'Enter') {
             if (inputPassword.value != '') {
                 const response = await window.electronAPI.verifyPassword(inputPassword.value);
-                console.log(response);
-
                 if (!response.verified) {
                     count--;
                     if (count == 0) {
@@ -99,7 +97,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         } catch (error) {
             aboutBody.innerHTML = '<p>//:)</p>';
         }
-        //window.electron.openExternal('https://colebemis.com/');
     });
 
     // Clic en el botón para cerrar el modal de acerca de
@@ -107,18 +104,38 @@ document.addEventListener("DOMContentLoaded", async () => {
         modalAbout.style.display = 'none';
     });
 
-    function applySettings() {
-        // Aplicar configuraciones
-        if (settings.customization.backgroundMode === "video") {
+    async function applySettings() {
+        // Obtener configuraciones a utilizar
+        const backgroundMode = await window.electronAPI.getSetting('backgroundMode');
+        const background = await window.electronAPI.getSetting('background');
+        const colorStyle = await window.electronAPI.getSetting('colorStyle');
+
+        if (backgroundMode === "video") {
             visualBackground.innerHTML = `
             <video autoplay loop muted playsinline class="video-background">
-                <source src="../assets/vid/${settings.customization.background}.mp4" type="video/mp4">
+                <source src="../assets/vid/${background}.mp4" type="video/mp4">
             </video>`;
-        } else if (settings.customization.backgroundMode === "static") {
-            visualBackground.innerHTML = `<img class="img-background" src="../assets/img/${settings.customization.background}.jpg">`
+        } else if (backgroundMode === "static") {
+            visualBackground.innerHTML = `<img class="img-background" src="../assets/img/${background}.jpg">`
+        }
+
+        // Aplicar tema si es estático o generado
+        if (colorStyle === "generate") {
+            const appContrastLight = await window.electronAPI.getSetting('appContrastLight');
+            const appContrastDark = await window.electronAPI.getSetting('appContrastDark');
+            // Cambiar el color de contraste
+            document.documentElement.style.setProperty('--app_contrast_light', appContrastLight);
+            document.documentElement.style.setProperty('--app_contrast_dark', appContrastDark);
+        } else {
+            document.documentElement.style.setProperty('--app_light', constants[colorStyle].app_light);
+            document.documentElement.style.setProperty('--app_light_transparent', constants[colorStyle].app_light_transparent);
+            document.documentElement.style.setProperty('--app_dark', constants[colorStyle].app_dark);
+            document.documentElement.style.setProperty('--app_dark_transparent', constants[colorStyle].app_dark_transparent);
+            document.documentElement.style.setProperty('--app_contrast_light', constants[colorStyle].app_contrast_light);
+            document.documentElement.style.setProperty('--app_contrast_dark', constants[colorStyle].app_contrast_dark);
         }
     }
 
     // Acciones iniciales ========================================================================
-    applySettings();
+    await applySettings();
 });

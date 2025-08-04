@@ -43,9 +43,9 @@ let encryptedCards = []; // Variable para almacenar las tarjetas
 let actualEncryptedCards = []; // Lista que almacena las tarjetas mostradas en la vista
 
 document.addEventListener("DOMContentLoaded", async () => {
-    const settings = await window.electronAPI.getSettings();
     const translations = await window.electronAPI.getTranslations('home-view');
     const cardTranslations = await window.electronAPI.getTranslations('card');
+    const constants = await window.electronAPI.getConstants();
 
     // Carga los comandos disponibles
     const commands = await window.electronAPI.getCommands();
@@ -452,19 +452,29 @@ document.addEventListener("DOMContentLoaded", async () => {
         }, 5000); // 5 segundos de duración total
     }
 
-    function applySettings() {
-        // Aplicar configuraciones
-        if (settings.customization.colorPalette === "generate") {
-            
-        }
+    async function applySettings() {
+        // Obtener configuraciones a utilizar
+        const colorStyle = await window.electronAPI.getSetting('colorStyle');
 
-        // Cambiar el color de contraste
-        document.documentElement.style.setProperty('--app_contrast_light', settings.customization.appContrastLight);
-        document.documentElement.style.setProperty('--app_contrast_dark', settings.customization.appContrastDark);
+        // Aplicar tema si es estático o generado
+        if (colorStyle === "generate") {
+            const appContrastLight = await window.electronAPI.getSetting('appContrastLight');
+            const appContrastDark = await window.electronAPI.getSetting('appContrastDark');
+            // Cambiar el color de contraste
+            document.documentElement.style.setProperty('--app_contrast_light', appContrastLight);
+            document.documentElement.style.setProperty('--app_contrast_dark', appContrastDark);
+        } else {
+            document.documentElement.style.setProperty('--app_light', constants[colorStyle].app_light);
+            document.documentElement.style.setProperty('--app_light_transparent', constants[colorStyle].app_light_transparent);
+            document.documentElement.style.setProperty('--app_dark', constants[colorStyle].app_dark);
+            document.documentElement.style.setProperty('--app_dark_transparent', constants[colorStyle].app_dark_transparent);
+            document.documentElement.style.setProperty('--app_contrast_light', constants[colorStyle].app_contrast_light);
+            document.documentElement.style.setProperty('--app_contrast_dark', constants[colorStyle].app_contrast_dark);
+        }
     }
 
     // Acciones iniciales ========================================================================
-    applySettings();
+    await applySettings();
     encryptedCards = await getAllCards(); // Obtener todas las tarjetas y almacenarlas en la variable local
     showKeysView(); // Mostrar la vista de inicio
     createSettingsPage(); // Crear la página de configuración

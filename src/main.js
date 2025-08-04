@@ -16,6 +16,10 @@ const globalConfig = JSON.parse(fs.readFileSync(globalConfigPath, 'utf8'));
 const constantsPath = path.join(__dirname, 'config', 'constants.json');
 const constants = JSON.parse(fs.readFileSync(constantsPath, 'utf-8'));
 
+// Configuraciones por defecto
+const defaultSettingsPath = path.join(__dirname, 'config', 'defaultSettings.json');
+const defaultSettings = JSON.parse(fs.readFileSync(defaultSettingsPath, 'utf8'));
+
 // Variables
 let mainWindow, superUser, masterKey, oldData;
 let settings = null;
@@ -99,31 +103,58 @@ ipcMain.on('close-window', () => {
     mainWindow.close();
 });
 
-// Obtener configuraciones
+// Leer las configuraciones y generar colores si esta configurado de esa manera.
 async function loadSettings() {
     // Obteniendo las configuraciones.
     settings = st.readSettings();
-    if (settings.customization.colorPalette === "generate"){
-        const genColors = await cg.generateColorPalette(settings.customization.background);
-        settings.customization.appContrastLight = genColors.appContrastLight;
-        settings.customization.appContrastDark = genColors.appContrastDark;
+
+    const colorStyle = getSetting('colorStyle');
+
+    if (colorStyle === "generate") {
+        const genColors = await cg.generateColorPalette(getSetting('background'));
+        settings['appContrastLight'] = genColors.appContrastLight;
+        settings['appContrastDark'] = genColors.appContrastDark;
     }
 };
 
-ipcMain.handle('get-settings', (event) => {
-    return settings;
+// Verifica si existe la configuración, si existe, la retorna, si no, toma la configuración por defecto.
+function getSetting(key) {
+    const setting = settings[key];
+    if (setting) {
+        return setting;
+    } else {
+        printDebug(`Configuracion "${key}" no encontrada. Se escribe la configuracion por defecto`);
+        settings[key] = defaultSettings[key];
+        st.writeSettings(settings);
+        return settings[key];
+    }
+}
+
+// Guarda una configuración.
+function setSetting(key, value) {
+    settings[key] = value;
+    st.writeSettings(settings);
+}
+
+// Exponer la función para obtener una configuración.
+ipcMain.handle('get-setting', (event, key) => {
+    return getSetting(key);
+});
+
+// Expone las constantes del programa
+ipcMain.handle('get-constants', (event) => {
+    return constants;
 });
 
 // Obtiene traducciones según la configuración actual. 
 function loadTranslations() {
-    let language = 'en';
-
-    if (settings.language === 'system') {
+    let language = getSetting('language');
+    // Si el lenguaje está configurado como 'sistema'
+    if (language === 'system') {
         language = app.getLocale().slice(0, 2);
         printDebug('Idioma del sistema: ' + language);
         if (!constants.languages.includes(language)) language = 'en';
     }
-    else language = settings.language;
 
     printDebug('Idioma mostrado: ' + language);
 

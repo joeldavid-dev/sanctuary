@@ -1,14 +1,13 @@
 {
-    "customization": {
-        "background": "Tung_Lam_Pixabay",
-        "backgroundMode": "video",
-        "colorPalette": "generate",
-        "appLight": "rgb(245, 245, 245)",
-        "appLightTransparent": "rgba(245, 245, 245, 0.6)",
-        "appDark": "rgb(10, 10, 10)",
-        "appDarkTransparent": "rgba(10, 10, 10, 0.6)",
-        "appContrastLight": "rgb(200, 200, 200)",
-        "appContrastDark": "rgb(55, 55, 55)"
-    },
-    "language": "system"
+    "background": "Tung_Lam_Pixabay",
+    "backgroundMode": "video",
+    "colorStyle": "generate",
+    "appLight": "rgb(245, 245, 245)",
+    "appLightTransparent": "rgba(245, 245, 245, 0.6)",
+    "appDark": "rgb(10, 10, 10)",
+    "appDarkTransparent": "rgba(10, 10, 10, 0.6)",
+    "appContrastLight": "rgb(200, 200, 200)",
+    "appContrastDark": "rgb(55, 55, 55)",
+    "language": "system",
+    "showWelcomeMessage": true
 }

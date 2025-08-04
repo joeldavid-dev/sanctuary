@@ -1,6 +1,6 @@
 {
   "name": "codaby-sanctuary",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
