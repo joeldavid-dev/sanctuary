@@ -87,6 +87,52 @@ async function decryptCard(masterKey, encryptedCard) {
     };
 }
 
+// Función para cifrar datos de la nota usando una contraseña
+async function encryptNote(masterKey, newNote) {
+    const salt = crypto.randomBytes(saltLength); // Generamos un salt aleatorio
+    const iv = crypto.randomBytes(16); // Generamos un IV aleatorio
+    const key = deriveKey(masterKey, salt); // Derivamos la clave desde la contraseña
+
+    // Cifrado del contenido (si existe)
+    let contentEncrypted = null;
+    if (newNote.content !== null && newNote.content !== '') {
+        const cipherContent = crypto.createCipheriv(algorithm, key, iv);
+        contentEncrypted = cipherContent.update(newNote.content, 'utf8', 'hex');
+        contentEncrypted += cipherContent.final('hex');
+    }
+
+    return {
+        name: newNote.name,
+        content: contentEncrypted,
+        color: newNote.color,
+        favorite: newNote.favorite,
+        salt: salt.toString('hex'), // Guardamos el salt
+        iv: iv.toString('hex'), // Guardamos el IV
+    };
+}
+
+async function decryptNote(masterKey, encryptedNote) {
+    const salt = Buffer.from(encryptedNote.salt, 'hex'); // Convertimos el salt de nuevo a binario
+    const iv = Buffer.from(encryptedNote.iv, 'hex'); // Convertimos el IV de nuevo a binario
+    const key = deriveKey(masterKey, salt); // Derivamos la clave desde la contraseña
+
+    // Descifrado del contenido (si existe)
+    let contentDecrypted = null;
+    if (encryptedNote.user !== null && encryptedNote.user !== '') {
+        const decipherContent = crypto.createDecipheriv(algorithm, key, iv);
+        contentDecrypted = decipherContent.update(encryptedNote.content, 'hex', 'utf8');
+        contentDecrypted += decipherContent.final('utf8');
+    }
+
+    return {
+        id: encryptedNote.id,
+        name: encryptedNote.name,
+        content: contentDecrypted,
+        color: encryptedNote.color,
+        favorite: encryptedNote.favorite,
+    };
+}
+
 // Función para descifrar datos usando una contraseña
 function decrypt(encryptedData, masterKey, saltHex, ivHex) {
     const salt = Buffer.from(saltHex, 'hex'); // Convertimos el salt de nuevo a binario
@@ -100,4 +146,4 @@ function decrypt(encryptedData, masterKey, saltHex, ivHex) {
     return decrypted;
 }
 
-module.exports = { hashPassword, verifyPassword, encryptCard, decryptCard };
+module.exports = { hashPassword, verifyPassword, encryptCard, decryptCard, encryptNote, decryptNote };

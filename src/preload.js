@@ -31,6 +31,11 @@ contextBridge.exposeInMainWorld('electronAPI', {
     decryptCard: (encryptedCard) => ipcRenderer.invoke('decrypt-card', encryptedCard),
     deleteCard: (id) => ipcRenderer.invoke('delete-card', id),
     getAllCards: () => ipcRenderer.invoke('get-all-cards'),
+    createNote: (newNote) => ipcRenderer.invoke('create-note', newNote),
+    updateNote: (id, updatedNote) => ipcRenderer.invoke('update-note', id, updatedNote),
+    decryptNote: (encryptedNote) => ipcRenderer.invoke('decrypt-note', encryptedNote),
+    deleteNote: (id) => ipcRenderer.invoke('delete-note', id),
+    getAllNotes: () => ipcRenderer.invoke('get-all-notes'),
     importData: (key) => ipcRenderer.invoke('import-data', key),
     // Exponer las funciones de configuración
     getSetting: (key) => ipcRenderer.invoke('get-setting', key),

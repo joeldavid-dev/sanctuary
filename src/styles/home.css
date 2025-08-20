@@ -76,16 +76,6 @@
     min-width: 30vw;
 }
 
-/* Modal */
-.preview-area {
-    margin-left: var(--normal-margin);
-}
-
-.new-edit-done {
-    width: 200px;
-    margin-left: var(--normal-margin);
-}
-
 /* Estilos específicos para modo oscuro */
 @media (prefers-color-scheme: dark) {
     .sidebar {

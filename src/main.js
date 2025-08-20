@@ -427,6 +427,94 @@ ipcMain.handle('get-all-cards', async () => {
     }
 });
 
+// Crear una nueva nota
+ipcMain.handle('create-note', async (event, newNote) => {
+    try {
+        // Encriptar los datos de la nota
+        const encryptedNote = await cr.encryptNote(masterKey, newNote);
+        const result = await db.createNote(encryptedNote);
+        return {
+            success: true,
+            message: mainTranslations['create-note-success'],
+            data: result,
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: mainTranslations['create-note-error'],
+            error: error.message,
+        };
+    }
+});
+
+// Actualizar una nota
+ipcMain.handle('update-note', async (event, id, updatedNote) => {
+    try {
+        // Encriptar los datos de la nota actualizada
+        const encryptedNote = await cr.encryptNote(masterKey, updatedNote);
+        printDebug('Nota a actualizar encriptada: ' + encryptedNote.name);
+        const result = await db.updateNote(id, encryptedNote);
+        return {
+            success: true,
+            message: mainTranslations['update-note-success'],
+            data: result,
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: mainTranslations['update-note-error'],
+            error: error.message,
+        };
+    }
+});
+
+// Desencriptar una nota
+ipcMain.handle('decrypt-note', async (event, encryptedNote) => {
+    try {
+        const decryptedNote = await cr.decryptNote(masterKey, encryptedNote);
+        return {
+            success: true,
+            message: mainTranslations['decrypt-note-success'],
+            data: decryptedNote,
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: mainTranslations['decrypt-note-error'],
+            error: error.message,
+        };
+    }
+});
+
+// Eliminar una nota en la base de datos
+ipcMain.handle('delete-note', async (event, id) => {
+    try {
+        const result = await db.deleteNote(id);
+        if (result) {
+            return {
+                success: true,
+                message: mainTranslations['delete-note-success'],
+            };
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: mainTranslations['delete-note-error'],
+            error: error.message,
+        };
+    }
+});
+
+// Obtener todas las notas de la base de datos
+ipcMain.handle('get-all-notes', async () => {
+    try {
+        const encryptedNotes = await db.getAllNotes();
+        return { success: true, data: encryptedNotes };
+    } catch (error) {
+        return { success: false, error: error.message };
+    }
+});
+
 // Importar datos de la version anterior
 ipcMain.handle('import-data', async (event, key) => {
     const encryptedKey = oldCr.encrypt(key, key);

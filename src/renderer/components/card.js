@@ -5,7 +5,7 @@
 
 export function createCardElement(card, index, translations) {
     const cardBody = document.createElement('label');
-    cardBody.classList.add('card-body'); // clase para estilos
+    cardBody.classList.add('main-element-body'); // clase para estilos
     cardBody.setAttribute('id', card.id); // id para el elemento
     cardBody.setAttribute('data-name', card.name);
     cardBody.style.backgroundColor = card.color; // Cambia el color de fondo de la tarjeta
@@ -20,12 +20,12 @@ export function createCardElement(card, index, translations) {
 
     // Crea el contenido de la tarjeta
     const cardHTML = `
-            <input type="radio" name="card" value="${card.id}">
+            <input type="radio" name="mainElement" value="${card.id}">
             <div class="horizontal-elem-area spaced centered">
                 <p class="bold">${card.name}</p>
                 <div class="${heartVisible}">
-                    <div class="card-static-icon">
-                        <img src="../assets/ico/feather/heart.svg" class="card-icon">
+                    <div class="main-element-static-icon">
+                        <img src="../assets/ico/feather/heart.svg" class="main-element-icon">
                     </div>
                 </div>
             </div>
@@ -46,14 +46,14 @@ export function createCardElement(card, index, translations) {
             </div>
 
             <div class="horizontal-flex spaced centered">
-                <button class="external-link-btn card-btn ${urlVisible}" data-url="${card.web}"">
-                    <img src="../assets/ico/feather/external-link.svg" class="card-icon">
+                <button class="external-link-btn main-element-btn ${urlVisible}" data-url="${card.web}"">
+                    <img src="../assets/ico/feather/external-link.svg" class="main-element-icon">
                     </button>
 
                 <strong class="minimum-text">${index + 1}</strong>
 
-                <button class="eye-btn card-btn" data-cardID="${card.id}" data-userID="user-${card.id}" data-passID="pass-${card.id}">
-                    <img src="../assets/ico/feather/eye.svg" class="card-icon">
+                <button class="eye-btn main-element-btn" data-cardID="${card.id}" data-userID="user-${card.id}" data-passID="pass-${card.id}">
+                    <img src="../assets/ico/feather/eye.svg" class="main-element-icon">
                 </button>
             </div>
         `;

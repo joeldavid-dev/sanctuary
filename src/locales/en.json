@@ -65,7 +65,15 @@
         "import-data-success": "Data imported successfully.",
         "import-data-error": "Error importing data.",
         "import-data-wrong-password": "Incorrect password.",
-        "command-not-found": "Command not found."
+        "command-not-found": "Command not found.",
+        "create-note-success": "Note created successfully.",
+        "create-note-error": "Error creating the note.",
+        "update-note-success": "Note updated successfully.",
+        "update-note-error": "Error updating the note.",
+        "decrypt-note-success": "Note decrypted successfully.",
+        "decrypt-note-error": "Error decrypting the note.",
+        "delete-note-success": "Note deleted successfully.",
+        "delete-note-error": "Error deleting the note."
     },
     "home-view": {
         "search": "Search...",
@@ -95,9 +103,15 @@
         "url": "URL:",
         "new-card": "New Card"
     },
+    "note": {
+        "name": "Title",
+        "content": "Note..."
+    },
     "new-edit": {
-        "title-new": "New Key",
-        "title-edit": "Edit Key",
+        "title-new-card": "New Key",
+        "title-edit-card": "Edit Key",
+        "titlw-new-note": "New Note",
+        "title-edit-note": "Edit Note",
         "name": "Name:",
         "name-placeholder": "Name",
         "user": "User:",

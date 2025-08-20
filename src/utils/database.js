@@ -27,7 +27,7 @@ const db = new sqlite3.Database(dbPath, (err) => {
     }
 });
 
-// Creación de tablas
+// Creación de tablas si no existen
 db.run(`CREATE TABLE IF NOT EXISTS user (
     userID INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
@@ -42,6 +42,17 @@ db.run(`CREATE TABLE IF NOT EXISTS cardsData (
     user TEXT,
     password TEXT NOT NULL,
     web TEXT,
+    color TEXT NOT NULL,
+    favorite BOOLEAN NOT NULL,
+    salt TEXT NOT NULL,
+    iv TEXT NOT NULL,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+    )`);
+
+db.run(`CREATE TABLE IF NOT EXISTS notesData (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    content TEXT,
     color TEXT NOT NULL,
     favorite BOOLEAN NOT NULL,
     salt TEXT NOT NULL,
@@ -80,7 +91,7 @@ function createCard(card) {
     return new Promise((resolve, reject) => {
         const query = `INSERT INTO cardsData 
         (name, user, password, web, color, favorite, salt, iv) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
 
         db.run(query, [card.name, card.user, card.password, card.web,
         card.color, card.favorite, card.salt, card.iv], function (err) {
@@ -159,8 +170,88 @@ function getAllCards() {
     });
 }
 
-function printDebug(info){
+// Función para crear una nota
+function createNote(note) {
+    return new Promise((resolve, reject) => {
+        const query = `INSERT INTO notesData 
+        (name, content, color, favorite, salt, iv) 
+        VALUES (?, ?, ?, ?, ?, ?)`;
+
+        db.run(query, [note.name, note.content, note.color, note.favorite,
+        note.salt, note.iv], function (err) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve({
+                    id: this.lastID,
+                    name: note.name,
+                    content: note.content,
+                    color: note.color,
+                    favorite: note.favorite,
+                    salt: note.salt,
+                    iv: note.iv,
+                });
+            }
+        });
+    });
+}
+
+// Función para eliminar una nota
+function deleteNote(id) {
+    return new Promise((resolve, reject) => {
+        const query = `DELETE FROM notesData WHERE id = ?`;
+        db.run(query, [id], function (err) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve({ deletedId: id });
+            }
+        });
+    });
+}
+
+// Función para actualizar una nota
+function updateNote(id, note) {
+    return new Promise((resolve, reject) => {
+        const query = `UPDATE notesData SET 
+        name = ?, content = ?, color = ?, favorite = ?, salt = ?, iv = ? 
+        WHERE id = ?`;
+
+        db.run(query, [note.name, note.content,
+        note.color, note.favorite, note.salt, note.iv, id], function (err) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve({
+                    id: id,
+                    name: note.name,
+                    content: note.content,
+                    color: note.color,
+                    favorite: note.favorite,
+                    salt: note.salt,
+                    iv: note.iv,
+                });
+            }
+        });
+    });
+}
+
+// Función para obtener todas las notas
+function getAllNotes() {
+    return new Promise((resolve, reject) => {
+        const query = `SELECT * FROM notesData`;
+        db.all(query, [], (err, rows) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(rows);
+            }
+        });
+    });
+}
+
+function printDebug(info) {
     if (globalConfig.debug) console.log(`(database) >> ${info}`);
 }
 
-module.exports = { addUser, getUser, createCard, deleteCard, updateCard, getAllCards };
+module.exports = { addUser, getUser, createCard, deleteCard, updateCard, getAllCards, createNote, deleteNote, updateNote, getAllNotes };

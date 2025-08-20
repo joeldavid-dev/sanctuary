@@ -65,7 +65,15 @@
         "import-data-success": "Datos importados exitosamente.",
         "import-data-error": "Error al importar los datos.",
         "import-data-wrong-password": "Contraseña incorrecta.",
-        "command-not-found": "Comando no encontrado."
+        "command-not-found": "Comando no encontrado.",
+        "create-note-success": "Nota creada exitosamente.",
+        "create-note-error": "Error al crear la nota.",
+        "update-note-success": "Nota actualizada exitosamente.",
+        "update-note-error": "Error al actualizar la nota.",
+        "decrypt-note-success": "Nota descifrada exitosamente.",
+        "decrypt-note-error": "Error al descifrar la nota.",
+        "delete-note-success": "Nota eliminada exitosamente.",
+        "delete-note-error": "Error al eliminar la nota."
     },
     "home-view": {
         "search": "Buscar...",
@@ -95,9 +103,15 @@
         "url": "URL:",
         "new-card": "Nueva Tarjeta"
     },
+    "note": {
+        "name": "Título",
+        "content": "Nota..."
+    },
     "new-edit": {
-        "title-new": "Nueva Clave",
-        "title-edit": "Editar Clave",
+        "title-new-card": "Nueva Clave",
+        "title-edit-card": "Editar Clave",
+        "title-new-note": "Nueva Nota",
+        "title-edit-note": "Editar Nota",
         "name": "Nombre:",
         "name-placeholder": "Nombre",
         "user": "Usuario:",

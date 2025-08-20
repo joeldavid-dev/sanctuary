@@ -90,6 +90,7 @@ body::-webkit-scrollbar {
     --color10: rgb(150, 0, 0);
 
     /* Valores de margen y padding */
+    --maximal-margin: 60px;
     --normal-margin: 15px;
     --narrow-margin: 10px;
     --minimal-margin: 5px;
@@ -400,7 +401,7 @@ p {
 }
 
 /* ======================= Elementos complejos ======================= */
-.card-body {
+.main-element-body {
     font-family: jetBrains_mono;
     display: flex;
     flex-direction: column;
@@ -416,16 +417,43 @@ p {
     transition: box-shadow 0.3s ease;
 }
 
-.card-body input {
+.main-element-body input {
     /*Oculta el radio button original */
     display: none;
 }
 
 /* Clase que agregaremos a la tarjeta seleccionada */
-.selected-card {
+.selected-element {
     border: solid 2px;
     border-color: white;
-    box-shadow: 0px 0px 50px 0px var(--card-color, #000000);
+    box-shadow: 0px 0px 50px 0px var(--element-color, #000000);
+}
+
+/* Vista previa de notas */
+.element-preview {
+    font-family: jetBrains_mono;
+    display: flex;
+    flex-direction: column;
+    max-width: 50vw;
+    min-width: 150px;
+    border-radius: 30px;
+    color: white;
+    padding: 40px 15px 15px 15px;
+    gap: var(--normal-margin);
+    justify-content: space-between;
+    /* permite cortar palabras largas */
+    word-wrap: break-word;
+    transition: box-shadow 0.3s ease;
+}
+
+.element-textarea {
+    width: 100%;
+    min-height: 40px;
+    /* evita que el usuario lo cambie manualmente */
+    resize: none;
+    /* oculta el scroll vertical */
+    overflow: hidden;
+    box-sizing: border-box;
 }
 
 /* Botón de acciones. Tiene el borde definido, se vuelve sólido al pasar el mouse encima. */
@@ -736,7 +764,7 @@ input:checked+.slider::before {
     background-color: var(--app_light);
 }
 
-.card-btn {
+.main-element-btn {
     background-color: rgba(255, 255, 255, 0.7);
     padding: var(--minimal-margin);
     width: 30px;
@@ -746,11 +774,11 @@ input:checked+.slider::before {
     transition: 0.2s;
 }
 
-.card-btn:hover {
+.main-element-btn:hover {
     background-color: rgb(255, 255, 255);
 }
 
-.card-btn2 {
+.main-element-btn2 {
     background-color: rgba(255, 255, 255, 0.7);
     padding: var(--minimal-margin);
     display: flex;
@@ -762,16 +790,16 @@ input:checked+.slider::before {
     transition: 0.2s;
 }
 
-.card-btn2:hover {
+.main-element-btn2:hover {
     background-color: rgb(255, 255, 255);
 }
 
-.card-icon {
+.main-element-icon {
     width: 20px;
     height: 20px;
 }
 
-.card-static-icon {
+.main-element-static-icon {
     background-color: rgba(255, 255, 255, 0.7);
     padding: var(--minimal-margin);
     display: flex;
@@ -890,6 +918,17 @@ input:checked+.slider::before {
 
 .btn-padding {
     padding: var(--minimal-margin) var(--normal-margin);
+}
+
+.big-btn-padding {
+    padding: var(--narrow-margin) var(--maximal-margin);
+}
+
+.transparent-input {
+    font-family: jetBrains_mono;
+    background: transparent;
+    border: none;
+    outline: none;
 }
 
 /* Responsive */

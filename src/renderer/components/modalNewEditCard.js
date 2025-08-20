@@ -3,7 +3,7 @@
  * ID = "modal" y que contenga un divider con ID = "modal-body".
  */
 
-export function showNewEditModal(mode, card) {
+export function showNewEditCardModal(mode, card) {
     return new Promise(async (resolve, reject) => {
         // Constantes y variables auxiliares
         let colorSelected = 'var(--color1)';
@@ -41,7 +41,7 @@ export function showNewEditModal(mode, card) {
 
         // Establecer valores dependiendo del modo
         if (mode === 'create') {
-            modalTitle.textContent = translations['title-new'];
+            modalTitle.textContent = translations['title-new-card'];
             colorSelected = 'var(--color1)';
             favoriteValue = false;
             userPreviewSection.style.display = 'none';
@@ -50,7 +50,7 @@ export function showNewEditModal(mode, card) {
             openLinkPreview.style.display = 'none';
         }
         else if (mode === 'edit') {
-            modalTitle.textContent = translations['title-edit'];
+            modalTitle.textContent = translations['title-edit-card'];
             // Actualizar los campos del formulario
             nameInput.value = card.name;
             userInput.value = card.user || '';
@@ -152,7 +152,7 @@ export function showNewEditModal(mode, card) {
                         cleanup();
                         resolve({
                             success: true,
-                            generatedCard: result.data,
+                            generated: result.data,
                             message: result.message,
                         });
                     }
@@ -172,7 +172,7 @@ export function showNewEditModal(mode, card) {
                         cleanup();
                         resolve({
                             success: true,
-                            editedCard: result.data,
+                            edited: result.data,
                             message: result.message
                         });
                     }
@@ -220,7 +220,8 @@ export function showNewEditModal(mode, card) {
 
 function getModalHTML(translations, cardTranslations) {
     return `
-        <div class="horizontal-flex normal-margin">
+    <div class="vertical-elem-area normal-padding">
+        <div class="horizontal-elem-area">
             <div class="vertical-elem-area normal-padding normal-rounded div-options">
                 <label>${translations['name']}</label>
                 <input type="text" id="name-input" class="custom-input minimal-rounded" placeholder=${translations["name-placeholder"]}>
@@ -246,12 +247,12 @@ function getModalHTML(translations, cardTranslations) {
             <div class="preview-area vertical-flex distributed expanded">
                 <label for="preview-card">${translations['preview']}</label>
 
-                <div id="preview-card" class="card-body color1 contracted">
+                <div id="preview-card" class="main-element-body color1 contracted">
                     <div class="horizontal-elem-area spaced centered">
                         <p id="name-preview" class="bold">${cardTranslations['new-card']}</p>
                         <div id="ico-love">
-                            <div class="card-static-icon">
-                                <img src="../assets/ico/feather/heart.svg" class="card-icon">
+                            <div class="main-element-static-icon">
+                                <img src="../assets/ico/feather/heart.svg" class="main-element-icon">
                             </div>
                         </div>
                     </div>
@@ -272,22 +273,22 @@ function getModalHTML(translations, cardTranslations) {
                     </label>
 
                     <div class="horizontal-flex spaced centered">
-                        <button id="open-link-preview" class="card-btn">
-                            <img id="ico-link" src="../assets/ico/feather/external-link.svg" class="card-icon">
+                        <button id="open-link-preview" class="main-element-btn">
+                            <img id="ico-link" src="../assets/ico/feather/external-link.svg" class="main-element-icon">
                         </button>
 
                         <p class="minimum-text">#</p>
 
-                        <button id="view-preview" class="card-btn">
-                            <img id="ico-eye" src="../assets/ico/feather/eye.svg" class="card-icon">
+                        <button id="view-preview" class="main-element-btn">
+                            <img id="ico-eye" src="../assets/ico/feather/eye.svg" class="main-element-icon">
                         </button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="colors-section" class="horizontal-flex normal-margin">
-            <div class="horizontal-elem-area minimal-padding normal-rounded div-options">
+        <div class="horizontal-elem-area">
+            <div id="colors-section" class="horizontal-elem-area minimal-padding normal-rounded div-options">
                 <label class="custom-radio2 minimal-rounded minimal-padding">
                     <input id="color1" type="radio" name="color" value="var(--color1)">
                     <div class="radio-color color1 minimal-rounded"></div>
@@ -339,6 +340,7 @@ function getModalHTML(translations, cardTranslations) {
                 </label>
             </div>
 
-            <button id="new-edit-done" class="new-edit-done action-btn narrow-padding normal-rounded">${translations['done']}</button>
-        </div>`;
+            <button id="new-edit-done" class="action-btn big-btn-padding normal-rounded">${translations['done']}</button>
+        </div>
+    </div>`;
 }
