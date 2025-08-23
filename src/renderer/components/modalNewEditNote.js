@@ -33,7 +33,6 @@ export function showNewEditNoteModal(mode, note) {
         // Establecer valores dependiendo del modo
         if (mode === 'create') {
             modalTitle.textContent = translations['title-new-note'];
-            colorSelected = 'var(--color1)';
             favoriteValue = false;
             icoLove.style.display = 'none';
         }
@@ -41,58 +40,35 @@ export function showNewEditNoteModal(mode, note) {
             modalTitle.textContent = translations['title-edit-note'];
             // Actualizar los campos del formulario
             nameInput.value = note.name;
+            contentTextarea.value = note.content || '';
+            contentTextarea.style.height = '30vh'; // Aumenta el tamaño inicial del textarea
+            console.log(contentTextarea.scrollHeight);
             // Actualizar las variables de valores
             favoriteValue = note.favorite;
             colorSelected = note.color;
-            // Actualizar la vista previa
-            namePreview.textContent = note.name;
-            (note.user) ? userPreview.textContent = note.user : userPreviewSection.style.display = 'none';
-            passPreview.textContent = note.password;
-            if (note.web) {
-                urlPreview.textContent = note.web;
-            } else {
-                urlPreviewSection.style.display = 'none';
-                openLinkPreview.style.display = 'none';
-            }
             // Marcar el color seleccionado
             document.querySelector(`input[name="color"][value="${colorSelected}"]`).checked = true;
             // Marcar el switch de favorito si es necesario
             favoriteSwitch.querySelector('input').checked = note.favorite || false;
             icoLove.style.display = favoriteSwitch.querySelector('input').checked ? 'block' : 'none';
-            // Cambiar el color de la tarjeta en la vista previa
+            // Cambiar el color de la nota en la vista previa
             previewNote.style.backgroundColor = note.color;
-            // Cambiar el color del texto dependiendo del color de la tarjeta para mantener la legibilidad
-            (note.color === 'var(--color4)' || note.color === 'var(--color6)') ? previewNote.style.color = 'black' : previewNote.style.color = 'white';
+        }
+        // Cambiar el color del texto dependiendo del color de la nota para mantener la legibilidad
+        if (colorSelected === 'var(--color4)' || colorSelected === 'var(--color6)') {
+            previewNote.style.color = 'black'; // Cambiar el color del texto a negro
+            nameInput.style.color = 'black'; // Cambiar el color del texto del input
+            contentTextarea.style.color = 'black'; // Cambiar el color del texto del textarea
+        } else {
+            previewNote.style.color = 'white'; // Cambiar el color del texto a blanco
+            nameInput.style.color = 'white'; // Cambiar el color del texto del input
+            contentTextarea.style.color = 'white'; // Cambiar el color del texto del textarea
         }
 
         // Funciones de botones e inputs
         const close = () => {
             cleanup();
             resolve({ success: false, })
-        }
-        const nameAction = () => {
-            (nameInput.value.length > 0) ? namePreview.textContent = nameInput.value.trim() : namePreview.textContent = noteTranslations['new-note'];
-        }
-        const userAction = () => {
-            if (userInput.value.length > 0) {
-                userPreviewSection.style.display = 'block';
-                userPreview.textContent = userInput.value.trim();
-            }
-            else userPreviewSection.style.display = 'none';
-        }
-        const passAction = () => {
-            passPreview.textContent = passInput.value.trim();
-        }
-        const urlAction = () => {
-            if (urlInput.value.length > 0) {
-                urlPreview.textContent = urlInput.value.trim();
-                urlPreviewSection.style.display = 'block';
-                openLinkPreview.style.display = 'block';
-            }
-            else {
-                urlPreviewSection.style.display = 'none';
-                openLinkPreview.style.display = 'none';
-            }
         }
 
         const contentAction = () => {
@@ -115,27 +91,30 @@ export function showNewEditNoteModal(mode, note) {
             previewNote.style.backgroundColor = colorSelected;
             if (colorSelected === 'var(--color4)' || colorSelected === 'var(--color6)') {
                 previewNote.style.color = 'black'; // Cambiar el color del texto
+                nameInput.style.color = 'black'; // Cambiar el color del texto del input
+                contentTextarea.style.color = 'black'; // Cambiar el color del texto del textarea
             } else {
                 previewNote.style.color = 'white'; // Cambiar el color del texto
+                nameInput.style.color = 'white'; // Cambiar el color del texto del input
+                contentTextarea.style.color = 'white'; // Cambiar el color del texto del textarea
             }
         }
         const doneAction = async () => {
             // Obtener datos
             const name = nameInput.value.trim();
+            const content = contentTextarea.value.trim();
 
             const newEditnote = {
                 name: name,
-                user: user,
-                password: password,
-                web: web,
+                content: content,
                 color: colorSelected,
                 favorite: favoriteValue
             }
-            // Verificar que los campos no estén vacíos
-            if (name && password) {
+            // Verificar que el nombre no esté vacío
+            if (name) {
                 if (mode === 'create') {
-                    // Crear nueva tarjeta
-                    const result = await window.electronAPI.createnote(newEditnote);
+                    // Crear nueva nota
+                    const result = await window.electronAPI.createNote(newEditnote);
                     if (result.success) {
                         cleanup();
                         resolve({
@@ -153,8 +132,8 @@ export function showNewEditNoteModal(mode, note) {
                     }
                 }
                 else if (mode === 'edit') {
-                    // Editar tarjeta existente
-                    const result = await window.electronAPI.updatenote(note.id, newEditnote);
+                    // Editar nota existente
+                    const result = await window.electronAPI.updateNote(note.id, newEditnote);
                     // Cerrar modal
                     if (result.success) {
                         cleanup();
@@ -173,13 +152,12 @@ export function showNewEditNoteModal(mode, note) {
                     }
                 }
             } else {
-                window.electronAPI.showWarning(warningTranslations['title'], warningTranslations['name-password-required']);
+                window.electronAPI.showWarning(warningTranslations['title'], warningTranslations['title-required']);
             }
         }
 
         // Creación de Listeners
         closeModal.addEventListener('click', close);
-        nameInput.addEventListener('input', nameAction);
         contentTextarea.addEventListener('input', contentAction);
         favoriteSwitch.addEventListener('change', favoriteAction);
         colorsSection.addEventListener('change', colorsAction);
@@ -191,7 +169,6 @@ export function showNewEditNoteModal(mode, note) {
         // Limpiar Listeners y ocultar
         function cleanup() {
             closeModal.removeEventListener('click', close);
-            nameInput.removeEventListener('input', nameAction);
             contentTextarea.removeEventListener('input', contentAction);
             favoriteSwitch.removeEventListener('change', favoriteAction);
             colorsSection.removeEventListener('change', colorsAction);
@@ -216,7 +193,7 @@ function getModalHTML(translations, noteTranslations) {
                     </div>
                 </div>
 
-                <textarea id="content-textarea" class="element-textarea transparent-input" rows="1" placeholder=${noteTranslations["content"]}></textarea>
+                <textarea id="content-textarea" class="element-textarea transparent-input small-text" rows="1" placeholder=${noteTranslations["content"]}></textarea>
 
                 <div class="horizontal-flex spaced centered">
                     <p class="minimum-text">#</p>
@@ -281,7 +258,7 @@ function getModalHTML(translations, noteTranslations) {
         </div>
 
         <div class="horizontal-elem-area spaced">
-            <div class="horizontal-elem-area minimal-padding normal-rounded div-options spaced centered">
+            <div class="horizontal-flex minimal-padding normal-rounded div-options expanded centered spaced">
                 <label>${translations['favorite']}</label>
                 <label id="favorite-switch" class="switch">
                     <input type="checkbox">

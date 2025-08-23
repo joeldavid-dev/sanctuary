@@ -39,7 +39,8 @@
         "empty-fields": "No fields can be left empty.",
         "passwords-dont-match": "Passwords do not match.",
         "wrong-password": "Incorrect password.",
-        "name-password-required": "Name and password are required"
+        "name-password-required": "Name and password are required",
+        "title-required": "Title is required"
     },
     "main": {
         "json-dialog-title": "Select a JSON file",
@@ -121,15 +122,18 @@
         "url": "URL:",
         "url-placeholder": "Optional",
         "color": "Color:",
-        "favorite": "Favorite:",
+        "favorite": "Favorite",
         "preview": "Preview:",
         "done": "Done"
     },
     "delete": {
-        "title": "Delete Key",
-        "message": "Do you really want to delete the '{name}' key? Be careful — this action is irreversible!",
+        "title-mode-key": "Delete Key",
+        "message-mode-key": "Do you really want to delete the '{name}' key? Be careful, this action is irreversible!",
         "cancel": "Cancel",
-        "delete-key": "Delete Key"
+        "delete-key": "Delete Key",
+        "title-mode-note": "Delete Note",
+        "message-mode-note": "Do you really want to delete the '{name}' note? Be careful, this action is irreversible!",
+        "delete-note": "Delete note"
     },
     "settings": {
         "edit-ID": "Edit your ID information",

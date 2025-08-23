@@ -5,7 +5,7 @@
 
 import { setTranslations, translate } from '../utils/translate.js';
 
-export function showDeleteModal(card) {
+export function showDeleteModal(element, mode) {
     return new Promise(async (resolve, reject) => {
         // Constantes y variables auxiliares
         const translations = await window.electronAPI.getTranslations('delete');
@@ -23,18 +23,34 @@ export function showDeleteModal(card) {
         const confirmWarningBtn = document.getElementById('confirm-warning-btn');
 
         // Establecer valores
-        modalWarningTitle.textContent = translations['title'];
-        warningMessage.textContent = translate('message', { name: card.name });
-        cancelWarningBtn.textContent = translations['cancel'];
-        confirmWarningBtn.textContent = translations['delete-key'];
+        if (mode === 'keys') {
+            modalWarningTitle.textContent = translations['title-mode-key'];
+            warningMessage.textContent = translate('message-mode-key', { name: element.name });
+            cancelWarningBtn.textContent = translations['cancel'];
+            confirmWarningBtn.textContent = translations['delete-key'];
+        }
+        else if (mode === 'notes') {
+            modalWarningTitle.textContent = translations['title-mode-note'];
+            warningMessage.textContent = translate('message-mode-note', { name: element.name });
+            cancelWarningBtn.textContent = translations['cancel'];
+            confirmWarningBtn.textContent = translations['delete-note'];
+        }
 
         // Funciones de botones
         const close = () => {
             cleanup();
             resolve({ success: false })
         };
-        const deleteCardAction = async () => {
-            const result = await window.electronAPI.deleteCard(card.id);
+        const deleteElementAction = async () => {
+            let result = null;
+            if (mode === 'keys') {
+                result = await window.electronAPI.deleteCard(element.id);
+            }
+            else if (mode === 'notes') {
+                result = await window.electronAPI.deleteNote(element.id);
+            }
+
+            console.log(mode);
             if (result.success) {
                 cleanup();
                 resolve({
@@ -54,7 +70,7 @@ export function showDeleteModal(card) {
         // Creación de Listeners
         closeModalWarning.addEventListener('click', close);
         cancelWarningBtn.addEventListener('click', close);
-        confirmWarningBtn.addEventListener('click', deleteCardAction);
+        confirmWarningBtn.addEventListener('click', deleteElementAction);
 
         // Mostrar el modal
         modalWarning.style.display = 'block';
@@ -63,7 +79,7 @@ export function showDeleteModal(card) {
         function cleanup() {
             closeModalWarning.removeEventListener('click', close);
             cancelWarningBtn.removeEventListener('click', close);
-            confirmWarningBtn.removeEventListener('click', deleteCardAction);
+            confirmWarningBtn.removeEventListener('click', deleteElementAction);
 
             modalWarning.style.display = 'none';
         }

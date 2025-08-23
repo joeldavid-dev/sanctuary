@@ -37,13 +37,12 @@ const newElement = document.getElementById('new-element');
 const deleteElement = document.getElementById('delete-element');
 const deleteElementBody = document.getElementById('delete-element-body');
 
-let mode = 'keys'; // Variable para controlar el modo actual de la vista (llaves, notas o configuración)
+// Variable para controlar el modo actual de la vista (llaves, notas o configuración)
+let mode = 'keys'; // keys || notes
 let searchMode = 'none'; // Variable para controlar el modo de búsqueda
 
 let encryptedSelectedElement = null; // Variable para almacenar el elemento seleccionado
 let selectedElementID = null; // Variable para almacenar el ID del elemento seleccionada
-let encryptedCards = []; // Variable para almacenar las tarjetas
-let encryptedNotes = []; // Variable para almacenar las notas
 let actualEncryptedElements = []; // Lista que almacena los elementos mostrados en la vista
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -91,7 +90,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     async function showContent(content) {
         // Limpiar el contenedor de elementos antes de agregar nuevos
         mainContent.innerHTML = '';
-        deselectAllElements(); // Deseleccionar todas las tarjetas
+        deselectAllElements(); // Deseleccionar todos los elementos
         if (content.length > 0) {
             // Crear y agregar cada elemento al contenedor
             if (mode === 'keys') {
@@ -111,7 +110,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <p>${translations['empty']}</p>
             </div>`;
         }
-        actualEncryptedElements = content; // Actualizar la lista de elementos mostrados en la vista
     }
 
     async function showCommands(commands) {
@@ -167,9 +165,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // Funciones de estado de la vista ============================================================
-    function showKeysView() {
+    async function showKeysView() {
         mode = 'keys'; // Cambiar el modo a llaves
-        showContent(encryptedCards); // Mostrar las tarjetas en la vista
+        actualEncryptedElements = await getAllCards(); // Obtener todas las tarjetas y almacenarlas en la lista de elementos mostrados
+        console.log(actualEncryptedElements);
+        showContent(actualEncryptedElements); // Mostrar las tarjetas en la vista
         title.textContent = translations['my-keys']; // Cambiar el título de la vista
         searchArea.style.display = 'flex'; // Mostrar la barra de búsqueda en la vista de llaves
         bottonBar.style.display = 'flex'; // Mostrar la barra de botones en la vista de llaves
@@ -178,9 +178,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         clearSearch(); // Limpiar las búsquedas
     }
 
-    function showNotesView() {
+    async function showNotesView() {
         mode = 'notes'; // Cambiar el modo a notas
-        showContent(encryptedNotes); // Mostrar las notas en la vista
+        actualEncryptedElements = await getAllNotes(); // Obtener todas las notas y almacenarlas en la lista de elementos mostrados
+        console.log(actualEncryptedElements);
+        showContent(actualEncryptedElements); // Mostrar las notas en la vista
         title.textContent = translations['my-notes']; // Cambiar el título de la vista
         searchArea.style.display = 'flex'; // Mostrar la barra de búsqueda en la vista de notas
         bottonBar.style.display = 'flex'; // Mostrar la barra de botones en la vista de notas
@@ -229,12 +231,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
             else {
                 optionsBar.style.display = 'none'; // Ocultar la barra de opciones
-                const filteredCards = encryptedCards.filter(card => card.name.toLowerCase().includes(searchTerm));
-                showContent(filteredCards);
+                const filteredElements = actualEncryptedElements.filter(element => element.name.toLowerCase().includes(searchTerm));
+                showContent(filteredElements);
                 searchMode = 'searching'; // Cambiar el modo de búsqueda a "buscando"
             }
         } else {
-            showContent(encryptedCards); // Mostrar todas las tarjetas si no hay término de búsqueda
+            showContent(actualEncryptedElements); // Mostrar todos los elementos si no hay término de búsqueda
             searchMode = 'none'; // Cambiar el modo de búsqueda a "ninguno"
             document.getElementById('search-clear-ico').src = '../assets/ico/feather/search.svg'; // Cambiar el icono de búsqueda a "lupa"
         }
@@ -268,7 +270,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (searchMode !== 'none') {
             search.value = ''; // Limpiar el campo de búsqueda
             optionsBar.style.display = 'none'; // Ocultar la barra de opciones
-            showContent(encryptedCards); // Mostrar todas las tarjetas
+            showContent(actualEncryptedElements); // Mostrar todos los elementos
             searchMode = 'none'; // Cambiar el modo de búsqueda a "ninguno"
             document.getElementById('search-clear-ico').src = '../assets/ico/feather/search.svg'; // Cambiar el icono de búsqueda a "lupa"
         }
@@ -280,7 +282,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     //Funciones de los botones de la butonbar ====================================================
-    // Clic en el botón para crar una nueva tarjeta o nota
+    // Clic en el botón para crar un nuevo elemento
     newElement.addEventListener('click', async () => {
         let confirm;
         // Si estamos en la vista de llaves, mostrar el modal para crear una tarjeta
@@ -293,13 +295,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         if (confirm.success) {
-            encryptedCards.push(confirm.generated);
-            showContent(encryptedCards);
+            actualEncryptedElements.push(confirm.generated);
+            showContent(actualEncryptedElements); // Mostrar los elementos actualizados en la vista
         }
         if (confirm.message) showToast(confirm.message);
     });
 
-    // Clic en el botón para editar la tarjeta seleccionada
+    // Clic en el botón para editar un elemento seleccionado
     editElement.addEventListener('click', async () => {
         if (encryptedSelectedElement) {
             let selectedElement;
@@ -310,7 +312,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 selectedElement = await window.electronAPI.decryptNote(encryptedSelectedElement);
             }
 
-            // Si la tarjeta o nota se descifró correctamente, mostrar el modal de edición
+            // Si el elemento se descifró correctamente, mostrar el modal de edición
             if (selectedElement.success) {
                 let confirm;
                 if (mode === 'keys') {
@@ -321,14 +323,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 if (confirm.success) {
                     const actualIndex = actualEncryptedElements.findIndex(element => element.id == selectedElement.data.id);
-                    const index = encryptedCards.findIndex(element => element.id == selectedElement.data.id);
-                    
                     // Actualizar el elemento en la lista de elementos encriptados que se está mostrando
                     actualEncryptedElements[actualIndex] = confirm.edited;
-
-                    // Actualizar la tarjeta en la lista de tarjetas encriptadas
-                    encryptedCards[index] = confirm.edited;
-
                     showContent(actualEncryptedElements);
                 }
                 if (confirm.message) showToast(confirm.message);
@@ -338,20 +334,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
-    // Clic en el botón para eliminar la tarjeta seleccionada
+    // Clic en el botón para eliminar el elemento seleccionado
     deleteElement.addEventListener('click', async () => {
         if (encryptedSelectedElement) {
-            const confirm = await showDeleteModal(encryptedSelectedElement);
+            const confirm = await showDeleteModal(encryptedSelectedElement, mode);
             if (confirm.success) {
-                // Eliminar la tarjeta en la lista de tarjetas encriptadas que se está mostrando
-                const actualIndex = actualEncryptedElements.findIndex(card => card.id == encryptedSelectedElement.id);
+                // Eliminar el elemento de la lista de elementos mostrados
+                const actualIndex = actualEncryptedElements.findIndex(element => element.id == encryptedSelectedElement.id);
                 actualEncryptedElements.splice(actualIndex, 1);
 
-                // Eliminar la tarjeta en la lista de tarjetas encriptadas
-                const index = encryptedCards.findIndex(card => card.id == encryptedSelectedElement.id);
-                encryptedCards.splice(index, 1);
-
-                showContent(actualEncryptedElements); // Mostrar las tarjetas en la vista
+                showContent(actualEncryptedElements); // Mostrar los elementos actualizados en la vista
             }
             if (confirm.message) showToast(confirm.message);
         }
@@ -425,36 +417,60 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         // Si el botón es un botón de ojo para mostrar/ocultar contraseña
         else if (buttonPressed.classList.contains('eye-btn')) {
-            const cardID = buttonPressed.getAttribute('data-cardID');
-            const userID = buttonPressed.getAttribute('data-userID');
-            const userView = document.getElementById(userID);
-            const passID = buttonPressed.getAttribute('data-passID');
-            const passView = document.getElementById(passID);
             const mask = '••••••••';
 
-            // Cambiar el texto del usuario y la contraseña al hacer clic en el botón
-            if (passView.textContent === mask) {
-                const encryptedCard = encryptedCards.find(card => card.id == cardID);
-                const card = await window.electronAPI.decryptCard(encryptedCard);
-                if (card.success) {
-                    userView.textContent = card.data.user;
-                    passView.textContent = card.data.password;
-                    // 🔥 Copiamos al portapapeles
-                    navigator.clipboard.writeText(card.data.password).then(() => {
-                        // Mostrar una notificación visual
-                        showToast(translations['copied']);
-                    }).catch(err => {
-                        console.error(err);
-                        showToast(translations['copied-error']);
-                    });
-                } else {
-                    console.error(card);
-                    showToast(card.message);
+            if (mode === 'keys') {
+                // Obtener el ID de la tarjeta y los elementos de usuario y contraseña
+                const cardID = buttonPressed.getAttribute('data-cardID');
+                const userID = buttonPressed.getAttribute('data-userID');
+                const userView = document.getElementById(userID);
+                const passID = buttonPressed.getAttribute('data-passID');
+                const passView = document.getElementById(passID);
+
+                // Cambiar el texto del usuario y la contraseña al hacer clic en el botón
+                if (passView.textContent === mask) {
+                    const encryptedCard = actualEncryptedElements.find(card => card.id == cardID);
+                    const card = await window.electronAPI.decryptCard(encryptedCard);
+                    if (card.success) {
+                        userView.textContent = card.data.user;
+                        passView.textContent = card.data.password;
+                        // 🔥 Copiamos al portapapeles
+                        navigator.clipboard.writeText(card.data.password).then(() => {
+                            // Mostrar una notificación visual
+                            showToast(translations['copied']);
+                        }).catch(err => {
+                            console.error(err);
+                            showToast(translations['copied-error']);
+                        });
+                    } else {
+                        showToast(card.message);
+                    }
+                }
+                else {
+                    userView.textContent = mask;
+                    passView.textContent = mask;
                 }
             }
-            else {
-                userView.textContent = mask;
-                passView.textContent = mask;
+            else if (mode === 'notes') {
+                // Obtener el ID de la nota y del contenido
+                const noteID = buttonPressed.getAttribute('data-noteID');
+                const contentID = buttonPressed.getAttribute('data-contentID');
+                const contentView = document.getElementById(contentID);
+
+                // Cambiar el texto del contenido al hacer clic en el botón
+                if (contentView.textContent === mask) {
+                    const encryptedNote = actualEncryptedElements.find(note => note.id == noteID);
+                    const note = await window.electronAPI.decryptNote(encryptedNote);
+                    if (note.success) {
+                        contentView.textContent = note.data.content;
+                    } else {
+                        showToast(note.message);
+                    }
+                }
+                else {
+                    contentView.textContent = mask;
+                    contentView.textContent = mask;
+                }
             }
         }
     });
@@ -468,7 +484,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (elementPressed.checked) {
             deselectAllElements(); // Deseleccionar todos los elementos
             selectedElementID = elementPressed.value;
-            encryptedSelectedElement = encryptedCards.find(card => card.id == selectedElementID);
+            encryptedSelectedElement = actualEncryptedElements.find(element => element.id == selectedElementID);
             const elementBody = document.getElementById(selectedElementID);
 
             // Establecer el color personalizado como una variable CSS
@@ -519,8 +535,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Acciones iniciales ========================================================================
     await applySettings();
-    encryptedCards = await getAllCards(); // Obtener todas las tarjetas y almacenarlas en la variable local
-    encryptedNotes = await getAllNotes(); // Obtener todas las notas y almacenarlas en la variable local
     showKeysView(); // Mostrar la vista de inicio
     createSettingsPage(); // Crear la página de configuración
 });

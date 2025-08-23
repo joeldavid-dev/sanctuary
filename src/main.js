@@ -78,7 +78,7 @@ app.whenReady().then(async () => {
 
     // Comprobar si hay actualizaciones disponibles
     autoUpdater.checkForUpdatesAndNotify().catch(err => {
-        printDebug('Error al comprobar actualizaciones: ' + err);
+        printDebug('Error al comprobar actualizaciones:', err);
     });
 });
 
@@ -165,7 +165,7 @@ function loadTranslations() {
         translations = JSON.parse(raw);
         mainTranslations = translations["main"];
     } catch (err) {
-        printDebug('Error al cargar traduccion: ' + err);
+        printDebug('Error al cargar traduccion: ', err);
     }
 };
 
@@ -236,7 +236,7 @@ ipcMain.handle('get-json-file', async () => {
             };
         }
     } catch (error) {
-        console.error('Error al leer el archivo JSON:', error);
+        printDebug('Error al leer el archivo JSON:', error);
         return {
             success: false,
             message: mainTranslations['json-dialog-error'],
@@ -295,6 +295,7 @@ ipcMain.handle('createID', async (event, name, password, gender) => {
     }
     // Hay errores
     catch (error) {
+        printDebug('Error al crear el usuario:', error);
         return {
             success: false,
             message: mainTranslations['createID-error'],
@@ -314,6 +315,7 @@ ipcMain.handle('get-user-status', async () => {
         } else return false;
     }
     catch (error) {
+        printDebug('Error al obtener el usuario:', error);
         return false;
     }
 });
@@ -351,6 +353,7 @@ ipcMain.handle('create-card', async (event, newCard) => {
             data: result,
         };
     } catch (error) {
+        printDebug('Error al crear la tarjeta:', error);
         return {
             success: false,
             message: mainTranslations['create-card-error'],
@@ -372,6 +375,7 @@ ipcMain.handle('update-card', async (event, id, updatedCard) => {
             data: result,
         };
     } catch (error) {
+        printDebug('Error al actualizar la tarjeta:', error);
         return {
             success: false,
             message: mainTranslations['update-card-error'],
@@ -390,6 +394,7 @@ ipcMain.handle('decrypt-card', async (event, encryptedCard) => {
             data: decryptedCard,
         };
     } catch (error) {
+        printDebug('Error al desencriptar la tarjeta:', error);
         return {
             success: false,
             message: mainTranslations['decrypt-card-error'],
@@ -409,6 +414,7 @@ ipcMain.handle('delete-card', async (event, id) => {
             };
         }
     } catch (error) {
+        printDebug('Error al eliminar la tarjeta:', error);
         return {
             success: false,
             message: mainTranslations['delete-card-error'],
@@ -423,6 +429,7 @@ ipcMain.handle('get-all-cards', async () => {
         const encryptedCards = await db.getAllCards();
         return { success: true, data: encryptedCards };
     } catch (error) {
+        printDebug('Error al obtener todas las tarjetas:', error);
         return { success: false, error: error.message };
     }
 });
@@ -439,6 +446,7 @@ ipcMain.handle('create-note', async (event, newNote) => {
             data: result,
         };
     } catch (error) {
+        printDebug('Error al crear la nota:', error);
         return {
             success: false,
             message: mainTranslations['create-note-error'],
@@ -460,6 +468,7 @@ ipcMain.handle('update-note', async (event, id, updatedNote) => {
             data: result,
         };
     } catch (error) {
+        printDebug('Error al actualizar la nota:', error);
         return {
             success: false,
             message: mainTranslations['update-note-error'],
@@ -478,6 +487,7 @@ ipcMain.handle('decrypt-note', async (event, encryptedNote) => {
             data: decryptedNote,
         };
     } catch (error) {
+        printDebug('Error al desencriptar la nota:', error);
         return {
             success: false,
             message: mainTranslations['decrypt-note-error'],
@@ -497,6 +507,7 @@ ipcMain.handle('delete-note', async (event, id) => {
             };
         }
     } catch (error) {
+        printDebug('Error al eliminar la nota:', error);
         return {
             success: false,
             message: mainTranslations['delete-note-error'],
@@ -511,6 +522,7 @@ ipcMain.handle('get-all-notes', async () => {
         const encryptedNotes = await db.getAllNotes();
         return { success: true, data: encryptedNotes };
     } catch (error) {
+        printDebug('Error al obtener todas las notas:', error);
         return { success: false, error: error.message };
     }
 });
@@ -530,10 +542,10 @@ ipcMain.handle('import-data', async (event, key) => {
             );
             // Todo salío bien
             superUser = result;
-            printDebug('Usuario creado correctamente');
+            printDebug('Usuario importado correctamente');
         }
         catch (error) {
-            console.error('Error al importar el usuario:', error);
+            printDebug('Error al importar el usuario:', error);
             return {
                 success: false,
                 message: mainTranslations['import-data-error'],
@@ -545,12 +557,13 @@ ipcMain.handle('import-data', async (event, key) => {
         // garantizar el orden original
         printDebug('Adaptando e importando tarjetas desde Sanctuary 4.2...');
         for (const oldCard of oldData.cards) {
-            printDebug('\nAdaptando tarjeta:' + oldCard.name);
+            printDebug('Adaptando tarjeta:' + oldCard.name);
             const adaptedCard = oldCr.adaptOldCard(key, oldCard);
             try {
                 const encryptedCard = await cr.encryptCard(key, adaptedCard);
                 const result = await db.createCard(encryptedCard);
             } catch (error) {
+                printDebug('Error al importar la tarjeta:', error);
                 return {
                     success: false,
                     message: mainTranslations['import-card-error'],
@@ -605,7 +618,9 @@ ipcMain.handle('execute-command', async (event, command) => {
     }
 });
 
-
-function printDebug(info) {
-    if (globalConfig.debug) console.log('(main) >> ' + info);
+function printDebug(info, obj = null) {
+    if (globalConfig.debug) {
+        console.log(`(main) >> ${info}`);
+        if (obj) console.log(obj);
+    }
 }

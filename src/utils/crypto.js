@@ -118,7 +118,7 @@ async function decryptNote(masterKey, encryptedNote) {
 
     // Descifrado del contenido (si existe)
     let contentDecrypted = null;
-    if (encryptedNote.user !== null && encryptedNote.user !== '') {
+    if (encryptedNote.user !== null && encryptedNote.content !== null && encryptedNote.content !== '') {
         const decipherContent = crypto.createDecipheriv(algorithm, key, iv);
         contentDecrypted = decipherContent.update(encryptedNote.content, 'hex', 'utf8');
         contentDecrypted += decipherContent.final('utf8');

@@ -39,7 +39,8 @@
         "empty-fields": "No se pueden dejar campos vacíos.",
         "passwords-dont-match": "Las contraseñas no coinciden.",
         "wrong-password": "Contraseña incorrecta.",
-        "name-password-required": "Nombre y contraseña son obligatorios"
+        "name-password-required": "Nombre y contraseña son obligatorios",
+        "title-required": "El título es obligatorio"
     },
     "main": {
         "json-dialog-title": "Selecciona un archivo JSON",
@@ -121,15 +122,18 @@
         "url": "URL:",
         "url-placeholder": "https://ejemplo.com (opcional)",
         "color": "Color:",
-        "favorite": "Favorito:",
+        "favorite": "Favorito",
         "preview": "Vista previa:",
         "done": "Listo"
     },
     "delete": {
-        "title": "Eliminar Clave",
-        "message": "¿Realmente quieres eliminar la clave '{name}'? ¡Ten cuidado, esta acción es irreversible!",
+        "title-mode-key": "Eliminar Clave",
+        "message-mode-key": "¿Realmente quieres eliminar la clave '{name}'? ¡Ten cuidado, esta acción es irreversible!",
         "cancel": "Cancelar",
-        "delete-key": "Eliminar Clave"
+        "delete-key": "Eliminar Clave",
+        "title-mode-note": "Eliminar Nota",
+        "message-mode-note": "¿Realmente quieres eliminar la nota '{name}'? ¡Ten cuidado, esta acción es irreversible!",
+        "delete-note": "Eliminar nota"
     },
     "settings": {
         "edit-ID": "Edita los datos de tu ID",

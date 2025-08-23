@@ -53,13 +53,6 @@
                 </div>
 
                 <div class="vertical-flex centered">
-                    <button id="messages-btn" class="ico-btn">
-                        <img src="../assets/ico/feather/message-square.svg" class="normal-icon">
-                    </button>
-                    <label class="small-text hide-in-small" data-i18n="messages"></label>
-                </div>
-
-                <div class="vertical-flex centered">
                     <button id="user-btn" class="ico-btn">
                         <img src="../assets/ico/feather/user.svg " class="normal-icon">
                     </button>
@@ -98,10 +91,11 @@
                 </div>
             </div>
             <!-- Barra de opciones -->
-            <div id="options-bar" class="options-bar floating-container vertical-elem-area colored-blur scrolleable"></div>
+            <div id="options-bar" class="options-bar floating-container vertical-elem-area colored-blur scrolleable">
+            </div>
 
-            <div id="main-content" class="cards-container normal-padding">
-                <!-- Aquí se insertan las tarjetas creadas -->
+            <div id="main-content" class="elements-container normal-padding">
+                <!-- Aquí se insertan los elementos creados -->
             </div>
 
             <!-- bottonbar -->
@@ -130,7 +124,7 @@
 
             </div>
             <!-- Área de configuraciones -->
-            <div id="settings-area" class="cards-container normal-padding"></div>
+            <div id="settings-area" class="elements-container normal-padding"></div>
         </section>
 
         <!-- Modal -->
@@ -147,7 +141,7 @@
             </div>
         </div>
 
-        <!-- Modal para eliminar una tarjeta -->
+        <!-- Modal para eliminar un elemento -->
         <div id="modal-warning" class="modal blur">
             <div class="modal-content-warning scrolleable">
                 <div class="modal-header normal-padding">
