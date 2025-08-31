@@ -557,7 +557,7 @@ ipcMain.handle('import-data', async (event, key) => {
         // garantizar el orden original
         printDebug('Adaptando e importando tarjetas desde Sanctuary 4.2...');
         for (const oldCard of oldData.cards) {
-            printDebug('Adaptando tarjeta:' + oldCard.name);
+            printDebug('Adaptando tarjeta: ' + oldCard.name);
             const adaptedCard = oldCr.adaptOldCard(key, oldCard);
             try {
                 const encryptedCard = await cr.encryptCard(key, adaptedCard);

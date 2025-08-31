@@ -14,12 +14,13 @@
         "notification_btn": "Clic to read",
         "extra_info": "Codaby | Sanctuary 5 Eridani for Windows"
     },
-    "id-view": {
+    "id": {
         "title": "Sanctuary ID",
         "hello": "Hello",
         "welcome": "Welcome to Sanctuary! Let’s start by creating your ID.",
         "name": "First name:",
-        "password": "Password:",
+        "current-password": "Current Password:",
+        "new-password": "Password:",
         "confirm-password": "Confirm Password:",
         "gender": "Gender:",
         "gender-female": "Female",
@@ -31,16 +32,22 @@
         "welcome-back": "Welcome back, {name}!",
         "welcome-back-info": "Please enter your password to unlock your account and bring your data into the new version.",
         "success": "Success!",
-        "success-info": "Your ID was created successfully. You can now start using the app.",
-        "success-import-info": "Your data was imported successfully. You can now start using the app."
+        "id-created-success": "Your ID was created successfully. You can now start using the app.",
+        "import-success": "Your data was imported successfully. You can now start using the app.",
+        "edit-data-subtitle": "Edit ID",
+        "edit-data-info": "Update your ID information below.",
+        "edit-password-subtitle": "Change Password",
+        "edit-password-info": "Enter your current password and a new password below.",
+        "gender-help": "This information is only used to personalize how Sanctuary talks to you and to make your experience even better."
     },
     "warning": {
         "title": "Warning",
-        "empty-fields": "No fields can be left empty.",
-        "passwords-dont-match": "Passwords do not match.",
         "wrong-password": "Incorrect password.",
         "name-password-required": "Name and password are required",
-        "title-required": "Title is required"
+        "title-required": "Title is required",
+        "invalid-name": "Invalid name. It must be at least 3 characters long.",
+        "short-password": "Password is too short. It must be at least 6 characters long.",
+        "password-mismatch": "Passwords do not match."
     },
     "main": {
         "json-dialog-title": "Select a JSON file",
@@ -137,6 +144,7 @@
     },
     "settings": {
         "edit-ID": "Edit your ID information",
+        "edit-password": "Change your password",
         "export-keys": "Export all keys",
         "export-notes": "Export all notes",
         "delete-ID": "Delete your ID",

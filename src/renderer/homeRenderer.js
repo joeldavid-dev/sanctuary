@@ -4,6 +4,7 @@ import { createNoteElement } from './components/note.js'; // Importar el módulo
 import { showNewEditCardModal } from './components/modalNewEditCard.js'; // Importar el módulo de modal para agregar o editar tarjetas
 import { showNewEditNoteModal } from './components/modalNewEditNote.js'; // Importar el módulo de modal para agregar o editar notas
 import { showDeleteModal } from './components/modalDelete.js'; // Importar el módulo de modal para eliminar una tarjeta
+import { showIDModal } from './components/modalID.js';
 import { createSettingsPage } from './components/settingsPage.js';
 import { createOptionElement } from './components/commandOption.js';
 
@@ -49,6 +50,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const translations = await window.electronAPI.getTranslations('home-view');
     const cardTranslations = await window.electronAPI.getTranslations('card');
     const constants = await window.electronAPI.getConstants();
+
+    // Obtener información del superusuario
+    let superuser = await window.electronAPI.getUserInfo();
 
     // Carga los comandos disponibles
     const commands = await window.electronAPI.getCommands();
@@ -497,6 +501,26 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
+    // Página de configuraciones .................................................
+    settingsArea.addEventListener('click', async (event) => {
+        const buttonPressed = event.target.closest('button');
+        if (!buttonPressed) return; // Si no se hizo clic en un botón, salir
+
+        // Clic en botón editar ID
+        if (buttonPressed.id === 'edit-ID') {
+            confirm = await showIDModal('edit-data', superuser);
+        }
+        // Clic en botón cambiar contraseña
+        else if (buttonPressed.id === 'edit-password') {
+            confirm = await showIDModal('edit-password', superuser);
+        }
+        // Clic en botón exportar llaves
+        else if (buttonPressed.id === 'export-keys') {
+            confirm = await showIDModal('create', superuser);
+            createSettingsPage(superuser);
+        }
+    });
+
     // Función del toast notification ============================================================
     function showToast(message, error = false) {
         const container = document.getElementById('toast-container');
@@ -535,6 +559,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Acciones iniciales ========================================================================
     await applySettings();
-    showKeysView(); // Mostrar la vista de inicio
-    createSettingsPage(); // Crear la página de configuración
+    await showKeysView(); // Mostrar la vista de inicio
+    createSettingsPage(superuser); // Crear la página de configuración
 });

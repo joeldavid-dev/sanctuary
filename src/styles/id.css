@@ -7,26 +7,8 @@
     --y: calc(var(--posY, 0) * 1px);
     background-image:
         linear-gradient(115deg, rgb(124, 255, 135), black),
-        radial-gradient( 90% 100% at calc( 50% + var(--x)) calc( 0% + var(--y)), rgb(200 200 200), rgb(022 000 045)),
-        radial-gradient(100% 100% at calc( 80% - var(--x)) calc( 0% - var(--y)), rgb(17, 0, 255), rgb(214, 250, 255)), 
+        radial-gradient(90% 100% at calc(50% + var(--x)) calc(0% + var(--y)), rgb(200 200 200), rgb(022 000 045)),
+        radial-gradient(100% 100% at calc(80% - var(--x)) calc(0% - var(--y)), rgb(17, 0, 255), rgb(214, 250, 255)),
         linear-gradient(60deg, rgb(0, 204, 255), rgb(255, 0, 0));
     background-blend-mode: overlay, overlay, difference, difference, difference, normal;
-}
-
-.modal-content {
-    max-height: 100vh;
-    width: 320px; 
-}
-
-.custom-input {
-    height: 30px;
-}
-
-.action-btn {
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-.login-padding {
-    padding: 15px 30px 30px 30px;
 }

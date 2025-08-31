@@ -20,58 +20,17 @@
     <div class="animated-background"></div>
 
     <div class="colored-overlay">
-        <div class="modal-content scrolleable normal-rounded">
-            <div class="modal-header normal-padding colored-blur">
-                <h2 data-i18n="title"></h2>
-                <button id="close" class="ico-btn">
-                    <img src="../assets/ico/feather/x-circle.svg" class="normal-icon">
-                </button>
-            </div>
-
-            <div class="vertical-elem-area login-padding">
-                <h1 id="greeting" class="centered-text" data-i18n="hello"></h1>
-                <p id="instructions" class="centered-text small-text" data-i18n="welcome"></p>
-
-                <div id="name-container" class="vertical-elem-area">
-                    <label class="small-text" data-i18n="name"></label>
-                    <input id="user-name" class="custom-input minimal-rounded" type="text" required>
+        <!-- Modal -->
+        <div id="modal" class="modal blur">
+            <div id="modal-content" class="modal-content scrolleable">
+                <div class="modal-header normal-padding colored-blur">
+                    <h2 id="modal-title"></h2>
+                    <button id="close-modal" class="ico-btn">
+                        <img src="../assets/ico/feather/x-circle.svg" class="normal-icon">
+                    </button>
                 </div>
-
-                <div id="pass1-container" class="vertical-elem-area">
-                    <label class="small-text" data-i18n="password"></label>
-                    <input id="user-pass1" class="custom-input minimal-rounded" type="password" required>
-                </div>
-
-                <div id="pass2-container" class="vertical-elem-area">
-                    <label class="small-text" data-i18n="confirm-password"></label>
-                    <input id="user-pass2" class="custom-input minimal-rounded" type="password" required>
-                </div>
-
-                <div id="gender-container" class="vertical-elem-area">
-                    <label class="small-text" data-i18n="gender"></label>
-                    <div class="horizontal-elem-area distributed">
-                        <label class="custom-radio minimal-rounded minimal-padding horizontal-elem-area">
-                            <p class="small-text" data-i18n="gender-male"></p>
-                            <input id="gender1" type="radio" name="gender" value="male">
-                            <div class="radio-ico"></div>
-                        </label>
-
-                        <label class="custom-radio minimal-rounded minimal-padding horizontal-elem-area">
-                            <p class="small-text" data-i18n="gender-female"></p>
-                            <input id="gender2" type="radio" name="gender" value="female">
-                            <div class="radio-ico"></div>
-                        </label>
-
-                        <label class="custom-radio minimal-rounded minimal-padding horizontal-elem-area">
-                            <p class="small-text" data-i18n="gender-other"></p>
-                            <input id="gender3" type="radio" name="gender" value="neutral">
-                            <div class="radio-ico"></div>
-                        </label>
-                    </div>
-                </div>
-
-                <button id="done-btn" class="action-btn minimal-rounded narrow-padding" data-i18n="done"></button>
-                <button id="import-btn" class="option-btn minimal-rounded small-text" data-i18n="import-data"></button>
+                <!-- Contenido del modal -->
+                <div id="modal-body"></div>
             </div>
         </div>
     </div>

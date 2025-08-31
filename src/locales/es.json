@@ -14,12 +14,13 @@
         "notification_btn": "Clic para leer",
         "extra_info": "Codaby | Sanctuary 5 Eridani para Windows"
     },
-    "id-view": {
+    "id": {
         "title": "Sanctuary ID",
         "hello": "Hola",
         "welcome": "¡Gracias por usar Sanctuary! Empecemos por crear tu ID.",
         "name": "Nombre:",
-        "password": "Contraseña:",
+        "current-password": "Contraseña actual:",
+        "new-password": "Contraseña:",
         "confirm-password": "Repetir contraseña:",
         "gender": "Genero:",
         "gender-female": "Femenino",
@@ -31,16 +32,22 @@
         "welcome-back": "¡Hola de nuevo, {name}!",
         "welcome-back-info": "Por favor ingresa tu contraseña para desbloquear tu cuenta e importar tus datos a la nueva versión.",
         "success": "¡Hecho!",
-        "success-info": "Tu ID fue creado exitosamente. Ya puedes usar la aplicación.",
-        "success-import-info": "Tus datos han sido importados exitosamente. Ya puedes usar la aplicación."
+        "id-created-success": "Tu ID fue creado exitosamente. Ya puedes usar la aplicación.",
+        "import-success": "Tus datos han sido importados exitosamente. Ya puedes usar la aplicación.",
+        "edit-data-subtitle": "Editar ID",
+        "edit-data-info": "Actualiza la información de tu ID a continuación.",
+        "edit-password-subtitle": "Cambiar Contraseña",
+        "edit-password-info": "Ingresa tu contraseña actual y una nueva contraseña a continuación.",
+        "gender-help": "Esta información solo se usa para personalizar cómo Sanctuary se comunica contigo y hacer tu experiencia aún mejor."
     },
     "warning": {
         "title": "Advertencia",
-        "empty-fields": "No se pueden dejar campos vacíos.",
-        "passwords-dont-match": "Las contraseñas no coinciden.",
         "wrong-password": "Contraseña incorrecta.",
         "name-password-required": "Nombre y contraseña son obligatorios",
-        "title-required": "El título es obligatorio"
+        "title-required": "El título es obligatorio",
+        "invalid-name": "Nombre inválido. Debe tener al menos 3 caracteres.",
+        "short-password": "La contraseña es muy corta. Debe tener al menos 6 caracteres.",
+        "password-mismatch": "Las contraseñas no coinciden."
     },
     "main": {
         "json-dialog-title": "Selecciona un archivo JSON",
@@ -137,6 +144,7 @@
     },
     "settings": {
         "edit-ID": "Edita los datos de tu ID",
+        "edit-password": "Cambiar tu contraseña",
         "export-keys": "Exportar todas las claves",
         "export-notes": "Exportar todas las notas",
         "delete-ID": "Eliminar ID",

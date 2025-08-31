@@ -91,6 +91,7 @@ body::-webkit-scrollbar {
 
     /* Valores de margen y padding */
     --maximal-margin: 60px;
+    --big-margin: 30px;
     --normal-margin: 15px;
     --narrow-margin: 10px;
     --minimal-margin: 5px;
@@ -315,7 +316,7 @@ p {
 }
 
 .big-spaced {
-    gap: 30px;
+    gap: var(--big-margin);
 }
 
 .minimal-spaced {
@@ -475,6 +476,7 @@ p {
     border: solid 1px;
     color: var(--neutral_grey);
     cursor: not-allowed;
+    animation: pulse 4s infinite;
 }
 
 .action-btn-warning {
@@ -648,6 +650,7 @@ No tiene borde, al pasar el mouse por encima solo aparece el borde. */
     border: 1px solid var(--neutral_grey);
     /* oculta el borde de seleccion por defecto */
     outline: none;
+    height: 30px;
 }
 
 .custom-input:focus {
@@ -690,11 +693,23 @@ No tiene borde, al pasar el mouse por encima solo aparece el borde. */
     border: solid 1px white;
 }
 
-.large-circular-icon {
+.elements-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--normal-margin);
+}
+
+.profile-pic-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: inter;
+    font-size: 36px;
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    border: solid 4px var(--neutral_grey);
+    background-color: var(--app_contrast_light);
 }
 
 .normal-icon {
@@ -836,6 +851,8 @@ input:checked+.slider::before {
     border: 1px solid var(--neutral_grey);
     box-shadow: 0px 0px 60px 8px rgba(0, 0, 0, 0.20);
     border-radius: var(--maximal-radius);
+    max-height: 100vh;
+    max-width: 100vw;
 }
 
 .modal-content-warning {
@@ -924,6 +941,10 @@ input:checked+.slider::before {
     padding: var(--narrow-margin) var(--maximal-margin);
 }
 
+.login-padding {
+    padding: var(--normal-margin) var(--big-margin) var(--big-margin) var(--big-margin);
+}
+
 .transparent-input {
     font-family: jetBrains_mono;
     background: transparent;
@@ -971,6 +992,7 @@ input:checked+.slider::before {
     animation: slideIn 0.3s ease forwards, fadeOut 0.3s ease 4.7s forwards;
 }
 
+/* Animaciones */
 @keyframes slideIn {
     to {
         opacity: 1;
@@ -984,6 +1006,33 @@ input:checked+.slider::before {
         transform: translateX(100%);
     }
 }
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(58, 195, 205, 0.5);
+    }
+
+    35% {
+        box-shadow: 0 0 0 10px rgba(0, 150, 255, 0);
+    }
+
+    50% {
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+    }
+
+    51% {
+        box-shadow: 0 0 0 0 rgba(230, 110, 80, 0.5);
+    }
+
+    85% {
+        box-shadow: 0 0 0 10px rgba(0, 150, 255, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 150, 255, 0);
+    }
+}
+
 
 /* Estilos específicos para modo oscuro */
 @media (prefers-color-scheme: dark) {
@@ -1120,5 +1169,9 @@ input:checked+.slider::before {
     .toast {
         background-color: var(--app_light);
         color: var(--app_dark);
+    }
+
+    .profile-pic-container {
+        background-color: var(--app_contrast_dark);
     }
 }
