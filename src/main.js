@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain, shell, dialog, Notification } = require('electron');
 const { autoUpdater } = require('electron-updater');
+const { Worker } = require("worker_threads");
 const path = require('node:path');
 const cr = require('./utils/crypto.js');
 const db = require('./utils/database.js');
@@ -347,10 +348,11 @@ ipcMain.handle('create-card', async (event, newCard) => {
         // Encriptar los datos de la tarjeta
         const encryptedCard = await cr.encryptCard(masterKey, newCard);
         const result = await db.createCard(encryptedCard);
+        const preparedCard = await cr.prepareCard(masterKey, result);
         return {
             success: true,
             message: mainTranslations['create-card-success'],
-            data: result,
+            data: preparedCard,
         };
     } catch (error) {
         printDebug('Error al crear la tarjeta:', error);
@@ -367,12 +369,12 @@ ipcMain.handle('update-card', async (event, id, updatedCard) => {
     try {
         // Encriptar los datos de la tarjeta actualizada
         const encryptedCard = await cr.encryptCard(masterKey, updatedCard);
-        printDebug('Tarjeta a actualizar encriptada: ' + encryptedCard.name);
         const result = await db.updateCard(id, encryptedCard);
+        const preparedCard = await cr.prepareCard(masterKey, result);
         return {
             success: true,
             message: mainTranslations['update-card-success'],
-            data: result,
+            data: preparedCard,
         };
     } catch (error) {
         printDebug('Error al actualizar la tarjeta:', error);
@@ -385,9 +387,9 @@ ipcMain.handle('update-card', async (event, id, updatedCard) => {
 });
 
 // Desencriptar una tarjeta
-ipcMain.handle('decrypt-card', async (event, encryptedCard) => {
+ipcMain.handle('decrypt-prepared-card', async (event, encryptedCard) => {
     try {
-        const decryptedCard = await cr.decryptCard(masterKey, encryptedCard);
+        const decryptedCard = await cr.decryptPreparedCard(masterKey, encryptedCard);
         return {
             success: true,
             message: mainTranslations['decrypt-card-success'],
@@ -423,11 +425,30 @@ ipcMain.handle('delete-card', async (event, id) => {
     }
 });
 
-// Obtener todas las tarjetas de la base de datos
-ipcMain.handle('get-all-cards', async () => {
+// Función para preparar (desencriptar nombre y web) varias tarjetas usando un worker
+function prepareCards(encryptedCards, masterKey) {
+    return new Promise((resolve, reject) => {
+        const worker = new Worker(path.join(__dirname, "workers", "prepareCards-worker.js"),
+            { workerData: { encryptedCards, masterKey } });
+
+        worker.on("message", (result) => {
+            resolve(result);
+            worker.terminate();
+        });
+        worker.on("error", reject);
+        worker.on("exit", (code) => {
+            if (code !== 0) reject(new Error(`Worker stopped with exit code ${code}`));
+        });
+    });
+}
+
+// Obtener todas las tarjetas de la base de datos y las prepara (desencripta nombre y web)
+ipcMain.handle('get-prepared-cards', async () => {
     try {
         const encryptedCards = await db.getAllCards();
-        return { success: true, data: encryptedCards };
+        // Preparar las tarjetas (desencriptar nombre y web) usando un worker
+        const preparedCards = await prepareCards(encryptedCards, masterKey);
+        return { success: true, data: preparedCards };
     } catch (error) {
         printDebug('Error al obtener todas las tarjetas:', error);
         return { success: false, error: error.message };
@@ -517,7 +538,7 @@ ipcMain.handle('delete-note', async (event, id) => {
 });
 
 // Obtener todas las notas de la base de datos
-ipcMain.handle('get-all-notes', async () => {
+ipcMain.handle('get-prepared-notes', async () => {
     try {
         const encryptedNotes = await db.getAllNotes();
         return { success: true, data: encryptedNotes };

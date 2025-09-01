@@ -428,6 +428,7 @@ p {
     border: solid 2px;
     border-color: white;
     box-shadow: 0px 0px 50px 0px var(--element-color, #000000);
+    animation: glow 2s infinite;
 }
 
 /* Vista previa de notas */
@@ -839,7 +840,6 @@ input:checked+.slider::before {
     left: 0;
     width: 100%;
     height: 100%;
-    -webkit-app-region: no-drag;
 }
 
 .modal-content {
@@ -877,6 +877,13 @@ input:checked+.slider::before {
     /* Alinea verticalmente */
     align-items: center;
     -webkit-app-region: drag;
+}
+
+.placeholder-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .scrolleable {
@@ -992,6 +999,16 @@ input:checked+.slider::before {
     animation: slideIn 0.3s ease forwards, fadeOut 0.3s ease 4.7s forwards;
 }
 
+.spinner {
+  width: 30px;
+  height: 30px;
+  border: 4px solid #ccc;
+  border-top-color: #333;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
 /* Animaciones */
 @keyframes slideIn {
     to {
@@ -1033,6 +1050,23 @@ input:checked+.slider::before {
     }
 }
 
+@keyframes glow {
+    0% {
+        box-shadow: 0px 0px 30px 0px var(--element-color, #000000);
+    }
+
+    50% {
+        box-shadow: 0px 0px 50px 0px var(--element-color, #000000);
+    }
+
+    100% {
+        box-shadow: 0px 0px 30px 0px var(--element-color, #000000);
+    }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
 
 /* Estilos específicos para modo oscuro */
 @media (prefers-color-scheme: dark) {

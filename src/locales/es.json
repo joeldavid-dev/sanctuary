@@ -103,7 +103,8 @@
         "command-mode": "Modo comandos",
         "no-commands": "Ningún comando coincide",
         "exe-command": "Ejecutando comando",
-        "empty-command": "No se ingresó ningún comando"
+        "empty-command": "No se ingresó ningún comando",
+        "placeholder-loading": "Desbloqueando tus claves y notas…"
     },
     "card": {
         "user": "Usuario:",

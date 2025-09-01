@@ -103,7 +103,8 @@
         "command-mode": "Command Mode",
         "no-commands": "No command matches",
         "exe-command": "Executing command",
-        "empty-command": "No command entered"
+        "empty-command": "No command entered",
+        "placeholder-loading": "Unlocking your keys and notes…"
     },
     "card": {
         "user": "User:",

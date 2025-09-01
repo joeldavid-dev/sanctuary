@@ -38,13 +38,17 @@ const newElement = document.getElementById('new-element');
 const deleteElement = document.getElementById('delete-element');
 const deleteElementBody = document.getElementById('delete-element-body');
 
+const placeholder = document.getElementById('placeholder');
+
 // Variable para controlar el modo actual de la vista (llaves, notas o configuración)
 let mode = 'keys'; // keys || notes
 let searchMode = 'none'; // Variable para controlar el modo de búsqueda
 
-let encryptedSelectedElement = null; // Variable para almacenar el elemento seleccionado
+let selectedPreparedElement = null; // Variable para almacenar el elemento seleccionado
 let selectedElementID = null; // Variable para almacenar el ID del elemento seleccionada
-let actualEncryptedElements = []; // Lista que almacena los elementos mostrados en la vista
+let actualPreparedElements = []; // Lista que almacena los elementos mostrados en la vista
+let preparedCards = []; // Lista que almacena las tarjetas preparadas (nombre y web desencriptados)
+let preparedNotes = []; // Lista que almacena las notas preparadas (contenido desencriptado)
 
 document.addEventListener("DOMContentLoaded", async () => {
     const translations = await window.electronAPI.getTranslations('home-view');
@@ -71,23 +75,23 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Funciones del contenedor principal ====================================================
     // Traer los datos al iniciar la vista
-    async function getAllCards() {
-        const result = await window.electronAPI.getAllCards();
+    async function getPreparedCards() {
+        const result = await window.electronAPI.getPreparedCards();
         if (result.success) {
-            return result.data; // Retornar las tarjetas encriptadas
+            preparedCards = result.data; // Actualizar la lista de tarjetas preparadas
         } else {
             showToast(result.message, true);
-            return []; // Retornar una lista vacía si falla
+            preparedCards = []; // Lista vacía si falla
         }
     }
 
-    async function getAllNotes() {
-        const result = await window.electronAPI.getAllNotes();
+    async function getPreparedNotes() {
+        const result = await window.electronAPI.getPreparedNotes();
         if (result.success) {
-            return result.data; // Retornar las notas encriptadas
+            preparedNotes = result.data; // Actualizar la lista de notas preparadas
         } else {
             showToast(result.message, true);
-            return []; // Retornar una lista vacía si falla
+            preparedNotes = []; // Lista vacía si falla
         }
     }
 
@@ -95,7 +99,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Limpiar el contenedor de elementos antes de agregar nuevos
         mainContent.innerHTML = '';
         deselectAllElements(); // Deseleccionar todos los elementos
-        if (content.length > 0) {
+        //console.log('prepared cards: ', preparedCards);
+        //console.log('prepared notes: ', preparedNotes);
+        //console.log('actual elements: ', actualPreparedElements);
+        if (content && content.length > 0) {
             // Crear y agregar cada elemento al contenedor
             if (mode === 'keys') {
                 content.forEach((element, index) => {
@@ -153,7 +160,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         deleteElementBody.classList.remove('vertical-flex');
 
         selectedElementID = null;
-        encryptedSelectedElement = null;
+        selectedPreparedElement = null;
 
         // Deseleccionar todos los radio
         document.querySelectorAll('input[type="radio"][name="mainElement"]').forEach((radio) => {
@@ -169,11 +176,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // Funciones de estado de la vista ============================================================
-    async function showKeysView() {
+    function showPlaceholderSpinner() {
+        bottonBar.style.display = 'none'; // Ocultar la barra de botones
+        placeholder.style.display = 'flex'; // Mostrar el spinner de carga
+    }
+
+    function hidePlaceholderSpinner() {
+        placeholder.style.display = 'none'; // Ocultar el spinner de carga
+        bottonBar.style.display = 'flex'; // Mostrar la barra de botones
+    }
+
+    function showKeysView() {
         mode = 'keys'; // Cambiar el modo a llaves
-        actualEncryptedElements = await getAllCards(); // Obtener todas las tarjetas y almacenarlas en la lista de elementos mostrados
-        console.log(actualEncryptedElements);
-        showContent(actualEncryptedElements); // Mostrar las tarjetas en la vista
+        actualPreparedElements = preparedCards; // Obtener todas las tarjetas y almacenarlas en la lista de elementos mostrados
+        showContent(actualPreparedElements); // Mostrar las tarjetas en la vista
         title.textContent = translations['my-keys']; // Cambiar el título de la vista
         searchArea.style.display = 'flex'; // Mostrar la barra de búsqueda en la vista de llaves
         bottonBar.style.display = 'flex'; // Mostrar la barra de botones en la vista de llaves
@@ -184,9 +200,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     async function showNotesView() {
         mode = 'notes'; // Cambiar el modo a notas
-        actualEncryptedElements = await getAllNotes(); // Obtener todas las notas y almacenarlas en la lista de elementos mostrados
-        console.log(actualEncryptedElements);
-        showContent(actualEncryptedElements); // Mostrar las notas en la vista
+        actualPreparedElements = preparedNotes; // Obtener todas las notas y almacenarlas en la lista de elementos mostrados
+        showContent(actualPreparedElements); // Mostrar las notas en la vista
         title.textContent = translations['my-notes']; // Cambiar el título de la vista
         searchArea.style.display = 'flex'; // Mostrar la barra de búsqueda en la vista de notas
         bottonBar.style.display = 'flex'; // Mostrar la barra de botones en la vista de notas
@@ -235,12 +250,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
             else {
                 optionsBar.style.display = 'none'; // Ocultar la barra de opciones
-                const filteredElements = actualEncryptedElements.filter(element => element.name.toLowerCase().includes(searchTerm));
+                const filteredElements = actualPreparedElements.filter(element => element.name.toLowerCase().includes(searchTerm));
                 showContent(filteredElements);
                 searchMode = 'searching'; // Cambiar el modo de búsqueda a "buscando"
             }
         } else {
-            showContent(actualEncryptedElements); // Mostrar todos los elementos si no hay término de búsqueda
+            showContent(actualPreparedElements); // Mostrar todos los elementos si no hay término de búsqueda
             searchMode = 'none'; // Cambiar el modo de búsqueda a "ninguno"
             document.getElementById('search-clear-ico').src = '../assets/ico/feather/search.svg'; // Cambiar el icono de búsqueda a "lupa"
         }
@@ -274,7 +289,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (searchMode !== 'none') {
             search.value = ''; // Limpiar el campo de búsqueda
             optionsBar.style.display = 'none'; // Ocultar la barra de opciones
-            showContent(actualEncryptedElements); // Mostrar todos los elementos
+            showContent(actualPreparedElements); // Mostrar todos los elementos
             searchMode = 'none'; // Cambiar el modo de búsqueda a "ninguno"
             document.getElementById('search-clear-ico').src = '../assets/ico/feather/search.svg'; // Cambiar el icono de búsqueda a "lupa"
         }
@@ -285,7 +300,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         clearSearch();
     });
 
-    //Funciones de los botones de la butonbar ====================================================
+    //Funciones de los botones de la bottonbar ====================================================
     // Clic en el botón para crar un nuevo elemento
     newElement.addEventListener('click', async () => {
         let confirm;
@@ -299,21 +314,21 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         if (confirm.success) {
-            actualEncryptedElements.push(confirm.generated);
-            showContent(actualEncryptedElements); // Mostrar los elementos actualizados en la vista
+            actualPreparedElements.push(confirm.generated);
+            showContent(actualPreparedElements); // Mostrar los elementos actualizados en la vista
         }
         if (confirm.message) showToast(confirm.message);
     });
 
     // Clic en el botón para editar un elemento seleccionado
     editElement.addEventListener('click', async () => {
-        if (encryptedSelectedElement) {
+        if (selectedPreparedElement) {
             let selectedElement;
             if (mode === 'keys') {
-                selectedElement = await window.electronAPI.decryptCard(encryptedSelectedElement);
+                selectedElement = await window.electronAPI.decryptPreparedCard(selectedPreparedElement);
             }
             else if (mode === 'notes') {
-                selectedElement = await window.electronAPI.decryptNote(encryptedSelectedElement);
+                selectedElement = await window.electronAPI.decryptNote(selectedPreparedElement);
             }
 
             // Si el elemento se descifró correctamente, mostrar el modal de edición
@@ -326,10 +341,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
 
                 if (confirm.success) {
-                    const actualIndex = actualEncryptedElements.findIndex(element => element.id == selectedElement.data.id);
-                    // Actualizar el elemento en la lista de elementos encriptados que se está mostrando
-                    actualEncryptedElements[actualIndex] = confirm.edited;
-                    showContent(actualEncryptedElements);
+                    const actualIndex = actualPreparedElements.findIndex(element => element.id == selectedElement.data.id);
+                    // Actualizar el elemento en la lista de elementos preparados que se está mostrando
+                    actualPreparedElements[actualIndex] = confirm.edited;
+                    showContent(actualPreparedElements);
                 }
                 if (confirm.message) showToast(confirm.message);
             } else {
@@ -340,14 +355,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Clic en el botón para eliminar el elemento seleccionado
     deleteElement.addEventListener('click', async () => {
-        if (encryptedSelectedElement) {
-            const confirm = await showDeleteModal(encryptedSelectedElement, mode);
+        if (selectedPreparedElement) {
+            const confirm = await showDeleteModal(selectedPreparedElement, mode);
             if (confirm.success) {
                 // Eliminar el elemento de la lista de elementos mostrados
-                const actualIndex = actualEncryptedElements.findIndex(element => element.id == encryptedSelectedElement.id);
-                actualEncryptedElements.splice(actualIndex, 1);
+                const actualIndex = actualPreparedElements.findIndex(element => element.id == selectedPreparedElement.id);
+                actualPreparedElements.splice(actualIndex, 1);
 
-                showContent(actualEncryptedElements); // Mostrar los elementos actualizados en la vista
+                showContent(actualPreparedElements); // Mostrar los elementos actualizados en la vista
             }
             if (confirm.message) showToast(confirm.message);
         }
@@ -433,8 +448,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 // Cambiar el texto del usuario y la contraseña al hacer clic en el botón
                 if (passView.textContent === mask) {
-                    const encryptedCard = actualEncryptedElements.find(card => card.id == cardID);
-                    const card = await window.electronAPI.decryptCard(encryptedCard);
+                    const preparedCard = actualPreparedElements.find(card => card.id == cardID);
+                    const card = await window.electronAPI.decryptPreparedCard(preparedCard);
                     if (card.success) {
                         userView.textContent = card.data.user;
                         passView.textContent = card.data.password;
@@ -463,8 +478,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 // Cambiar el texto del contenido al hacer clic en el botón
                 if (contentView.textContent === mask) {
-                    const encryptedNote = actualEncryptedElements.find(note => note.id == noteID);
-                    const note = await window.electronAPI.decryptNote(encryptedNote);
+                    const preparedNote = actualPreparedElements.find(note => note.id == noteID);
+                    const note = await window.electronAPI.decryptNote(preparedNote);
                     if (note.success) {
                         contentView.textContent = note.data.content;
                     } else {
@@ -488,7 +503,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (elementPressed.checked) {
             deselectAllElements(); // Deseleccionar todos los elementos
             selectedElementID = elementPressed.value;
-            encryptedSelectedElement = actualEncryptedElements.find(element => element.id == selectedElementID);
+            selectedPreparedElement = actualPreparedElements.find(element => element.id == selectedElementID);
             const elementBody = document.getElementById(selectedElementID);
 
             // Establecer el color personalizado como una variable CSS
@@ -559,6 +574,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Acciones iniciales ========================================================================
     await applySettings();
-    await showKeysView(); // Mostrar la vista de inicio
+    showPlaceholderSpinner(); // Mostrar spinner de carga
+    await getPreparedCards(); // Cargar las tarjetas preparadas
+    await getPreparedNotes(); // Cargar las notas preparadas
+    hidePlaceholderSpinner(); // Ocultar spinner de carga
+    showKeysView(); // Mostrar la vista de inicio
     createSettingsPage(superuser); // Crear la página de configuración
 });

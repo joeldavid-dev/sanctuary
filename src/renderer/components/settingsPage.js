@@ -10,7 +10,7 @@ export async function createSettingsPage(superuser) {
     const settingsArea = document.getElementById('settings-area');
     // Insertar el esqueleto HTML
     settingsArea.innerHTML = getSettingsHTML(translations, superuser);
-    // Elementos HTML insertados en el esqueleto
+    settingsArea.style.display = 'none'; // Oculto al inicio
 };
 
 function getSettingsHTML(translations, superuser) {
