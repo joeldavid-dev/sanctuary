@@ -17,13 +17,9 @@ if (!isPackaged) {
     dbPath = path.join(app.getPath('userData'), globalConfig.dbPath);
 }
 
-printDebug('Ruta de la base de datos: ' + dbPath);
-
 const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
-        printDebug('Error al conectar con SQLite: ' + err.message);
-    } else {
-        printDebug('Conectado a la base de datos SQLite');
+        return console.error(err.message);
     }
 });
 
@@ -248,10 +244,6 @@ function getAllNotes() {
             }
         });
     });
-}
-
-function printDebug(info) {
-    if (globalConfig.debug) console.log(`(database) >> ${info}`);
 }
 
 module.exports = { addUser, getUser, createCard, deleteCard, updateCard, getAllCards, createNote, deleteNote, updateNote, getAllNotes };

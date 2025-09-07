@@ -18,42 +18,33 @@ if (!isPackaged) {
     settingsPath = path.join(app.getPath('userData'), globalConfig.settingsPath);
 }
 
-printDebug("Ruta del archivo de configuracion: " + settingsPath);
-
 // Guardar datos en un archivo JSON
 function writeSettings(data) {
     try {
-        printDebug("configuracion guardada:", data);
         fs.writeFileSync(settingsPath, JSON.stringify(data, null, 2));
-        return true;
-    } catch (error) {
-        printDebug("Error al guardar la configuracion:", error);
-        return false;
+        return { success: true };
+    }
+    catch (err) {
+        return {
+            success: false,
+            error: err.message
+        };
     }
 }
 
 // Leer datos de un archivo JSON
 function readSettings() {
+    // Si no existe el archivo, lo creamos con un objeto vacío
     if (!fs.existsSync(settingsPath)) {
-        printDebug("No se encontro el archivo de configuracion. Se inicializa archivo JSON vacio.");
-        saveSettings({});
-        return {};
+        return { success: true, data: {} };
     }
 
     try {
         const settings = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
-        printDebug("Configuraciones obtenidas:", settings);
-        return settings;
-    } catch (err) {
-        printDebug("Error al leer el archivo de configuracion:", err);
-        return {};
-    }
-}
+        return { success: true, data: settings };
 
-function printDebug(info, obj = null) {
-    if (globalConfig.debug) {
-        console.log(`(saveSettings) >> ${info}`);
-        if (obj) console.log(obj);
+    } catch (err) {
+        return { success: false, error: err.message };
     }
 }
 

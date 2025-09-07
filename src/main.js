@@ -16,6 +16,7 @@ const globalConfig = JSON.parse(fs.readFileSync(globalConfigPath, 'utf8'));
 // Constantes
 const constantsPath = path.join(__dirname, 'config', 'constants.json');
 const constants = JSON.parse(fs.readFileSync(constantsPath, 'utf-8'));
+const showDevTools = (app.isPackaged) ? false : true;
 
 // Configuraciones por defecto
 const defaultSettingsPath = path.join(__dirname, 'config', 'defaultSettings.json');
@@ -26,10 +27,19 @@ let mainWindow, superUser, masterKey, oldData;
 let settings = null;
 let translations = null;
 let mainTranslations = null;
+let logPath = null;
 
+// Determinar la ruta del archivo de log
+if (showDevTools) {
+    logPath = path.join(__dirname, globalConfig.logPath);
+} else {
+    logPath = path.join(app.getPath('userData'), globalConfig.logPath);
+}
+
+writeLog("============== Iniciando aplicacion ==============");
 // Creación de la ventana principal
 const createMainWindow = () => {
-    printDebug("Iniciando la creacion de ventana...");
+    writeLog("Iniciando la creacion de ventana...");
     mainWindow = new BrowserWindow({
         width: 900,
         height: 600,
@@ -55,7 +65,7 @@ const createMainWindow = () => {
             // creando una cadena de ruta combinada
 
             // Desactivar en producción
-            devTools: globalConfig.debug, // Activa las herramientas de desarrollo si está en modo depuración
+            devTools: showDevTools, // Activa las herramientas de desarrollo si no está empaquetado
         }
     });
     mainWindow.loadFile('src/views/splash-screen.html');
@@ -79,7 +89,7 @@ app.whenReady().then(async () => {
 
     // Comprobar si hay actualizaciones disponibles
     autoUpdater.checkForUpdatesAndNotify().catch(err => {
-        printDebug('Error al comprobar actualizaciones:', err);
+        writeLog('Error al comprobar actualizaciones:', err);
     });
 });
 
@@ -107,7 +117,13 @@ ipcMain.on('close-window', () => {
 // Leer las configuraciones y generar colores si esta configurado de esa manera.
 async function loadSettings() {
     // Obteniendo las configuraciones.
-    settings = st.readSettings();
+    const result = st.readSettings();
+    if (result.success)
+        settings = result.data
+    else {
+        writeLog("Error al leer configuracion: " + result.error);
+        settings = {};
+    }
 
     const colorStyle = getSetting('colorStyle');
 
@@ -124,9 +140,10 @@ function getSetting(key) {
     if (setting) {
         return setting;
     } else {
-        printDebug(`Configuracion "${key}" no encontrada. Se escribe la configuracion por defecto`);
+        writeLog(`Configuracion "${key}" no encontrada. Se escribe la configuracion por defecto`);
         settings[key] = defaultSettings[key];
-        st.writeSettings(settings);
+        const result = st.writeSettings(settings);
+        if (!result.success) writeLog("Error al guardar configuracion: " + result.error);
         return settings[key];
     }
 }
@@ -134,7 +151,8 @@ function getSetting(key) {
 // Guarda una configuración.
 function setSetting(key, value) {
     settings[key] = value;
-    st.writeSettings(settings);
+    const result = st.writeSettings(settings);
+    if (!result.success) writeLog("Error al guardar configuracion: " + result.error);
 }
 
 // Exponer la función para obtener una configuración.
@@ -153,30 +171,28 @@ function loadTranslations() {
     // Si el lenguaje está configurado como 'sistema'
     if (language === 'system') {
         language = app.getLocale().slice(0, 2);
-        printDebug('Idioma del sistema: ' + language);
+        writeLog('Idioma del sistema: ' + language);
         if (!constants.languages.includes(language)) language = 'en';
     }
 
-    printDebug('Idioma mostrado: ' + language);
+    writeLog('Idioma mostrado: ' + language);
 
     try {
         const filePath = path.join(__dirname, 'locales', `${language}.json`);
         const raw = fs.readFileSync(filePath, 'utf8');
-        printDebug('Cargando traduccion: ' + filePath);
+        writeLog('Cargando traduccion: ' + filePath);
         translations = JSON.parse(raw);
         mainTranslations = translations["main"];
     } catch (err) {
-        printDebug('Error al cargar traduccion: ', err);
+        writeLog('Error al cargar traduccion: ', err);
     }
 };
 
 ipcMain.on('load-translations', (event) => {
-    printDebug('Se solicitó recargar las traducciones.');
     loadTranslations();
 });
 
 ipcMain.handle('get-translations', (event, view) => {
-    printDebug('La vista "' + view + '" ha solicitado traducciones.');
     return translations[view];
 });
 
@@ -205,7 +221,6 @@ ipcMain.handle('get-json-file', async () => {
     });
     // Si se cancela la selección o no se selecciona ningún archivo, salir
     if (canceled || filePaths.length === 0) {
-        printDebug('Operacion "importar JSON" cancelada.');
         return {
             success: false,
             message: mainTranslations['json-dialog-cancelled']
@@ -237,7 +252,7 @@ ipcMain.handle('get-json-file', async () => {
             };
         }
     } catch (error) {
-        printDebug('Error al leer el archivo JSON:', error);
+        writeLog('Error al leer el archivo JSON:' + error.message);
         return {
             success: false,
             message: mainTranslations['json-dialog-error'],
@@ -296,7 +311,7 @@ ipcMain.handle('createID', async (event, name, password, gender) => {
     }
     // Hay errores
     catch (error) {
-        printDebug('Error al crear el usuario:', error);
+        writeLog('Error al crear el usuario:' + error.message);
         return {
             success: false,
             message: mainTranslations['createID-error'],
@@ -316,7 +331,7 @@ ipcMain.handle('get-user-status', async () => {
         } else return false;
     }
     catch (error) {
-        printDebug('Error al obtener el usuario:', error);
+        writeLog('Error al obtener el usuario:' + error.message);
         return false;
     }
 });
@@ -355,7 +370,7 @@ ipcMain.handle('create-card', async (event, newCard) => {
             data: preparedCard,
         };
     } catch (error) {
-        printDebug('Error al crear la tarjeta:', error);
+        writeLog('Error al crear la tarjeta:' + error.message);
         return {
             success: false,
             message: mainTranslations['create-card-error'],
@@ -377,7 +392,7 @@ ipcMain.handle('update-card', async (event, id, updatedCard) => {
             data: preparedCard,
         };
     } catch (error) {
-        printDebug('Error al actualizar la tarjeta:', error);
+        writeLog('Error al actualizar la tarjeta:' + error.message);
         return {
             success: false,
             message: mainTranslations['update-card-error'],
@@ -396,7 +411,7 @@ ipcMain.handle('decrypt-prepared-card', async (event, encryptedCard) => {
             data: decryptedCard,
         };
     } catch (error) {
-        printDebug('Error al desencriptar la tarjeta:', error);
+        writeLog('Error al desencriptar la tarjeta:' + error.message);
         return {
             success: false,
             message: mainTranslations['decrypt-card-error'],
@@ -416,7 +431,7 @@ ipcMain.handle('delete-card', async (event, id) => {
             };
         }
     } catch (error) {
-        printDebug('Error al eliminar la tarjeta:', error);
+        writeLog('Error al eliminar la tarjeta:' + error.message);
         return {
             success: false,
             message: mainTranslations['delete-card-error'],
@@ -426,18 +441,30 @@ ipcMain.handle('delete-card', async (event, id) => {
 });
 
 // Función para preparar (desencriptar nombre y web) varias tarjetas usando un worker
-function prepareCards(encryptedCards, masterKey) {
+function startPreparingElements(encryptedCards, masterKey) {
     return new Promise((resolve, reject) => {
-        const worker = new Worker(path.join(__dirname, "workers", "prepareCards-worker.js"),
+        // Lanzamiento del worker
+        writeLog('Iniciando worker para preparar tarjetas...');
+        const worker = new Worker(path.join(__dirname, "workers", "prepareElements-worker.js"),
             { workerData: { encryptedCards, masterKey } });
 
-        worker.on("message", (result) => {
-            resolve(result);
-            worker.terminate();
+        worker.on("message", (msg) => {
+            if (msg.type === "progress") {
+                mainWindow.webContents.send('prepare-cards-progress', msg.progress);
+            } else if (msg.type === "done") {
+                writeLog('Worker ha terminado de preparar las tarjetas.');
+                resolve(msg.preparedCards);
+                worker.terminate();
+            }
         });
-        worker.on("error", reject);
+        // imprimir errores del worker
+        worker.on("error", (err) => {
+            writeLog('Error en el worker de preparar tarjetas:', err);
+            reject(err);
+        });
+
         worker.on("exit", (code) => {
-            if (code !== 0) reject(new Error(`Worker stopped with exit code ${code}`));
+            if (code !== 0) reject(new Error(`El worker se detuvo con codigo de salida: ${code}`));
         });
     });
 }
@@ -447,10 +474,10 @@ ipcMain.handle('get-prepared-cards', async () => {
     try {
         const encryptedCards = await db.getAllCards();
         // Preparar las tarjetas (desencriptar nombre y web) usando un worker
-        const preparedCards = await prepareCards(encryptedCards, masterKey);
+        const preparedCards = await startPreparingElements(encryptedCards, masterKey);
         return { success: true, data: preparedCards };
     } catch (error) {
-        printDebug('Error al obtener todas las tarjetas:', error);
+        writeLog('Error al obtener todas las tarjetas:' + error.message);
         return { success: false, error: error.message };
     }
 });
@@ -467,7 +494,7 @@ ipcMain.handle('create-note', async (event, newNote) => {
             data: result,
         };
     } catch (error) {
-        printDebug('Error al crear la nota:', error);
+        writeLog('Error al crear la nota:' + error.message);
         return {
             success: false,
             message: mainTranslations['create-note-error'],
@@ -481,7 +508,6 @@ ipcMain.handle('update-note', async (event, id, updatedNote) => {
     try {
         // Encriptar los datos de la nota actualizada
         const encryptedNote = await cr.encryptNote(masterKey, updatedNote);
-        printDebug('Nota a actualizar encriptada: ' + encryptedNote.name);
         const result = await db.updateNote(id, encryptedNote);
         return {
             success: true,
@@ -489,7 +515,7 @@ ipcMain.handle('update-note', async (event, id, updatedNote) => {
             data: result,
         };
     } catch (error) {
-        printDebug('Error al actualizar la nota:', error);
+        writeLog('Error al actualizar la nota:' + error.message);
         return {
             success: false,
             message: mainTranslations['update-note-error'],
@@ -508,7 +534,7 @@ ipcMain.handle('decrypt-note', async (event, encryptedNote) => {
             data: decryptedNote,
         };
     } catch (error) {
-        printDebug('Error al desencriptar la nota:', error);
+        writeLog('Error al desencriptar la nota:' + error.message);
         return {
             success: false,
             message: mainTranslations['decrypt-note-error'],
@@ -528,7 +554,7 @@ ipcMain.handle('delete-note', async (event, id) => {
             };
         }
     } catch (error) {
-        printDebug('Error al eliminar la nota:', error);
+        writeLog('Error al eliminar la nota:' + error.message);
         return {
             success: false,
             message: mainTranslations['delete-note-error'],
@@ -543,7 +569,7 @@ ipcMain.handle('get-prepared-notes', async () => {
         const encryptedNotes = await db.getAllNotes();
         return { success: true, data: encryptedNotes };
     } catch (error) {
-        printDebug('Error al obtener todas las notas:', error);
+        writeLog('Error al obtener todas las notas:' + error.message);
         return { success: false, error: error.message };
     }
 });
@@ -563,10 +589,9 @@ ipcMain.handle('import-data', async (event, key) => {
             );
             // Todo salío bien
             superUser = result;
-            printDebug('Usuario importado correctamente');
         }
         catch (error) {
-            printDebug('Error al importar el usuario:', error);
+            writeLog('Error al importar el usuario:' + error.message);
             return {
                 success: false,
                 message: mainTranslations['import-data-error'],
@@ -576,15 +601,14 @@ ipcMain.handle('import-data', async (event, key) => {
 
         // Adaptar datos de las tarjetas una por una, para
         // garantizar el orden original
-        printDebug('Adaptando e importando tarjetas desde Sanctuary 4.2...');
+        writeLog('Adaptando e importando tarjetas desde Sanctuary 4.2...');
         for (const oldCard of oldData.cards) {
-            printDebug('Adaptando tarjeta: ' + oldCard.name);
             const adaptedCard = oldCr.adaptOldCard(key, oldCard);
             try {
                 const encryptedCard = await cr.encryptCard(key, adaptedCard);
                 const result = await db.createCard(encryptedCard);
             } catch (error) {
-                printDebug('Error al importar la tarjeta:', error);
+                writeLog('Error al importar la tarjeta:' + error.message);
                 return {
                     success: false,
                     message: mainTranslations['import-card-error'],
@@ -639,9 +663,11 @@ ipcMain.handle('execute-command', async (event, command) => {
     }
 });
 
-function printDebug(info, obj = null) {
-    if (globalConfig.debug) {
-        console.log(`(main) >> ${info}`);
-        if (obj) console.log(obj);
-    }
+// Funcion que genera un archivo log con informacion de debug
+function writeLog(info) {
+    const timeStamp = new Date().toISOString();
+    const logMessage = `[${timeStamp}] ${info}\n`;
+    fs.appendFileSync(logPath, logMessage);
+
+    if (showDevTools) console.log(`(log) >> ${info}`);
 }

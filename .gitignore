@@ -3,4 +3,5 @@ package-lock.json
 recursos
 src/utils/sanctuary.db
 src/utils/settings.json
+src/logfile.log
 out

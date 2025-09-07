@@ -39,6 +39,7 @@ const deleteElement = document.getElementById('delete-element');
 const deleteElementBody = document.getElementById('delete-element-body');
 
 const placeholder = document.getElementById('placeholder');
+const placeholderLoading = document.getElementById('placeholder-loading');
 
 // Variable para controlar el modo actual de la vista (llaves, notas o configuración)
 let mode = 'keys'; // keys || notes
@@ -73,6 +74,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Cargar las traducciones para el módulo de traducción
     setTranslations(translations);
 
+    // Escuchar el progreso de preparación de tarjetas
+    window.electronAPI.on('prepare-cards-progress', (progress) => {
+        placeholderLoading.textContent = `${translate('placeholder-loading')} ${progress}%`;
+    });
+
     // Funciones del contenedor principal ====================================================
     // Traer los datos al iniciar la vista
     async function getPreparedCards() {
@@ -99,9 +105,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Limpiar el contenedor de elementos antes de agregar nuevos
         mainContent.innerHTML = '';
         deselectAllElements(); // Deseleccionar todos los elementos
-        //console.log('prepared cards: ', preparedCards);
-        //console.log('prepared notes: ', preparedNotes);
-        //console.log('actual elements: ', actualPreparedElements);
         if (content && content.length > 0) {
             // Crear y agregar cada elemento al contenedor
             if (mode === 'keys') {
@@ -211,7 +214,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     function showSettingsView() {
-        console.log('Mostrar vista de configuración'); // Aquí se implementaría la lógica para mostrar la configuración
         title.textContent = translations['settings']; // Cambiar el título de la vista
         searchArea.style.display = 'none'; // Ocultar la barra de búsqueda en la vista de configuración
         bottonBar.style.display = 'none'; // Ocultar la barra de botones en la vista de configuración

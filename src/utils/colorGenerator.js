@@ -7,10 +7,6 @@ const { app } = require('electron');
 const ColorThief = require('colorthief');
 const path = require('path');
 
-// Configuraciones globales
-const globalConfigPath = path.join(__dirname, '..', 'config', 'globalConfig.json');
-const globalConfig = JSON.parse(require('fs').readFileSync(globalConfigPath, 'utf8'));
-
 async function generateColorPalette(imgName) {
     let appContrastLight, appContrastDark;
 
@@ -34,7 +30,6 @@ async function generateColorPalette(imgName) {
     }
 
     const finalImgPath = isPackaged ? tempImgPath : imgAsarPath;
-    printDebug("Imagen analizada: " + finalImgPath);
     const dominantColor = await ColorThief.getColor(finalImgPath);
 
     if (isLightColor(dominantColor)) {
@@ -52,8 +47,6 @@ async function generateColorPalette(imgName) {
         appContrastLight,
         appContrastDark
     }
-
-    printDebug("Colores obtenidos:", result);
     return result;
 };
 
@@ -125,13 +118,6 @@ function hslToRgb(h, s, l) {
         Math.round(g * 255),
         Math.round(b * 255)
     ];
-}
-
-function printDebug(info, obj = null) {
-    if (globalConfig.debug) {
-        console.log(`(colorGenerator) >> ${info}`);
-        if (obj) console.log(obj);
-    }
 }
 
 module.exports = { generateColorPalette }; 

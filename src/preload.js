@@ -11,6 +11,8 @@ contextBridge.exposeInMainWorld('electron', {
 })
 
 contextBridge.exposeInMainWorld('electronAPI', {
+    send: (channel, data) => ipcRenderer.send(channel, data),
+    on: (channel, callback) => ipcRenderer.on(channel, (event, ...args) => callback(...args)),
     // Obtener traducciones
     getTranslations: (view) => ipcRenderer.invoke('get-translations', view),
     // Expone el cambio de vista
