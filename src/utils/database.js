@@ -63,7 +63,7 @@ function addUser(name, gender, hash) {
             if (err) {
                 reject(err);
             } else {
-                resolve({ name, gender, hash });
+                resolve({ userID: this.lastID, name, gender, hash });
             }
         });
     });
@@ -77,6 +77,23 @@ function getUser() {
                 reject(err);
             } else {
                 resolve(result);
+            }
+        });
+    });
+}
+
+// Función para editar el usuario
+function updateUser(userID, name, gender, hash) {
+    return new Promise((resolve, reject) => {
+        const query = `UPDATE user SET
+        name = ?, gender = ?, hash = ?
+        WHERE userID = ?`;
+
+        db.run(query, [name, gender, userID], function (err) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve({ userID, name, gender, hash });
             }
         });
     });
@@ -246,4 +263,4 @@ function getAllNotes() {
     });
 }
 
-module.exports = { addUser, getUser, createCard, deleteCard, updateCard, getAllCards, createNote, deleteNote, updateNote, getAllNotes };
+module.exports = { addUser, getUser, updateUser, createCard, deleteCard, updateCard, getAllCards, createNote, deleteNote, updateNote, getAllNotes };

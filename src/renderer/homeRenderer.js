@@ -526,6 +526,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Clic en botón editar ID
         if (buttonPressed.id === 'edit-ID') {
             confirm = await showIDModal('edit-data', superuser);
+            if (confirm.success) {
+                showToast(confirm.message);
+
+                superuser = await window.electronAPI.getUserInfo();
+                createSettingsPage(superuser);
+            } else if (confirm.error) {
+                showToast(confirm.error, true);
+            }
         }
         // Clic en botón cambiar contraseña
         else if (buttonPressed.id === 'edit-password') {
@@ -533,7 +541,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         // Clic en botón exportar llaves
         else if (buttonPressed.id === 'export-keys') {
-            confirm = await showIDModal('create', superuser);
+            confirm = await showIDModal('create');
             createSettingsPage(superuser);
         }
     });

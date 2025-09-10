@@ -118,7 +118,7 @@ export function showIDModal(mode, superuser) {
                         window.electronAPI.showWarning(warningTranslations['title'], warningTranslations['invalid-name']);
                         return;
                     }
-                    else if (!pass2 || pass2.length < 6) {
+                    else if (!pass2 || pass2.length < 5) {
                         window.electronAPI.showWarning(warningTranslations['title'], warningTranslations['short-password']);
                         userPass2.value = '';
                         userPass3.value = '';
@@ -142,6 +142,22 @@ export function showIDModal(mode, superuser) {
                         else {
                             window.electronAPI.showWarning(warningTranslations['title'], result.message);
                         }
+                    }
+                }
+            }
+            else if (mode === 'edit-data') {
+                if (!name || name.length < 3) {
+                    window.electronAPI.showWarning(warningTranslations['title'], warningTranslations['invalid-name']);
+                    return;
+                } else {
+                    // Datos correctos, actualizar el ID
+                    const result = await window.electronAPI.updateID(name, gender);
+                    if (result.success) {
+                        cleanup();
+                        resolve({ success: true, message: result.message });
+                    } else {
+                        cleanup();
+                        resolve({ success: false, error: result.message });
                     }
                 }
             }

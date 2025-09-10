@@ -278,6 +278,7 @@ ipcMain.handle('show-notification', (event, title, body) => {
 // Retorna la información del usuario almacenado
 ipcMain.handle('get-user-info', () => {
     if (superUser) {
+        // Datos que renderer puede conocer
         return {
             name: superUser.name,
             gender: superUser.gender
@@ -297,13 +298,7 @@ ipcMain.handle('get-user-info', () => {
 ipcMain.handle('createID', async (event, name, password, gender) => {
     try {
         const hashPassword = await cr.hashPassword(password);
-        const result = await db.addUser(
-            name,
-            gender,
-            hashPassword,
-        );
-        // Todo salío bien
-        superUser = result;
+        superUser = await db.addUser(name, gender, hashPassword);
         return {
             success: true,
             message: mainTranslations['createID-success'],
@@ -320,11 +315,35 @@ ipcMain.handle('createID', async (event, name, password, gender) => {
     }
 });
 
+async function updateID(name, gender) {
+    try {
+        superUser = await db.updateUser(superUser.userID, name, gender, superUser.hash);
+        return {
+            success: true,
+            message: mainTranslations['updateID-success'],
+        }
+    }
+    // Hay errores
+    catch (error) {
+        writeLog('Error al actualizar el usuario:' + error.message);
+        return {
+            success: false,
+            message: mainTranslations['updateID-error'],
+        };
+    }
+}
+
+ipcMain.handle('updateID', async (event, name, gender) => {
+    return await updateID(name, gender);
+});
+
 // Obtiene el primer registro de user, si es indefinido entonces no
 // existe usuario. Si existe, se guarda en la variable local "superUser"
 ipcMain.handle('get-user-status', async () => {
     try {
         const result = await db.getUser();
+        // Si no hay error pero la consulta da un valor indefinido
+        // entonces no hay usuario creado.
         if (result) {
             superUser = result;
             return true;
@@ -582,13 +601,7 @@ ipcMain.handle('import-data', async (event, key) => {
         // Crear el usuario
         try {
             const hashPassword = await cr.hashPassword(key);
-            const result = await db.addUser(
-                adaptedID.name,
-                adaptedID.gender,
-                hashPassword,
-            );
-            // Todo salío bien
-            superUser = result;
+            superUser = await db.addUser(adaptedID.name, adaptedID.gender, hashPassword,);
         }
         catch (error) {
             writeLog('Error al importar el usuario:' + error.message);

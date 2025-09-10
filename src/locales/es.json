@@ -46,7 +46,7 @@
         "name-password-required": "Nombre y contraseña son obligatorios",
         "title-required": "El título es obligatorio",
         "invalid-name": "Nombre inválido. Debe tener al menos 3 caracteres.",
-        "short-password": "La contraseña es muy corta. Debe tener al menos 6 caracteres.",
+        "short-password": "La contraseña es muy corta. Debe tener al menos 5 caracteres.",
         "password-mismatch": "Las contraseñas no coinciden."
     },
     "main": {
@@ -57,6 +57,8 @@
         "json-dialog-invalid": "El archivo JSON no es válido.",
         "createID-success": "ID creado exitosamente.",
         "createID-error": "Error al crear el ID.",
+        "updateID-success": "ID actualizado exitosamente.",
+        "updateID-error": "Error al actualizar el ID.",
         "verify-password-success": "La contraseña es auténtica.",
         "verify-password-fail": "La contraseña es incorrecta.",
         "create-card-success": "Tarjeta creada exitosamente.",
