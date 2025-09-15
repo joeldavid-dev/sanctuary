@@ -28,7 +28,7 @@
         "gender-other": "Other",
         "done": "Done",
         "importing": "Importing...",
-        "import-data": "Transfer data from Sanctuary 4.2",
+        "import-data": "Transfer data from JSON file",
         "welcome-back": "Welcome back, {name}!",
         "welcome-back-info": "Please enter your password to unlock your account and bring your data into the new version.",
         "success": "Success!",
@@ -38,7 +38,11 @@
         "edit-data-info": "Update your ID information below.",
         "edit-password-subtitle": "Change Password",
         "edit-password-info": "Enter your current password and a new password below.",
-        "gender-help": "This information is only used to personalize how Sanctuary talks to you and to make your experience even better."
+        "gender-help": "This information is only used to personalize how Sanctuary talks to you and to make your experience even better.",
+        "start-change-password": "Changing password...",
+        "change-cards-password": "Encrypting keys...",
+        "change-notes-password": "Encrypting notes...",
+        "save-password-changes": "Saving changes..."
     },
     "warning": {
         "title": "Warning",
@@ -59,6 +63,8 @@
         "createID-error": "Error creating the ID.",
         "updateID-success": "ID updated successfully.",
         "updateID-error": "Error updating the ID.",
+        "change-password-success": "Password changed successfully.",
+        "change-password-error": "Error changing the password.",
         "verify-password-success": "The password is correct.",
         "verify-password-fail": "Incorrect password.",
         "create-card-success": "Card created successfully.",

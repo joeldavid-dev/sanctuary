@@ -28,7 +28,7 @@ export function createNoteElement(note, index, translations) {
                 </div>
             </div>
 
-            <p id="content-${note.id}" class="small-text selectable-text">••••••••</p>            
+            <p id="content-${note.id}" class="small-text selectable-text preserve">••••••••</p>            
 
             <div class="horizontal-flex spaced centered">
                 <strong class="minimum-text">${index + 1}</strong>

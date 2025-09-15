@@ -28,7 +28,7 @@
         "gender-other": "Otro",
         "done": "Listo",
         "importing": "Importando...",
-        "import-data": "Importar datos desde Sanctuary 4.2",
+        "import-data": "Importar datos desde archivo JSON",
         "welcome-back": "¡Hola de nuevo, {name}!",
         "welcome-back-info": "Por favor ingresa tu contraseña para desbloquear tu cuenta e importar tus datos a la nueva versión.",
         "success": "¡Hecho!",
@@ -38,7 +38,11 @@
         "edit-data-info": "Actualiza la información de tu ID a continuación.",
         "edit-password-subtitle": "Cambiar Contraseña",
         "edit-password-info": "Ingresa tu contraseña actual y una nueva contraseña a continuación.",
-        "gender-help": "Esta información solo se usa para personalizar cómo Sanctuary se comunica contigo y hacer tu experiencia aún mejor."
+        "gender-help": "Esta información solo se usa para personalizar cómo Sanctuary se comunica contigo y hacer tu experiencia aún mejor.",
+        "start-change-password": "Cambiando contraseña...",
+        "change-cards-password": "Cifrando claves...",
+        "change-notes-password": "Cifrando notas...",
+        "save-password-changes": "Guardando los cambios..."
     },
     "warning": {
         "title": "Advertencia",
@@ -59,6 +63,8 @@
         "createID-error": "Error al crear el ID.",
         "updateID-success": "ID actualizado exitosamente.",
         "updateID-error": "Error al actualizar el ID.",
+        "change-password-success": "Contraseña cambiada exitosamente.",
+        "change-password-error": "Error al cambiar la contraseña.",
         "verify-password-success": "La contraseña es auténtica.",
         "verify-password-fail": "La contraseña es incorrecta.",
         "create-card-success": "Tarjeta creada exitosamente.",

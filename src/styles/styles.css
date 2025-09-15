@@ -202,6 +202,11 @@ p {
     cursor: text;
 }
 
+pre, .preserve {
+  white-space: pre-wrap; /* respeta saltos de línea y espacios */
+  word-wrap: break-word; /* hace que no se desborde en pantallas pequeñas */
+}
+
 /* Redondeo de elementos grandes */
 .maximal-rounded {
     border-radius: var(--maximal-radius);
@@ -472,6 +477,7 @@ p {
 }
 
 .action-btn:disabled {
+    font-size: 12px;
     background: transparent;
     border: solid 1px;
     color: var(--neutral_grey);
@@ -1025,7 +1031,7 @@ input:checked+.slider::before {
 
 @keyframes pulse {
     0% {
-        box-shadow: 0 0 0 0 rgba(58, 195, 205, 0.5);
+        box-shadow: 0 0 0 0 rgba(58, 195, 205, 1);
     }
 
     35% {
@@ -1037,7 +1043,7 @@ input:checked+.slider::before {
     }
 
     51% {
-        box-shadow: 0 0 0 0 rgba(230, 110, 80, 0.5);
+        box-shadow: 0 0 0 0 rgba(230, 110, 80, 1);
     }
 
     85% {

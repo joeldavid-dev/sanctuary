@@ -337,6 +337,86 @@ ipcMain.handle('updateID', async (event, name, gender) => {
     return await updateID(name, gender);
 });
 
+// Funcion para cambiar la contraseña de cifrado de tarjetas y notas
+async function changePassword(oldPassword, newPassword) {
+    // Verrificar que oldPassword es correcta
+    const passwordResult = await verifyPassword(oldPassword);
+    if (passwordResult.verified) {
+        try {
+            // Obtener todas las tarjetas y notas encriptadas
+            const encryptedCards = await db.getAllCards();
+            const encryptedNotes = await db.getAllNotes();
+            // Cambiar la contraseña de cifrado en las tarjetas y notas
+            const result = await startPasswordChange(oldPassword, newPassword, encryptedCards, encryptedNotes);
+            // Avisa que se estan guardando los datos
+            mainWindow.webContents.send('password-change-progress', { phase: "save" });
+            // Actualizar las tarjetas en la base de datos
+            for (const card of result.newEncryptedCards) {
+                await db.updateCard(card.id, card);
+            }
+            // Actualizar las notas en la base de datos
+            for (const note of result.newEncryptedNotes) {
+                await db.updateNote(note.id, note);
+            }
+
+            // Actualizar la contraseña del usuario
+            const hashPassword = await cr.hashPassword(newPassword);
+            masterKey = newPassword;
+            superUser = await db.updateUser(superUser.userID, superUser.name, superUser.gender, hashPassword);
+            return {
+                success: true,
+                message: mainTranslations['change-password-success'],
+            }
+        }
+        catch (error) {
+            writeLog('Error al cambiar la contraseña: ' + error.message);
+            return {
+                success: false,
+                message: mainTranslations['change-password-error'],
+            }
+        }
+    } else {
+        // La contraseña antigua no es correcta
+        return {
+            success: false,
+            message: passwordResult.message,
+        }
+    }
+}
+
+// Función para cambiar la contraseña de cifrado de tarjetas y notas usando un worker
+function startPasswordChange(oldPassword, newPassword, encryptedCards, encryptedNotes) {
+    return new Promise((resolve, reject) => {
+        // Lanzamiento del worker
+        writeLog('Iniciando worker para cambio de contraseña...');
+        const workerPasswordChange = new Worker(path.join(__dirname, "workers", "passwordChange-worker.js"),
+            { workerData: { oldPassword, newPassword, encryptedCards, encryptedNotes } });
+
+        workerPasswordChange.on("message", (msg) => {
+            if (msg.type === "progress") {
+                mainWindow.webContents.send('password-change-progress', { progress: msg.progress, phase: msg.phase });
+            } else if (msg.type === "done") {
+                writeLog('Worker ha terminado de cambiar la contraseña en claves y notas.');
+                resolve({ newEncryptedCards: msg.newEncryptedCards, newEncryptedNotes: msg.newEncryptedNotes });
+                workerPasswordChange.terminate();
+            }
+        });
+        // imprimir errores del worker
+        workerPasswordChange.on("error", (error) => {
+            writeLog('Error en el worker de paswordChange: ' + error.message);
+            reject(error);
+        });
+
+        workerPasswordChange.on("exit", (code) => {
+            if (code !== 0) reject(new Error(`El worker passwordChange se detuvo con codigo de salida: ${code}`));
+        });
+    });
+}
+
+ipcMain.handle('change-password', async (event, oldPassword, newPassword) => {
+    return await changePassword(oldPassword, newPassword);
+});
+
 // Obtiene el primer registro de user, si es indefinido entonces no
 // existe usuario. Si existe, se guarda en la variable local "superUser"
 ipcMain.handle('get-user-status', async () => {
@@ -359,8 +439,6 @@ ipcMain.handle('get-user-status', async () => {
 async function verifyPassword(password) {
     const match = await cr.verifyPassword(password, superUser.hash);
     if (match) {
-        masterKey = password;
-        mainWindow.loadFile('src/views/home.html');
         return {
             verified: true,
             message: mainTranslations['verify-password-success'],
@@ -371,9 +449,15 @@ async function verifyPassword(password) {
     }
 }
 
-ipcMain.handle('verify-password', (event, password) => {
-    // Electron maneja "handle" como asíncrono por lo que no es necesario usar await.
-    return verifyPassword(password);
+ipcMain.handle('verify-password', async (event, password) => {
+    const result = await verifyPassword(password);
+
+    if (result.verified) {
+        masterKey = password;
+        mainWindow.loadFile('src/views/home.html');
+        return result;
+    }
+    else return result;
 });
 
 // Crear una nueva tarjeta
@@ -477,9 +561,9 @@ function startPreparingElements(encryptedCards, masterKey) {
             }
         });
         // imprimir errores del worker
-        worker.on("error", (err) => {
-            writeLog('Error en el worker de preparar tarjetas:', err);
-            reject(err);
+        worker.on("error", (error) => {
+            writeLog('Error en el worker de preparar tarjetas:' + error.message);
+            reject(error);
         });
 
         worker.on("exit", (code) => {
@@ -614,12 +698,16 @@ ipcMain.handle('import-data', async (event, key) => {
 
         // Adaptar datos de las tarjetas una por una, para
         // garantizar el orden original
-        writeLog('Adaptando e importando tarjetas desde Sanctuary 4.2...');
+        writeLog('Adaptando e importando tarjetas desde Sanctuary (Pascal Version)...');
+        const totalCards = oldData.cards.length;
+        let currentCard = 0;
         for (const oldCard of oldData.cards) {
             const adaptedCard = oldCr.adaptOldCard(key, oldCard);
             try {
                 const encryptedCard = await cr.encryptCard(key, adaptedCard);
                 const result = await db.createCard(encryptedCard);
+                currentCard++;
+                mainWindow.webContents.send('import-card-progress', { progress: Math.round((currentCard / totalCards) * 100) });
             } catch (error) {
                 writeLog('Error al importar la tarjeta:' + error.message);
                 return {

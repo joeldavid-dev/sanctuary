@@ -89,7 +89,7 @@ function updateUser(userID, name, gender, hash) {
         name = ?, gender = ?, hash = ?
         WHERE userID = ?`;
 
-        db.run(query, [name, gender, userID], function (err) {
+        db.run(query, [name, gender, hash, userID], function (err) {
             if (err) {
                 reject(err);
             } else {

@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Escuchar el progreso de preparación de tarjetas
     window.electronAPI.on('prepare-cards-progress', (progress) => {
-        placeholderLoading.textContent = `${translate('placeholder-loading')} ${progress}%`;
+        placeholderLoading.textContent = `${translations['placeholder-loading']} ${progress}%`;
     });
 
     // Funciones del contenedor principal ====================================================
@@ -187,6 +187,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     function hidePlaceholderSpinner() {
         placeholder.style.display = 'none'; // Ocultar el spinner de carga
         bottonBar.style.display = 'flex'; // Mostrar la barra de botones
+    }
+
+    async function loadContent() {
+        showPlaceholderSpinner(); // Mostrar spinner de carga
+        await getPreparedCards(); // Cargar las tarjetas preparadas
+        await getPreparedNotes(); // Cargar las notas preparadas
+        hidePlaceholderSpinner(); // Ocultar spinner de carga
+        showKeysView(); // Mostrar la vista de inicio
+        // Seleccionar el radioboton de llaves
+        keysRadio.querySelector('input[type="radio"]').checked = true;
     }
 
     function showKeysView() {
@@ -525,7 +535,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Clic en botón editar ID
         if (buttonPressed.id === 'edit-ID') {
-            confirm = await showIDModal('edit-data', superuser);
+            const confirm = await showIDModal('edit-data', superuser);
             if (confirm.success) {
                 showToast(confirm.message);
 
@@ -537,12 +547,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         // Clic en botón cambiar contraseña
         else if (buttonPressed.id === 'edit-password') {
-            confirm = await showIDModal('edit-password', superuser);
+            const confirm = await showIDModal('edit-password', superuser);
+            if (confirm.success) {
+                loadContent(); // Recargar el contenido
+                showToast(confirm.message);
+            } else if (confirm.error) {
+                showToast(confirm.error, true);
+            }
         }
         // Clic en botón exportar llaves
         else if (buttonPressed.id === 'export-keys') {
-            confirm = await showIDModal('create');
-            createSettingsPage(superuser);
         }
     });
 
@@ -584,10 +598,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Acciones iniciales ========================================================================
     await applySettings();
-    showPlaceholderSpinner(); // Mostrar spinner de carga
-    await getPreparedCards(); // Cargar las tarjetas preparadas
-    await getPreparedNotes(); // Cargar las notas preparadas
-    hidePlaceholderSpinner(); // Ocultar spinner de carga
-    showKeysView(); // Mostrar la vista de inicio
+    await loadContent(); // Cargar el contenido inicial
     createSettingsPage(superuser); // Crear la página de configuración
 });
