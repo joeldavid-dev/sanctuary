@@ -82,6 +82,7 @@
         "import-data-error": "Error al importar los datos.",
         "import-data-wrong-password": "Contraseña incorrecta.",
         "command-not-found": "Comando no encontrado.",
+        "command-invalid-args": "Argumentos de comando inválidos.",
         "create-note-success": "Nota creada exitosamente.",
         "create-note-error": "Error al crear la nota.",
         "update-note-success": "Nota actualizada exitosamente.",
@@ -89,7 +90,8 @@
         "decrypt-note-success": "Nota descifrada exitosamente.",
         "decrypt-note-error": "Error al descifrar la nota.",
         "delete-note-success": "Nota eliminada exitosamente.",
-        "delete-note-error": "Error al eliminar la nota."
+        "delete-note-error": "Error al eliminar la nota.",
+        "theme-changed": "Tema cambiado exitosamente."
     },
     "home-view": {
         "search": "Buscar...",

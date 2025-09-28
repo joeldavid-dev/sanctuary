@@ -56,11 +56,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     const cardTranslations = await window.electronAPI.getTranslations('card');
     const constants = await window.electronAPI.getConstants();
 
-    // Obtener información del superusuario
-    let superuser = await window.electronAPI.getUserInfo();
+    // Superusuario
+    let superuser = null;
 
     // Carga los comandos disponibles
-    const commands = await window.electronAPI.getCommands();
+    const commands = constants['available_commands'];
 
     // Cargar traducciones y mostrarlas en la interfaz estática
     document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -274,10 +274,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     search.addEventListener('keydown', async (event) => {
-        // Si se presiona flecha abajo, se enfoca el primer botón de la barra de opciones
-        if (event.key === 'ArrowDown' && optionsBar.style.display === 'flex') {
-            const firstOption = optionsBar.querySelector('button');
-            if (firstOption) firstOption.focus(); // Enfocar el primer botón de la barra de opciones
+        // Si se presiona tabulador, se enfoca el primer botón de la barra de opciones
+        console.log(event.key);
+        if (event.key === 'Tab' && optionsBar.style.display === 'flex') {
+            // Enfocar el primer botón de la barra de opciones
+            event.preventDefault(); // Evitar el comportamiento por defecto de tabulador
+            const firstButton = optionsBar.querySelector('button');
+            if (firstButton) firstButton.focus();
         }
         else if (event.key === 'Escape') {
             clearSearch(); // Limpiar la búsqueda si se presiona Escape
@@ -288,9 +291,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 showToast(translations['empty-command'], true); // Mostrar mensaje si no hay comando
             }
             else {
-                // ejecutar el comando correspondiente
-                const result = await window.electronAPI.executeCommand(command);
-                (result.success) ? showToast(result.message) : showToast(result.message, true);
+                await executeCommand(command); // Ejecutar el comando correspondiente
             }
             clearSearch(); // Limpiar la búsqueda
         }
@@ -425,9 +426,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
             else {
                 const option = buttonPressed.getAttribute('data-option');
-                // ejecutar el comando correspondiente
-                const result = await window.electronAPI.executeCommand(option);
-                (result.success) ? showToast(result.message) : showToast(result.message, true);
+                await executeCommand(option); // Ejecutar el comando correspondiente
                 clearSearch(); // Limpiar la búsqueda
             }
         }
@@ -538,8 +537,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const confirm = await showIDModal('edit-data', superuser);
             if (confirm.success) {
                 showToast(confirm.message);
-
-                superuser = await window.electronAPI.getUserInfo();
+                await applySettings(); // Aplicar las nuevas configuraciones
                 createSettingsPage(superuser);
             } else if (confirm.error) {
                 showToast(confirm.error, true);
@@ -559,6 +557,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         else if (buttonPressed.id === 'export-keys') {
         }
     });
+    // Función para ejecutar comandos
+    async function executeCommand(command) {
+        // ejecutar el comando correspondiente
+        const result = await window.electronAPI.executeCommand(command);
+        if (result.success) {
+            showToast(result.message);
+            await applySettings(); // Aplicar las nuevas configuraciones si las hay
+            createSettingsPage(superuser); // Recrear la página de configuración si las hay
+        } else showToast(result.message, true);
+        clearSearch(); // Limpiar la búsqueda
+    }
 
     // Función del toast notification ============================================================
     function showToast(message, error = false) {
@@ -576,6 +585,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     async function applySettings() {
+        // Actualizar la información del superusuario
+        superuser = await window.electronAPI.getUserInfo();
+
         // Obtener configuraciones a utilizar
         const colorStyle = await window.electronAPI.getSetting('colorStyle');
 

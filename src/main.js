@@ -155,6 +155,13 @@ function setSetting(key, value) {
     if (!result.success) writeLog("Error al guardar configuracion: " + result.error);
 }
 
+// Resetear las configuraciones a los valores por defecto
+function resetSettings() {
+    settings = {};
+    const result = st.writeSettings(settings);
+    if (!result.success) writeLog("Error al resetear configuracion: " + result.error);
+}
+
 // Exponer la función para obtener una configuración.
 ipcMain.handle('get-setting', (event, key) => {
     return getSetting(key);
@@ -731,16 +738,6 @@ ipcMain.handle('import-data', async (event, key) => {
     }
 });
 
-// Configuraciones y comandos
-ipcMain.handle('get-commands', () => {
-    const commandsPath = path.join(__dirname, 'config', 'commands.json');
-    if (fs.existsSync(commandsPath)) {
-        return JSON.parse(fs.readFileSync(commandsPath, 'utf8')).commands;
-    } else {
-        return [];
-    }
-});
-
 // Manejo de comandos
 ipcMain.handle('execute-command', async (event, command) => {
     const [cmd, ...args] = command.split(':');
@@ -758,6 +755,31 @@ ipcMain.handle('execute-command', async (event, command) => {
         case 'lock':
             mainWindow.loadFile('src/views/lock.html');
             break;
+        case 'change-ID-gender':
+            if (args.length === 1 && (args[0] === 'male' || args[0] === 'female' || args[0] === 'other')) {
+                return await updateID(superUser.name, args[0]);
+            } else {
+                return { success: false, message: mainTranslations['command-invalid-args'] };
+            }
+        case 'change-ID-name':
+            if (args.length === 1 && args[0].length > 3 && args[0].length <= 30) {
+                return await updateID(args[0], superUser.gender);
+            } else {
+                return { success: false, message: mainTranslations['command-invalid-args'] };
+            }
+        case 'set-default-settings':
+            resetSettings();
+            mainWindow.reload();
+            break;
+        case 'set-theme':
+            if (args.length === 1 && (args[0] === 'chocolate-mint-theme' || args[0] === 'gruvbox-theme'
+                || args[0] === 'pink-theme' || args[0] === 'github-theme'
+                || args[0] === 'generate')) {
+                setSetting('colorStyle', args[0]);
+                return { success: true, message: mainTranslations['theme-changed'] };
+            } else {
+                return { success: false, message: mainTranslations['command-invalid-args'] };
+            }
         default:
             // Comando no reconocido
             return { success: false, message: `${cmd}: ${mainTranslations['command-not-found']}` };

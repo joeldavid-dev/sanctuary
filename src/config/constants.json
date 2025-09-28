@@ -19,13 +19,21 @@
         "app_contrast_light": "rgb(137, 201, 204)",
         "app_contrast_dark": "rgb(69, 133, 136)"
     },
-    "black-white-theme": {
-        "app_light": "rgb(245, 245, 245)",
-        "app_light_transparent": "rgba(245, 245, 245, 0.6)",
-        "app_dark": "rgb(10, 10, 10)",
-        "app_dark_transparent": "rgba(10, 10, 10, 0.6)",
-        "app_contrast_light": "rgb(200, 200, 200)",
-        "app_contrast_dark": "rgb(55, 55, 55)"
+    "chocolate-mint-theme": {
+        "app_light": "rgb(229, 235, 224)",
+        "app_light_transparent": "rgba(229, 235, 224, 0.6)",
+        "app_dark": "rgb(28, 15, 14)",
+        "app_dark_transparent": "rgba(28, 15, 14, 0.6)",
+        "app_contrast_light": "rgb(226, 121, 105)",
+        "app_contrast_dark": "rgb(112, 170, 135)"
+    },
+    "pink-theme": {
+        "app_light": "rgb(255, 240, 245)",
+        "app_light_transparent": "rgba(255, 240, 245, 0.6)",
+        "app_dark": "rgb(40, 20, 30)",
+        "app_dark_transparent": "rgba(40, 20, 30, 0.6)",
+        "app_contrast_light": "rgb(255, 182, 193)",
+        "app_contrast_dark": "rgb(205, 92, 92)"
     },
     "github-theme": {
         "app_light": "rgb(246, 248, 250)",
@@ -35,5 +43,21 @@
         "app_contrast_light": "rgb(69, 132, 250)",
         "app_contrast_dark": "rgb(31, 111, 235)"
     },
-    "oldSanctuaryKey": "120065-331450-300009-276166-92029-265686-292000-249548-309477-85124-301972-320490-99250-292792-93249-102400-278873-306799-264395-300956-287091-255610-306710-102720-290446-174340-101850-218284-266491-291804-271861-297925-294223-290602-93449-310572-102490-155025-141492-42624-"
+    "oldSanctuaryKey": "120065-331450-300009-276166-92029-265686-292000-249548-309477-85124-301972-320490-99250-292792-93249-102400-278873-306799-264395-300956-287091-255610-306710-102720-290446-174340-101850-218284-266491-291804-271861-297925-294223-290602-93449-310572-102490-155025-141492-42624-",
+    "available_commands": [
+        "change-ID-gender:male | female | other",
+        "change-ID-name:New Name",
+        "exit",
+        "export-keys",
+        "export-notes",
+        "lock",
+        "relaunch",
+        "reload",
+        "set-default-settings",
+        "set-theme:chocolate-mint-theme",
+        "set-theme:gruvbox-theme",
+        "set-theme:pink-theme",
+        "set-theme:github-theme",
+        "set-theme:generate"
+    ]
 }

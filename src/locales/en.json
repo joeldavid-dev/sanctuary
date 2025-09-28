@@ -82,6 +82,7 @@
         "import-data-error": "Error importing data.",
         "import-data-wrong-password": "Incorrect password.",
         "command-not-found": "Command not found.",
+        "command-invalid-args": "Invalid arguments.",
         "create-note-success": "Note created successfully.",
         "create-note-error": "Error creating the note.",
         "update-note-success": "Note updated successfully.",
@@ -89,7 +90,8 @@
         "decrypt-note-success": "Note decrypted successfully.",
         "decrypt-note-error": "Error decrypting the note.",
         "delete-note-success": "Note deleted successfully.",
-        "delete-note-error": "Error deleting the note."
+        "delete-note-error": "Error deleting the note.",
+        "theme-changed": "Theme changed successfully."
     },
     "home-view": {
         "search": "Search...",
