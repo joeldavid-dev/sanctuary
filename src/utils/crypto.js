@@ -104,6 +104,7 @@ async function prepareCard(masterKey, encryptedCard) {
     };
 }
 
+// Función para descifrar una tarjeta preparada, mostrando el usuario y la contraseña descifrados
 async function decryptPreparedCard(masterKey, encryptedCard) {
     const salt = Buffer.from(encryptedCard.salt, 'hex'); // Convertimos el salt de nuevo a binario
     const iv = Buffer.from(encryptedCard.iv, 'hex'); // Convertimos el IV de nuevo a binario
@@ -133,6 +134,7 @@ async function decryptPreparedCard(masterKey, encryptedCard) {
     };
 }
 
+// Función para descifrar una tarjeta completamente
 async function decryptCard(masterKey, encryptedCard) {
     const salt = Buffer.from(encryptedCard.salt, 'hex'); // Convertimos el salt de nuevo a binario
     const iv = Buffer.from(encryptedCard.iv, 'hex'); // Convertimos el IV de nuevo a binario
@@ -181,6 +183,11 @@ async function encryptNote(masterKey, newNote) {
     const iv = crypto.randomBytes(16); // Generamos un IV aleatorio
     const key = deriveKey(masterKey, salt); // Derivamos la clave desde la contraseña
 
+    // Cifrado del nombre
+    const cipherName = crypto.createCipheriv(algorithm, key, iv);
+    let nameEncrypted = cipherName.update(newNote.name, 'utf8', 'hex');
+    nameEncrypted += cipherName.final('hex');
+
     // Cifrado del contenido (si existe)
     let contentEncrypted = null;
     if (newNote.content !== null && newNote.content !== '') {
@@ -191,7 +198,7 @@ async function encryptNote(masterKey, newNote) {
 
     return {
         id: newNote.id,
-        name: newNote.name,
+        name: nameEncrypted,
         content: contentEncrypted,
         color: newNote.color,
         favorite: newNote.favorite,
@@ -200,10 +207,62 @@ async function encryptNote(masterKey, newNote) {
     };
 }
 
+// Función para preparar una nota. Paso intermedio para mostrar los objetos en la UI
+async function prepareNote(masterKey, encryptedNote) {
+    const salt = Buffer.from(encryptedNote.salt, 'hex'); // Convertimos el salt de nuevo a binario
+    const iv = Buffer.from(encryptedNote.iv, 'hex'); // Convertimos el IV de nuevo a binario
+    const key = deriveKey(masterKey, salt); // Derivamos la clave desde la contraseña
+
+    // Descifrado del nombre
+    const decipherName = crypto.createDecipheriv(algorithm, key, iv);
+    let nameDecrypted = decipherName.update(encryptedNote.name, 'hex', 'utf8');
+    nameDecrypted += decipherName.final('utf8');
+
+    // Retornar la nota preparada, solo el nombre descifrado
+    return {
+        id: encryptedNote.id,
+        name: nameDecrypted,
+        content: encryptedNote.content, // Mantenemos el contenido cifrado
+        color: encryptedNote.color,
+        favorite: encryptedNote.favorite,
+        salt: encryptedNote.salt,
+        iv: encryptedNote.iv,
+    };
+}
+
+// Función para descifrar una nota preparada, mostrando el contenido descifrado
+async function decryptPreparedNote(masterKey, encryptedNote) {
+    const salt = Buffer.from(encryptedNote.salt, 'hex'); // Convertimos el salt de nuevo a binario
+    const iv = Buffer.from(encryptedNote.iv, 'hex'); // Convertimos el IV de nuevo a binario
+    const key = deriveKey(masterKey, salt); // Derivamos la clave desde la contraseña
+
+    // Descifrado del contenido (si existe)
+    let contentDecrypted = null;
+    if (encryptedNote.content !== null && encryptedNote.content !== '') {
+        const decipherContent = crypto.createDecipheriv(algorithm, key, iv);
+        contentDecrypted = decipherContent.update(encryptedNote.content, 'hex', 'utf8');
+        contentDecrypted += decipherContent.final('utf8');
+    }
+
+    return {
+        id: encryptedNote.id,
+        name: encryptedNote.name,
+        content: contentDecrypted,
+        color: encryptedNote.color,
+        favorite: encryptedNote.favorite,
+    };
+}
+
+// Función para descifrar una nota completamente
 async function decryptNote(masterKey, encryptedNote) {
     const salt = Buffer.from(encryptedNote.salt, 'hex'); // Convertimos el salt de nuevo a binario
     const iv = Buffer.from(encryptedNote.iv, 'hex'); // Convertimos el IV de nuevo a binario
     const key = deriveKey(masterKey, salt); // Derivamos la clave desde la contraseña
+
+    // Descifrado del nombre
+    const decipherName = crypto.createDecipheriv(algorithm, key, iv);
+    let nameDecrypted = decipherName.update(encryptedNote.name, 'hex', 'utf8');
+    nameDecrypted += decipherName.final('utf8');
 
     // Descifrado del contenido (si existe)
     let contentDecrypted = null;
@@ -215,7 +274,7 @@ async function decryptNote(masterKey, encryptedNote) {
 
     return {
         id: encryptedNote.id,
-        name: encryptedNote.name,
+        name: nameDecrypted,
         content: contentDecrypted,
         color: encryptedNote.color,
         favorite: encryptedNote.favorite,
@@ -235,4 +294,4 @@ function decrypt(encryptedData, masterKey, saltHex, ivHex) {
     return decrypted;
 }
 
-module.exports = { hashPassword, verifyPassword, encryptCard, prepareCard, decryptPreparedCard, decryptCard, encryptNote, decryptNote };
+module.exports = { hashPassword, verifyPassword, encryptCard, prepareCard, decryptPreparedCard, decryptCard, encryptNote, prepareNote, decryptPreparedNote, decryptNote };

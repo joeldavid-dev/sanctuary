@@ -76,28 +76,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     setTranslations(translations);
 
     // Escuchar el progreso de preparación de tarjetas
-    window.electronAPI.on('prepare-cards-progress', (progress) => {
+    window.electronAPI.on('prepare-elements-progress', (progress) => {
         placeholderLoading.textContent = `${translations['placeholder-loading']} ${progress}%`;
     });
 
     // Funciones del contenedor principal ====================================================
     // Traer los datos al iniciar la vista
-    async function getPreparedCards() {
-        const result = await window.electronAPI.getPreparedCards();
+    async function getPreparedElements() {
+        const result = await window.electronAPI.getPreparedElements();
         if (result.success) {
-            preparedCards = result.data; // Actualizar la lista de tarjetas preparadas
+            preparedCards = result.preparedCards; // Actualizar la lista de tarjetas preparadas
+            preparedNotes = result.preparedNotes; // Actualizar la lista de notas preparadas
         } else {
             showToast(result.message, true);
             preparedCards = []; // Lista vacía si falla
-        }
-    }
-
-    async function getPreparedNotes() {
-        const result = await window.electronAPI.getPreparedNotes();
-        if (result.success) {
-            preparedNotes = result.data; // Actualizar la lista de notas preparadas
-        } else {
-            showToast(result.message, true);
             preparedNotes = []; // Lista vacía si falla
         }
     }
@@ -192,8 +184,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     async function loadContent() {
         showPlaceholderSpinner(); // Mostrar spinner de carga
-        await getPreparedCards(); // Cargar las tarjetas preparadas
-        await getPreparedNotes(); // Cargar las notas preparadas
+        await getPreparedElements(); // Cargar los elementos preparados
         hidePlaceholderSpinner(); // Ocultar spinner de carga
         showKeysView(); // Mostrar la vista de inicio
         // Seleccionar el radioboton de llaves
@@ -342,7 +333,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 selectedElement = await window.electronAPI.decryptPreparedCard(selectedPreparedElement);
             }
             else if (mode === 'notes') {
-                selectedElement = await window.electronAPI.decryptNote(selectedPreparedElement);
+                selectedElement = await window.electronAPI.decryptPreparedNote(selectedPreparedElement);
             }
 
             // Si el elemento se descifró correctamente, mostrar el modal de edición
@@ -491,7 +482,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 // Cambiar el texto del contenido al hacer clic en el botón
                 if (contentView.textContent === mask) {
                     const preparedNote = actualPreparedElements.find(note => note.id == noteID);
-                    const note = await window.electronAPI.decryptNote(preparedNote);
+                    const note = await window.electronAPI.decryptPreparedNote(preparedNote);
                     if (note.success) {
                         contentView.textContent = note.data.content;
                     } else {

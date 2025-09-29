@@ -573,58 +573,17 @@ ipcMain.handle('delete-card', async (event, id) => {
     }
 });
 
-// Función para preparar (desencriptar nombre y web) varias tarjetas usando un worker
-function startPreparingElements(encryptedCards, masterKey) {
-    return new Promise((resolve, reject) => {
-        // Lanzamiento del worker
-        writeLog('Iniciando worker para preparar tarjetas...');
-        const worker = new Worker(path.join(__dirname, "workers", "prepareElements-worker.js"),
-            { workerData: { encryptedCards, masterKey } });
-
-        worker.on("message", (msg) => {
-            if (msg.type === "progress") {
-                mainWindow.webContents.send('prepare-cards-progress', msg.progress);
-            } else if (msg.type === "done") {
-                writeLog('Worker ha terminado de preparar las tarjetas.');
-                resolve(msg.preparedCards);
-                worker.terminate();
-            }
-        });
-        // imprimir errores del worker
-        worker.on("error", (error) => {
-            writeLog('Error en el worker de preparar tarjetas:' + error.message);
-            reject(error);
-        });
-
-        worker.on("exit", (code) => {
-            if (code !== 0) reject(new Error(`El worker se detuvo con codigo de salida: ${code}`));
-        });
-    });
-}
-
-// Obtener todas las tarjetas de la base de datos y las prepara (desencripta nombre y web)
-ipcMain.handle('get-prepared-cards', async () => {
-    try {
-        const encryptedCards = await db.getAllCards();
-        // Preparar las tarjetas (desencriptar nombre y web) usando un worker
-        const preparedCards = await startPreparingElements(encryptedCards, masterKey);
-        return { success: true, data: preparedCards };
-    } catch (error) {
-        writeLog('Error al obtener todas las tarjetas:' + error.message);
-        return { success: false, error: error.message };
-    }
-});
-
 // Crear una nueva nota
 ipcMain.handle('create-note', async (event, newNote) => {
     try {
         // Encriptar los datos de la nota
         const encryptedNote = await cr.encryptNote(masterKey, newNote);
         const result = await db.createNote(encryptedNote);
+        const preparedNote = await cr.prepareNote(masterKey, result);
         return {
             success: true,
             message: mainTranslations['create-note-success'],
-            data: result,
+            data: preparedNote,
         };
     } catch (error) {
         writeLog('Error al crear la nota:' + error.message);
@@ -642,16 +601,36 @@ ipcMain.handle('update-note', async (event, id, updatedNote) => {
         // Encriptar los datos de la nota actualizada
         const encryptedNote = await cr.encryptNote(masterKey, updatedNote);
         const result = await db.updateNote(id, encryptedNote);
+        const preparedNote = await cr.prepareNote(masterKey, result);
         return {
             success: true,
             message: mainTranslations['update-note-success'],
-            data: result,
+            data: preparedNote,
         };
     } catch (error) {
         writeLog('Error al actualizar la nota:' + error.message);
         return {
             success: false,
             message: mainTranslations['update-note-error'],
+            error: error.message,
+        };
+    }
+});
+
+// Desencriptar una nota preparada
+ipcMain.handle('decrypt-prepared-note', async (event, encryptedNote) => {
+    try {
+        const decryptedNote = await cr.decryptPreparedNote(masterKey, encryptedNote);
+        return {
+            success: true,
+            message: mainTranslations['decrypt-note-success'],
+            data: decryptedNote,
+        };
+    } catch (error) {
+        writeLog('Error al desencriptar la nota preparada:' + error.message);
+        return {
+            success: false,
+            message: mainTranslations['decrypt-note-error'],
             error: error.message,
         };
     }
@@ -696,13 +675,49 @@ ipcMain.handle('delete-note', async (event, id) => {
     }
 });
 
-// Obtener todas las notas de la base de datos
-ipcMain.handle('get-prepared-notes', async () => {
+// Función para preparar (desencriptar nombre y web) varias tarjetas usando un worker
+function startPreparingElements(encryptedCards, encryptedNotes, masterKey) {
+    return new Promise((resolve, reject) => {
+        // Lanzamiento del worker
+        writeLog('Iniciando worker para preparar elementos...');
+        const worker = new Worker(path.join(__dirname, "workers", "prepareElements-worker.js"),
+            { workerData: { encryptedCards, encryptedNotes, masterKey } });
+
+        worker.on("message", (msg) => {
+            if (msg.type === "progress") {
+                mainWindow.webContents.send('prepare-elements-progress', msg.progress);
+            } else if (msg.type === "done") {
+                writeLog('Worker ha terminado de preparar los elementos.');
+                resolve({ cards: msg.cards, notes: msg.notes });
+                worker.terminate();
+            }
+        });
+        // imprimir errores del worker
+        worker.on("error", (error) => {
+            writeLog('Error en el worker de preparar elementos:' + error.message);
+            reject(error);
+        });
+
+        worker.on("exit", (code) => {
+            if (code !== 0) reject(new Error(`El worker se detuvo con codigo de salida: ${code}`));
+        });
+    });
+}
+
+// Obtener todas las tarjetas y notas preparadas (desencriptar nombre y web)
+ipcMain.handle('get-prepared-elements', async () => {
     try {
+        const encryptedCards = await db.getAllCards();
         const encryptedNotes = await db.getAllNotes();
-        return { success: true, data: encryptedNotes };
+        // Preparar las tarjetas (desencriptar nombre y web) usando un worker
+        const preparedElements = await startPreparingElements(encryptedCards, encryptedNotes, masterKey);
+        return {
+            success: true,
+            preparedCards: preparedElements.cards,
+            preparedNotes: preparedElements.notes
+        };
     } catch (error) {
-        writeLog('Error al obtener todas las notas:' + error.message);
+        writeLog('Error al obtener elementos preparados:' + error.message);
         return { success: false, error: error.message };
     }
 });
