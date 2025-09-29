@@ -63,6 +63,8 @@
         "createID-error": "Error creating the ID.",
         "updateID-success": "ID updated successfully.",
         "updateID-error": "Error updating the ID.",
+        "deleteID-success": "ID deleted successfully.",
+        "deleteID-error": "Error deleting the ID.",
         "change-password-success": "Password changed successfully.",
         "change-password-error": "Error changing the password.",
         "verify-password-success": "The password is correct.",
@@ -152,6 +154,13 @@
         "title-mode-note": "Delete Note",
         "message-mode-note": "Do you really want to delete the '{name}' note? Be careful, this action is irreversible!",
         "delete-note": "Delete note"
+    },
+    "deleteID": {
+        "title": "Delete ID",
+        "message": "This action is irreversible and will delete all your data, including keys and notes.",
+        "password": "Enter your password to continue:",
+        "cancel": "Cancel",
+        "delete-ID": "Delete ID"
     },
     "settings": {
         "edit-ID": "Edit your ID information",

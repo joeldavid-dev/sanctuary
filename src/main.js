@@ -344,6 +344,29 @@ ipcMain.handle('updateID', async (event, name, gender) => {
     return await updateID(name, gender);
 });
 
+ipcMain.handle('deleteID', async (event, password) => {
+    // Verificar la contraseña obtenida con la del usuario guardado.
+    const passwordResult = await verifyPassword(password);
+    if (passwordResult.verified) {
+        try {
+            const result = await db.deleteAll();
+            if (result.success) {
+                resetSettings();
+                writeLog('Usuario eliminado. Reiniciando la aplicacion...');
+                return { success: true, message: mainTranslations['deleteID-success'] };
+            } else {
+                return { success: false, message: mainTranslations['deleteID-error'] };
+            }
+        } catch (error) {
+            writeLog('Error al eliminar el usuario:' + error.message);
+            return { success: false, message: mainTranslations['deleteID-error'] };
+        }
+    } else {
+        // La contraseña no es correcta
+        return { success: false, message: passwordResult.message };
+    }
+});
+
 // Funcion para cambiar la contraseña de cifrado de tarjetas y notas
 async function changePassword(oldPassword, newPassword) {
     // Verrificar que oldPassword es correcta
@@ -437,7 +460,7 @@ ipcMain.handle('get-user-status', async () => {
         } else return false;
     }
     catch (error) {
-        writeLog('Error al obtener el usuario:' + error.message);
+        writeLog('Error al obtener el estatus del usuario:' + error.message);
         return false;
     }
 });

@@ -8,7 +8,7 @@ import { setTranslations, translate } from '../utils/translate.js';
 export function showDeleteModal(element, mode) {
     return new Promise(async (resolve, reject) => {
         // Constantes y variables auxiliares
-        const translations = await window.electronAPI.getTranslations('delete');
+        const translations = await window.electronAPI.getTranslations('delete-element');
         setTranslations(translations);
         // Elementos HTML ya existentes que se usarán
         const modalWarning = document.getElementById('modal-warning');

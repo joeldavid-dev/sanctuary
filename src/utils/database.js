@@ -99,6 +99,26 @@ function updateUser(userID, name, gender, hash) {
     });
 }
 
+// Función para eliminar el usuario y todos sus datos
+function deleteAll() {
+    return new Promise((resolve, reject) => {
+        const query = `
+            BEGIN TRANSACTION;
+            DELETE FROM user;
+            DELETE FROM cardsData;
+            DELETE FROM notesData;
+            COMMIT;`;
+            
+        db.exec(query, function (err) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve({ success: true });
+            }
+        });
+    });
+}
+
 // Función para crear una tarjeta
 function createCard(card) {
     return new Promise((resolve, reject) => {
@@ -263,4 +283,4 @@ function getAllNotes() {
     });
 }
 
-module.exports = { addUser, getUser, updateUser, createCard, deleteCard, updateCard, getAllCards, createNote, deleteNote, updateNote, getAllNotes };
+module.exports = { addUser, getUser, updateUser, deleteAll, createCard, deleteCard, updateCard, getAllCards, createNote, deleteNote, updateNote, getAllNotes };

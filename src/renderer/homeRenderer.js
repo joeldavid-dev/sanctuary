@@ -7,6 +7,7 @@ import { showDeleteModal } from './components/modalDelete.js'; // Importar el m�
 import { showIDModal } from './components/modalID.js';
 import { createSettingsPage } from './components/settingsPage.js';
 import { createOptionElement } from './components/commandOption.js';
+import { showDeleteIDModal } from './components/modalDeleteID.js';
 
 // Barra de título
 const minimize = document.getElementById('minimize');
@@ -555,6 +556,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         // Clic en botón exportar llaves
         else if (buttonPressed.id === 'export-keys') {
+        }
+
+        // Clic en botón eliminar ID
+        else if (buttonPressed.id === 'delete-ID') {
+            const confirm = await showDeleteIDModal();
+            if (confirm.success) {
+                window.electronAPI.executeCommand('relaunch');
+            } else if (confirm.error) showToast(confirm.error, true);
         }
     });
     // Función para ejecutar comandos

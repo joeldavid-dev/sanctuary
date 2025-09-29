@@ -1,17 +1,10 @@
 document.addEventListener('DOMContentLoaded', async () => {
     (async () => {
-        try {
-            const status = await window.electronAPI.getUserStatus();
-            console.log("Datos obtenidos:", status); // Depuración
+        const status = await window.electronAPI.getUserStatus();
+        let ruta = status ? 'src/views/lock.html' : 'src/views/id.html';
 
-            let ruta = status ? 'src/views/lock.html' : 'src/views/id.html';
-            console.log("Ruta seleccionada:", ruta); // Depuración
-
-            setTimeout(() => {
-                window.electronAPI.changeView(ruta);
-            }, 3000);
-        } catch (error) {
-            console.error("Error al obtener el estado de la base de datos:", error);
-        }
+        setTimeout(() => {
+            window.electronAPI.changeView(ruta);
+        }, 3000);
     })();
 });

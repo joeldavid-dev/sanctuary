@@ -663,6 +663,21 @@ No tiene borde, al pasar el mouse por encima solo aparece el borde. */
     border-color: var(--app_dark);
 }
 
+.input-warning {
+    text-align: center;
+    color: white;
+    background-color: red;
+    border: 1px solid white;
+    /* oculta el borde de seleccion por defecto */
+    outline: none;
+    height: 30px;
+}
+
+.input-warning:focus {
+    background-color: white;
+    color: black;
+}
+
 /* Botones de iconos únicamente. Tiene un tamaño fijo para evitar movimiento al pasar el mouse. */
 .ico-btn {
     width: 30px;
