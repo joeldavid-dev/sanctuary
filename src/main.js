@@ -824,6 +824,18 @@ ipcMain.handle('execute-command', async (event, command) => {
     }
 });
 
+// Solicitar licencia
+ipcMain.handle('get-license', (event) => {
+    const licensePath = path.join(__dirname, 'assets', 'LICENSE');
+    if (fs.existsSync(licensePath)) {
+        const licenseText = fs.readFileSync(licensePath, 'utf-8');
+        return licenseText;
+    } else {
+        writeLog('Error al obtener la licencia: LICENSE no existe.');
+        return null;
+    }
+});
+
 // Funcion que genera un archivo log con informacion de debug
 function writeLog(info) {
     const timeStamp = new Date().toISOString();

@@ -14,7 +14,7 @@ export async function createSettingsPage(superuser) {
 
 function getSettingsHTML(translations, superuser) {
     return `
-        <div class="vertical-flex big-spaced with-70">
+        <div class="vertical-flex big-spaced settings-width">
             <div class="vertical-elem-area centered">
                 <div class="profile-pic-container">
                     <p>${superuser.name.charAt(0).toUpperCase()}</p>
@@ -25,18 +25,23 @@ function getSettingsHTML(translations, superuser) {
             <div class="div-options vertical-elem-area narrow-padding external-radius-2">
                 <button id="edit-ID" class="option-btn minimal-rounded left-text">${translations['edit-ID']}</button>
                 <button id="edit-password" class="option-btn minimal-rounded left-text">${translations['edit-password']}</button>
+                <!--
                 <button id="export-keys" class="option-btn minimal-rounded left-text">${translations['export-keys']}</button>
                 <button id="export-notes" class="option-btn minimal-rounded left-text">${translations['export-notes']}</button>
+                -->
                 <button id="delete-ID" class="option-btn-warning minimal-rounded left-text">${translations['delete-ID']}</button>
             </div>
 
+            <!--
             <div class="vertical-elem-area">
                 <p class="bold">${translations['language']}</p>
                 <div class="div-options vertical-elem-area narrow-padding external-radius-2">
                     <button id="app-language" class="option-btn minimal-rounded left-text">${translations['app-language']}</button>
                 </div>
             </div>
+            -->
 
+            <!--
             <div class="vertical-elem-area">
                 <p class="bold">${translations['customization']}</p>
                 <div class="div-options vertical-elem-area narrow-padding external-radius-2">
@@ -44,13 +49,16 @@ function getSettingsHTML(translations, superuser) {
                     <p class="minimum-text centered-text">${translations['background-motion-info']}</p>
                 </div>
             </div>
+            -->
 
             <div class="vertical-elem-area">
                 <p class="bold">${translations['about']}</p>
                 <div class="div-options vertical-elem-area narrow-padding external-radius-2">
+                    <!--
                     <button id="app-language" class="option-btn minimal-rounded left-text">${translations['view-info-about']}</button>
                     <button id="app-language" class="option-btn minimal-rounded left-text">${translations['view-version-info']}</button>
-                    <button id="app-language" class="option-btn minimal-rounded left-text">${translations['view-license']}</button>
+                    -->
+                    <button id="view-license" class="option-btn minimal-rounded left-text">${translations['view-license']}</button>
                 </div>
             </div>
         </div>

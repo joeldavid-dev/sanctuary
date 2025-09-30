@@ -72,17 +72,17 @@
             <p class="small-text version" data-i18n="extra_info"></p>
         </div>
 
-        <!-- Modal de información acerca de -->
-        <div id="modal-about" class="modal blur">
-            <div class="modal-content normal-rounded">
+        <!-- Modal -->
+        <div id="modal" class="modal blur">
+            <div id="modal-content" class="modal-content scrolleable">
                 <div class="modal-header normal-padding colored-blur">
-                    <h2>Acerca de Codaby Sanctuary</h2>
-                    <button id="close-about" class="ico-btn">
+                    <h2 id="modal-title"></h2>
+                    <button id="close-modal" class="ico-btn">
                         <img src="../assets/ico/feather/x-circle.svg" class="normal-icon">
                     </button>
                 </div>
-                <div id="about-body" class="normal-padding">
-                </div>
+                <!-- Contenido del modal -->
+                <div id="modal-body"></div>
             </div>
         </div>
     </div>

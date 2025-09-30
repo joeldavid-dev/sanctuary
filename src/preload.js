@@ -45,4 +45,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
     getSetting: (key) => ipcRenderer.invoke('get-setting', key),
     getConstants: () => ipcRenderer.invoke('get-constants'),
     executeCommand: (command) => ipcRenderer.invoke('execute-command', command),
+    getLicense: () => ipcRenderer.invoke('get-license'),
 });

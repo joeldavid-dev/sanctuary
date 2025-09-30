@@ -8,6 +8,7 @@ import { showIDModal } from './components/modalID.js';
 import { createSettingsPage } from './components/settingsPage.js';
 import { createOptionElement } from './components/commandOption.js';
 import { showDeleteIDModal } from './components/modalDeleteID.js';
+import { showLicenseModal } from './components/modalLicense.js';
 
 // Barra de título
 const minimize = document.getElementById('minimize');
@@ -80,7 +81,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         placeholderLoading.textContent = `${translations['placeholder-loading']} ${progress}%`;
     });
 
-    // Funciones del contenedor principal ====================================================
+    // Funciones del contenedor principal ========================================================
     // Traer los datos al iniciar la vista
     async function getPreparedElements() {
         const result = await window.electronAPI.getPreparedElements();
@@ -171,7 +172,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         deleteElementBody.classList.add('vertical-flex');
     }
 
-    // Funciones de estado de la vista ============================================================
+    // Funciones de estado de la vista ===========================================================
     function showPlaceholderSpinner() {
         bottonBar.style.display = 'none'; // Ocultar la barra de botones
         placeholder.style.display = 'flex'; // Mostrar el spinner de carga
@@ -305,7 +306,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         clearSearch();
     });
 
-    //Funciones de los botones de la bottonbar ====================================================
+    //Funciones de los botones de la bottonbar ===================================================
     // Clic en el botón para crar un nuevo elemento
     newElement.addEventListener('click', async () => {
         let confirm;
@@ -404,7 +405,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
-    // Main content ..............................................................
+    // Main content ==============================================================================
     optionsBar.addEventListener('click', async (event) => {
         const buttonPressed = event.target.closest('button');
         if (!buttonPressed) return; // Si no se hizo clic en un botón, salir
@@ -519,7 +520,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
-    // Página de configuraciones .................................................
+    // Página de configuraciones =================================================================
     settingsArea.addEventListener('click', async (event) => {
         const buttonPressed = event.target.closest('button');
         if (!buttonPressed) return; // Si no se hizo clic en un botón, salir
@@ -556,8 +557,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                 window.electronAPI.executeCommand('relaunch');
             } else if (confirm.error) showToast(confirm.error, true);
         }
+
+        // Clic en botón ver licencia
+        else if (buttonPressed.id === 'view-license') {
+            await showLicenseModal();
+        }
     });
-    // Función para ejecutar comandos
+
+    // Función para ejecutar comandos ============================================================
     async function executeCommand(command) {
         // ejecutar el comando correspondiente
         const result = await window.electronAPI.executeCommand(command);
@@ -583,7 +590,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             toast.remove();
         }, 5000); // 5 segundos de duración total
     }
-
+    // Aplicar configuraciones ===================================================================
     async function applySettings() {
         // Actualizar la información del superusuario
         superuser = await window.electronAPI.getUserInfo();

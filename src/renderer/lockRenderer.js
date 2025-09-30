@@ -1,3 +1,4 @@
+import { showLicenseModal } from './components/modalLicense.js';
 import { setTranslations, translate } from './utils/translate.js';
 const now = new Date();
 const hours = now.getHours();
@@ -7,10 +8,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const minimize = document.getElementById('minimize');
     const maximize = document.getElementById('maximize');
     const close = document.getElementById('close');
-    const modalAbout = document.getElementById('modal-about');
-    const aboutBody = document.getElementById('about-body');
-    const openModal = document.getElementById('open-about');
-    const closeModal = document.getElementById('close-about');
+    const aboutBtn = document.getElementById('open-about');
     const greeting = document.getElementById('greeting');
     const passLabel = document.getElementById('pass-label');
     const inputPassword = document.getElementById('password');
@@ -86,22 +84,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     // Clic en el botón para abrir el modal de acerca de
-    openModal.addEventListener('click', async () => {
-        // Abrir modal
-        modalAbout.style.display = 'block';
-        // Cargar contenido externo con fetch()
-        try {
-            const response = await fetch('about.html');
-            const html = await response.text();
-            aboutBody.innerHTML = html;
-        } catch (error) {
-            aboutBody.innerHTML = '<p>//:)</p>';
-        }
-    });
-
-    // Clic en el botón para cerrar el modal de acerca de
-    closeModal.addEventListener('click', () => {
-        modalAbout.style.display = 'none';
+    aboutBtn.addEventListener('click', async () => {
+        await showLicenseModal();
     });
 
     async function applySettings() {

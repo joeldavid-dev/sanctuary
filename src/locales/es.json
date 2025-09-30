@@ -12,7 +12,7 @@
         "wrong-password-last": "Contraseña incorrecta. Este es tu último intento",
         "locked": "Ya no tienes más intentos. La aplicación está temporalmente bloqueada",
         "notification_btn": "Clic para leer",
-        "extra_info": "Codaby | Sanctuary 5 Eridani para Windows"
+        "extra_info": "Codaby | Sanctuary Beta para Windows"
     },
     "id": {
         "title": "Sanctuary ID",
@@ -178,5 +178,8 @@
         "view-info-about": "Ver información acerca de Codaby Sanctuary",
         "view-version-info": "Ver novedades de la versión",
         "view-license": "Ver licencia"
+    },
+    "license": {
+        "title": "LICENCIA"
     }
 }
