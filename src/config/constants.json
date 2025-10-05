@@ -1,16 +1,55 @@
 {
+    "about": {
+        "appName": "Sanctuary Beta",
+        "brand": "Codaby",
+        "version": "0.0.3",
+        "versionName": "Andromeda",
+        "myLink": "https://joeldavid-dev.netlify.app/#"
+    },
     "languages": [
         "en",
         "es"
     ],
+    "icons": {
+        "author": "Cole Bemis",
+        "url": "https://colebemis.com/"
+    },
     "backgrounds": [
-        "Kaffeesüchtig_Pixabay",
-        "Kristian_Aleksandrov_Pixabay",
-        "Maximilian_Nemec_Pixabay",
-        "Pablo_May_Pixabay",
-        "Tung_Lam_Pixabay",
-        "Yakup_Ipek_Pixabay"
+        {
+            "name": "Kaffeesüchtig_Pixabay",
+            "author": "affeesüchtig",
+            "platform": "Pixabay"
+        },
+        {
+            "name": "Maximilian_Nemec_Pixabay",
+            "author": "Maximilian Nemec",
+            "platform": "Pixabay"
+        },
+        {
+            "name": "Kristian_Aleksandrov_Pixabay",
+            "author": "Kristian Aleksandrov",
+            "platform": "Pixabay"
+        },
+        {
+            "name": "Pablo_May_Pixabay",
+            "author": "Pablo May",
+            "platform": "Pixabay"
+        },
+        {
+            "name": "Tung_Lam_Pixabay",
+            "author": "Tung Lam",
+            "platform": "Pixabay"
+        },
+        {
+            "name": "Yakup_Ipek_Pixabay",
+            "author": "Yakup Ipek",
+            "platform": "Pixabay"
+        }
     ],
+    "illustrations": {
+        "author": "Autor de ilustraciones",
+        "url": "---"
+    },
     "gruvbox-theme": {
         "app_light": "rgb(249, 245, 215)",
         "app_light_transparent": "rgba(249, 245, 215, 0.6)",

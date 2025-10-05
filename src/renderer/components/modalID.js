@@ -10,6 +10,7 @@ export function showIDModal(mode, superuser) {
         // Constantes y variables auxiliares
         const translations = await window.electronAPI.getTranslations('id');
         const warningTranslations = await window.electronAPI.getTranslations('warning');
+        const constants = await window.electronAPI.getConstants();
         setTranslations(translations);
         let isImporting = false;
         // Elementos HTML ya existentes que se usarán
@@ -40,7 +41,7 @@ export function showIDModal(mode, superuser) {
 
         // Establecer valores dependiendo del modo
         modalContent.style.width = '320px'; // Establecer el ancho de modal a 320px
-        modalTitle.textContent = translations['title'];
+        modalTitle.textContent = translate('title', { appName: constants.about.appName });
         if (mode === 'create') {
             subtitle.textContent = translations['hello'];
             information.textContent = translations['welcome'];

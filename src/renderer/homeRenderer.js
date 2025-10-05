@@ -9,6 +9,7 @@ import { createSettingsPage } from './components/settingsPage.js';
 import { createOptionElement } from './components/commandOption.js';
 import { showDeleteIDModal } from './components/modalDeleteID.js';
 import { showLicenseModal } from './components/modalLicense.js';
+import { showAboutModal } from './components/modalAbout.js';
 
 // Barra de título
 const minimize = document.getElementById('minimize');
@@ -376,13 +377,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Acciones de elementos mediante delegación de eventos ======================================
     // Sidebar......................................................................
-    sidebar.addEventListener('click', (event) => {
+    sidebar.addEventListener('click', async (event) => {
         const buttonPressed = event.target.closest('button');
         if (!buttonPressed) return; // Si no se hizo clic en un botón, salir
 
         // Clic en botón bloquear
         if (buttonPressed.id === 'lock-btn') {
             window.electronAPI.changeView('src/views/lock.html');
+        }
+
+        // Clic en botón Acerca de
+        if (buttonPressed.id === 'App-btn') {
+            await showAboutModal();
         }
     });
 
@@ -556,6 +562,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (confirm.success) {
                 window.electronAPI.executeCommand('relaunch');
             } else if (confirm.error) showToast(confirm.error, true);
+        }
+
+        // Clic en botón acerca de
+        else if (buttonPressed.id === 'view-info-about') {
+            await showAboutModal();
         }
 
         // Clic en botón ver licencia

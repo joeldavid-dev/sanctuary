@@ -1,5 +1,4 @@
 {
-    "app-name": "Codaby Sanctuary",
     "lock-view": {
         "brand-name": "Codaby",
         "greeting-early-morning": "Time to sleep, {name}! Sweet dreams!",
@@ -12,12 +11,12 @@
         "wrong-password-last": "Wrong password. This is your final try",
         "locked": "No more attempts left. The app is temporarily locked",
         "notification_btn": "Clic to read",
-        "extra_info": "Codaby | Sanctuary Beta for Windows"
+        "extra_info": "{brand} | {appName} {version} for Windows"
     },
     "id": {
-        "title": "Sanctuary ID",
+        "title": "{appName} ID",
         "hello": "Hello",
-        "welcome": "Welcome to Sanctuary! Let’s start by creating your ID.",
+        "welcome": "Welcome to {appName}! Let’s start by creating your ID.",
         "name": "First name:",
         "current-password": "Current Password:",
         "new-password": "Password:",
@@ -38,7 +37,7 @@
         "edit-data-info": "Update your ID information below.",
         "edit-password-subtitle": "Change Password",
         "edit-password-info": "Enter your current password and a new password below.",
-        "gender-help": "This information is only used to personalize how Sanctuary talks to you and to make your experience even better.",
+        "gender-help": "This information is only used to personalize how {appName} talks to you and to make your experience even better.",
         "start-change-password": "Changing password...",
         "change-cards-password": "Encrypting keys...",
         "change-notes-password": "Encrypting notes...",
@@ -146,7 +145,7 @@
         "preview": "Preview:",
         "done": "Done"
     },
-    "delete": {
+    "delete-element": {
         "title-mode-key": "Delete Key",
         "message-mode-key": "Do you really want to delete the '{name}' key? Be careful, this action is irreversible!",
         "cancel": "Cancel",
@@ -175,11 +174,30 @@
         "background-motion": "Background motion",
         "background-motion-info": "Background motion may affect performance on some devices.",
         "about": "About",
-        "view-info-about": "View information about Codaby Sanctuary",
+        "view-info-about": "View information about {appName}",
         "view-version-info": "View what's new in this version",
         "view-license": "View license"
     },
     "license": {
         "title": "LICENSE"
+    },
+    "about": {
+        "title": "About",
+        "version": "Version {version} {versionName} for Windows.",
+        "description": "{appName} is an independent software project designed to securely store passwords and notes.",
+        "fun-fact": "The Andromeda Galaxy is moving toward us at about 110 km per second. That means that in 4 to 5 billion years, the Milky Way and Andromeda will collide and merge into a new giant galaxy, which astronomers call Milkomeda or Lactomeda.",
+        "made-in": "Coded in Mexico.",
+        "about-me-title": "About me...",
+        "my-info": "Hi, I’m Joel David, a Computer Engineering graduate from the National Autonomous University of Mexico. I enjoy creating useful, reliable, and easy-to-use tools for everyone. You can see more of my projects at:",
+        "my-link": "My projects page",
+        "icons-title": "Icons:",
+        "icons-info": "Icons designed by {author}. You can find more of their work on their website:",
+        "icons-link": "{author}'s page",
+        "wallpapers-title": "Wallpapers:",
+        "Wallpaper-info": "Created by {author} on {platform}.",
+        "illustrations-title": "Illustrations:",
+        "illustrations-info": "Illustrations created by {author}, find more of their work on their website:",
+        "illustrations-link": "{author}'s page",
+        "copyright": "{appName}  Copyright (C) 2025  Joel David Cruz Zamora."
     }
 }

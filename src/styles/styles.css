@@ -206,9 +206,12 @@ p {
     cursor: text;
 }
 
-pre, .preserve {
-  white-space: pre-wrap; /* respeta saltos de línea y espacios */
-  word-wrap: break-word; /* hace que no se desborde en pantallas pequeñas */
+pre,
+.preserve {
+    white-space: pre-wrap;
+    /* respeta saltos de línea y espacios */
+    word-wrap: break-word;
+    /* hace que no se desborde en pantallas pequeñas */
 }
 
 /* Redondeo de elementos grandes */
@@ -486,6 +489,14 @@ pre, .preserve {
     border-color: var(--app_dark);
 }
 
+.action-btn:hover img {
+    filter: invert(1);
+}
+
+.action-btn img {
+    transition: filter 0.2s ease;
+}
+
 .action-btn:disabled {
     font-size: 12px;
     background: transparent;
@@ -517,9 +528,17 @@ pre, .preserve {
     cursor: pointer;
 }
 
+.option-btn img {
+    transition: filter 0.1s ease;
+}
+
 .option-btn:hover {
     background-color: var(--app_dark);
     color: var(--app_light);
+}
+
+.option-btn:hover img {
+    filter: invert(1);
 }
 
 .option-btn2 {
@@ -540,12 +559,19 @@ pre, .preserve {
     padding: var(--minimal-margin);
     transition: 0.1s;
     cursor: pointer;
-    color: red;
+}
+
+.option-btn-warning img {
+    transition: filter 0.1s ease;
 }
 
 .option-btn-warning:hover {
     background-color: red;
     color: white;
+}
+
+.option-btn-warning:hover img {
+    filter: invert(1);
 }
 
 /* Botón transparente para elementos que están sobre un fondo colorido.
@@ -742,6 +768,10 @@ No tiene borde, al pasar el mouse por encima solo aparece el borde. */
     border-radius: 50%;
     background-color: var(--app_contrast_light);
 }
+.big-icon {
+    width: 70px;
+    height: 70px;
+}
 
 .normal-icon {
     width: 20px;
@@ -923,12 +953,12 @@ input:checked+.slider::before {
 }
 
 .scrolleable::-webkit-scrollbar {
-    width: 8px;
+    width: 4px;
 }
 
 .scrolleable::-webkit-scrollbar-thumb {
     background: var(--neutral_grey);
-    border-radius: 4px;
+    border-radius: 2px;
 }
 
 .scrolleable::-webkit-scrollbar-track {
@@ -937,6 +967,10 @@ input:checked+.slider::before {
 
 .no-scrolleable {
     overflow: hidden;
+}
+
+.hidden-scrollbar::-webkit-scrollbar {
+    display: none;
 }
 
 .normal-margin {
@@ -1031,13 +1065,13 @@ input:checked+.slider::before {
 }
 
 .spinner {
-  width: 30px;
-  height: 30px;
-  border: 4px solid #ccc;
-  border-top-color: #333;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin: 20px auto;
+    width: 30px;
+    height: 30px;
+    border: 4px solid #ccc;
+    border-top-color: #333;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
 }
 
 /* Animaciones */
@@ -1096,7 +1130,9 @@ input:checked+.slider::before {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* Estilos específicos para modo oscuro */
@@ -1112,6 +1148,10 @@ input:checked+.slider::before {
 
     .div-options {
         background-color: var(--dark_gray);
+    }
+
+    .transparent-btn img {
+        filter: invert(1);
     }
 
     .transparent-btn:hover {
@@ -1136,24 +1176,16 @@ input:checked+.slider::before {
         box-shadow: 0px 0px 60px 8px rgba(255, 255, 255, 0.2);
     }
 
+    .ico-btn img {
+        filter: invert(1);
+    }
+
     .ico-btn:hover {
         border: solid 1px var(--app_light);
     }
 
     .floating-container {
         box-shadow: 0px 0px 60px 8px rgba(255, 255, 255, 0.2);
-    }
-
-    .normal-icon {
-        filter: invert(1);
-    }
-
-    .mini-icon {
-        filter: invert(1);
-    }
-
-    .large-icon {
-        filter: invert(1);
     }
 
     .colored-blur {
@@ -1186,6 +1218,10 @@ input:checked+.slider::before {
         filter: invert(0);
     }
 
+    .transparent-ico-radio img {
+        filter: invert(1);
+    }
+
     .transparent-ico-radio:has(input:checked) {
         background-color: var(--app_contrast_dark);
     }
@@ -1199,10 +1235,22 @@ input:checked+.slider::before {
         border-color: var(--app_light);
     }
 
+    .action-btn img {
+        filter: invert(1);
+    }
+
     .action-btn:hover {
         background-color: var(--app_light);
         border-color: var(--app_light);
         color: var(--app_dark);
+    }
+
+    .action-btn:hover img {
+        filter: invert(0);
+    }
+
+    .option-btn img {
+        filter: invert(1);
     }
 
     .option-btn:hover {
@@ -1210,8 +1258,16 @@ input:checked+.slider::before {
         color: var(--app_dark);
     }
 
+    .option-btn:hover img {
+        filter: invert(0);
+    }
+
     .option-btn2:hover {
         border: dashed 1px var(--app_light);
+    }
+
+    .option-btn-warning img {
+        filter: invert(1);
     }
 
     .slider {

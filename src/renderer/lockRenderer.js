@@ -1,4 +1,4 @@
-import { showLicenseModal } from './components/modalLicense.js';
+import { showAboutModal } from './components/modalAbout.js';
 import { setTranslations, translate } from './utils/translate.js';
 const now = new Date();
 const hours = now.getHours();
@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const greeting = document.getElementById('greeting');
     const passLabel = document.getElementById('pass-label');
     const inputPassword = document.getElementById('password');
+    const extraInfo = document.getElementById('extra-info');
     const translations = await window.electronAPI.getTranslations('lock-view');
     const superuser = await window.electronAPI.getUserInfo();
     const constants = await window.electronAPI.getConstants();
@@ -40,6 +41,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Cargar las traducciones para el módulo de traducción
     setTranslations(translations);
+
+    // Insertar textos
+    extraInfo.textContent = translate('extra-info', {
+        'brand': constants.about.brand,
+        'appName': constants.about.appName,
+        'version': constants.about.version
+    });
 
     // Obtener el saludo dependiendo de la hora
     if (hours >= 0 && hours < 7) {
@@ -85,7 +93,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Clic en el botón para abrir el modal de acerca de
     aboutBtn.addEventListener('click', async () => {
-        await showLicenseModal();
+        await showAboutModal();
     });
 
     async function applySettings() {

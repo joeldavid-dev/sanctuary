@@ -29,7 +29,7 @@ export function showLicenseModal() {
             cleanup();
             resolve()
         }
-        
+
         // Creación de Listeners
         closeModal.addEventListener('click', close);
 
@@ -49,6 +49,6 @@ export function showLicenseModal() {
 function getModalHTML(license) {
     return `
     <div class="normal-padding">
-        <p class="plain-text-font small-text preserve">${license}</p>
+        <p class="plain-text-font small-text selectable-text preserve">${license}</p>
     </div>`;
 }

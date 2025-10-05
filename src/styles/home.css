@@ -16,11 +16,6 @@
     overflow-y: auto;
 }
 
-.main-section::-webkit-scrollbar {
-    /* Oculta la barra de desplazamiento */
-    display: none;
-}
-
 .title-bar {
     position: sticky;
     top: 0;

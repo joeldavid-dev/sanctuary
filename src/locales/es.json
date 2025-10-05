@@ -1,5 +1,4 @@
 {
-    "app-name": "Codaby Sanctuary",
     "lock-view": {
         "brand-name": "Codaby",
         "greeting-early-morning": "Hora de dormir, {name} ¡Dulces sueños!",
@@ -11,13 +10,13 @@
         "wrong-password": "Contraseña incorrecta. Aún tienes {attempts} intentos",
         "wrong-password-last": "Contraseña incorrecta. Este es tu último intento",
         "locked": "Ya no tienes más intentos. La aplicación está temporalmente bloqueada",
-        "notification_btn": "Clic para leer",
-        "extra_info": "Codaby | Sanctuary Beta para Windows"
+        "notification-btn": "Clic para leer",
+        "extra-info": "{brand} | {appName} {version} para Windows"
     },
     "id": {
-        "title": "Sanctuary ID",
+        "title": "{appName} ID",
         "hello": "Hola",
-        "welcome": "¡Gracias por usar Sanctuary! Empecemos por crear tu ID.",
+        "welcome": "¡Gracias por usar {appName}! Empecemos por crear tu ID.",
         "name": "Nombre:",
         "current-password": "Contraseña actual:",
         "new-password": "Contraseña:",
@@ -38,7 +37,7 @@
         "edit-data-info": "Actualiza la información de tu ID a continuación.",
         "edit-password-subtitle": "Cambiar Contraseña",
         "edit-password-info": "Ingresa tu contraseña actual y una nueva contraseña a continuación.",
-        "gender-help": "Esta información solo se usa para personalizar cómo Sanctuary se comunica contigo y hacer tu experiencia aún mejor.",
+        "gender-help": "Esta información solo se usa para personalizar cómo {appName} se comunica contigo y hacer tu experiencia aún mejor.",
         "start-change-password": "Cambiando contraseña...",
         "change-cards-password": "Cifrando claves...",
         "change-notes-password": "Cifrando notas...",
@@ -175,11 +174,30 @@
         "background-motion": "Movimiento de fondo",
         "background-motion-info": "El movimiento de fondo puede afectar el rendimiento en algunos dispositivos.",
         "about": "Acerca de",
-        "view-info-about": "Ver información acerca de Codaby Sanctuary",
+        "view-info-about": "Ver información acerca de {appName}",
         "view-version-info": "Ver novedades de la versión",
         "view-license": "Ver licencia"
     },
     "license": {
         "title": "LICENCIA"
+    },
+    "about": {
+        "title": "Acerca de",
+        "version": "Versión {version} {versionName} para Windows.",
+        "description": "{appName} es un proyecto de software independiente para almacenar contraseñas y notas de forma segura.",
+        "fun-fact": "La galaxia Andrómeda se está acercando a nosotros a unos 110 km por segundo. Eso significa que, dentro de 4 a 5 mil millones de años, la Vía Láctea y Andrómeda chocarán y se fusionarán en una nueva galaxia gigante, a la que los astrónomos llaman Milkomeda o Lactómeda.",
+        "made-in": "Codificado en México.",
+        "about-me-title": "Sobre mi...",
+        "my-info": "Hola, soy Joel David, un ingeniero en computación egresado de la Universidad Nacional Autónoma de México. Me gusta crear herramientas útiles, confiables y faciles de usar para cualquiera. Puedes ver más de mis proyectos en:",
+        "my-link": "Mi página de proyectos",
+        "icons-title": "Iconos:",
+        "icons-info": "Iconos diseñados por {author}. Puedes encontrar más de su trabajo en su sitio web:",
+        "icons-link": "Página de {author}",
+        "wallpapers-title": "Fondos:",
+        "Wallpaper-info": "Creado por {author} en {platform}.",
+        "illustrations-title": "Ilustraciones:",
+        "illustrations-info": "Ilustraciones creadas por {author}, encuentra mas de su trabajo en su sitio web:",
+        "illustrations-link": "Página de {author}",
+        "copyright": "{appName}  Copyright (C) 2025  Joel David Cruz Zamora."
     }
 }

@@ -3,16 +3,20 @@
  * ID = "main-content".
  */
 
+import { setTranslations, translate } from '../utils/translate.js';
+
 export async function createSettingsPage(superuser) {
     // Constantes y variables auxiliares
     const translations = await window.electronAPI.getTranslations('settings');
+    const constants = await window.electronAPI.getConstants();
+    setTranslations(translations);
     // Elementos HTML ya existentes que se usarán
     const settingsArea = document.getElementById('settings-area');
     // Insertar el esqueleto HTML
-    settingsArea.innerHTML = getSettingsHTML(translations, superuser);
+    settingsArea.innerHTML = getSettingsHTML(translations, constants, superuser);
 };
 
-function getSettingsHTML(translations, superuser) {
+function getSettingsHTML(translations, constants, superuser) {
     return `
         <div class="vertical-flex big-spaced settings-width">
             <div class="vertical-elem-area centered">
@@ -23,13 +27,22 @@ function getSettingsHTML(translations, superuser) {
             </div>
 
             <div class="div-options vertical-elem-area narrow-padding external-radius-2">
-                <button id="edit-ID" class="option-btn minimal-rounded left-text">${translations['edit-ID']}</button>
-                <button id="edit-password" class="option-btn minimal-rounded left-text">${translations['edit-password']}</button>
+                <button id="edit-ID" class="option-btn minimal-rounded left-text horizontal-flex centered spaced">
+                    ${translations['edit-ID']}
+                    <img src="../assets/ico/feather/edit-2.svg" class="mini-icon">
+                </button>
+                <button id="edit-password" class="option-btn minimal-rounded left-text horizontal-flex centered spaced">
+                    ${translations['edit-password']}
+                    <img src="../assets/ico/feather/edit-3.svg" class="mini-icon">
+                </button>
                 <!--
                 <button id="export-keys" class="option-btn minimal-rounded left-text">${translations['export-keys']}</button>
                 <button id="export-notes" class="option-btn minimal-rounded left-text">${translations['export-notes']}</button>
                 -->
-                <button id="delete-ID" class="option-btn-warning minimal-rounded left-text">${translations['delete-ID']}</button>
+                <button id="delete-ID" class="option-btn-warning minimal-rounded left-text horizontal-flex centered spaced">
+                    ${translations['delete-ID']}
+                    <img src="../assets/ico/feather/trash-2.svg" class="mini-icon">
+                </button>
             </div>
 
             <!--
@@ -54,11 +67,21 @@ function getSettingsHTML(translations, superuser) {
             <div class="vertical-elem-area">
                 <p class="bold">${translations['about']}</p>
                 <div class="div-options vertical-elem-area narrow-padding external-radius-2">
+                    <button id="view-info-about" class="option-btn minimal-rounded left-text horizontal-flex centered spaced">
+                        ${translate('view-info-about', { 'appName': constants.about.appName })}
+                        <img src="../assets/ico/sanctuary.png" class="mini-icon">
+                    </button>
+
                     <!--
-                    <button id="app-language" class="option-btn minimal-rounded left-text">${translations['view-info-about']}</button>
-                    <button id="app-language" class="option-btn minimal-rounded left-text">${translations['view-version-info']}</button>
+                    <button id="app-language" class="option-btn minimal-rounded left-text horizontal-flex centered spaced">
+                        ${translations['view-version-info']}
+                        <img src="../assets/ico/feather/info.svg" class="mini-icon">
+                    </button>
                     -->
-                    <button id="view-license" class="option-btn minimal-rounded left-text">${translations['view-license']}</button>
+                    <button id="view-license" class="option-btn minimal-rounded left-text horizontal-flex centered spaced">
+                        ${translations['view-license']}
+                        <img src="../assets/ico/feather/file-text.svg" class="mini-icon">
+                    </button>
                 </div>
             </div>
         </div>
