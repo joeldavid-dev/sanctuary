@@ -25,9 +25,15 @@ export function showAboutModal() {
         const myLinkBtn = document.getElementById('my-link-btn');
         const iconsLinkBtn = document.getElementById('icons-link-btn');
         const illustrationsLinkBtn = document.getElementById('illustrations-link-btn');
+        const wallpapersAboutArea = document.getElementById('wallpapers-about-area');
 
         // Establecer valores iniciales
         modalTitle.textContent = translations['title'];
+        constants.wallpapers.forEach(element => {
+            wallpapersAboutArea.appendChild(getWallpaperIconHTML(element.name, translate('Wallpaper-info', {
+                'author': element.author, 'platform': element.platform
+            })));
+        });
 
         // Funciones de botones e inputs
         const close = () => {
@@ -71,51 +77,78 @@ export function showAboutModal() {
 
 function getModalHTML(translations, constants) {
     return `
-    <div class="vertical-elem-area normal-padding">
-        <p class="medium-text">${translate('version', { 'version': constants.about.version, 'versionName': constants.about.versionName })}</p>
-        <p class="medium-text">${translate('description', { 'appName': constants.about.appName })}</p>
-        <p class="medium-text">${translations['made-in']}</p>
+    <div class="vertical-flex big-spaced normal-padding">
+        <div class="horizontal-flex centered distributed">
+            <div class="vertical-elem-area">
+                <div class="horizontal-flex minimal-spaced">
+                    <img src="../assets/ico/Logo.svg" class="logo-icon">
+                    <p class="brand-text">${constants.about.brand}</p>
+                </div>
+                <p class="expresive-text">${constants.about.appName}</p>
+            </div>
+            <img src="../assets/ico/sanctuary.png" class="icon-25">
+        </div>
+
+        <div class="vertical-elem-area">
+            <p class="medium-text">${translate('version', { 'version': constants.about.version, 'versionName': constants.about.versionName })}</p>
+            <p class="medium-text">${translate('description', { 'appName': constants.about.appName })}</p>
+            <p class="medium-text">${translations['made-in']}</p>
+        </div>
         
-        <div class="vertical-flex">
+        <div class="vertical-elem-area">
             <p class="medium-text bold">${translations['about-me-title']}</p>
             <p class="medium-text">${translations['my-info']}</p>
-        </div>
-        <div class="horizontal-flex">
-            <button id="my-link-btn" class="medium-text action-btn btn-padding minimal-rounded horizontal-elem-area centered">
-                ${translations['my-link']}
-                <img src="../assets/ico/feather/external-link.svg" class="mini-icon">
-            </button>
+            <div class="horizontal-flex">
+                <button id="my-link-btn" class="medium-text action-btn btn-padding minimal-rounded horizontal-elem-area centered pulse-animation">
+                    ${translations['my-link']}
+                    <img src="../assets/ico/feather/external-link.svg" class="mini-icon">
+                </button>
+            </div>
         </div>
 
-        <div class="vertical-flex">
+        <div class="vertical-elem-area">
             <p class="medium-text bold">${translations['icons-title']}</p>
             <p class="medium-text">${translate('icons-info', { 'author': constants.icons.author })}</p>
-        </div>
-        <div class="horizontal-flex">
-            <button id="icons-link-btn" class="medium-text action-btn btn-padding minimal-rounded horizontal-elem-area centered">
-                ${translate('icons-link', { 'author': constants.icons.author })}
-                <img src="../assets/ico/feather/external-link.svg" class="mini-icon">
-            </button>
+            <div class="horizontal-flex">
+                <button id="icons-link-btn" class="medium-text action-btn btn-padding minimal-rounded horizontal-elem-area centered">
+                    ${translate('icons-link', { 'author': constants.icons.author })}
+                    <img src="../assets/ico/feather/external-link.svg" class="mini-icon">
+                </button>
+            </div>
         </div>
 
-        <div class="vertical-flex">
+        <div class="vertical-elem-area">
             <p class="medium-text bold">${translations['wallpapers-title']}</p>
-            <p class="medium-text">${translations['Wallpaper-info']}</p>
+            <div id="wallpapers-about-area" class="elements-container"></div>
         </div>
 
-        <div class="vertical-flex">
+        <div class="vertical-elem-area">
             <p class="medium-text bold">${translations['illustrations-title']}</p>
             <p class="medium-text">${translate('illustrations-info', { 'author': constants.illustrations.author })}</p>
-        </div>
-        <div class="horizontal-flex">
-            <button id="illustrations-link-btn" class="medium-text action-btn btn-padding minimal-rounded horizontal-elem-area centered">
-                ${translate('illustrations-link', { 'author': constants.illustrations.author })}
-                <img src="../assets/ico/feather/external-link.svg" class="mini-icon">
-            </button>
+            <div class="horizontal-flex">
+                <button id="illustrations-link-btn" class="medium-text action-btn btn-padding minimal-rounded horizontal-elem-area centered">
+                    ${translate('illustrations-link', { 'author': constants.illustrations.author })}
+                    <img src="../assets/ico/feather/external-link.svg" class="mini-icon">
+                </button>
+            </div>
         </div>
             
         <p class="medium-text">${translations['fun-fact']}</p>
 
         <p class="medium-text bold">${translate('copyright', { 'appName': constants.about.appName })}</p>
     </div>`;
+}
+
+function getWallpaperIconHTML(img, info) {
+    const wallpaperIconBody = document.createElement('div');
+    wallpaperIconBody.classList.add('vertical-flex');
+    wallpaperIconBody.classList.add('centered');
+    wallpaperIconBody.classList.add('minimal-spaced');
+    wallpaperIconBody.classList.add('min-content');
+
+    wallpaperIconBody.innerHTML = `
+        <img src="../assets/img/${img}.jpg" class="wallpaper-icon minimal-rounded">
+        <p class="small-text centered-text">${info}</p>  
+    `;
+    return wallpaperIconBody;
 }

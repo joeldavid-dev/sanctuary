@@ -128,7 +128,7 @@ async function loadSettings() {
     const colorStyle = getSetting('colorStyle');
 
     if (colorStyle === "generate") {
-        const genColors = await cg.generateColorPalette(getSetting('background'));
+        const genColors = await cg.generateColorPalette(getSetting('wallpaper'));
         settings['appContrastLight'] = genColors.appContrastLight;
         settings['appContrastDark'] = genColors.appContrastDark;
     }

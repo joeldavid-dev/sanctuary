@@ -32,7 +32,9 @@ async function generateColorPalette(imgName) {
     const finalImgPath = isPackaged ? tempImgPath : imgAsarPath;
     const dominantColor = await ColorThief.getColor(finalImgPath);
 
-    if (isLightColor(dominantColor)) {
+    const colorType = isLightColor(dominantColor);
+    console.log("Is light color?: " + colorType);
+    if (colorType) {
         appContrastLight = `rgb(${dominantColor[0]}, ${dominantColor[1]}, ${dominantColor[2]})`;
         const adjustedColor = adjustLightness(dominantColor, -0.2);
         appContrastDark = `rgb(${adjustedColor[0]}, ${adjustedColor[1]}, ${adjustedColor[2]})`;
@@ -61,9 +63,9 @@ function isLightColor(dominantColor) {
 function adjustLightness(rgb, percent) {
     let [r, g, b] = rgb;
     let [h, s, l] = rgbToHsl(r, g, b);
-
+    console.log("l previo: " + l);
     l = Math.min(1, Math.max(0, l + percent)); // Asegura que esté entre 0 y 1
-
+    console.log("l ajustado: " + l);
     return hslToRgb(h, s, l);
 }
 

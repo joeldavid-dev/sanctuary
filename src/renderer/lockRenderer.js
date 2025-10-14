@@ -4,7 +4,7 @@ const now = new Date();
 const hours = now.getHours();
 
 document.addEventListener("DOMContentLoaded", async () => {
-    const visualBackground = document.getElementById('visual-background');
+    const visualWallpaper = document.getElementById('visual-wallpaper');
     const minimize = document.getElementById('minimize');
     const maximize = document.getElementById('maximize');
     const close = document.getElementById('close');
@@ -98,17 +98,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     async function applySettings() {
         // Obtener configuraciones a utilizar
-        const backgroundMode = await window.electronAPI.getSetting('backgroundMode');
-        const background = await window.electronAPI.getSetting('background');
+        const wallpaperMode = await window.electronAPI.getSetting('wallpaperMode');
+        const wallpaper = await window.electronAPI.getSetting('wallpaper');
         const colorStyle = await window.electronAPI.getSetting('colorStyle');
 
-        if (backgroundMode === "video") {
-            visualBackground.innerHTML = `
-            <video autoplay loop muted playsinline class="video-background">
-                <source src="../assets/vid/${background}.mp4" type="video/mp4">
+        if (wallpaperMode === "video") {
+            visualWallpaper.innerHTML = `
+            <video autoplay loop muted playsinline class="video-wallpaper">
+                <source src="../assets/vid/${wallpaper}.mp4" type="video/mp4">
             </video>`;
-        } else if (backgroundMode === "static") {
-            visualBackground.innerHTML = `<img class="img-background" src="../assets/img/${background}.jpg">`
+        } else if (wallpaperMode === "static") {
+            visualWallpaper.innerHTML = `<img class="img-wallpaper" src="../assets/img/${wallpaper}.jpg">`
         }
 
         // Aplicar tema si es estático o generado

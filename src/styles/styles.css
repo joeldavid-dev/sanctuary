@@ -241,29 +241,56 @@ pre,
     border-radius: var(--external-radius-3);
 }
 
+.normal-margin {
+    margin: var(--normal-margin);
+}
+
+.narrow-margin {
+    margin: var(--narrow-margin);
+}
+
+.minimal-margin {
+    margin: var(--minimal-margin);
+}
+
+.nano-margin {
+    margin: var(--nano-margin);
+}
+
+.normal-padding {
+    padding: var(--normal-margin);
+}
+
+.narrow-padding {
+    padding: var(--narrow-margin);
+}
+
+.minimal-padding {
+    padding: var(--minimal-margin);
+}
+
+.nano-padding {
+    padding: var(--nano-margin);
+}
+
+.btn-padding {
+    padding: var(--minimal-margin) var(--normal-margin);
+}
+
+.narrow-btn-padding {
+    padding: var(--nano-margin) var(--normal-margin);
+}
+
+.big-btn-padding {
+    padding: var(--narrow-margin) var(--maximal-margin);
+}
+
+.login-padding {
+    padding: var(--normal-margin) var(--big-margin) var(--big-margin) var(--big-margin);
+}
+
 .invisible {
     display: none;
-}
-
-.logo-img {
-    width: 17px;
-    height: 17px;
-    background-image: url(../assets/ico/Logo.svg);
-    /* Asegura que la imagen cubra todo el contenedor */
-    background-size: cover;
-    /* Centra la imagen */
-    background-position: center;
-    /* Evita que la imagen se repita */
-    background-repeat: no-repeat;
-    margin-right: var(--minimal-margin);
-}
-
-.logo {
-    display: grid;
-    grid-template-columns: min-content;
-    width: min-content;
-    height: min-content;
-    align-items: center;
 }
 
 .colored-blur {
@@ -356,6 +383,11 @@ pre,
 .contracted {
     /* Permite que el elemento ocupe el espacio mínimo necesario */
     flex: initial;
+}
+
+.min-content {
+    height: min-content;
+    width: min-content;
 }
 
 .with-70 {
@@ -768,6 +800,17 @@ No tiene borde, al pasar el mouse por encima solo aparece el borde. */
     border-radius: 50%;
     background-color: var(--app_contrast_light);
 }
+
+.icon-25 {
+    width: 25%;
+    height: 25%;
+}
+
+.wallpaper-icon {
+    width: 120px;
+    height: auto;
+}
+
 .big-icon {
     width: 70px;
     height: 70px;
@@ -782,6 +825,11 @@ No tiene borde, al pasar el mouse por encima solo aparece el borde. */
     width: 20px;
     height: 20px;
     filter: invert(1);
+}
+
+.logo-icon {
+    width: 17px;
+    height: 17px;
 }
 
 .mini-icon {
@@ -886,11 +934,6 @@ input:checked+.slider::before {
 
 }
 
-.large-icon {
-    width: 25%;
-    height: 25%;
-}
-
 /* Estilos para el modal */
 .modal {
     display: none;
@@ -973,50 +1016,6 @@ input:checked+.slider::before {
     display: none;
 }
 
-.normal-margin {
-    margin: var(--normal-margin);
-}
-
-.narrow-margin {
-    margin: var(--narrow-margin);
-}
-
-.minimal-margin {
-    margin: var(--minimal-margin);
-}
-
-.nano-margin {
-    margin: var(--nano-margin);
-}
-
-.normal-padding {
-    padding: var(--normal-margin);
-}
-
-.narrow-padding {
-    padding: var(--narrow-margin);
-}
-
-.minimal-padding {
-    padding: var(--minimal-margin);
-}
-
-.nano-padding {
-    padding: var(--nano-margin);
-}
-
-.btn-padding {
-    padding: var(--minimal-margin) var(--normal-margin);
-}
-
-.big-btn-padding {
-    padding: var(--narrow-margin) var(--maximal-margin);
-}
-
-.login-padding {
-    padding: var(--normal-margin) var(--big-margin) var(--big-margin) var(--big-margin);
-}
-
 .transparent-input {
     font-family: jetBrains_mono;
     background: transparent;
@@ -1072,6 +1071,11 @@ input:checked+.slider::before {
     border-radius: 50%;
     animation: spin 1s linear infinite;
     margin: 20px auto;
+}
+
+/* Clases para aplicar animaciones */
+.pulse-animation {
+    animation: pulse 4s infinite;
 }
 
 /* Animaciones */
@@ -1158,7 +1162,7 @@ input:checked+.slider::before {
         border-color: var(--app_light);
     }
 
-    .logo-img {
+    .logo-icon {
         filter: invert(1);
     }
 
