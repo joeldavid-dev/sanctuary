@@ -1,5 +1,5 @@
 {
-    "wallpaper": "Tung_Lam_Pixabay",
+    "wallpaper": "Yakup_Ipek_Pixabay",
     "wallpaperMode": "video",
     "colorStyle": "generate",
     "appLight": "rgb(245, 245, 245)",
@@ -9,5 +9,5 @@
     "appContrastLight": "rgb(200, 200, 200)",
     "appContrastDark": "rgb(55, 55, 55)",
     "language": "system",
-    "showWelcomeMessage": true
+    "welcomeMessageDisplayed": false
 }

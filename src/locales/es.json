@@ -16,7 +16,7 @@
     "id": {
         "title": "{appName} ID",
         "hello": "Hola",
-        "welcome": "¡Gracias por usar {appName}! Empecemos por crear tu ID.",
+        "welcome": "Empecemos por crear tu ID.",
         "name": "Nombre:",
         "current-password": "Contraseña actual:",
         "new-password": "Contraseña:",
@@ -68,17 +68,17 @@
         "change-password-error": "Error al cambiar la contraseña.",
         "verify-password-success": "La contraseña es auténtica.",
         "verify-password-fail": "La contraseña es incorrecta.",
-        "create-card-success": "Tarjeta creada exitosamente.",
-        "create-card-error": "Error al crear la tarjeta.",
-        "update-card-success": "Tarjeta actualizada exitosamente.",
-        "update-card-error": "Error al actualizar la tarjeta.",
-        "decrypt-card-success": "Tarjeta descifrada exitosamente.",
-        "decrypt-card-error": "Error al descifrar la tarjeta.",
-        "delete-card-success": "Tarjeta eliminada exitosamente.",
-        "delete-card-error": "Error al eliminar la tarjeta.",
+        "create-card-success": "Clave creada exitosamente.",
+        "create-card-error": "Error al crear la clave.",
+        "update-card-success": "Clave actualizada exitosamente.",
+        "update-card-error": "Error al actualizar la clave.",
+        "decrypt-card-success": "Clave descifrada exitosamente.",
+        "decrypt-card-error": "Error al descifrar la clave.",
+        "delete-card-success": "Clave eliminada exitosamente.",
+        "delete-card-error": "Error al eliminar la clave.",
         "import-user-success": "Datos de usuario importados exitosamente.",
         "import-user-error": "Error al importar los datos de usuario.",
-        "import-card-error": "Error al importar la tarjeta.",
+        "import-card-error": "Error al importar la clave.",
         "import-data-success": "Datos importados exitosamente.",
         "import-data-error": "Error al importar los datos.",
         "import-data-wrong-password": "Contraseña incorrecta.",
@@ -121,7 +121,7 @@
         "user": "Usuario:",
         "password": "Contraseña:",
         "url": "URL:",
-        "new-card": "Nueva Tarjeta"
+        "new-card": "Nueva clave"
     },
     "note": {
         "name": "Título",
@@ -199,5 +199,14 @@
         "illustrations-info": "Ilustraciones creadas por {author}, encuentra mas de su trabajo en su sitio web:",
         "illustrations-link": "Página de {author}",
         "copyright": "{appName}  Copyright (C) 2025  Joel David Cruz Zamora."
+    },
+    "welcome": {
+        "greeting-female": "Bienvenida, {name}",
+        "greeting-male": "Bienvenido, {name}",
+        "greeting-neutro": "Hola, {name}",
+        "body-1": "Gracias por usar {appName}, una herramienta que creé porque frecuentemente olvidaba mis contraseñas. Me ha ayudado en muchas situaciones y desarrollarla fue mi pasatiempo por meses.",
+        "body-2": "Ahora solo espero que, así como ha sido útil para mí, también lo sea para ti, y te ayude a guardar tus contraseñas y notas de forma segura.",
+        "closing": "Atte. Joel David, el desarrollador.",
+        "signature": "//:)"
     }
 }

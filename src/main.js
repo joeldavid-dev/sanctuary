@@ -167,6 +167,11 @@ ipcMain.handle('get-setting', (event, key) => {
     return getSetting(key);
 });
 
+// Exponer la función para establecer una configuración.
+ipcMain.handle('set-setting', (event, key, value) => {
+    setSetting(key, value);
+});
+
 // Expone las constantes del programa
 ipcMain.handle('get-constants', (event) => {
     return constants;

@@ -43,6 +43,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     importData: (key) => ipcRenderer.invoke('import-data', key),
     // Exponer las funciones de configuración
     getSetting: (key) => ipcRenderer.invoke('get-setting', key),
+    setSetting: (key, value) => ipcRenderer.invoke('set-setting', key, value),
     getConstants: () => ipcRenderer.invoke('get-constants'),
     executeCommand: (command) => ipcRenderer.invoke('execute-command', command),
     getLicense: () => ipcRenderer.invoke('get-license'),

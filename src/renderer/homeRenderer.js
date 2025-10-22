@@ -10,6 +10,7 @@ import { createOptionElement } from './components/commandOption.js';
 import { showDeleteIDModal } from './components/modalDeleteID.js';
 import { showLicenseModal } from './components/modalLicense.js';
 import { showAboutModal } from './components/modalAbout.js';
+import { showWelcomeModal } from './components/modalWelcome.js';
 
 // Barra de título
 const minimize = document.getElementById('minimize');
@@ -114,8 +115,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         } else {
             mainContent.innerHTML = `
-            <div class="vertical-flex centered">
-                <img src="../assets/illustrations/FeelingLonely.svg" class="empty-image">
+            <div class="vertical-elem-area centered">
+                <img src="../assets/illustrations/FolderEmpty.svg" class="empty-image">
                 <p>${translations['empty']}</p>
             </div>`;
         }
@@ -124,7 +125,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     async function showCommands(commands) {
         // Muestra la ilustración de comandos
         mainContent.innerHTML = `
-            <div class="vertical-flex centered">
+            <div class="vertical-elem-area centered">
                 <img src="../assets/illustrations/Coding.svg" alt="Command mode" class="empty-image">
                 <p>${translations['command-mode']}</p>
             </div>`;
@@ -269,7 +270,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     search.addEventListener('keydown', async (event) => {
         // Si se presiona tabulador, se enfoca el primer botón de la barra de opciones
-        console.log(event.key);
         if (event.key === 'Tab' && optionsBar.style.display === 'flex') {
             // Enfocar el primer botón de la barra de opciones
             event.preventDefault(); // Evitar el comportamiento por defecto de tabulador
@@ -623,6 +623,16 @@ document.addEventListener("DOMContentLoaded", async () => {
             document.documentElement.style.setProperty('--app_dark_transparent', constants[colorStyle].app_dark_transparent);
             document.documentElement.style.setProperty('--app_contrast_light', constants[colorStyle].app_contrast_light);
             document.documentElement.style.setProperty('--app_contrast_dark', constants[colorStyle].app_contrast_dark);
+        }
+
+        // Mostrar mensaje de bienvenida si es la primera vez que se abre la aplicación
+        const welcomeMessageDisplayed = await window.electronAPI.getSetting('welcomeMessageDisplayed');
+        if (!welcomeMessageDisplayed) {
+            const confirm = await showWelcomeModal();
+            if (confirm.success) {
+                // Marcar que el mensaje de bienvenida ya fue mostrado
+                await window.electronAPI.setSetting('welcomeMessageDisplayed', true);
+            }
         }
     }
 

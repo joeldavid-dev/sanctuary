@@ -358,6 +358,10 @@ pre,
     gap: var(--big-margin);
 }
 
+.normal-spaced {
+    gap: var(--normal-margin);
+}
+
 .minimal-spaced {
     gap: var(--minimal-margin);
 }
@@ -799,6 +803,16 @@ No tiene borde, al pasar el mouse por encima solo aparece el borde. */
     height: 80px;
     border-radius: 50%;
     background-color: var(--app_contrast_light);
+}
+
+.icon-100 {
+    width: 100%;
+    height: 100%;
+}
+
+.icon-40 {
+    width: 40%;
+    height: 40%;
 }
 
 .icon-25 {
@@ -1298,5 +1312,9 @@ input:checked+.slider::before {
 
     .profile-pic-container {
         background-color: var(--app_contrast_dark);
+    }
+
+    .darkmode-invert {
+        filter: invert(1);
     }
 }

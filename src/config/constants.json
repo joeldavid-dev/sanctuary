@@ -1,10 +1,11 @@
 {
     "about": {
-        "appName": "Sanctuary Beta",
+        "appName": "Sanctuary",
         "brand": "Codaby",
-        "version": "0.0.3",
+        "version": "1.0.0",
         "versionName": "Andromeda",
-        "myLink": "https://joeldavid-dev.netlify.app/#"
+        "myLink": "https://joeldavid-dev.netlify.app/#",
+        "developer": "Joel David C."
     },
     "languages": [
         "en",
@@ -47,8 +48,8 @@
         }
     ],
     "illustrations": {
-        "author": "Autor de ilustraciones",
-        "url": "---"
+        "author": "PixelsMarket",
+        "url": "https://pixels.market/illustrations/yellowstripe"
     },
     "gruvbox-theme": {
         "app_light": "rgb(249, 245, 215)",

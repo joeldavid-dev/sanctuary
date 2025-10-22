@@ -11,12 +11,12 @@
         "wrong-password-last": "Wrong password. This is your final try",
         "locked": "No more attempts left. The app is temporarily locked",
         "notification_btn": "Clic to read",
-        "extra_info": "{brand} | {appName} {version} for Windows"
+        "extra-info": "{brand} | {appName} {version} for Windows"
     },
     "id": {
         "title": "{appName} ID",
         "hello": "Hello",
-        "welcome": "Welcome to {appName}! Let’s start by creating your ID.",
+        "welcome": "Let’s start by creating your ID.",
         "name": "First name:",
         "current-password": "Current Password:",
         "new-password": "Password:",
@@ -68,17 +68,17 @@
         "change-password-error": "Error changing the password.",
         "verify-password-success": "The password is correct.",
         "verify-password-fail": "Incorrect password.",
-        "create-card-success": "Card created successfully.",
-        "create-card-error": "Error creating the card.",
-        "update-card-success": "Card updated successfully.",
-        "update-card-error": "Error updating the card.",
-        "decrypt-card-success": "Card decrypted successfully.",
-        "decrypt-card-error": "Error decrypting the card.",
-        "delete-card-success": "Card deleted successfully.",
-        "delete-card-error": "Error deleting the card.",
+        "create-card-success": "Key created successfully.",
+        "create-card-error": "Error creating the key.",
+        "update-card-success": "Key updated successfully.",
+        "update-card-error": "Error updating the key.",
+        "decrypt-card-success": "Key decrypted successfully.",
+        "decrypt-card-error": "Error decrypting the key.",
+        "delete-card-success": "Key deleted successfully.",
+        "delete-card-error": "Error deleting the key.",
         "import-user-success": "User data imported successfully.",
         "import-user-error": "Error importing user data.",
-        "import-card-error": "Error importing the card.",
+        "import-card-error": "Error importing the key.",
         "import-data-success": "Data imported successfully.",
         "import-data-error": "Error importing data.",
         "import-data-wrong-password": "Incorrect password.",
@@ -121,7 +121,7 @@
         "user": "User:",
         "password": "Password:",
         "url": "URL:",
-        "new-card": "New Card"
+        "new-card": "New key"
     },
     "note": {
         "name": "Title",
@@ -199,5 +199,14 @@
         "illustrations-info": "Illustrations created by {author}, find more of their work on their website:",
         "illustrations-link": "{author}'s page",
         "copyright": "{appName}  Copyright (C) 2025  Joel David Cruz Zamora."
+    },
+    "welcome": {
+        "greeting-female": "Welcome, {name}",
+        "greeting-male": "Welcome, {name}",
+        "greeting-neutro": "Hello, {name}",
+        "body-1": "Thank you for using {appName}, a tool I created because I often forgot my passwords. It has helped me in many situations, and developing it became my hobby for months.",
+        "body-2": "Now I just hope that, just as it’s been useful for me, it will also be for you — helping you keep your passwords and notes safe and secure.",
+        "closing": "Sincerely, Joel David, the developer.",
+        "signature": "//:)"
     }
 }

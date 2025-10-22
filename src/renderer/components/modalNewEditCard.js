@@ -244,7 +244,7 @@ function getModalHTML(translations, cardTranslations) {
                 </div>
             </div>
 
-            <div class="preview-area vertical-flex distributed expanded">
+            <div class="vertical-flex centered distributed expanded">
                 <label for="preview-card">${translations['preview']}</label>
 
                 <div id="preview-card" class="main-element-body color1 contracted">

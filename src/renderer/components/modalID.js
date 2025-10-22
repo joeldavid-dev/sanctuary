@@ -20,7 +20,7 @@ export function showIDModal(mode, superuser) {
         const closeModal = document.getElementById('close-modal');
         const modalTitle = document.getElementById('modal-title');
         // Insertar el esqueleto HTML
-        modalBody.innerHTML = getModalHTML(translations);
+        modalBody.innerHTML = getModalHTML(translations, translate, constants);
 
         // Elementos HTML insertados en el esqueleto
         const subtitle = document.getElementById('subtitle');
@@ -234,7 +234,7 @@ export function showIDModal(mode, superuser) {
     });
 }
 
-function getModalHTML(translations) {
+function getModalHTML(translations, translate, constants) {
     return `
     <div class="vertical-flex big-spaced login-padding">
         <div class="vertical-elem-area">
@@ -264,7 +264,7 @@ function getModalHTML(translations) {
             <div id="gender-container" class="vertical-elem-area">
                 <div class="horizontal-elem-area centered">
                     <label class="small-text">${translations['gender']}</label>
-                    <img src="../assets/ico/feather/help-circle.svg" class="mini-icon" title="${translations['gender-help']}">
+                    <img src="../assets/ico/feather/help-circle.svg" class="mini-icon darkmode-invert" title="${translate('gender-help', { appName: constants.about.appName })}">
                 </div>
                 <div class="horizontal-flex spaced">
                     <label class="custom-radio minimal-rounded minimal-padding horizontal-elem-area">
@@ -288,7 +288,9 @@ function getModalHTML(translations) {
             </div>
         </div>
 
-        <button id="ID-done-btn" class="action-btn minimal-rounded big-btn-padding">${translations['done']}</button>
-        <button id="import-btn" class="option-btn minimal-rounded small-text">${translations['import-data']}</button>
+        <div class="vertical-elem-area">
+            <button id="ID-done-btn" class="action-btn minimal-rounded big-btn-padding">${translations['done']}</button>
+            <button id="import-btn" class="option-btn minimal-rounded small-text">${translations['import-data']}</button>
+        </div>
     </div>`;
 }
