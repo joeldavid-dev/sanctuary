@@ -1,4 +1,5 @@
 {
+    "language-name": "English",
     "lock-view": {
         "brand-name": "Codaby",
         "greeting-early-morning": "Time to sleep, {name}! Sweet dreams!",
@@ -115,7 +116,8 @@
         "no-commands": "No command matches",
         "exe-command": "Executing command",
         "empty-command": "No command entered",
-        "placeholder-loading": "Unlocking your keys and notes…"
+        "placeholder-loading": "Unlocking your keys and notes…",
+        "language-changed": "Language changed successfully."
     },
     "card": {
         "user": "User:",
@@ -176,7 +178,8 @@
         "about": "About",
         "view-info-about": "View information about {appName}",
         "view-version-info": "View what's new in this version",
-        "view-license": "View license"
+        "view-license": "View license",
+        "system-default": "System Default"
     },
     "license": {
         "title": "LICENSE"

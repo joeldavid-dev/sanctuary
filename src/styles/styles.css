@@ -117,7 +117,7 @@ body::-webkit-scrollbar {
 
 /* Estilos generales para la aplicación web en modo claro */
 body {
-    font-family: Nunito;
+    font-family: Nunito, sans-serif;
     font-size: 16px;
     background: var(--app_light);
     color: var(--app_dark);
@@ -239,6 +239,10 @@ pre,
 
 .external-radius-3 {
     border-radius: var(--external-radius-3);
+}
+
+.top-bottom-big-margin {
+    margin: 50px 0 50px 0;
 }
 
 .normal-margin {
@@ -407,7 +411,7 @@ pre,
 
 .always-front {
     /* Asegura que el elemento esté siempre al frente */
-    z-index: 10;
+    z-index: 1000;
 }
 
 /* Colores */
@@ -630,7 +634,9 @@ No tiene borde, al pasar el mouse por encima solo aparece el borde. */
 }
 
 /* Contenedor flotante */
-.floating-container {
+.popup-list {
+    position: absolute;
+    display: none;
     padding: var(--narrow-margin);
     border-radius: calc(var(--minimal-radius) + var(--narrow-margin));
     box-shadow: 0px 0px 30px 8px rgba(0, 0, 0, 0.20);

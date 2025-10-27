@@ -1,4 +1,5 @@
 {
+    "language-name": "Español",
     "lock-view": {
         "brand-name": "Codaby",
         "greeting-early-morning": "Hora de dormir, {name} ¡Dulces sueños!",
@@ -115,7 +116,8 @@
         "no-commands": "Ningún comando coincide",
         "exe-command": "Ejecutando comando",
         "empty-command": "No se ingresó ningún comando",
-        "placeholder-loading": "Desbloqueando tus claves y notas…"
+        "placeholder-loading": "Desbloqueando tus claves y notas…",
+        "language-changed": "Idioma cambiado exitosamente."
     },
     "card": {
         "user": "Usuario:",
@@ -176,7 +178,8 @@
         "about": "Acerca de",
         "view-info-about": "Ver información acerca de {appName}",
         "view-version-info": "Ver novedades de la versión",
-        "view-license": "Ver licencia"
+        "view-license": "Ver licencia",
+        "system-default": "Predeterminado del sistema"
     },
     "license": {
         "title": "LICENCIA"

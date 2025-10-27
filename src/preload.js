@@ -13,8 +13,6 @@ contextBridge.exposeInMainWorld('electron', {
 contextBridge.exposeInMainWorld('electronAPI', {
     send: (channel, data) => ipcRenderer.send(channel, data),
     on: (channel, callback) => ipcRenderer.on(channel, (event, ...args) => callback(...args)),
-    // Obtener traducciones
-    getTranslations: (view) => ipcRenderer.invoke('get-translations', view),
     // Expone el cambio de vista
     changeView: (newView) => ipcRenderer.send('change-view', newView),
     // Dialogos
@@ -45,6 +43,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     getSetting: (key) => ipcRenderer.invoke('get-setting', key),
     setSetting: (key, value) => ipcRenderer.invoke('set-setting', key, value),
     getConstants: () => ipcRenderer.invoke('get-constants'),
+    getTranslations: (view) => ipcRenderer.invoke('get-translations', view),
     executeCommand: (command) => ipcRenderer.invoke('execute-command', command),
     getLicense: () => ipcRenderer.invoke('get-license'),
 });

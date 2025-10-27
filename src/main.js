@@ -151,8 +151,7 @@ function getSetting(key) {
 // Guarda una configuración.
 function setSetting(key, value) {
     settings[key] = value;
-    const result = st.writeSettings(settings);
-    if (!result.success) writeLog("Error al guardar configuracion: " + result.error);
+    return st.writeSettings(settings);
 }
 
 // Resetear las configuraciones a los valores por defecto
@@ -169,7 +168,16 @@ ipcMain.handle('get-setting', (event, key) => {
 
 // Exponer la función para establecer una configuración.
 ipcMain.handle('set-setting', (event, key, value) => {
-    setSetting(key, value);
+    const result = setSetting(key, value);
+    if (result.success) {
+        writeLog(`Configuracion "${key}" actualizada a: ${value}`);
+        if (key === 'language') {
+            loadTranslations();
+        }
+    } else {
+        writeLog(`Error al actualizar la configuracion "${key}": ${result.error}`);
+    }
+    return result;
 });
 
 // Expone las constantes del programa
@@ -179,18 +187,23 @@ ipcMain.handle('get-constants', (event) => {
 
 // Obtiene traducciones según la configuración actual. 
 function loadTranslations() {
-    let language = getSetting('language');
+    let languageCode = getSetting('language');
     // Si el lenguaje está configurado como 'sistema'
-    if (language === 'system') {
-        language = app.getLocale().slice(0, 2);
-        writeLog('Idioma del sistema: ' + language);
-        if (!constants.languages.includes(language)) language = 'en';
+    if (languageCode === 'system') {
+        languageCode = app.getLocale().slice(0, 2);
+        writeLog('Idioma del sistema: ' + languageCode);
+        // Si el idioma detectado no está en la lista de idiomas soportados
+        const supportedLanguages = constants.languages.map(lang => lang.code);
+        if (!supportedLanguages.includes(languageCode)) {
+            writeLog('Idioma no soportado, se usa inglés por defecto.');
+            languageCode = 'en'; // Por defecto inglés
+        }
     }
 
-    writeLog('Idioma mostrado: ' + language);
+    writeLog('Idioma mostrado: ' + languageCode);
 
     try {
-        const filePath = path.join(__dirname, 'locales', `${language}.json`);
+        const filePath = path.join(__dirname, 'locales', `${languageCode}.json`);
         const raw = fs.readFileSync(filePath, 'utf8');
         writeLog('Cargando traduccion: ' + filePath);
         translations = JSON.parse(raw);
@@ -199,10 +212,6 @@ function loadTranslations() {
         writeLog('Error al cargar traduccion: ', err);
     }
 };
-
-ipcMain.on('load-translations', (event) => {
-    loadTranslations();
-});
 
 ipcMain.handle('get-translations', (event, view) => {
     return translations[view];

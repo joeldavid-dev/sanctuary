@@ -8,8 +8,18 @@
         "developer": "Joel David C."
     },
     "languages": [
-        "en",
-        "es"
+        {
+            "code": "system",
+            "name": "System Default"
+        },
+        {
+            "code": "en",
+            "name": "English"
+        },
+        {
+            "code": "es",
+            "name": "Español"
+        }
     ],
     "icons": {
         "author": "Cole Bemis",

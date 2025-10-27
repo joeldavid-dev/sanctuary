@@ -6,11 +6,12 @@ import { showNewEditNoteModal } from './components/modalNewEditNote.js'; // Impo
 import { showDeleteModal } from './components/modalDelete.js'; // Importar el módulo de modal para eliminar una tarjeta
 import { showIDModal } from './components/modalID.js';
 import { createSettingsPage } from './components/settingsPage.js';
-import { createOptionElement } from './components/commandOption.js';
+import { createCommandOption } from './components/commandOption.js';
 import { showDeleteIDModal } from './components/modalDeleteID.js';
 import { showLicenseModal } from './components/modalLicense.js';
 import { showAboutModal } from './components/modalAbout.js';
 import { showWelcomeModal } from './components/modalWelcome.js';
+import { createPopupOption } from './components/popupOption.js';
 
 // Barra de título
 const minimize = document.getElementById('minimize');
@@ -28,7 +29,7 @@ const notesRadio = document.getElementById('notes-radio');
 const settingsRadio = document.getElementById('settings-radio');
 
 // Barra de opciones
-const optionsBar = document.getElementById('options-bar');
+const commandOptionsBar = document.getElementById('command-options-bar');
 
 // Contenedor principal
 const mainContent = document.getElementById('main-content');
@@ -45,6 +46,9 @@ const deleteElementBody = document.getElementById('delete-element-body');
 const placeholder = document.getElementById('placeholder');
 const placeholderLoading = document.getElementById('placeholder-loading');
 
+const toastContainer = document.getElementById('toast-container');
+const popupList = document.getElementById('popup-list');
+
 // Variable para controlar el modo actual de la vista (llaves, notas o configuración)
 let mode = 'keys'; // keys || notes
 let searchMode = 'none'; // Variable para controlar el modo de búsqueda
@@ -56,8 +60,8 @@ let preparedCards = []; // Lista que almacena las tarjetas preparadas (nombre y 
 let preparedNotes = []; // Lista que almacena las notas preparadas (contenido desencriptado)
 
 document.addEventListener("DOMContentLoaded", async () => {
-    const translations = await window.electronAPI.getTranslations('home-view');
-    const cardTranslations = await window.electronAPI.getTranslations('card');
+    let translations = null;
+    let cardTranslations = null;
     const constants = await window.electronAPI.getConstants();
 
     // Superusuario
@@ -65,18 +69,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Carga los comandos disponibles
     const commands = constants['available_commands'];
-
-    // Cargar traducciones y mostrarlas en la interfaz estática
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (translations[key]) {
-            el.textContent = translations[key];
-        }
-    });
-    search.placeholder = translations['search'];
-
-    // Cargar las traducciones para el módulo de traducción
-    setTranslations(translations);
 
     // Escuchar el progreso de preparación de tarjetas
     window.electronAPI.on('prepare-elements-progress', (progress) => {
@@ -131,18 +123,18 @@ document.addEventListener("DOMContentLoaded", async () => {
             </div>`;
 
         // Mostrar la barra de opciones
-        optionsBar.style.display = 'flex';
+        commandOptionsBar.style.display = 'flex';
         // Limpiar la barra de opciones antes de agregar nuevas
-        optionsBar.innerHTML = '';
+        commandOptionsBar.innerHTML = '';
 
         if (commands.length > 0) {
             // Crear y agregar cada comando a la barra de opciones
             commands.forEach(command => {
-                optionsBar.appendChild(createOptionElement(command));
+                commandOptionsBar.appendChild(createCommandOption(command));
             });
         }
         else {
-            optionsBar.innerHTML = `
+            commandOptionsBar.innerHTML = `
             <p class="small-text centered-text">${translations['no-commands']}</p>`;
         }
     }
@@ -225,8 +217,34 @@ document.addEventListener("DOMContentLoaded", async () => {
         mode = 'settings'; // Cambiar el modo a configuración
         settingsArea.style.display = 'flex'; // Mostrar el área de configuración
         mainContent.style.display = 'none'; // Ocultar el contenedor principal de tarjetas
-        optionsBar.style.display = 'none'; // Ocultar la barra de opciones
+        commandOptionsBar.style.display = 'none'; // Ocultar la barra de opciones
         clearSearch(); // Limpiar la búsquedas
+    }
+
+    // Función para mostrar el popup list
+    function showPopupList(event) {
+        popupList.style.display = 'flex';
+
+        const popupRect = popupList.getBoundingClientRect();
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+
+        // Posición base al lado del cursor
+        let left = event.clientX + 10;
+        let top = event.clientY + 10;
+
+        // Ajuste si se sale por la derecha
+        if (left + popupRect.width > viewportWidth) {
+            left = event.clientX - popupRect.width - 10;
+        }
+
+        // Ajuste si se sale por abajo
+        if (top + popupRect.height > viewportHeight) {
+            top = event.clientY - popupRect.height - 10;
+        }
+
+        popupList.style.left = `${left}px`;
+        popupList.style.top = `${top}px`;
     }
 
     // Acciones de la barra de título ============================================================
@@ -256,7 +274,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 showCommands(filteredCommands);
             }
             else {
-                optionsBar.style.display = 'none'; // Ocultar la barra de opciones
+                commandOptionsBar.style.display = 'none'; // Ocultar la barra de opciones
                 const filteredElements = actualPreparedElements.filter(element => element.name.toLowerCase().includes(searchTerm));
                 showContent(filteredElements);
                 searchMode = 'searching'; // Cambiar el modo de búsqueda a "buscando"
@@ -270,10 +288,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     search.addEventListener('keydown', async (event) => {
         // Si se presiona tabulador, se enfoca el primer botón de la barra de opciones
-        if (event.key === 'Tab' && optionsBar.style.display === 'flex') {
+        if (event.key === 'Tab' && commandOptionsBar.style.display === 'flex') {
             // Enfocar el primer botón de la barra de opciones
             event.preventDefault(); // Evitar el comportamiento por defecto de tabulador
-            const firstButton = optionsBar.querySelector('button');
+            const firstButton = commandOptionsBar.querySelector('button');
             if (firstButton) firstButton.focus();
         }
         else if (event.key === 'Escape') {
@@ -295,7 +313,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     function clearSearch() {
         if (searchMode !== 'none') {
             search.value = ''; // Limpiar el campo de búsqueda
-            optionsBar.style.display = 'none'; // Ocultar la barra de opciones
+            commandOptionsBar.style.display = 'none'; // Ocultar la barra de opciones
             showContent(actualPreparedElements); // Mostrar todos los elementos
             searchMode = 'none'; // Cambiar el modo de búsqueda a "ninguno"
             document.getElementById('search-clear-ico').src = '../assets/ico/feather/search.svg'; // Cambiar el icono de búsqueda a "lupa"
@@ -412,7 +430,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     // Main content ==============================================================================
-    optionsBar.addEventListener('click', async (event) => {
+    commandOptionsBar.addEventListener('click', async (event) => {
         const buttonPressed = event.target.closest('button');
         if (!buttonPressed) return; // Si no se hizo clic en un botón, salir
         else {
@@ -564,6 +582,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             } else if (confirm.error) showToast(confirm.error, true);
         }
 
+        // Clic en el botón para elegir idioma
+        else if (buttonPressed.id === 'choose-language') {
+            popupList.innerHTML = ''; // Limpiar la lista de idiomas
+            const availableLanguages = constants['languages'];
+            availableLanguages.forEach(lang => {
+                popupList.appendChild(createPopupOption('language', lang.code, lang.name));
+            });
+            // Mostrar la lista
+            showPopupList(event);
+        }
+
         // Clic en botón acerca de
         else if (buttonPressed.id === 'view-info-about') {
             await showAboutModal();
@@ -573,6 +602,33 @@ document.addEventListener("DOMContentLoaded", async () => {
         else if (buttonPressed.id === 'view-license') {
             await showLicenseModal();
         }
+    });
+
+    // Clic fuera del popup para cerrarlo
+    document.addEventListener('click', (event) => {
+        if (!popupList.contains(event.target) && event.target.id !== 'choose-language') {
+            popupList.style.display = 'none';
+        }
+    });
+
+    // Selección de opción en el popup list
+    popupList.addEventListener('click', async (event) => {
+        const buttonPressed = event.target.closest('button');
+        if (!buttonPressed) return; // Si no se hizo clic en un botón, salir
+        const optionType = buttonPressed.getAttribute('data-option-type');;
+        const optionValue = buttonPressed.getAttribute('data-option-value');
+
+        // Si se selecciona un idioma
+        if (optionType === 'language') {
+            const result = await window.electronAPI.setSetting('language', optionValue);
+            if (result.success) {
+                await applySettings(); // Aplicar las nuevas configuraciones
+                showToast(translations['language-changed']);
+            }
+        }
+
+        // Ocultar la lista de opciones
+        popupList.style.display = 'none';
     });
 
     // Función para ejecutar comandos ============================================================
@@ -589,12 +645,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Función del toast notification ============================================================
     function showToast(message, error = false) {
-        const container = document.getElementById('toast-container');
         const toast = document.createElement('div');
         error ? toast.classList.add('toast-warning') : toast.classList.add('toast');
         toast.textContent = message;
 
-        container.appendChild(toast);
+        toastContainer.appendChild(toast);
 
         // Eliminarlo después de que desaparezca
         setTimeout(() => {
@@ -603,8 +658,22 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     // Aplicar configuraciones ===================================================================
     async function applySettings() {
-        // Actualizar la información del superusuario
+        // Actualizar la información del superusuario e idiomas
         superuser = await window.electronAPI.getUserInfo();
+        translations = await window.electronAPI.getTranslations('home-view');
+        cardTranslations = await window.electronAPI.getTranslations('card');
+
+        // Cargar traducciones y mostrarlas en la interfaz estática
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (translations[key]) {
+                el.textContent = translations[key];
+            }
+        });
+        search.placeholder = translations['search'];
+
+        // Cargar las traducciones para el módulo de traducción
+        setTranslations(translations);
 
         // Obtener configuraciones a utilizar
         const colorStyle = await window.electronAPI.getSetting('colorStyle');
@@ -634,10 +703,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                 await window.electronAPI.setSetting('welcomeMessageDisplayed', true);
             }
         }
+        createSettingsPage(superuser); // Crear la página de configuración
     }
 
     // Acciones iniciales ========================================================================
     await applySettings();
     await loadContent(); // Cargar el contenido inicial
-    createSettingsPage(superuser); // Crear la página de configuración
 });

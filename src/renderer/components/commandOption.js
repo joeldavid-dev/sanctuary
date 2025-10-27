@@ -2,7 +2,7 @@
  * Este modulo retorna un elemento HTML que representa una opción.
  */
 
-export function createOptionElement(option) {
+export function createCommandOption(option) {
     // Si la opción inicia con 'change' o 'delete', se crea un botón con una clase específica
     if (option.startsWith('change') || option.startsWith('delete')) {
         const optionElement = document.createElement('button');
