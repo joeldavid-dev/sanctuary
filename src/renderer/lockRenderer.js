@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             <video autoplay loop muted playsinline class="video-wallpaper">
                 <source src="../assets/vid/${wallpaper}.mp4" type="video/mp4">
             </video>`;
-        } else if (wallpaperMode === "static") {
+        } else if (wallpaperMode === "image") {
             visualWallpaper.innerHTML = `<img class="img-wallpaper" src="../assets/img/${wallpaper}.jpg">`
         }
 

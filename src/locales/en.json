@@ -132,7 +132,7 @@
     "new-edit": {
         "title-new-card": "New Key",
         "title-edit-card": "Edit Key",
-        "titlw-new-note": "New Note",
+        "title-new-note": "New Note",
         "title-edit-note": "Edit Note",
         "name": "Name:",
         "name-placeholder": "Name",
@@ -185,7 +185,7 @@
         "title": "LICENSE"
     },
     "about": {
-        "title": "About",
+        "title": "About {appName}",
         "version": "Version {version} {versionName} for Windows.",
         "description": "{appName} is an independent software project designed to securely store passwords and notes.",
         "fun-fact": "The Andromeda Galaxy is moving toward us at about 110 km per second. That means that in 4 to 5 billion years, the Milky Way and Andromeda will collide and merge into a new giant galaxy, which astronomers call Milkomeda or Lactomeda.",

@@ -125,6 +125,11 @@ async function loadSettings() {
         settings = {};
     }
 
+    // Generar colores si es necesario
+    await genColors();
+};
+
+async function genColors() {
     const colorStyle = getSetting('colorStyle');
 
     if (colorStyle === "generate") {
@@ -132,7 +137,7 @@ async function loadSettings() {
         settings['appContrastLight'] = genColors.appContrastLight;
         settings['appContrastDark'] = genColors.appContrastDark;
     }
-};
+}
 
 // Verifica si existe la configuración, si existe, la retorna, si no, toma la configuración por defecto.
 function getSetting(key) {
@@ -167,13 +172,12 @@ ipcMain.handle('get-setting', (event, key) => {
 });
 
 // Exponer la función para establecer una configuración.
-ipcMain.handle('set-setting', (event, key, value) => {
+ipcMain.handle('set-setting', async (event, key, value) => {
     const result = setSetting(key, value);
     if (result.success) {
         writeLog(`Configuracion "${key}" actualizada a: ${value}`);
-        if (key === 'language') {
-            loadTranslations();
-        }
+        if (key === 'language') loadTranslations();
+        else if (key === 'wallpaper') await genColors();
     } else {
         writeLog(`Error al actualizar la configuracion "${key}": ${result.error}`);
     }

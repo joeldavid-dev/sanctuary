@@ -108,6 +108,8 @@ body::-webkit-scrollbar {
     --external-radius-2: calc(var(--minimal-radius) + var(--narrow-margin));
     /* Redondeo exterior de un contenedor con margen normal y elemento hijo minimo. */
     --external-radius-3: calc(var(--minimal-radius) + var(--normal-margin));
+    /* Redondeo exterior de un contenedor con margen nano y elemento hijo normal. */
+    --external-radius-4: calc(var(--normal-radius) + var(--nano-margin));
 }
 
 /* Permite arrastrar la app */
@@ -241,6 +243,10 @@ pre,
     border-radius: var(--external-radius-3);
 }
 
+.external-radius-4 {
+    border-radius: var(--external-radius-4);
+}
+
 .top-bottom-big-margin {
     margin: 50px 0 50px 0;
 }
@@ -255,6 +261,10 @@ pre,
 
 .minimal-margin {
     margin: var(--minimal-margin);
+}
+
+.minimal-margin-left-right {
+    margin: 0 var(--minimal-margin);
 }
 
 .nano-margin {
@@ -705,6 +715,31 @@ No tiene borde, al pasar el mouse por encima solo aparece el borde. */
     border-color: var(--app_dark);
 }
 
+.transparent-radio {
+    width: min-content;
+    height: min-content;
+    background: transparent;
+    border: solid 1px transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.transparent-radio input {
+    /*Oculta el radio button original */
+    display: none;
+}
+
+.transparent-radio:has(input:checked) {
+    border-color: var(--app_contrast_dark);
+}
+
+.transparent-radio:hover {
+    border-color: var(--app_dark);
+}
+
 .custom-radio2 {
     display: flex;
     align-items: center;
@@ -796,7 +831,6 @@ No tiene borde, al pasar el mouse por encima solo aparece el borde. */
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: var(--normal-margin);
 }
 
 .profile-pic-container {
@@ -827,8 +861,8 @@ No tiene borde, al pasar el mouse por encima solo aparece el borde. */
 }
 
 .wallpaper-icon {
-    width: 120px;
-    height: auto;
+    width: 130px;
+    height: 83px;
 }
 
 .big-icon {
@@ -1208,7 +1242,7 @@ input:checked+.slider::before {
         border: solid 1px var(--app_light);
     }
 
-    .floating-container {
+    .popup-list {
         box-shadow: 0px 0px 60px 8px rgba(255, 255, 255, 0.2);
     }
 
@@ -1251,6 +1285,14 @@ input:checked+.slider::before {
     }
 
     .transparent-ico-radio:hover {
+        border-color: var(--app_light);
+    }
+
+    .transparent-radio:has(input:checked) {
+        border-color: var(--app_contrast_light);
+    }
+
+    .transparent-radio:hover {
         border-color: var(--app_light);
     }
 

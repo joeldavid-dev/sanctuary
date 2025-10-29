@@ -604,6 +604,35 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
+    // Escuchar cambios en los wallpaper options
+    settingsArea.addEventListener('change', async (event) => {
+        const radioPressed = event.target.closest('input[name="settings-wallpaper-option"]');
+        if (!radioPressed) return; // Si no se hizo clic en un radio, salir
+
+        const selectedOption = radioPressed.value;
+        // Guardar la opción seleccionada
+        const result = await window.electronAPI.setSetting('wallpaper', selectedOption);
+        if (result.success) {
+            await applySettings(); // Aplicar las nuevas configuraciones
+        } else {
+            showToast(result.error, true);
+        }
+    });
+
+    // Escuchar cambios en el switch de motion background
+    settingsArea.addEventListener('change', async (event) => {
+        const switchPressed = event.target.closest('input[type="checkbox"]');
+        if (!switchPressed) return; // Si no se hizo clic en el switch, salir
+        if (switchPressed.id === 'motion-toggle-input') {
+            const isEnabled = switchPressed.checked;
+            // Guardar la opción seleccionada
+            const result = await window.electronAPI.setSetting('wallpaperMode', isEnabled ? 'video' : 'image');
+            if (!result.success) {
+                showToast(result.error, true);
+            }
+        }
+    });
+
     // Clic fuera del popup para cerrarlo
     document.addEventListener('click', (event) => {
         if (!popupList.contains(event.target) && event.target.id !== 'choose-language') {
@@ -623,6 +652,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const result = await window.electronAPI.setSetting('language', optionValue);
             if (result.success) {
                 await applySettings(); // Aplicar las nuevas configuraciones
+                title.textContent = translations['settings']; // Cambiar el título de la vista
                 showToast(translations['language-changed']);
             }
         }

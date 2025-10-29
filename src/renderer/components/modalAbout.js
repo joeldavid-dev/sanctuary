@@ -29,8 +29,8 @@ export function showAboutModal() {
         const wallpapersAboutArea = document.getElementById('wallpapers-about-area');
 
         // Establecer valores iniciales
-        modalContent.style.width = '450px';
-        modalTitle.textContent = translations['title'];
+        modalContent.style.width = '460px';
+        modalTitle.textContent = translate('title', { 'appName': constants.about.appName });
         constants.wallpapers.forEach(element => {
             wallpapersAboutArea.appendChild(getWallpaperIconHTML(element.name, translate('Wallpaper-info', {
                 'author': element.author, 'platform': element.platform
@@ -121,7 +121,7 @@ function getModalHTML(translations, constants) {
 
         <div class="vertical-elem-area">
             <p class="medium-text bold">${translations['wallpapers-title']}</p>
-            <div id="wallpapers-about-area" class="elements-container"></div>
+            <div id="wallpapers-about-area" class="elements-container normal-spaced"></div>
         </div>
 
         <div class="vertical-elem-area">
@@ -149,7 +149,7 @@ function getWallpaperIconHTML(img, info) {
     wallpaperIconBody.classList.add('min-content');
 
     wallpaperIconBody.innerHTML = `
-        <img src="../assets/img/${img}.jpg" class="wallpaper-icon minimal-rounded">
+        <img src="../assets/thumbnail/${img}.jpg" class="wallpaper-icon minimal-rounded">
         <p class="small-text centered-text">${info}</p>  
     `;
     return wallpaperIconBody;
