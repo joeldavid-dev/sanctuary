@@ -19,7 +19,7 @@ const maximize = document.getElementById('maximize');
 const close = document.getElementById('close');
 const title = document.getElementById('title');
 const searchArea = document.getElementById('search-area');
-const search = document.getElementById('search');
+const searchInput = document.getElementById('search-input');
 const searchClear = document.getElementById('search-clear');
 
 // Sidebar
@@ -52,6 +52,7 @@ const popupList = document.getElementById('popup-list');
 // Variable para controlar el modo actual de la vista (llaves, notas o configuración)
 let mode = 'keys'; // keys || notes
 let searchMode = 'none'; // Variable para controlar el modo de búsqueda
+let searchTerm = ''; // Término de búsqueda actual
 
 let selectedPreparedElement = null; // Variable para almacenar el elemento seleccionado
 let selectedElementID = null; // Variable para almacenar el ID del elemento seleccionada
@@ -122,8 +123,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <p>${translations['command-mode']}</p>
             </div>`;
 
-        // Mostrar la barra de opciones
+        // Mostrar la barra de opciones y ocultar la barra de botones
         commandOptionsBar.style.display = 'flex';
+        bottonBar.style.display = 'none';
         // Limpiar la barra de opciones antes de agregar nuevas
         commandOptionsBar.innerHTML = '';
 
@@ -187,6 +189,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     function showKeysView() {
+        clearSearch(); // Limpiar las búsquedas
         mode = 'keys'; // Cambiar el modo a llaves
         actualPreparedElements = preparedCards; // Obtener todas las tarjetas y almacenarlas en la lista de elementos mostrados
         showContent(actualPreparedElements); // Mostrar las tarjetas en la vista
@@ -195,10 +198,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         bottonBar.style.display = 'flex'; // Mostrar la barra de botones en la vista de llaves
         settingsArea.style.display = 'none'; // Ocultar el área de configuración
         mainContent.style.display = 'flex'; // Mostrar el contenedor principal
-        clearSearch(); // Limpiar las búsquedas
     }
 
     async function showNotesView() {
+        clearSearch(); // Limpiar las búsquedas
         mode = 'notes'; // Cambiar el modo a notas
         actualPreparedElements = preparedNotes; // Obtener todas las notas y almacenarlas en la lista de elementos mostrados
         showContent(actualPreparedElements); // Mostrar las notas en la vista
@@ -207,18 +210,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         bottonBar.style.display = 'flex'; // Mostrar la barra de botones en la vista de notas
         settingsArea.style.display = 'none'; // Ocultar el área de configuración
         mainContent.style.display = 'flex'; // Mostrar el contenedor principal
-        clearSearch(); // Limpiar las búsquedas
     }
 
     function showSettingsView() {
+        clearSearch(); // Limpiar la búsquedas
         title.textContent = translations['settings']; // Cambiar el título de la vista
         searchArea.style.display = 'none'; // Ocultar la barra de búsqueda en la vista de configuración
         bottonBar.style.display = 'none'; // Ocultar la barra de botones en la vista de configuración
         mode = 'settings'; // Cambiar el modo a configuración
         settingsArea.style.display = 'flex'; // Mostrar el área de configuración
         mainContent.style.display = 'none'; // Ocultar el contenedor principal de tarjetas
-        commandOptionsBar.style.display = 'none'; // Ocultar la barra de opciones
-        clearSearch(); // Limpiar la búsquedas
     }
 
     // Función para mostrar el popup list
@@ -262,8 +263,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     // Barra de busqueda
-    search.addEventListener('input', async (event) => {
-        const searchTerm = event.target.value.toLowerCase();
+    function search(searchTerm) {
+        return actualPreparedElements.filter(element => element.name.toLowerCase().includes(searchTerm));
+    }
+
+    searchInput.addEventListener('input', async (event) => {
+        searchTerm = event.target.value.toLowerCase();
         if (searchTerm.length > 0) {
             // Cambiar el icono de búsqueda a "x"
             if (searchMode === 'none') document.getElementById('search-clear-ico').src = '../assets/ico/feather/x.svg';
@@ -275,8 +280,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
             else {
                 commandOptionsBar.style.display = 'none'; // Ocultar la barra de opciones
-                const filteredElements = actualPreparedElements.filter(element => element.name.toLowerCase().includes(searchTerm));
-                showContent(filteredElements);
+                bottonBar.style.display = 'flex'; // Mostrar la barra de botones
+                showContent(search(searchTerm)); // Mostrar los elementos filtrados
                 searchMode = 'searching'; // Cambiar el modo de búsqueda a "buscando"
             }
         } else {
@@ -286,7 +291,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
-    search.addEventListener('keydown', async (event) => {
+    searchInput.addEventListener('keydown', async (event) => {
         // Si se presiona tabulador, se enfoca el primer botón de la barra de opciones
         if (event.key === 'Tab' && commandOptionsBar.style.display === 'flex') {
             // Enfocar el primer botón de la barra de opciones
@@ -298,7 +303,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             clearSearch(); // Limpiar la búsqueda si se presiona Escape
         }
         else if (event.key === 'Enter' && searchMode === 'command') {
-            const command = search.value.slice(2).trim(); // Obtener el comando ingresado
+            const command = searchInput.value.slice(2).trim(); // Obtener el comando ingresado
             if (command === '') {
                 showToast(translations['empty-command'], true); // Mostrar mensaje si no hay comando
             }
@@ -312,11 +317,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Función para limpiar la búsqueda y mostrar todos los elementos
     function clearSearch() {
         if (searchMode !== 'none') {
-            search.value = ''; // Limpiar el campo de búsqueda
-            commandOptionsBar.style.display = 'none'; // Ocultar la barra de opciones
+            searchInput.value = ''; // Limpiar el campo de búsqueda
             showContent(actualPreparedElements); // Mostrar todos los elementos
-            searchMode = 'none'; // Cambiar el modo de búsqueda a "ninguno"
             document.getElementById('search-clear-ico').src = '../assets/ico/feather/search.svg'; // Cambiar el icono de búsqueda a "lupa"
+            if (searchMode === 'command') {
+                commandOptionsBar.style.display = 'none'; // Ocultar la barra de opciones
+                bottonBar.style.display = 'flex'; // Mostrar la barra de botones
+            }
+            searchMode = 'none'; // Cambiar el modo de búsqueda a "ninguno"
         }
     }
 
@@ -369,7 +377,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                     const actualIndex = actualPreparedElements.findIndex(element => element.id == selectedElement.data.id);
                     // Actualizar el elemento en la lista de elementos preparados que se está mostrando
                     actualPreparedElements[actualIndex] = confirm.edited;
-                    showContent(actualPreparedElements);
+                    if (searchMode === 'searching') {
+                        showContent(search(searchTerm));
+                    } else if (searchMode === 'none') {
+                        showContent(actualPreparedElements);
+                    }
                 }
                 if (confirm.message) showToast(confirm.message);
             } else {
@@ -437,9 +449,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             // Si se presiona un botón de opción 2
             if (buttonPressed.classList.contains('option-btn2')) {
                 const option = buttonPressed.getAttribute('data-option');
-                search.value = `>>${option}:`; // Establecer el valor del campo de búsqueda
+                searchInput.value = `>>${option}:`; // Establecer el valor del campo de búsqueda
                 // enfocar el campo de búsqueda
-                search.focus();
+                searchInput.focus();
             }
             else {
                 const option = buttonPressed.getAttribute('data-option');
@@ -700,7 +712,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 el.textContent = translations[key];
             }
         });
-        search.placeholder = translations['search'];
+        searchInput.placeholder = translations['search'];
 
         // Cargar las traducciones para el módulo de traducción
         setTranslations(translations);
