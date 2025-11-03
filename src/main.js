@@ -131,6 +131,8 @@ async function loadSettings() {
 };
 
 async function genColors() {
+    // por problemas de compatibilidad de colorThief, solo se ejecuta en windows.
+    if (process.platform !== 'win32') return;
     const colorStyle = getSetting('colorStyle');
 
     if (colorStyle === "generate") {
