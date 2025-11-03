@@ -32,6 +32,7 @@ const settingsRadio = document.getElementById('settings-radio');
 const commandOptionsBar = document.getElementById('command-options-bar');
 
 // Contenedor principal
+const mainSection = document.getElementById('main-section');
 const mainContent = document.getElementById('main-content');
 const settingsArea = document.getElementById('settings-area');
 
@@ -220,6 +221,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         mode = 'settings'; // Cambiar el modo a configuración
         settingsArea.style.display = 'flex'; // Mostrar el área de configuración
         mainContent.style.display = 'none'; // Ocultar el contenedor principal de tarjetas
+        // Ir al inicio del área de configuración
+        mainSection.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     // Función para mostrar el popup list

@@ -28,6 +28,7 @@ let settings = null;
 let translations = null;
 let mainTranslations = null;
 let logPath = null;
+let preparedElements = null;
 
 // Determinar la ruta del archivo de log
 if (showDevTools) {
@@ -411,6 +412,8 @@ async function changePassword(oldPassword, newPassword) {
             const hashPassword = await cr.hashPassword(newPassword);
             masterKey = newPassword;
             superUser = await db.updateUser(superUser.userID, superUser.name, superUser.gender, hashPassword);
+            // Limpiar la caché de elementos preparados
+            preparedElements = null;
             return {
                 success: true,
                 message: mainTranslations['change-password-success'],
@@ -515,6 +518,10 @@ ipcMain.handle('create-card', async (event, newCard) => {
         const encryptedCard = await cr.encryptCard(masterKey, newCard);
         const result = await db.createCard(encryptedCard);
         const preparedCard = await cr.prepareCard(masterKey, result);
+        // Crear la tarjeta en la caché de elementos preparados
+        if (preparedElements) {
+            preparedElements.cards.push(preparedCard);
+        }
         return {
             success: true,
             message: mainTranslations['create-card-success'],
@@ -537,6 +544,13 @@ ipcMain.handle('update-card', async (event, id, updatedCard) => {
         const encryptedCard = await cr.encryptCard(masterKey, updatedCard);
         const result = await db.updateCard(id, encryptedCard);
         const preparedCard = await cr.prepareCard(masterKey, result);
+        // Actualizar la tarjeta en la caché de elementos preparados
+        if (preparedElements) {
+            const cardIndex = preparedElements.cards.findIndex(card => card.id === id);
+            if (cardIndex !== -1) {
+                preparedElements.cards[cardIndex] = preparedCard;
+            }
+        }
         return {
             success: true,
             message: mainTranslations['update-card-success'],
@@ -576,6 +590,10 @@ ipcMain.handle('delete-card', async (event, id) => {
     try {
         const result = await db.deleteCard(id);
         if (result) {
+            // ELiminar la tarjeta de la caché de elementos preparados
+            if (preparedElements) {
+                preparedElements.cards = preparedElements.cards.filter(card => card.id !== id);
+            }
             return {
                 success: true,
                 message: mainTranslations['delete-card-success'],
@@ -598,6 +616,10 @@ ipcMain.handle('create-note', async (event, newNote) => {
         const encryptedNote = await cr.encryptNote(masterKey, newNote);
         const result = await db.createNote(encryptedNote);
         const preparedNote = await cr.prepareNote(masterKey, result);
+        // Crear la nota en la caché de elementos preparados
+        if (preparedElements) {
+            preparedElements.notes.push(preparedNote);
+        }
         return {
             success: true,
             message: mainTranslations['create-note-success'],
@@ -620,6 +642,13 @@ ipcMain.handle('update-note', async (event, id, updatedNote) => {
         const encryptedNote = await cr.encryptNote(masterKey, updatedNote);
         const result = await db.updateNote(id, encryptedNote);
         const preparedNote = await cr.prepareNote(masterKey, result);
+        // Actualizar la nota en la caché de elementos preparados
+        if (preparedElements) {
+            const noteIndex = preparedElements.notes.findIndex(note => note.id === id);
+            if (noteIndex !== -1) {
+                preparedElements.notes[noteIndex] = preparedNote;
+            }
+        }
         return {
             success: true,
             message: mainTranslations['update-note-success'],
@@ -678,6 +707,10 @@ ipcMain.handle('delete-note', async (event, id) => {
     try {
         const result = await db.deleteNote(id);
         if (result) {
+            // ELiminar la nota de la caché de elementos preparados
+            if (preparedElements) {
+                preparedElements.notes = preparedElements.notes.filter(note => note.id !== id);
+            }
             return {
                 success: true,
                 message: mainTranslations['delete-note-success'],
@@ -725,10 +758,15 @@ function startPreparingElements(encryptedCards, encryptedNotes, masterKey) {
 // Obtener todas las tarjetas y notas preparadas (desencriptar nombre y web)
 ipcMain.handle('get-prepared-elements', async () => {
     try {
-        const encryptedCards = await db.getAllCards();
-        const encryptedNotes = await db.getAllNotes();
-        // Preparar las tarjetas (desencriptar nombre y web) usando un worker
-        const preparedElements = await startPreparingElements(encryptedCards, encryptedNotes, masterKey);
+        if (preparedElements) {
+            writeLog('Retornando elementos preparados desde caché.');
+        } else {
+            writeLog('No hay elementos preparados en caché. Preparando desde la base de datos...');
+            const encryptedCards = await db.getAllCards();
+            const encryptedNotes = await db.getAllNotes();
+            // Preparar las tarjetas (desencriptar nombre y web) usando un worker
+            preparedElements = await startPreparingElements(encryptedCards, encryptedNotes, masterKey);
+        }
         return {
             success: true,
             preparedCards: preparedElements.cards,
