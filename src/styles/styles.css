@@ -71,7 +71,7 @@ body::-webkit-scrollbar {
     --app_dark: rgb(10, 10, 10);
     --app_dark_transparent: rgba(10, 10, 10, 0.6);
     --neutral_grey: rgb(130, 130, 130);
-    --light_gray: rgba(0, 0, 0, 0.1);
+    --light_gray: rgba(0, 0, 0, 0.15);
     --dark_gray: rgba(255, 255, 255, 0.15);
 
     --app_contrast_light: rgb(200, 200, 200);
@@ -95,12 +95,14 @@ body::-webkit-scrollbar {
     --normal-margin: 15px;
     --narrow-margin: 10px;
     --minimal-margin: 5px;
+    --transparent-btn-margin: 4px;
     --nano-margin: 2px;
 
     /* Valores de redondeo */
     --minimal-radius: 6px;
     --normal-radius: 11px;
     --maximal-radius: 16px;
+    --ultra-radius: 30px;
 
     /* Redondeo exterior de un contenedor con margen minimo y elemento hijo minimo. */
     --external-radius: calc(var(--minimal-radius) + var(--minimal-margin));
@@ -220,6 +222,16 @@ pre,
     /* hace que no se desborde en pantallas pequeñas */
 }
 
+/* Elementos circulares */
+.circular {
+    border-radius: 50%;
+}
+
+/* Redondeo de elementos con borde circular */
+.ultra-rounded {
+    border-radius: var(--ultra-radius);
+}
+
 /* Redondeo de elementos grandes */
 .maximal-rounded {
     border-radius: var(--maximal-radius);
@@ -285,6 +297,10 @@ pre,
 
 .minimal-padding {
     padding: var(--minimal-margin);
+}
+
+.transparent-btn-padding {
+    padding: var(--transparent-btn-margin);
 }
 
 .nano-padding {
@@ -531,8 +547,7 @@ pre,
 
 /* Botón de acciones. Tiene el borde definido, se vuelve sólido al pasar el mouse encima. */
 .action-btn {
-    background: transparent;
-    border: solid 1px var(--app_dark);
+    background: var(--light_gray);
     transition: 0.2s;
     cursor: pointer;
 }
@@ -540,7 +555,6 @@ pre,
 .action-btn:hover {
     color: var(--app_light);
     background-color: var(--app_dark);
-    border-color: var(--app_dark);
 }
 
 .action-btn:hover img {
@@ -553,8 +567,7 @@ pre,
 
 .action-btn:disabled {
     font-size: 12px;
-    background: transparent;
-    border: solid 1px;
+    background: var(--light_gray);
     color: var(--neutral_grey);
     cursor: not-allowed;
     animation: pulse 4s infinite;
@@ -595,6 +608,42 @@ pre,
     filter: invert(1);
 }
 
+.option-radio {
+    display: flex;
+    align-items: center;
+    background-color: var(--light_gray);
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.option-radio input {
+    /*Oculta el radio button original */
+    display: none;
+}
+
+.option-radio:has(input:checked) {
+    color: var(--app_light);
+    background-color: var(--app_dark);
+}
+
+.option-radio input:checked+.radio-ico {
+    background-image: url('../assets/ico/feather/check-circle.svg');
+    filter: invert(1);
+}
+
+.option-input {
+    text-align: center;
+    background-color: var(--app_light);
+    border: 1px solid var(--neutral_grey);
+    /* oculta el borde de seleccion por defecto */
+    outline: none;
+    height: 30px;
+}
+
+.option-input:focus {
+    border-color: var(--app_dark);
+}
+
 .option-btn2 {
     background: transparent;
     padding: var(--minimal-margin);
@@ -605,6 +654,23 @@ pre,
 
 .option-btn2:hover {
     border: dashed 1px var(--app_dark);
+}
+
+.option-radio2 {
+    height: min-content;
+    width: min-content;
+    cursor: pointer;
+    border: solid 1px transparent;
+    transition: 0.2s;
+}
+
+.option-radio2 input {
+    /* Oculta el radio button original */
+    display: none;
+}
+
+.option-radio2:has(input:checked) {
+    border-color: var(--neutral_grey);
 }
 
 /* Botón de opciones. No tiene borde, se vuelve sólido al pasar el mouse encima. */
@@ -628,12 +694,13 @@ pre,
     filter: invert(1);
 }
 
-/* Botón transparente para elementos que están sobre un fondo colorido.
+/* Botón transparente para elementos que están sobre un fondo plano.
 No tiene borde, al pasar el mouse por encima solo aparece el borde. */
 .transparent-btn {
+    width: min-content;
+    height: min-content;
     background: transparent;
     border: solid 1px transparent;
-    border-radius: var(--minimal-radius);
     transition: 0.2s;
     cursor: pointer;
     /* Hacer que el botón ocupe el espacio mínimo necesario */
@@ -644,79 +711,28 @@ No tiene borde, al pasar el mouse por encima solo aparece el borde. */
 }
 
 .transparent-btn:hover {
-    border-color: var(--app_dark);
+    background-color: var(--light_gray);
 }
 
-/* Contenedor flotante */
-.popup-list {
-    position: absolute;
-    display: none;
-    padding: var(--narrow-margin);
-    border-radius: calc(var(--minimal-radius) + var(--narrow-margin));
-    box-shadow: 0px 0px 30px 8px rgba(0, 0, 0, 0.20);
-}
-
-.custom-radio {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    border: solid 1px;
-    transition: 0.2s;
-}
-
-.custom-radio input {
-    /*Oculta el radio button original */
-    display: none;
-}
-
-.custom-radio:has(input:checked) {
-    color: var(--app_light);
-    background-color: var(--app_dark);
-    border-color: var(--app_dark);
-}
-
-.custom-radio input:checked+.radio-ico {
-    background-image: url('../assets/ico/feather/check-circle.svg');
-    filter: invert(1);
-}
-
-.radio-ico {
-    width: 15px;
-    height: 15px;
-    background-image: url('../assets/ico/feather/circle.svg');
-    /* Asegura que la imagen cubra todo el contenedor */
-    background-size: cover;
-    /* Centra la imagen */
-    background-position: center;
-    /* Evita que la imagen se repita */
-    background-repeat: no-repeat;
-    transition: 0.2s;
-}
-
-.transparent-ico-radio {
-    width: 28px;
-    height: 28px;
+/* Botón transparente para elementos que están sobre un fondo colorido.
+No tiene borde, al pasar el mouse por encima solo aparece el borde.
+Siempre es blanco para mejorar la visibilidad. */
+.transparent-btn-white {
+    width: min-content;
+    height: min-content;
     background: transparent;
     border: solid 1px transparent;
-    border-radius: var(--minimal-radius);
+    transition: 0.2s;
+    cursor: pointer;
+    /* Hacer que el botón ocupe el espacio mínimo necesario */
+    width: min-content;
+    height: min-content;
     display: flex;
     align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: 0.2s;
 }
 
-.transparent-ico-radio input {
-    /*Oculta el radio button original */
-    display: none;
-}
-
-.transparent-ico-radio:has(input:checked) {
-    background-color: var(--app_contrast_light);
-}
-
-.transparent-ico-radio:hover {
-    border-color: var(--app_dark);
+.transparent-btn-white:hover {
+    border-color: white;
 }
 
 .transparent-radio {
@@ -737,47 +753,81 @@ No tiene borde, al pasar el mouse por encima solo aparece el borde. */
 }
 
 .transparent-radio:has(input:checked) {
-    border-color: var(--app_contrast_dark);
+    background-color: var(--app_contrast_light);
 }
 
 .transparent-radio:hover {
-    border-color: var(--app_dark);
+    background-color: var(--light_gray);
 }
 
-.custom-radio2 {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    border: solid 1px;
-    border-color: transparent;
-    transition: 0.2s;
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
 }
 
-.custom-radio2 input {
-    /* Oculta el radio button original */
+.switch input {
     display: none;
 }
 
-.custom-radio2:has(input:checked) {
-    border-color: var(--neutral_grey);
+.slider {
+    position: absolute;
+    cursor: pointer;
+    background-color: var(--neutral_grey);
+    border-radius: 24px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: 0.2s;
+}
+
+.slider::before {
+    content: "";
+    position: absolute;
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: var(--app_light);
+    border-radius: 50%;
+    transition: 0.2s;
+}
+
+input:checked+.slider {
+    background-color: var(--app_dark);
+}
+
+input:checked+.slider::before {
+    transform: translateX(26px);
+}
+
+/* Contenedor flotante */
+.popup-list {
+    position: absolute;
+    display: none;
+    padding: var(--narrow-margin);
+    border-radius: calc(var(--minimal-radius) + var(--narrow-margin));
+    box-shadow: 0px 0px 30px 8px rgba(0, 0, 0, 0.20);
+}
+
+.radio-ico {
+    width: 15px;
+    height: 15px;
+    background-image: url('../assets/ico/feather/circle.svg');
+    /* Asegura que la imagen cubra todo el contenedor */
+    background-size: cover;
+    /* Centra la imagen */
+    background-position: center;
+    /* Evita que la imagen se repita */
+    background-repeat: no-repeat;
+    transition: 0.2s;
 }
 
 .radio-color {
     width: 20px;
     height: 20px;
-}
-
-.custom-input {
-    text-align: center;
-    background-color: var(--app_light);
-    border: 1px solid var(--neutral_grey);
-    /* oculta el borde de seleccion por defecto */
-    outline: none;
-    height: 30px;
-}
-
-.custom-input:focus {
-    border-color: var(--app_dark);
 }
 
 .input-warning {
@@ -793,42 +843,6 @@ No tiene borde, al pasar el mouse por encima solo aparece el borde. */
 .input-warning:focus {
     background-color: white;
     color: black;
-}
-
-/* Botones de iconos únicamente. Tiene un tamaño fijo para evitar movimiento al pasar el mouse. */
-.ico-btn {
-    width: 30px;
-    height: 30px;
-    background: transparent;
-    border: solid 1px transparent;
-    border-radius: var(--minimal-radius);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.ico-btn:hover {
-    border: solid 1px var(--app_dark);
-}
-
-.ico-btn-white {
-    width: 30px;
-    height: 30px;
-    padding: var(--minimal-margin);
-    background: transparent;
-    border: solid 1px transparent;
-    border-radius: var(--minimal-radius);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.ico-btn-white:hover {
-    border: solid 1px white;
 }
 
 .elements-container {
@@ -899,51 +913,6 @@ No tiene borde, al pasar el mouse por encima solo aparece el borde. */
     width: 15px;
     height: 15px;
     filter: invert(1);
-}
-
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 50px;
-    height: 24px;
-}
-
-.switch input {
-    display: none;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    background-color: transparent;
-    border: solid 1px var(--app_dark);
-    border-radius: 24px;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    transition: 0.2s;
-}
-
-.slider::before {
-    content: "";
-    position: absolute;
-    height: 18px;
-    width: 18px;
-    left: 2px;
-    bottom: 2px;
-    background-color: var(--app_dark);
-    border-radius: 50%;
-    transition: 0.2s;
-}
-
-input:checked+.slider {
-    background-color: var(--app_dark);
-}
-
-input:checked+.slider::before {
-    transform: translateX(26px);
-    background-color: var(--app_light);
 }
 
 .main-element-btn {
@@ -1211,38 +1180,13 @@ input:checked+.slider::before {
         background-color: var(--dark_gray);
     }
 
-    .transparent-btn img {
-        filter: invert(1);
-    }
-
-    .transparent-btn:hover {
-        border-color: var(--app_light);
-    }
-
     .logo-icon {
         filter: invert(1);
-    }
-
-    .custom-input {
-        background-color: var(--app_dark);
-        color: var(--app_light);
-    }
-
-    .custom-input:focus {
-        border-color: var(--app_light);
     }
 
     .modal-content {
         background-color: var(--app_dark);
         box-shadow: 0px 0px 60px 8px rgba(255, 255, 255, 0.2);
-    }
-
-    .ico-btn img {
-        filter: invert(1);
-    }
-
-    .ico-btn:hover {
-        border: solid 1px var(--app_light);
     }
 
     .popup-list {
@@ -1261,47 +1205,13 @@ input:checked+.slider::before {
         background: var(--app_dark_transparent);
     }
 
-    .custom-radio {
-        border-color: var(--app_light);
-    }
-
-    .custom-radio:has(input:checked) {
-        color: var(--app_dark);
-        background-color: var(--app_light);
-        border-color: var(--app_light);
-    }
-
     .radio-ico {
         filter: invert(1);
     }
 
-    .custom-radio input:checked+.radio-ico {
-        filter: invert(0);
-    }
-
-    .transparent-ico-radio img {
-        filter: invert(1);
-    }
-
-    .transparent-ico-radio:has(input:checked) {
-        background-color: var(--app_contrast_dark);
-    }
-
-    .transparent-ico-radio:hover {
-        border-color: var(--app_light);
-    }
-
-    .transparent-radio:has(input:checked) {
-        border-color: var(--app_contrast_light);
-    }
-
-    .transparent-radio:hover {
-        border-color: var(--app_light);
-    }
-
     .action-btn {
         color: white;
-        border-color: var(--app_light);
+        background-color: var(--dark_gray);
     }
 
     .action-btn img {
@@ -1309,13 +1219,17 @@ input:checked+.slider::before {
     }
 
     .action-btn:hover {
-        background-color: var(--app_light);
-        border-color: var(--app_light);
         color: var(--app_dark);
+        background-color: var(--app_light);
     }
 
     .action-btn:hover img {
         filter: invert(0);
+    }
+
+    .action-btn:disabled {
+        color: var(--neutral_grey);
+        background-color: var(--dark_gray);
     }
 
     .option-btn img {
@@ -1331,6 +1245,28 @@ input:checked+.slider::before {
         filter: invert(0);
     }
 
+    .option-radio {
+        background-color: var(--dark_gray);
+    }
+
+    .option-radio:has(input:checked) {
+        color: var(--app_dark);
+        background-color: var(--app_light);
+    }
+
+    .option-radio input:checked+.radio-ico {
+        filter: invert(0);
+    }
+
+    .option-input {
+        background-color: var(--app_dark);
+        color: var(--app_light);
+    }
+
+    .option-input:focus {
+        border-color: var(--app_light);
+    }
+
     .option-btn2:hover {
         border: dashed 1px var(--app_light);
     }
@@ -1339,21 +1275,24 @@ input:checked+.slider::before {
         filter: invert(1);
     }
 
-    .slider {
-        background-color: transparent;
-        border: solid 1px var(--app_light);
+    .transparent-btn:hover {
+        background-color: var(--dark_gray);
+    }
+
+    .transparent-radio:has(input:checked) {
+        background-color: var(--app_contrast_dark);
+    }
+
+    .transparent-radio:hover {
+        background-color: var(--dark_gray);
     }
 
     .slider::before {
-        background-color: var(--app_light);
+        background-color: var(--app_dark);
     }
 
     input:checked+.slider {
         background-color: var(--app_light);
-    }
-
-    input:checked+.slider::before {
-        background-color: var(--app_dark);
     }
 
     .toast {

@@ -18,7 +18,7 @@ export function showNewEditCardModal(mode, card) {
         const modalTitle = document.getElementById('modal-title');
         // Insertar el esqueleto HTML
         modalBody.innerHTML = getModalHTML(translations, cardTranslations);
-        
+
         // Elementos HTML insertados en el esqueleto
         // Inputs
         const nameInput = document.getElementById('name-input');
@@ -224,15 +224,15 @@ function getModalHTML(translations, cardTranslations) {
         <div class="horizontal-elem-area">
             <div class="vertical-elem-area normal-padding normal-rounded div-options">
                 <label>${translations['name']}</label>
-                <input type="text" id="name-input" class="custom-input minimal-rounded" placeholder=${translations["name-placeholder"]}>
+                <input type="text" id="name-input" class="option-input minimal-rounded" placeholder=${translations["name-placeholder"]}>
                 <label>${translations['user']}</label>
-                <input type="text" id="user-input" class="custom-input minimal-rounded"
+                <input type="text" id="user-input" class="option-input minimal-rounded"
                     placeholder=${translations['user-placeholder']}>
                 <label>${translations['password']}</label>
-                <input type="text" id="pass-input" class="custom-input minimal-rounded"
+                <input type="text" id="pass-input" class="option-input minimal-rounded"
                     placeholder=${translations['password-placeholder']}>
                 <label>${translations['url']}</label>
-                <input type="text" inputmode="url" id="url-input" class="custom-input minimal-rounded"
+                <input type="text" inputmode="url" id="url-input" class="option-input minimal-rounded"
                     placeholder=${translations['url-placeholder']}>
 
                 <div class="horizontal-flex spaced centered">
@@ -287,56 +287,56 @@ function getModalHTML(translations, cardTranslations) {
             </div>
         </div>
 
-        <div class="horizontal-elem-area">
-            <div id="colors-section" class="horizontal-elem-area minimal-padding normal-rounded div-options">
-                <label class="custom-radio2 minimal-rounded minimal-padding">
+        <div class="horizontal-elem-area centered">
+            <div id="colors-section" class="horizontal-elem-area centered minimal-padding ultra-rounded div-options">
+                <label class="option-radio2 circular nano-padding">
                     <input id="color1" type="radio" name="color" value="var(--color1)">
-                    <div class="radio-color color1 minimal-rounded"></div>
+                    <div class="radio-color color1 circular"></div>
                 </label>
 
-                <label class="custom-radio2 minimal-rounded minimal-padding">
+                <label class="option-radio2 circular nano-padding">
                     <input id="color2" type="radio" name="color" value="var(--color2)">
-                    <div class="radio-color color2 minimal-rounded"></div>
+                    <div class="radio-color color2 circular"></div>
                 </label>
 
-                <label class="custom-radio2 minimal-rounded minimal-padding">
+                <label class="option-radio2 circular nano-padding">
                     <input id="color3" type="radio" name="color" value="var(--color3)">
-                    <div class="radio-color color3 minimal-rounded"></div>
+                    <div class="radio-color color3 circular"></div>
                 </label>
 
-                <label class="custom-radio2 minimal-rounded minimal-padding">
+                <label class="option-radio2 circular nano-padding">
                     <input id="color4" type="radio" name="color" value="var(--color4)">
-                    <div class="radio-color color4 minimal-rounded"></div>
+                    <div class="radio-color color4 circular"></div>
                 </label>
 
-                <label class="custom-radio2 minimal-rounded minimal-padding">
+                <label class="option-radio2 circular nano-padding">
                     <input id="color5" type="radio" name="color" value="var(--color5)">
-                    <div class="radio-color color5 minimal-rounded"></div>
+                    <div class="radio-color color5 circular"></div>
                 </label>
 
-                <label class="custom-radio2 minimal-rounded minimal-padding">
+                <label class="option-radio2 circular nano-padding">
                     <input id="color6" type="radio" name="color" value="var(--color6)">
-                    <div class="radio-color color6 minimal-rounded"></div>
+                    <div class="radio-color color6 circular"></div>
                 </label>
 
-                <label class="custom-radio2 minimal-rounded minimal-padding">
+                <label class="option-radio2 circular nano-padding">
                     <input id="color7" type="radio" name="color" value="var(--color7)">
-                    <div class="radio-color color7 minimal-rounded"></div>
+                    <div class="radio-color color7 circular"></div>
                 </label>
 
-                <label class="custom-radio2 minimal-rounded minimal-padding">
+                <label class="option-radio2 circular nano-padding">
                     <input id="color8" type="radio" name="color" value="var(--color8)">
-                    <div class="radio-color color8 minimal-rounded"></div>
+                    <div class="radio-color color8 circular"></div>
                 </label>
 
-                <label class="custom-radio2 minimal-rounded minimal-padding">
+                <label class="option-radio2 circular nano-padding">
                     <input id="color9" type="radio" name="color" value="var(--color9)">
-                    <div class="radio-color color9 minimal-rounded"></div>
+                    <div class="radio-color color9 circular"></div>
                 </label>
 
-                <label class="custom-radio2 minimal-rounded minimal-padding">
+                <label class="option-radio2 circular nano-padding">
                     <input id="color10" type="radio" name="color" value="var(--color10)">
-                    <div class="radio-color color10 minimal-rounded"></div>
+                    <div class="radio-color color10 circular"></div>
                 </label>
             </div>
 

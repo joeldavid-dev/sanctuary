@@ -243,22 +243,22 @@ function getModalHTML(translations, translate, constants) {
 
             <div id="name-container" class="vertical-elem-area">
                 <label class="small-text">${translations['name']}</label>
-                <input id="user-name" class="custom-input minimal-rounded" type="text" required>
+                <input id="user-name" class="option-input minimal-rounded" type="text" required>
             </div>
     
             <div id="pass1-container" class="vertical-elem-area">
                 <label class="small-text">${translations['current-password']}</label>
-                <input id="user-pass1" class="custom-input minimal-rounded" type="password" required>
+                <input id="user-pass1" class="option-input minimal-rounded" type="password" required>
             </div>
     
             <div id="pass2-container" class="vertical-elem-area">
                 <label class="small-text">${translations['new-password']}</label>
-                <input id="user-pass2" class="custom-input minimal-rounded" type="password" required>
+                <input id="user-pass2" class="option-input minimal-rounded" type="password" required>
             </div>
 
             <div id="pass3-container" class="vertical-elem-area">
                 <label class="small-text">${translations['confirm-password']}</label>
-                <input id="user-pass3" class="custom-input minimal-rounded" type="password" required>
+                <input id="user-pass3" class="option-input minimal-rounded" type="password" required>
             </div>
     
             <div id="gender-container" class="vertical-elem-area">
@@ -267,19 +267,19 @@ function getModalHTML(translations, translate, constants) {
                     <img src="../assets/ico/feather/help-circle.svg" class="mini-icon darkmode-invert" title="${translate('gender-help', { appName: constants.about.appName })}">
                 </div>
                 <div class="horizontal-flex spaced">
-                    <label class="custom-radio minimal-rounded minimal-padding horizontal-elem-area">
+                    <label class="option-radio minimal-rounded minimal-padding horizontal-elem-area">
                         <p class="small-text">${translations['gender-male']}</p>
                         <input id="gender1" type="radio" name="gender" value="male">
                         <div class="radio-ico"></div>
                     </label>
     
-                    <label class="custom-radio minimal-rounded minimal-padding horizontal-elem-area">
+                    <label class="option-radio minimal-rounded minimal-padding horizontal-elem-area">
                         <p class="small-text">${translations['gender-female']}</p>
                         <input id="gender2" type="radio" name="gender" value="female">
                         <div class="radio-ico"></div>
                     </label>
     
-                    <label class="custom-radio minimal-rounded minimal-padding horizontal-elem-area">
+                    <label class="option-radio minimal-rounded minimal-padding horizontal-elem-area">
                         <p class="small-text">${translations['gender-other']}</p>
                         <input id="gender3" type="radio" name="gender" value="neutral">
                         <div class="radio-ico"></div>

@@ -420,7 +420,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         // Clic en botón Acerca de
-        if (buttonPressed.id === 'App-btn') {
+        if (buttonPressed.id === 'app-btn') {
             await showAboutModal();
         }
     });
@@ -751,7 +751,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         createSettingsPage(superuser); // Crear la página de configuración
     }
 
+    // Hollydays =================================================================================
+    function checkHollydays() {
+        const today = new Date();
+        const day = today.getDate();
+        const month = today.getMonth() + 1; // Los meses van de 0 a 11
+        
+        // Icono navideño todo el mes de diciembre
+        if (month === 12) {
+            document.getElementById('app-icon').src = '../assets/ico/sanctuary-christmas.png';
+        }
+    }
+
     // Acciones iniciales ========================================================================
     await applySettings();
+    checkHollydays();
     await loadContent(); // Cargar el contenido inicial
 });

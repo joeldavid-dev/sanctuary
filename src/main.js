@@ -868,9 +868,8 @@ ipcMain.handle('execute-command', async (event, command) => {
             mainWindow.reload();
             break;
         case 'set-theme':
-            if (args.length === 1 && (args[0] === 'chocolate-mint-theme' || args[0] === 'gruvbox-theme'
-                || args[0] === 'pink-theme' || args[0] === 'github-theme'
-                || args[0] === 'generate')) {
+            // Si el argumento es uno de los temas disponibles en constants
+            if (args.length === 1 && constants.themes.includes(args[0])) {
                 setSetting('colorStyle', args[0]);
                 return { success: true, message: mainTranslations['theme-changed'] };
             } else {
