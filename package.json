@@ -1,11 +1,12 @@
 {
   "name": "codaby-sanctuary",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
     "build": "electron-builder",
-    "publish": "electron-builder --publish always"
+    "publish": "electron-builder --publish always",
+    "postinstall": "electron-builder install-app-deps"
   },
   "build": {
     "appId": "com.codaby.sanctuary",
@@ -20,6 +21,13 @@
     "win": {
       "target": "nsis",
       "icon": "build/icon.ico"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "build/icon.png",
+      "category": "Utility",
+      "executableName": "codaby-sanctuary",
+      "synopsis": "Secure local data storage"
     },
     "nsis": {
       "oneClick": false,
@@ -43,7 +51,7 @@
   "keywords": [],
   "author": "Joel David C.",
   "license": "GPL-3.0-only",
-  "description": "Sanctuary is an application that will help you store your private data locally, using secure cryptographic techniques",
+  "description": "Sanctuary is an application that will help you store your private data locally",
   "devDependencies": {
     "@electron/packager": "^18.3.6",
     "electron": "^39.0.0",
