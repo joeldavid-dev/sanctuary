@@ -287,7 +287,7 @@ function getModalHTML(translations, cardTranslations) {
             </div>
         </div>
 
-        <div class="horizontal-elem-area centered">
+        <div class="horizontal-elem-area centered spaced">
             <div id="colors-section" class="horizontal-elem-area centered minimal-padding ultra-rounded div-options">
                 <label class="option-radio2 circular nano-padding">
                     <input id="color1" type="radio" name="color" value="var(--color1)">

@@ -36,7 +36,7 @@ async function generateColorPalette(imgName) {
     console.log("Is light color?: " + colorType);
     if (colorType) {
         appContrastLight = `rgb(${dominantColor[0]}, ${dominantColor[1]}, ${dominantColor[2]})`;
-        const adjustedColor = adjustLightness(dominantColor, -0.2);
+        const adjustedColor = adjustLightness(dominantColor, -0.3);
         appContrastDark = `rgb(${adjustedColor[0]}, ${adjustedColor[1]}, ${adjustedColor[2]})`;
     }
     else {
@@ -54,13 +54,14 @@ async function generateColorPalette(imgName) {
 
 function isLightColor(dominantColor) {
     // Cálculo de luminancia percibida
-    const luminancia = (0.299 * dominantColor[0] + 0.587 * dominantColor[1] + 0.114 * dominantColor[2]) / 255;
+    const luminancia = (0.299 * dominantColor[0] + 0.587 * dominantColor[1] + 0.114 * dominantColor[2]);
 
-    // Si la luminancia es mayor a 0.5, es un color claro
-    return luminancia > 0.5;
+    // Si la luminancia es mayor a 128, es un color claro.
+    return luminancia > 128;
 }
 
 function adjustLightness(rgb, percent) {
+    console.log("rgb input: " + rgb);
     let [r, g, b] = rgb;
     let [h, s, l] = rgbToHsl(r, g, b);
     console.log("l previo: " + l);

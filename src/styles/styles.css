@@ -73,9 +73,14 @@ body::-webkit-scrollbar {
     --neutral_grey: rgb(130, 130, 130);
     --light_gray: rgba(0, 0, 0, 0.15);
     --dark_gray: rgba(255, 255, 255, 0.15);
+    --warning_red: rgb(150, 0, 0);
 
     --app_contrast_light: rgb(200, 200, 200);
     --app_contrast_dark: rgb(55, 55, 55);
+
+    /* Tiempos de animación */
+    --fast-animation: 0.1s;
+    --normal-animation: 0.2s;
 
     /* Colores de las tarjetas */
     --color1: rgb(30, 35, 40);
@@ -503,7 +508,7 @@ pre,
     justify-content: space-between;
     /* permite cortar palabras largas */
     word-wrap: break-word;
-    transition: box-shadow 0.3s ease;
+    transition: box-shadow var(--normal-animation) ease;
 }
 
 .main-element-body input {
@@ -532,7 +537,6 @@ pre,
     justify-content: space-between;
     /* permite cortar palabras largas */
     word-wrap: break-word;
-    transition: box-shadow 0.3s ease;
 }
 
 .element-textarea {
@@ -548,13 +552,13 @@ pre,
 /* Botón de acciones. Tiene el borde definido, se vuelve sólido al pasar el mouse encima. */
 .action-btn {
     background: var(--light_gray);
-    transition: 0.2s;
+    transition: var(--normal-animation);
     cursor: pointer;
 }
 
 .action-btn:hover {
     color: var(--app_light);
-    background-color: var(--app_dark);
+    background-color: var(--app_contrast_dark);
 }
 
 .action-btn:hover img {
@@ -562,7 +566,7 @@ pre,
 }
 
 .action-btn img {
-    transition: filter 0.2s ease;
+    transition: filter var(--normal-animation) ease;
 }
 
 .action-btn:disabled {
@@ -575,32 +579,30 @@ pre,
 
 .action-btn-warning {
     color: white;
-    background: transparent;
-    border: solid 1px;
-    transition: 0.2s;
+    background: var(--dark_gray);
+    transition: var(--normal-animation);
     cursor: pointer;
 }
 
 .action-btn-warning:hover {
-    color: red;
+    color: var(--warning_red);
     background-color: white;
-    border-color: white;
 }
 
 /* Botón de opciones. No tiene borde, se vuelve sólido al pasar el mouse encima. */
 .option-btn {
     background: transparent;
     padding: var(--minimal-margin);
-    transition: 0.1s;
+    transition: var(--fast-animation);
     cursor: pointer;
 }
 
 .option-btn img {
-    transition: filter 0.1s ease;
+    transition: filter var(--fast-animation) ease;
 }
 
 .option-btn:hover {
-    background-color: var(--app_dark);
+    background-color: var(--app_contrast_dark);
     color: var(--app_light);
 }
 
@@ -608,12 +610,24 @@ pre,
     filter: invert(1);
 }
 
+.option-btn2 {
+    background: transparent;
+    padding: var(--minimal-margin);
+    border: dashed 1px transparent;
+    transition: var(--fast-animation);
+    cursor: pointer;
+}
+
+.option-btn2:hover {
+    border: dashed 1px var(--app_contrast_dark);
+}
+
 .option-radio {
     display: flex;
     align-items: center;
     background-color: var(--light_gray);
     cursor: pointer;
-    transition: 0.2s;
+    transition: var(--normal-animation);
 }
 
 .option-radio input {
@@ -623,7 +637,11 @@ pre,
 
 .option-radio:has(input:checked) {
     color: var(--app_light);
-    background-color: var(--app_dark);
+    background-color: var(--app_contrast_dark);
+}
+
+.option-radio .radio-ico {
+    transition: filter var(--normal-animation) ease;
 }
 
 .option-radio input:checked+.radio-ico {
@@ -633,27 +651,14 @@ pre,
 
 .option-input {
     text-align: center;
-    background-color: var(--app_light);
-    border: 1px solid var(--neutral_grey);
+    background-color: var(--light_gray);
     /* oculta el borde de seleccion por defecto */
     outline: none;
     height: 30px;
 }
 
-.option-input:focus {
-    border-color: var(--app_dark);
-}
-
-.option-btn2 {
-    background: transparent;
-    padding: var(--minimal-margin);
-    border: dashed 1px transparent;
-    transition: 0.1s;
-    cursor: pointer;
-}
-
-.option-btn2:hover {
-    border: dashed 1px var(--app_dark);
+.option-input::placeholder {
+    color: var(--app_dark_transparent);
 }
 
 .option-radio2 {
@@ -661,7 +666,7 @@ pre,
     width: min-content;
     cursor: pointer;
     border: solid 1px transparent;
-    transition: 0.2s;
+    transition: var(--normal-animation);
 }
 
 .option-radio2 input {
@@ -677,16 +682,16 @@ pre,
 .option-btn-warning {
     background: transparent;
     padding: var(--minimal-margin);
-    transition: 0.1s;
+    transition: var(--fast-animation);
     cursor: pointer;
 }
 
 .option-btn-warning img {
-    transition: filter 0.1s ease;
+    transition: filter var(--fast-animation) ease;
 }
 
 .option-btn-warning:hover {
-    background-color: red;
+    background-color: var(--warning_red);
     color: white;
 }
 
@@ -700,8 +705,7 @@ No tiene borde, al pasar el mouse por encima solo aparece el borde. */
     width: min-content;
     height: min-content;
     background: transparent;
-    border: solid 1px transparent;
-    transition: 0.2s;
+    transition: var(--normal-animation);
     cursor: pointer;
     /* Hacer que el botón ocupe el espacio mínimo necesario */
     width: min-content;
@@ -721,8 +725,7 @@ Siempre es blanco para mejorar la visibilidad. */
     width: min-content;
     height: min-content;
     background: transparent;
-    border: solid 1px transparent;
-    transition: 0.2s;
+    transition: var(--normal-animation);
     cursor: pointer;
     /* Hacer que el botón ocupe el espacio mínimo necesario */
     width: min-content;
@@ -732,19 +735,18 @@ Siempre es blanco para mejorar la visibilidad. */
 }
 
 .transparent-btn-white:hover {
-    border-color: white;
+    background-color: var(--dark_gray);
 }
 
 .transparent-radio {
     width: min-content;
     height: min-content;
     background: transparent;
-    border: solid 1px transparent;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: 0.2s;
+    transition: var(--normal-animation);
 }
 
 .transparent-radio input {
@@ -753,7 +755,15 @@ Siempre es blanco para mejorar la visibilidad. */
 }
 
 .transparent-radio:has(input:checked) {
-    background-color: var(--app_contrast_light);
+    background-color: var(--app_contrast_dark);
+}
+
+.transparent-radio .normal-icon {
+    transition: filter var(--normal-animation) ease;
+}
+
+.transparent-radio input[type="radio"]:checked+.normal-icon {
+    filter: invert(1);
 }
 
 .transparent-radio:hover {
@@ -780,7 +790,7 @@ Siempre es blanco para mejorar la visibilidad. */
     left: 0;
     right: 0;
     bottom: 0;
-    transition: 0.2s;
+    transition: var(--normal-animation);
 }
 
 .slider::before {
@@ -792,11 +802,11 @@ Siempre es blanco para mejorar la visibilidad. */
     bottom: 3px;
     background-color: var(--app_light);
     border-radius: 50%;
-    transition: 0.2s;
+    transition: var(--normal-animation);
 }
 
 input:checked+.slider {
-    background-color: var(--app_dark);
+    background-color: var(--app_contrast_dark);
 }
 
 input:checked+.slider::before {
@@ -822,7 +832,6 @@ input:checked+.slider::before {
     background-position: center;
     /* Evita que la imagen se repita */
     background-repeat: no-repeat;
-    transition: 0.2s;
 }
 
 .radio-color {
@@ -833,16 +842,10 @@ input:checked+.slider::before {
 .input-warning {
     text-align: center;
     color: white;
-    background-color: red;
-    border: 1px solid white;
+    background-color: var(--dark_gray);
     /* oculta el borde de seleccion por defecto */
     outline: none;
     height: 30px;
-}
-
-.input-warning:focus {
-    background-color: white;
-    color: black;
 }
 
 .elements-container {
@@ -922,26 +925,10 @@ input:checked+.slider::before {
     height: 30px;
     border-radius: 30px;
     cursor: pointer;
-    transition: 0.2s;
+    transition: var(--normal-animation);
 }
 
 .main-element-btn:hover {
-    background-color: rgb(255, 255, 255);
-}
-
-.main-element-btn2 {
-    background-color: rgba(255, 255, 255, 0.7);
-    padding: var(--minimal-margin);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.main-element-btn2:hover {
     background-color: rgb(255, 255, 255);
 }
 
@@ -990,7 +977,7 @@ input:checked+.slider::before {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: red;
+    background-color: var(--warning_red);
     color: white;
     border: 1px solid white;
     box-shadow: 0px 0px 60px 8px rgba(0, 0, 0, 0.20);
@@ -1079,7 +1066,7 @@ input:checked+.slider::before {
 }
 
 .toast-warning {
-    background-color: red;
+    background-color: var(--warning_red);
     color: white;
     padding: 12px 18px;
     border-radius: var(--normal-radius);
@@ -1220,7 +1207,7 @@ input:checked+.slider::before {
 
     .action-btn:hover {
         color: var(--app_dark);
-        background-color: var(--app_light);
+        background-color: var(--app_contrast_light);
     }
 
     .action-btn:hover img {
@@ -1237,12 +1224,20 @@ input:checked+.slider::before {
     }
 
     .option-btn:hover {
-        background-color: var(--app_light);
+        background-color: var(--app_contrast_light);
         color: var(--app_dark);
     }
 
     .option-btn:hover img {
         filter: invert(0);
+    }
+
+    .option-btn2:hover {
+        border: dashed 1px var(--app_contrast_light);
+    }
+
+    .option-btn-warning img {
+        filter: invert(1);
     }
 
     .option-radio {
@@ -1251,7 +1246,7 @@ input:checked+.slider::before {
 
     .option-radio:has(input:checked) {
         color: var(--app_dark);
-        background-color: var(--app_light);
+        background-color: var(--app_contrast_light);
     }
 
     .option-radio input:checked+.radio-ico {
@@ -1259,20 +1254,12 @@ input:checked+.slider::before {
     }
 
     .option-input {
-        background-color: var(--app_dark);
         color: var(--app_light);
+        background-color: var(--dark_gray);
     }
 
-    .option-input:focus {
-        border-color: var(--app_light);
-    }
-
-    .option-btn2:hover {
-        border: dashed 1px var(--app_light);
-    }
-
-    .option-btn-warning img {
-        filter: invert(1);
+    .option-input::placeholder {
+        color: var(--app_light_transparent);
     }
 
     .transparent-btn:hover {
@@ -1280,7 +1267,11 @@ input:checked+.slider::before {
     }
 
     .transparent-radio:has(input:checked) {
-        background-color: var(--app_contrast_dark);
+        background-color: var(--app_contrast_light);
+    }
+
+    .transparent-radio input[type="radio"]:checked+.normal-icon {
+        filter: invert(0);
     }
 
     .transparent-radio:hover {
@@ -1292,7 +1283,7 @@ input:checked+.slider::before {
     }
 
     input:checked+.slider {
-        background-color: var(--app_light);
+        background-color: var(--app_contrast_light);
     }
 
     .toast {
