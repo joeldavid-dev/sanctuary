@@ -39,11 +39,14 @@ contextBridge.exposeInMainWorld('electronAPI', {
     deleteNote: (id) => ipcRenderer.invoke('delete-note', id),
     getPreparedElements: () => ipcRenderer.invoke('get-prepared-elements'),
     importData: (key) => ipcRenderer.invoke('import-data', key),
+    // Paths
+    getPaths: (key) => ipcRenderer.invoke('get-paths', key),
     // Exponer las funciones de configuración
     getSetting: (key) => ipcRenderer.invoke('get-setting', key),
     setSetting: (key, value) => ipcRenderer.invoke('set-setting', key, value),
     getConstants: () => ipcRenderer.invoke('get-constants'),
     getTranslations: (view) => ipcRenderer.invoke('get-translations', view),
     executeCommand: (command) => ipcRenderer.invoke('execute-command', command),
+    setCustomWallpaper: () => ipcRenderer.invoke('set-custom-wallpaper'),
     getLicense: () => ipcRenderer.invoke('get-license'),
 });

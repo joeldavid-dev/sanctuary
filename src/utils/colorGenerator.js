@@ -3,37 +3,42 @@
  * de todo el procesamiento de colores de la aplicación.
  */
 const fs = require('fs');
-const { app } = require('electron');
 const ColorThief = require('colorthief');
+const ffmpeg = require("fluent-ffmpeg");
+const ffmpegPath = require("ffmpeg-static");
 const path = require('path');
+ffmpeg.setFfmpegPath(ffmpegPath);
 
-async function generateColorPalette(imgName) {
-    let appContrastLight, appContrastDark;
+async function generateColorPalette(fileName, imageCachePath, filePath = null, fileType = 'image', customName = null) {
+    let appContrastLight, appContrastDark, finalImgPath, tempImgPath;
 
-    // Detectar si la app está empaquetada
-    const isPackaged = app.isPackaged;
-    // Ruta original (dentro del asar si está empaquetado)
-    const imgAsarPath = path.join(__dirname, '..', 'assets', 'img', imgName + '.jpg');
-    // Ruta temporal (fuera del asar)
-    const tempImgDir = path.join(app.getPath('userData'), 'temp-img');
-    const tempImgPath = path.join(tempImgDir, imgName + '.jpg');
-    // Si estamos empaquetados, copiamos la imagen al file system real
-    if (isPackaged) {
-        // Crear carpeta si no existe
-        if (!fs.existsSync(tempImgDir)) {
-            fs.mkdirSync(tempImgDir, { recursive: true });
-        }
-        // Copiar solo si no existe
-        if (!fs.existsSync(tempImgPath)) {
-            fs.copyFileSync(imgAsarPath, tempImgPath);
+    if (fileName === 'custom') {
+        if (fileType === 'image') {
+            // Si es una imagen persolanizada, utiliza la fuente original.
+            finalImgPath = filePath;
+        } else {
+            // Si es un video personalizado, obtiene un frame del video y lo guarda
+            // en la carpeta de imagenes temporales.
+            finalImgPath = path.join(imageCachePath, customName + '.png');
+
+            // Si no existe, extraer el primer frame
+            if (!fs.existsSync(finalImgPath)) {
+                await extractFirstFrame(filePath, finalImgPath);
+            }
         }
     }
+    else {
+        // Si la imagen es parte del asar, copiarla a una carpeta temporal
+        const imgAsarPath = path.join(__dirname, '..', 'assets', 'img', fileName + '.jpg');
+        finalImgPath = path.join(imageCachePath, fileName + '.jpg');
+        copyImageToCache(imgAsarPath, finalImgPath);
+    }
 
-    const finalImgPath = isPackaged ? tempImgPath : imgAsarPath;
+    // Extracción del color dominante
     const dominantColor = await ColorThief.getColor(finalImgPath);
 
     const colorType = isLightColor(dominantColor);
-    console.log("Is light color?: " + colorType);
+    //console.log("Is light color?: " + colorType);
     if (colorType) {
         appContrastLight = `rgb(${dominantColor[0]}, ${dominantColor[1]}, ${dominantColor[2]})`;
         const adjustedColor = adjustLightness(dominantColor, -0.3);
@@ -52,6 +57,28 @@ async function generateColorPalette(imgName) {
     return result;
 };
 
+function copyImageToCache(imgAsarPath, finalImgPath) {
+    // Copiamos la imagen al file system real
+        // Copiar solo si no existe
+        if (!fs.existsSync(finalImgPath)) {
+            fs.copyFileSync(imgAsarPath, finalImgPath);
+        }
+}
+
+function extractFirstFrame(videoPath, outputPath) {
+    return new Promise((resolve, reject) => {
+        ffmpeg(videoPath)
+            .on("end", () => resolve(outputPath))
+            .on("error", reject)
+            .screenshots({
+                count: 1,
+                folder: path.dirname(outputPath),
+                filename: path.basename(outputPath),
+                timemarks: ['0'] // primer frame
+            });
+    });
+}
+
 function isLightColor(dominantColor) {
     // Cálculo de luminancia percibida
     const luminancia = (0.299 * dominantColor[0] + 0.587 * dominantColor[1] + 0.114 * dominantColor[2]);
@@ -61,12 +88,12 @@ function isLightColor(dominantColor) {
 }
 
 function adjustLightness(rgb, percent) {
-    console.log("rgb input: " + rgb);
+    //console.log("rgb input: " + rgb);
     let [r, g, b] = rgb;
     let [h, s, l] = rgbToHsl(r, g, b);
-    console.log("l previo: " + l);
+    //console.log("l previo: " + l);
     l = Math.min(1, Math.max(0, l + percent)); // Asegura que esté entre 0 y 1
-    console.log("l ajustado: " + l);
+    //console.log("l ajustado: " + l);
     return hslToRgb(h, s, l);
 }
 

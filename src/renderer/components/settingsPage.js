@@ -12,14 +12,23 @@ export async function createSettingsPage(superuser) {
     const currentLanguage = await window.electronAPI.getTranslations('language-name');
     const wallpapers = constants.wallpapers;
     const currentWallpaper = await window.electronAPI.getSetting('wallpaper');
+    const wallpaperMode = await window.electronAPI.getSetting('wallpaperMode');
+    const customWallpaperPath = await window.electronAPI.getSetting('customWallpaperPath');
+    const customWallpaperName = await window.electronAPI.getSetting('customWallpaperName');
+    const paths = (await window.electronAPI.getPaths());
     setTranslations(translations);
+
     // Elementos HTML ya existentes que se usarán
     const settingsArea = document.getElementById('settings-area');
+
     // Insertar el esqueleto HTML
     settingsArea.innerHTML = getSettingsHTML(translations, constants, superuser);
+
     // Elementos insertados
     const chooseLanguageBtn = document.getElementById('choose-language');
     const wallpaperOptionsArea = document.getElementById('wallpaper-options-area');
+    const motionSwitch = document.getElementById('motion-toggle-input');
+    const motionSwitchArea = document.getElementById('motion-switch-area');
 
     // Llenar el botón de selección de idioma
     if (await window.electronAPI.getSetting('language') === 'system') {
@@ -36,10 +45,27 @@ export async function createSettingsPage(superuser) {
         wallpaperOptionsArea.appendChild(wallpaperRadio);
     });
 
+    // Opción de fondo de pantalla personalizado
+    if (customWallpaperPath) {
+        const thumbnailPath = (wallpaperMode === 'image') ? customWallpaperPath : paths.imageCachePath + '/' + customWallpaperName + '.png';
+        wallpaperOptionsArea.appendChild(getCustomWallpaperHTML(thumbnailPath));
+        // Seleccionar si es el actual
+        if (currentWallpaper === 'custom') {
+            document.getElementById('custom-radio').checked = true;
+        }
+    }
+
+    wallpaperOptionsArea.appendChild(getCustomWallpaperBtnHTML());
+
+
     // Configurar el estado inicial del switch de motion
-    const motionBackground = await window.electronAPI.getSetting('wallpaperMode') === 'video'? true : false;
-    const favoriteSwitch = document.getElementById('motion-toggle-input');
-    favoriteSwitch.checked = motionBackground;
+    if (currentWallpaper !== 'custom') {
+        const motionBackground = wallpaperMode === 'video' ? true : false;
+        motionSwitch.checked = motionBackground;
+    }
+    else {
+        motionSwitchArea.style.display = 'none';
+    }
 };
 
 function getSettingsHTML(translations, constants, superuser) {
@@ -91,7 +117,7 @@ function getSettingsHTML(translations, constants, superuser) {
                 <div class="div-options vertical-elem-area narrow-padding external-radius-2">
                     <p class="minimal-margin-left-right">${translations['lock-wallpaper']}</p>
                     <div id="wallpaper-options-area" class="elements-container minimal-spaced"></div>
-                    <div class="horizontal-flex centered spaced minimal-margin-left-right">
+                    <div id="motion-switch-area" class="horizontal-flex centered spaced minimal-margin-left-right">
                         <p>${translations['background-motion']}</p>
                         <label class="switch">
                             <input type="checkbox" id="motion-toggle-input">
@@ -128,7 +154,6 @@ function getSettingsHTML(translations, constants, superuser) {
 
 function getWallpaperRadioHTML(img) {
     const wallpaperRadioBody = document.createElement('label');
-    wallpaperRadioBody.id = 'wallpaper-radio';
     wallpaperRadioBody.classList.add('transparent-radio', 'external-radius-4', 'nano-padding');
 
     wallpaperRadioBody.innerHTML = `
@@ -136,4 +161,26 @@ function getWallpaperRadioHTML(img) {
         <input type="radio" name="settings-wallpaper-option" id="${img}-radio" value="${img}">
     `;
     return wallpaperRadioBody;
+}
+
+function getCustomWallpaperHTML(imgPath) {
+    const customWallpaperRadioBody = document.createElement('label');
+    customWallpaperRadioBody.classList.add('transparent-radio', 'external-radius-4', 'nano-padding');
+    
+    customWallpaperRadioBody.innerHTML = `
+        <img src="${imgPath}" class="wallpaper-icon normal-rounded">
+        <input type="radio" name="settings-wallpaper-option" id="custom-radio" value="custom">
+    `;
+    return customWallpaperRadioBody;
+}
+
+function getCustomWallpaperBtnHTML() {
+    const customWallpaperBody = document.createElement('button');
+    customWallpaperBody.id = 'custom-wallpaper-btn';
+    customWallpaperBody.classList.add('option-btn', 'external-radius-4', 'nano-margin', 'wallpaper-icon', 'normal-rounded');
+
+    customWallpaperBody.innerHTML = `
+        <img src="../assets/ico/feather/plus.svg" class="normal-icon">
+    `;
+    return customWallpaperBody;
 }

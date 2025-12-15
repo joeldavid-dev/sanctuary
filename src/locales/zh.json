@@ -93,7 +93,12 @@
         "decrypt-note-error": "解密笔记时出错。",
         "delete-note-success": "笔记删除成功。",
         "delete-note-error": "删除笔记时出错。",
-        "theme-changed": "主题更改成功。"
+        "theme-changed": "主题更改成功。",
+        "wallpaper-dialog-title": "选择图像或视频文件",
+        "wallpaper-dialog-cancelled": "背景文件选择已取消",
+        "wallpaper-dialog-error": "打开背景文件时出错",
+        "wallpaper-dialog-success": "背景设置成功。",
+        "wallpaper-dialog-invalid": "背景文件无效。"
     },
     "home-view": {
         "search": "搜索...",
@@ -201,7 +206,7 @@
         "illustrations-title": "插图：",
         "illustrations-info": "插图由 {author} 创作，在他/她的网站上查找更多作品：",
         "illustrations-link": "{author} 的页面",
-        "copyright": "{appName}  Copyright (C) 2025  Joel David Cruz Zamora."
+        "copyright": "{appName}  Copyright (C) {year}  {developer}"
     },
     "welcome": {
         "greeting-female": "欢迎你，{name}",

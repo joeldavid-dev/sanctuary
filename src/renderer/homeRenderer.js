@@ -608,6 +608,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             showPopupList(event);
         }
 
+        // Clic en el botón para elegir un wallpaper personalizado
+        else if (buttonPressed.id === 'custom-wallpaper-btn') {
+            const result = await window.electronAPI.setCustomWallpaper();
+            if (result.success) {
+                showToast(result.message);
+                await applySettings(); // Aplicar las nuevas configuraciones
+            } else {
+                showToast(result.error, true);
+            }
+        }
+
         // Clic en botón acerca de
         else if (buttonPressed.id === 'view-info-about') {
             await showAboutModal();
@@ -756,7 +767,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const today = new Date();
         const day = today.getDate();
         const month = today.getMonth() + 1; // Los meses van de 0 a 11
-        
+
         // Icono navideño todo el mes de diciembre
         if (month === 12) {
             document.getElementById('app-icon').src = '../assets/ico/sanctuary-christmas.png';

@@ -101,14 +101,28 @@ document.addEventListener("DOMContentLoaded", async () => {
         const wallpaperMode = await window.electronAPI.getSetting('wallpaperMode');
         const wallpaper = await window.electronAPI.getSetting('wallpaper');
         const colorStyle = await window.electronAPI.getSetting('colorStyle');
+        
+        let finalWallpaper;
+        
+        if (wallpaper === 'custom') {
+            const customWallpaperPath = await window.electronAPI.getSetting('customWallpaperPath');
+            finalWallpaper = customWallpaperPath;
+        }
+        else {
+            if (wallpaperMode === 'image') {
+                finalWallpaper = '../assets/img/' + wallpaper + '.jpg';
+            } else {
+                finalWallpaper = '../assets/vid/' + wallpaper + '.mp4';
+            }
+        }
 
         if (wallpaperMode === "video") {
             visualWallpaper.innerHTML = `
             <video autoplay loop muted playsinline class="video-wallpaper">
-                <source src="../assets/vid/${wallpaper}.mp4" type="video/mp4">
+                <source src="${finalWallpaper}" type="video/mp4">
             </video>`;
         } else if (wallpaperMode === "image") {
-            visualWallpaper.innerHTML = `<img class="img-wallpaper" src="../assets/img/${wallpaper}.jpg">`
+            visualWallpaper.innerHTML = `<img class="img-wallpaper" src="${finalWallpaper}">`
         }
 
         // Aplicar tema si es estático o generado

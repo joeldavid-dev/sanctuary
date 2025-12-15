@@ -93,7 +93,12 @@
         "decrypt-note-error": "ノートの復号中にエラーが発生しました。",
         "delete-note-success": "ノートが正常に削除されました。",
         "delete-note-error": "ノートの削除中にエラーが発生しました。",
-        "theme-changed": "テーマが正常に変更されました。"
+        "theme-changed": "テーマが正常に変更されました。",
+        "wallpaper-dialog-title": "画像または動画ファイルを選択",
+        "wallpaper-dialog-cancelled": "背景ファイルの選択がキャンセルされました",
+        "wallpaper-dialog-error": "背景ファイルを開く際にエラーが発生しました",
+        "wallpaper-dialog-success": "背景が正常に設定されました。",
+        "wallpaper-dialog-invalid": "背景ファイルが無効です。"
     },
     "home-view": {
         "search": "検索...",
@@ -201,7 +206,7 @@
         "illustrations-title": "イラスト：",
         "illustrations-info": "{author}氏によるイラスト。彼の他の作品はウェブサイトでご覧いただけます：",
         "illustrations-link": "{author}のページ",
-        "copyright": "{appName}  Copyright (C) 2025  Joel David Cruz Zamora."
+        "copyright": "{appName}  Copyright (C) {year}  {developer}"
     },
     "welcome": {
         "greeting-female": "ようこそ、{name}さん",

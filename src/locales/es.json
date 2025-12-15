@@ -93,7 +93,12 @@
         "decrypt-note-error": "Error al descifrar la nota.",
         "delete-note-success": "Nota eliminada exitosamente.",
         "delete-note-error": "Error al eliminar la nota.",
-        "theme-changed": "Tema cambiado exitosamente."
+        "theme-changed": "Tema cambiado exitosamente.",
+        "wallpaper-dialog-title": "Selecciona un archivo de imagen o video",
+        "wallpaper-dialog-cancelled": "Selección de archivo de fondo cancelada",
+        "wallpaper-dialog-error": "Error al abrir el archivo de fondo",
+        "wallpaper-dialog-success": "Fondo establecido exitosamente.",
+        "wallpaper-dialog-invalid": "El archivo de fondo no es válido."
     },
     "home-view": {
         "search": "Buscar...",
@@ -201,7 +206,7 @@
         "illustrations-title": "Ilustraciones:",
         "illustrations-info": "Ilustraciones creadas por {author}, encuentra mas de su trabajo en su sitio web:",
         "illustrations-link": "Página de {author}",
-        "copyright": "{appName}  Copyright (C) 2025  Joel David Cruz Zamora."
+        "copyright": "{appName}  Copyright (C) {year}  {developer}"
     },
     "welcome": {
         "greeting-female": "Bienvenida, {name}",

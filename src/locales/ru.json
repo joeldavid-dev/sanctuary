@@ -93,7 +93,12 @@
         "decrypt-note-error": "Ошибка при расшифровке заметки.",
         "delete-note-success": "Заметка успешно удалена.",
         "delete-note-error": "Ошибка при удалении заметки.",
-        "theme-changed": "Тема успешно изменена."
+        "theme-changed": "Тема успешно изменена.",
+        "wallpaper-dialog-title": "Выберите файл изображения или видео",
+        "wallpaper-dialog-cancelled": "Выбор файла фона отменен",
+        "wallpaper-dialog-error": "Ошибка при открытии файла фона",
+        "wallpaper-dialog-success": "Фон успешно установлен.",
+        "wallpaper-dialog-invalid": "Файл фона недействителен."
     },
     "home-view": {
         "search": "Поиск...",
@@ -201,7 +206,7 @@
         "illustrations-title": "Иллюстрации:",
         "illustrations-info": "Иллюстрации созданы {author}, найди больше его работ на его веб-сайте:",
         "illustrations-link": "Страница {author}",
-        "copyright": "{appName}  Copyright (C) 2025  Joel David Cruz Zamora."
+        "copyright": "{appName}  Copyright (C) {year}  {developer}"
     },
     "welcome": {
         "greeting-female": "Добро пожаловать, {name}",

@@ -18,6 +18,9 @@ const constantsPath = path.join(__dirname, 'config', 'constants.json');
 const constants = JSON.parse(fs.readFileSync(constantsPath, 'utf-8'));
 const showDevTools = (app.isPackaged) ? false : true;
 
+// Carpetas
+const imageCachePath = path.join(app.getPath('userData'), 'Image Cache');
+
 // Configuraciones por defecto
 const defaultSettingsPath = path.join(__dirname, 'config', 'defaultSettings.json');
 const defaultSettings = JSON.parse(fs.readFileSync(defaultSettingsPath, 'utf8'));
@@ -80,6 +83,12 @@ app.whenReady().then(async () => {
     // Cargar traducciones
     loadTranslations();
 
+    // Crear carpetas necesarias
+    if (!fs.existsSync(imageCachePath)) {
+        fs.mkdirSync(imageCachePath, { recursive: true });
+        writeLog('Carpeta de caché de imágenes creada en: ' + imageCachePath);
+    }
+
     // Crea la ventana
     createMainWindow()
     // Crear una ventana si no hay una cuando se activa la aplicación
@@ -115,6 +124,16 @@ ipcMain.on('close-window', () => {
     mainWindow.close();
 });
 
+// Exponer las rutas de carpetas importantes
+ipcMain.handle('get-paths', (event, key) => {
+    return { imageCachePath };
+});
+
+// Expone las constantes del programa
+ipcMain.handle('get-constants', (event) => {
+    return constants;
+});
+
 // Leer las configuraciones y generar colores si esta configurado de esa manera.
 async function loadSettings() {
     // Obteniendo las configuraciones.
@@ -134,11 +153,29 @@ async function genColors() {
     // por problemas de compatibilidad de colorThief, solo se ejecuta en windows.
     if (process.platform !== 'win32') return;
     const colorStyle = getSetting('colorStyle');
+    const wallpaper = getSetting('wallpaper');
+    const customWallpaperPath = getSetting('customWallpaperPath');
+    const wallpaperMode = getSetting('wallpaperMode');
+    const customWallpaperName = getSetting('customWallpaperName');
 
     if (colorStyle === "generate") {
-        const genColors = await cg.generateColorPalette(getSetting('wallpaper'));
-        settings['appContrastLight'] = genColors.appContrastLight;
-        settings['appContrastDark'] = genColors.appContrastDark;
+        if (wallpaper === 'custom') {
+            // Verificar que la ruta del wallpaper personalizado exista
+            if (fs.existsSync(customWallpaperPath)) {
+                const genColors = await cg.generateColorPalette('custom', imageCachePath, customWallpaperPath, wallpaperMode, customWallpaperName);
+                settings['appContrastLight'] = genColors.appContrastLight;
+                settings['appContrastDark'] = genColors.appContrastDark;
+            } else {
+                writeLog("La ruta del wallpaper personalizado no existe, se reestablece el wallpaper por defecto.");
+                setSetting('customWallpaperPath', ''); // Limpiar la ruta del wallpaper personalizado
+                setSetting('wallpaper', ''); // Forzar a usar un wallpaper por defecto
+            }
+        }
+        else {
+            const genColors = await cg.generateColorPalette(wallpaper, imageCachePath);
+            settings['appContrastLight'] = genColors.appContrastLight;
+            settings['appContrastDark'] = genColors.appContrastDark;
+        }
     }
 }
 
@@ -176,7 +213,10 @@ ipcMain.handle('get-setting', (event, key) => {
 
 // Exponer la función para establecer una configuración.
 ipcMain.handle('set-setting', async (event, key, value) => {
+    // Guardar la configuración
     const result = setSetting(key, value);
+
+    // Acciones posteriores a guardar la configuración
     if (result.success) {
         writeLog(`Configuracion "${key}" actualizada a: ${value}`);
         if (key === 'language') loadTranslations();
@@ -185,11 +225,6 @@ ipcMain.handle('set-setting', async (event, key, value) => {
         writeLog(`Error al actualizar la configuracion "${key}": ${result.error}`);
     }
     return result;
-});
-
-// Expone las constantes del programa
-ipcMain.handle('get-constants', (event) => {
-    return constants;
 });
 
 // Obtiene traducciones según la configuración actual. 
@@ -761,7 +796,7 @@ function startPreparingElements(encryptedCards, encryptedNotes, masterKey) {
 ipcMain.handle('get-prepared-elements', async () => {
     try {
         if (preparedElements) {
-            writeLog('Retornando elementos preparados desde caché.');
+            writeLog('Retornando elementos preparados desde cache.');
         } else {
             writeLog('No hay elementos preparados en caché. Preparando desde la base de datos...');
             const encryptedCards = await db.getAllCards();
@@ -878,6 +913,69 @@ ipcMain.handle('execute-command', async (event, command) => {
         default:
             // Comando no reconocido
             return { success: false, message: `${cmd}: ${mainTranslations['command-not-found']}` };
+    }
+});
+
+// Establecer un fondo de pantalla personalizado desde un archivo
+ipcMain.handle('set-custom-wallpaper', async () => {
+    // Mostrar un cuadro de diálogo para seleccionar el archivo de imagen o video
+    const { canceled, filePaths } = await dialog.showOpenDialog({
+        tittle: mainTranslations['wallpaper-dialog-title'],
+        filters: [
+            { name: 'Images and Videos', extensions: ['jpg', 'jpeg', 'png', 'bmp', 'mp4', 'webm'] }], // pendientes: , 'mov', 'avi', 'mkv'
+        properties: ['openFile']
+    });
+    // Si se cancela la selección o no se selecciona ningún archivo, salir
+    if (canceled || filePaths.length === 0) {
+        return {
+            success: false,
+            error: mainTranslations['wallpaper-dialog-cancelled']
+        };
+    }
+    // Verificar que el archivo seleccionado sea válido
+    const filePath = filePaths[0];
+    try {
+        const fileStat = await fs.promises.stat(filePath);
+        if (!fileStat.isFile()) {
+            return {
+                success: false,
+                error: mainTranslations['wallpaper-dialog-invalid']
+            };
+        }
+
+        // Establecer el valor como la ruta del archivo personalizado
+        setSetting('customWallpaperPath', filePath);
+        // Obtener la extensión del archivo
+        const fileExtension = path.extname(filePath).toLowerCase();
+        if (['.jpg', '.jpeg', '.png', '.bmp'].includes(fileExtension)) {
+            setSetting('wallpaperMode', 'image');
+        } else if (['.mp4'].includes(fileExtension)) {
+            setSetting('wallpaperMode', 'video');
+        }
+        // Guardar el nombre base del archivo
+        const fileBaseName = path.parse(filePath).name;
+        setSetting('customWallpaperName', fileBaseName);
+
+        // Guardar el tipo de wallpaper como 'custom'
+        setSetting('wallpaper', 'custom');
+
+        // Regenerar colores
+        await genColors();
+
+        return {
+            success: true,
+            message: mainTranslations['wallpaper-dialog-success']
+        };
+
+    } catch (error) {
+        writeLog('Error al leer el wallpaper personalizado:' + error.message);
+        // Reestablecer las configuraciones relacionadas al wallpaper personalizado
+        setSetting('customWallpaperPath', '');
+        setSetting('wallpaper', '');
+        return {
+            success: false,
+            error: mainTranslations['wallpaper-dialog-error']
+        };
     }
 });
 

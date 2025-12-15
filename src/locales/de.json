@@ -93,7 +93,12 @@
         "decrypt-note-error": "Fehler beim Entschlüsseln der Notiz.",
         "delete-note-success": "Notiz erfolgreich gelöscht.",
         "delete-note-error": "Fehler beim Löschen der Notiz.",
-        "theme-changed": "Theme erfolgreich geändert."
+        "theme-changed": "Theme erfolgreich geändert.",
+        "wallpaper-dialog-title": "Wähle eine Bild- oder Videodatei",
+        "wallpaper-dialog-cancelled": "Auswahl der Hintergrunddatei abgebrochen",
+        "wallpaper-dialog-error": "Fehler beim Öffnen der Hintergrunddatei",
+        "wallpaper-dialog-success": "Hintergrund erfolgreich festgelegt.",
+        "wallpaper-dialog-invalid": "Die Hintergrunddatei ist ungültig."
     },
     "home-view": {
         "search": "Suchen...",
@@ -201,7 +206,7 @@
         "illustrations-title": "Illustrationen:",
         "illustrations-info": "Illustrationen erstellt von {author}, finde mehr von seiner Arbeit auf seiner Website:",
         "illustrations-link": "Seite von {author}",
-        "copyright": "{appName}  Copyright (C) 2025  Joel David Cruz Zamora."
+        "copyright": "{appName}  Copyright (C) {year}  {developer}"
     },
     "welcome": {
         "greeting-female": "Willkommen, {name}",

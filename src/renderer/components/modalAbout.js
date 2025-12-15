@@ -137,7 +137,7 @@ function getModalHTML(translations, constants) {
             
         <p class="medium-text">${translations['fun-fact']}</p>
 
-        <p class="medium-text bold centered-text">${translate('copyright', { 'appName': constants.about.appName })}</p>
+        <p class="medium-text bold centered-text">${translate('copyright', { 'appName': constants.about.appName, 'year': constants.about.year, 'developer': constants.about.developer })}</p>
     </div>`;
 }
 
