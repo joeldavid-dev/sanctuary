@@ -1,4 +1,3 @@
-import { setTranslations, translate } from './utils/translate.js';
 import { createCardElement } from './components/card.js'; // Importar el módulo de tarjeta
 import { createNoteElement } from './components/note.js'; // Importar el módulo de nota
 import { showNewEditCardModal } from './components/modalNewEditCard.js'; // Importar el módulo de modal para agregar o editar tarjetas
@@ -727,9 +726,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         });
         searchInput.placeholder = translations['search'];
-
-        // Cargar las traducciones para el módulo de traducción
-        setTranslations(translations);
 
         // Obtener configuraciones a utilizar
         const colorStyle = await window.electronAPI.getSetting('colorStyle');

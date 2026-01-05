@@ -795,9 +795,7 @@ function startPreparingElements(encryptedCards, encryptedNotes, masterKey) {
 // Obtener todas las tarjetas y notas preparadas (desencriptar nombre y web)
 ipcMain.handle('get-prepared-elements', async () => {
     try {
-        if (preparedElements) {
-            writeLog('Retornando elementos preparados desde cache.');
-        } else {
+        if (!preparedElements) {
             writeLog('No hay elementos preparados en caché. Preparando desde la base de datos...');
             const encryptedCards = await db.getAllCards();
             const encryptedNotes = await db.getAllNotes();

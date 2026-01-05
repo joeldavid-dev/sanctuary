@@ -3,13 +3,12 @@
  * ID = "modal-warning" y que contenga un divider con ID = "modal-warning-body".
  */
 
-import { setTranslations, translate } from '../utils/translate.js';
+import { replaceKeysInText } from '../utils/translationsUtils.js';
 
 export function showDeleteModal(element, mode) {
     return new Promise(async (resolve, reject) => {
         // Constantes y variables auxiliares
         const translations = await window.electronAPI.getTranslations('delete-element');
-        setTranslations(translations);
         // Elementos HTML ya existentes que se usarán
         const modalWarning = document.getElementById('modal-warning');
         const modalWarningTitle = document.getElementById('modal-warning-title');
@@ -25,13 +24,13 @@ export function showDeleteModal(element, mode) {
         // Establecer valores
         if (mode === 'keys') {
             modalWarningTitle.textContent = translations['title-mode-key'];
-            warningMessage.textContent = translate('message-mode-key', { name: element.name });
+            warningMessage.textContent = replaceKeysInText(translations['message-mode-key'], { name: element.name });
             cancelWarningBtn.textContent = translations['cancel'];
             confirmWarningBtn.textContent = translations['delete-key'];
         }
         else if (mode === 'notes') {
             modalWarningTitle.textContent = translations['title-mode-note'];
-            warningMessage.textContent = translate('message-mode-note', { name: element.name });
+            warningMessage.textContent = replaceKeysInText(translations['message-mode-note'], { name: element.name });
             cancelWarningBtn.textContent = translations['cancel'];
             confirmWarningBtn.textContent = translations['delete-note'];
         }

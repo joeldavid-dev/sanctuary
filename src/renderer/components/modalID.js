@@ -3,7 +3,7 @@
  * ID = "modal" y que contenga un divider con ID = "modal-body".
  */
 
-import { setTranslations, translate } from "../utils/translate.js";
+import { replaceKeysInText } from "../utils/translationsUtils.js";
 
 export function showIDModal(mode, superuser) {
     return new Promise(async (resolve, reject) => {
@@ -11,7 +11,6 @@ export function showIDModal(mode, superuser) {
         const translations = await window.electronAPI.getTranslations('id');
         const warningTranslations = await window.electronAPI.getTranslations('warning');
         const constants = await window.electronAPI.getConstants();
-        setTranslations(translations);
         let isImporting = false;
         // Elementos HTML ya existentes que se usarán
         const modal = document.getElementById('modal');
@@ -20,7 +19,7 @@ export function showIDModal(mode, superuser) {
         const closeModal = document.getElementById('close-modal');
         const modalTitle = document.getElementById('modal-title');
         // Insertar el esqueleto HTML
-        modalBody.innerHTML = getModalHTML(translations, translate, constants);
+        modalBody.innerHTML = getModalHTML(translations, replaceKeysInText, constants);
 
         // Elementos HTML insertados en el esqueleto
         const subtitle = document.getElementById('subtitle');
@@ -41,7 +40,7 @@ export function showIDModal(mode, superuser) {
 
         // Establecer valores dependiendo del modo
         modalContent.style.width = '320px'; // Establecer el ancho de modal a 320px
-        modalTitle.textContent = translate('title', { appName: constants.about.appName });
+        modalTitle.textContent = replaceKeysInText(translations['title'], { appName: constants.about.appName });
         if (mode === 'create') {
             subtitle.textContent = translations['hello'];
             information.textContent = translations['welcome'];
@@ -77,7 +76,7 @@ export function showIDModal(mode, superuser) {
             if (response.success) {
                 isImporting = true;
                 // Ajustar la interfaz
-                subtitle.textContent = translate('welcome-back', { name: response.name });
+                subtitle.textContent = replaceKeysInText(translations['welcome-back'], { name: response.name });
                 information.textContent = translations['welcome-back-info'];
                 userNameContainer.style.display = 'none';
                 pass3Container.style.display = 'none';
@@ -102,7 +101,7 @@ export function showIDModal(mode, superuser) {
                     idDoneBtn.textContent = translations['importing'];
                     // Escuchar el progreso de importación de tarjetas
                     window.electronAPI.on('import-card-progress', (progress) => {
-                        idDoneBtn.textContent = `${translate('importing')} ${progress.progress}%`;
+                        idDoneBtn.textContent = `${translations['importing']} ${progress.progress}%`;
                     });
                     // Importar datos
                     const result = await window.electronAPI.importData(pass2);
@@ -195,11 +194,11 @@ export function showIDModal(mode, superuser) {
                     // Escuchar el progreso de preparación de tarjetas
                     window.electronAPI.on('password-change-progress', (progress) => {
                         if (progress.phase === 'card')
-                            idDoneBtn.textContent = `${translate('change-cards-password')} ${progress.progress}%`;
+                            idDoneBtn.textContent = `${translations['change-cards-password']} ${progress.progress}%`;
                         else if (progress.phase === 'note')
-                            idDoneBtn.textContent = `${translate('change-notes-password')} ${progress.progress}%`;
+                            idDoneBtn.textContent = `${translations['change-notes-password']} ${progress.progress}%`;
                         else if (progress.phase === 'save')
-                            idDoneBtn.textContent = `${translate('save-password-changes')}`;
+                            idDoneBtn.textContent = `${translations['save-password-changes']}`;
                     });
                     const result = await window.electronAPI.changePassword(pass1, pass2);
                     if (result.success) {
@@ -234,7 +233,7 @@ export function showIDModal(mode, superuser) {
     });
 }
 
-function getModalHTML(translations, translate, constants) {
+function getModalHTML(translations, replaceKeysInText, constants) {
     return `
     <div class="vertical-flex big-spaced login-padding">
         <div class="vertical-elem-area">
@@ -264,7 +263,7 @@ function getModalHTML(translations, translate, constants) {
             <div id="gender-container" class="vertical-elem-area">
                 <div class="horizontal-elem-area centered">
                     <label class="small-text">${translations['gender']}</label>
-                    <img src="../assets/ico/feather/help-circle.svg" class="mini-icon darkmode-invert" title="${translate('gender-help', { appName: constants.about.appName })}">
+                    <img src="../assets/ico/feather/help-circle.svg" class="mini-icon darkmode-invert" title="${replaceKeysInText(translations['gender-help'], { appName: constants.about.appName })}">
                 </div>
                 <div class="horizontal-flex spaced">
                     <label class="option-radio minimal-rounded minimal-padding horizontal-elem-area">

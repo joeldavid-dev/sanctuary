@@ -3,7 +3,7 @@
  * ID = "main-content".
  */
 
-import { setTranslations, translate } from '../utils/translate.js';
+import { replaceKeysInText } from '../utils/translationsUtils.js';
 
 export async function createSettingsPage(superuser) {
     // Constantes y variables auxiliares
@@ -16,7 +16,6 @@ export async function createSettingsPage(superuser) {
     const customWallpaperPath = await window.electronAPI.getSetting('customWallpaperPath');
     const customWallpaperName = await window.electronAPI.getSetting('customWallpaperName');
     const paths = (await window.electronAPI.getPaths());
-    setTranslations(translations);
 
     // Elementos HTML ya existentes que se usarán
     const settingsArea = document.getElementById('settings-area');
@@ -132,7 +131,7 @@ function getSettingsHTML(translations, constants, superuser) {
                 <p class="bold">${translations['about']}</p>
                 <div class="div-options vertical-elem-area narrow-padding external-radius-2">
                     <button id="view-info-about" class="option-btn minimal-rounded left-text horizontal-flex centered spaced">
-                        ${translate('view-info-about', { 'appName': constants.about.appName })}
+                        ${replaceKeysInText(translations['view-info-about'], { 'appName': constants.about.appName })}
                         <img src="../assets/ico/sanctuary.png" class="mini-icon">
                     </button>
 
@@ -166,7 +165,7 @@ function getWallpaperRadioHTML(img) {
 function getCustomWallpaperHTML(imgPath) {
     const customWallpaperRadioBody = document.createElement('label');
     customWallpaperRadioBody.classList.add('transparent-radio', 'external-radius-4', 'nano-padding');
-    
+
     customWallpaperRadioBody.innerHTML = `
         <img src="${imgPath}" class="wallpaper-icon normal-rounded">
         <input type="radio" name="settings-wallpaper-option" id="custom-radio" value="custom">

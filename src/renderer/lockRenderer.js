@@ -1,5 +1,5 @@
 import { showAboutModal } from './components/modalAbout.js';
-import { setTranslations, translate } from './utils/translate.js';
+import { replaceKeysInText } from './utils/translationsUtils.js';
 const now = new Date();
 const hours = now.getHours();
 
@@ -39,11 +39,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
-    // Cargar las traducciones para el módulo de traducción
-    setTranslations(translations);
-
     // Insertar textos
-    extraInfo.textContent = translate('extra-info', {
+    extraInfo.textContent = replaceKeysInText(translations['extra-info'], {
         'brand': constants.about.brand,
         'appName': constants.about.appName,
         'version': constants.about.version
@@ -52,16 +49,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Obtener el saludo dependiendo de la hora
     if (hours >= 0 && hours < 7) {
         //Madrugada
-        greeting.textContent = translate('greeting-early-morning', { name: superuser.name });
+        greeting.textContent = replaceKeysInText(translations['greeting-early-morning'], { name: superuser.name });
     } else if (hours >= 7 && hours < 12) {
         //Mañana
-        greeting.textContent = translate('greeting-morning', { name: superuser.name });
+        greeting.textContent = replaceKeysInText(translations['greeting-morning'], { name: superuser.name });
     } else if (hours >= 12 && hours < 19) {
         //Tarde
-        greeting.textContent = translate('greeting-afternoon', { name: superuser.name });
+        greeting.textContent = replaceKeysInText(translations['greeting-afternoon'], { name: superuser.name });
     } else {
         //Noche
-        greeting.textContent = translate('greeting-evening', { name: superuser.name });
+        greeting.textContent = replaceKeysInText(translations['greeting-evening'], { name: superuser.name });
     }
 
     // Enter en el input de contraseña
@@ -73,17 +70,17 @@ document.addEventListener("DOMContentLoaded", async () => {
                     count--;
                     if (count == 0) {
                         inputPassword.disabled = true;
-                        passLabel.textContent = translate('locked');
+                        passLabel.textContent = translations['locked'];
                     }
                     else if (count == 1) {
-                        passLabel.textContent = translate('wrong-password-last', { attempts: count });
+                        passLabel.textContent = replaceKeysInText(translations['wrong-password-last'], { attempts: count });
                     }
                     else if (count <= 2) {
-                        greeting.textContent = translate('greeting-doubting', { name: superuser.name });
-                        passLabel.textContent = translate('wrong-password', { attempts: count });
+                        greeting.textContent = replaceKeysInText(translations['greeting-doubting'], { name: superuser.name });
+                        passLabel.textContent = replaceKeysInText(translations['wrong-password'], { attempts: count });
                     }
                     else {
-                        passLabel.textContent = translate('wrong-password', { attempts: count });
+                        passLabel.textContent = replaceKeysInText(translations['wrong-password'], { attempts: count });
                     }
                     inputPassword.value = '';
                 }
@@ -101,9 +98,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         const wallpaperMode = await window.electronAPI.getSetting('wallpaperMode');
         const wallpaper = await window.electronAPI.getSetting('wallpaper');
         const colorStyle = await window.electronAPI.getSetting('colorStyle');
-        
+
         let finalWallpaper;
-        
+
         if (wallpaper === 'custom') {
             const customWallpaperPath = await window.electronAPI.getSetting('customWallpaperPath');
             finalWallpaper = customWallpaperPath;

@@ -3,14 +3,13 @@
  * ID = "modal" y que contenga un divider con ID = "modal-body".
  */
 
-import { setTranslations, translate } from "../utils/translate.js";
+import { replaceKeysInText } from "../utils/translationsUtils.js";
 
 export function showAboutModal() {
     return new Promise(async (resolve, reject) => {
         // Constantes y variables auxiliares
         const translations = await window.electronAPI.getTranslations('about');
         const constants = await window.electronAPI.getConstants();
-        setTranslations(translations);
 
         // Elementos HTML ya existentes que se usarán
         const modal = document.getElementById('modal');
@@ -30,9 +29,9 @@ export function showAboutModal() {
 
         // Establecer valores iniciales
         modalContent.style.width = '460px';
-        modalTitle.textContent = translate('title', { 'appName': constants.about.appName });
+        modalTitle.textContent = replaceKeysInText(translations['title'], { 'appName': constants.about.appName });
         constants.wallpapers.forEach(element => {
-            wallpapersAboutArea.appendChild(getWallpaperIconHTML(element.name, translate('Wallpaper-info', {
+            wallpapersAboutArea.appendChild(getWallpaperIconHTML(element.name, replaceKeysInText(translations['Wallpaper-info'], {
                 'author': element.author, 'platform': element.platform
             })));
         });
@@ -92,8 +91,8 @@ function getModalHTML(translations, constants) {
         </div>
 
         <div class="vertical-elem-area">
-            <p class="medium-text">${translate('version', { 'version': constants.about.version, 'versionName': constants.about.versionName })}</p>
-            <p class="medium-text">${translate('description', { 'appName': constants.about.appName })}</p>
+            <p class="medium-text">${replaceKeysInText(translations['version'], { 'version': constants.about.version, 'versionName': constants.about.versionName })}</p>
+            <p class="medium-text">${replaceKeysInText(translations['description'], { 'appName': constants.about.appName })}</p>
             <p class="medium-text">${translations['made-in']}</p>
         </div>
         
@@ -110,10 +109,10 @@ function getModalHTML(translations, constants) {
 
         <div class="vertical-elem-area">
             <p class="medium-text bold">${translations['icons-title']}</p>
-            <p class="medium-text">${translate('icons-info', { 'author': constants.icons.author })}</p>
+            <p class="medium-text">${replaceKeysInText(translations['icons-info'], { 'author': constants.icons.author })}</p>
             <div class="vertical-flex centered">
                 <button id="icons-link-btn" class="medium-text action-btn btn-padding minimal-rounded horizontal-elem-area centered">
-                    ${translate('icons-link', { 'author': constants.icons.author })}
+                    ${replaceKeysInText(translations['icons-link'], { 'author': constants.icons.author })}
                     <img src="../assets/ico/feather/external-link.svg" class="mini-icon">
                 </button>
             </div>
@@ -126,10 +125,10 @@ function getModalHTML(translations, constants) {
 
         <div class="vertical-elem-area">
             <p class="medium-text bold">${translations['illustrations-title']}</p>
-            <p class="medium-text">${translate('illustrations-info', { 'author': constants.illustrations.author })}</p>
+            <p class="medium-text">${replaceKeysInText(translations['illustrations-info'], { 'author': constants.illustrations.author })}</p>
             <div class="vertical-flex centered">
                 <button id="illustrations-link-btn" class="medium-text action-btn btn-padding minimal-rounded horizontal-elem-area centered">
-                    ${translate('illustrations-link', { 'author': constants.illustrations.author })}
+                    ${replaceKeysInText(translations['illustrations-link'], { 'author': constants.illustrations.author })}
                     <img src="../assets/ico/feather/external-link.svg" class="mini-icon">
                 </button>
             </div>
@@ -137,7 +136,7 @@ function getModalHTML(translations, constants) {
             
         <p class="medium-text">${translations['fun-fact']}</p>
 
-        <p class="medium-text bold centered-text">${translate('copyright', { 'appName': constants.about.appName, 'year': constants.about.year, 'developer': constants.about.developer })}</p>
+        <p class="medium-text bold centered-text">${replaceKeysInText(translations['copyright'], { 'appName': constants.about.appName, 'year': constants.about.year, 'developer': constants.about.developer })}</p>
     </div>`;
 }
 

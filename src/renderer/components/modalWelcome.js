@@ -3,13 +3,12 @@
  * ID = "modal" y que contenga un divider con ID = "modal-body".
  */
 
-import { setTranslations, translate } from "../utils/translate.js";
+import { replaceKeysInText } from "../utils/translationsUtils.js";
 
 export function showWelcomeModal() {
     return new Promise(async (resolve, reject) => {
         // Constantes y variables auxiliares
         const translations = await window.electronAPI.getTranslations('welcome');
-        setTranslations(translations);
         const userInfo = await window.electronAPI.getUserInfo();
         const constants = await window.electronAPI.getConstants();
 
@@ -20,7 +19,7 @@ export function showWelcomeModal() {
         const closeModal = document.getElementById('close-modal');
         const modalTitle = document.getElementById('modal-title');
         // Insertar el esqueleto HTML
-        modalBody.innerHTML = getModalHTML(translations, translate, constants);
+        modalBody.innerHTML = getModalHTML(translations, replaceKeysInText, constants);
 
         // Elementos HTML insertados en el esqueleto
         const modalWelcomeGreeting = document.getElementById('modalWelcomeGreeting');
@@ -31,11 +30,11 @@ export function showWelcomeModal() {
         // Cambio del saludo dependiendo del género
         let greetingText = '';
         if (userInfo.gender === 'female') {
-            greetingText = translate('greeting-female', { name: userInfo.name });
+            greetingText = replaceKeysInText(translations['greeting-female'], { name: userInfo.name });
         } else if (userInfo.gender === 'male') {
-            greetingText = translate('greeting-male', { name: userInfo.name });
+            greetingText = replaceKeysInText(translations['greeting-male'], { name: userInfo.name });
         } else {
-            greetingText = translate('greeting-neutro', { name: userInfo.name });
+            greetingText = replaceKeysInText(translations['greeting-neutro'], { name: userInfo.name });
         }
         modalWelcomeGreeting.textContent = greetingText;
         modalWelcomeGreeting.style.marginBottom = '20px';
@@ -62,11 +61,11 @@ export function showWelcomeModal() {
     });
 }
 
-function getModalHTML(translations, translate, constants) {
+function getModalHTML(translations, replaceKeysInText, constants) {
     return `
     <div class="vertical-elem-area normal-padding">
         <p id="modalWelcomeGreeting" class="expresive-text"></p>
-        <p class="plain-text-font small-text">${translate('body-1', { appName: constants['about'].appName })}</p>
+        <p class="plain-text-font small-text">${replaceKeysInText(translations['body-1'], { appName: constants['about'].appName })}</p>
         <p class="plain-text-font small-text">${translations['body-2']}</p>
         <p class="plain-text-font small-text">${translations['closing']}</p>
         <div class="vertical-elem-area centered">

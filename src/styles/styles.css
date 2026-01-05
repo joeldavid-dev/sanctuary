@@ -72,7 +72,9 @@ body::-webkit-scrollbar {
     --app_dark_transparent: rgba(10, 10, 10, 0.6);
     --neutral_grey: rgb(130, 130, 130);
     --light_gray: rgba(0, 0, 0, 0.15);
+    --light_gray_hover: rgba(0, 0, 0, 0.20);
     --dark_gray: rgba(255, 255, 255, 0.15);
+    --dark_gray_hover: rgba(255, 255, 255, 0.20);
     --warning_red: rgb(150, 0, 0);
 
     --app_contrast_light: rgb(200, 200, 200);
@@ -657,6 +659,10 @@ pre,
     height: 30px;
 }
 
+.option-input:focus {
+    background-color: var(--light_gray_hover);
+}
+
 .option-input::placeholder {
     color: var(--app_dark_transparent);
 }
@@ -735,7 +741,7 @@ Siempre es blanco para mejorar la visibilidad. */
 }
 
 .transparent-btn-white:hover {
-    background-color: var(--dark_gray);
+    background-color: var(--dark_gray_hover);
 }
 
 .transparent-radio {
@@ -846,6 +852,10 @@ input:checked+.slider::before {
     /* oculta el borde de seleccion por defecto */
     outline: none;
     height: 30px;
+}
+
+.input-warning:focus {
+    background-color: var(--dark_gray_hover);
 }
 
 .elements-container {
@@ -1256,6 +1266,10 @@ input:checked+.slider::before {
     .option-input {
         color: var(--app_light);
         background-color: var(--dark_gray);
+    }
+
+    .option-input:focus {
+        background-color: var(--dark_gray_hover);
     }
 
     .option-input::placeholder {
