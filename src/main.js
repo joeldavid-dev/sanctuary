@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain, shell, dialog, Notification } = require('el
 const { autoUpdater } = require('electron-updater');
 const { Worker } = require("worker_threads");
 const path = require('node:path');
+const os = require('os');
 const cr = require('./utils/crypto.js');
 const db = require('./utils/database.js');
 const oldCr = require('./utils/oldCrypto.js');
@@ -763,40 +764,95 @@ ipcMain.handle('delete-note', async (event, id) => {
     }
 });
 
-// Función para preparar (desencriptar nombre y web) varias tarjetas usando un worker
+// Función para preparar elementos, calculando el número de workers necesarios.
 function startPreparingElements(encryptedCards, encryptedNotes, masterKey) {
     return new Promise((resolve, reject) => {
-        // Lanzamiento del worker
-        writeLog('Iniciando worker para preparar elementos...');
-        const worker = new Worker(path.join(__dirname, "workers", "prepareElements-worker.js"),
-            { workerData: { encryptedCards, encryptedNotes, masterKey } });
+        // Listas
+        const results = [];
+        let finished = 0;
+        let processed = 0;
 
-        worker.on("message", (msg) => {
-            if (msg.type === "progress") {
-                mainWindow.webContents.send('prepare-elements-progress', msg.progress);
-            } else if (msg.type === "done") {
-                writeLog('Worker ha terminado de preparar los elementos.');
-                resolve({ cards: msg.cards, notes: msg.notes });
-                worker.terminate();
-            }
-        });
-        // imprimir errores del worker
-        worker.on("error", (error) => {
-            writeLog('Error en el worker de preparar elementos:' + error.message);
-            reject(error);
-        });
+        // Cantidad de núcleos del CPU
+        const totalCores = Math.max(1, os.cpus().length); // al menos 1 núcleo, máximo todos los núcleos disponibles
+        // Cantidad de items por núcleo
+        const totalItems = encryptedCards.length + encryptedNotes.length;
+        if (totalItems === 0) {
+            resolve({ cards: [], notes: [] });
+            return;
+        }
+        const itemsPerCore = Math.ceil(totalItems / totalCores);
+        const workersCount = Math.ceil(totalItems / itemsPerCore);
+        writeLog(`Nucleos disponibles: ${totalCores}, Workers paralelos: ${workersCount}, Elementos por worker: ${itemsPerCore}`);
 
-        worker.on("exit", (code) => {
-            if (code !== 0) reject(new Error(`El worker se detuvo con codigo de salida: ${code}`));
+        // Dividir elementos en lotes
+        const elementsChunks = chunkify(encryptedCards, encryptedNotes, workersCount);
+
+        // Lanzamiento de workers paralelos
+        elementsChunks.forEach((chunk, workerIndex) => {
+            const worker = new Worker(
+                path.join(__dirname, "workers/prepareElements-worker.js"),
+                {
+                    workerData: {
+                        chunk,
+                        masterKey,
+                        workerIndex
+                    }
+                }
+            );
+
+            worker.on("message", (msg) => {
+                if (msg.type === "progress") {
+                    processed++;
+                    const percent = Math.round((processed / totalItems) * 100);
+                    mainWindow.webContents.send("prepare-elements-progress", percent);
+                }
+
+                if (msg.type === "done") {
+                    results.push(...msg.results);
+                    finished++;
+
+                    worker.terminate();
+
+                    if (finished === elementsChunks.length) {
+                        // Ordenar por índice original
+                        results.sort((a, b) => a.index - b.index);
+                        // Separar tarjetas y notas
+                        const preparedCards = results.filter(el => el.type === 'card').map(el => el.data);
+                        const preparedNotes = results.filter(el => el.type === 'note').map(el => el.data);
+                        resolve({ cards: preparedCards, notes: preparedNotes });
+                    }
+                }
+            });
+
+            // imprimir errores del worker
+            worker.on("error", (error) => {
+                writeLog('Error en el worker de preparar elementos:' + error.message);
+                reject(error);
+            });
         });
     });
+}
+
+// Funcion auxiliar para "chunkear" arrays
+function chunkify(arrayCards, arrayNotes, chunks) {
+    // Agregar un campo 'type' para distinguir entre tarjetas y notas
+    arrayCards = arrayCards.map((item, index) => ({ index, item, type: 'card' }));
+    arrayNotes = arrayNotes.map((item, index) => ({ index, item, type: 'note' }));
+    // Concatenar ambos arrays
+    const combinedArray = [...arrayCards, ...arrayNotes];
+
+    const result = Array.from({ length: chunks }, () => []);
+    combinedArray.forEach((item, index) => {
+        result[index % chunks].push(item);
+    });
+    return result;
 }
 
 // Obtener todas las tarjetas y notas preparadas (desencriptar nombre y web)
 ipcMain.handle('get-prepared-elements', async () => {
     try {
         if (!preparedElements) {
-            writeLog('No hay elementos preparados en caché. Preparando desde la base de datos...');
+            writeLog('No hay elementos preparados en cache. Preparando desde la base de datos...');
             const encryptedCards = await db.getAllCards();
             const encryptedNotes = await db.getAllNotes();
             // Preparar las tarjetas (desencriptar nombre y web) usando un worker
