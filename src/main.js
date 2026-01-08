@@ -44,7 +44,6 @@ if (showDevTools) {
 writeLog("============== Iniciando aplicacion ==============");
 // Creación de la ventana principal
 const createMainWindow = () => {
-    writeLog("Iniciando la creacion de ventana...");
     mainWindow = new BrowserWindow({
         width: 900,
         height: 600,
@@ -156,14 +155,14 @@ async function genColors() {
     const colorStyle = getSetting('colorStyle');
     const wallpaper = getSetting('wallpaper');
     const customWallpaperPath = getSetting('customWallpaperPath');
-    const wallpaperMode = getSetting('wallpaperMode');
+    const customWallpaperType = getSetting('customWallpaperType');
     const customWallpaperName = getSetting('customWallpaperName');
 
     if (colorStyle === "generate") {
         if (wallpaper === 'custom') {
             // Verificar que la ruta del wallpaper personalizado exista
             if (fs.existsSync(customWallpaperPath)) {
-                const genColors = await cg.generateColorPalette('custom', imageCachePath, customWallpaperPath, wallpaperMode, customWallpaperName);
+                const genColors = await cg.generateColorPalette('custom', imageCachePath, customWallpaperPath, customWallpaperType, customWallpaperName);
                 settings['appContrastLight'] = genColors.appContrastLight;
                 settings['appContrastDark'] = genColors.appContrastDark;
             } else {
@@ -852,7 +851,6 @@ function chunkify(arrayCards, arrayNotes, chunks) {
 ipcMain.handle('get-prepared-elements', async () => {
     try {
         if (!preparedElements) {
-            writeLog('No hay elementos preparados en cache. Preparando desde la base de datos...');
             const encryptedCards = await db.getAllCards();
             const encryptedNotes = await db.getAllNotes();
             // Preparar las tarjetas (desencriptar nombre y web) usando un worker
@@ -1002,9 +1000,9 @@ ipcMain.handle('set-custom-wallpaper', async () => {
         // Obtener la extensión del archivo
         const fileExtension = path.extname(filePath).toLowerCase();
         if (['.jpg', '.jpeg', '.png', '.bmp'].includes(fileExtension)) {
-            setSetting('wallpaperMode', 'image');
+            setSetting('customWallpaperType', 'image');
         } else if (['.mp4'].includes(fileExtension)) {
-            setSetting('wallpaperMode', 'video');
+            setSetting('customWallpaperType', 'video');
         }
         // Guardar el nombre base del archivo
         const fileBaseName = path.parse(filePath).name;

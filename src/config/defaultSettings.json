@@ -9,5 +9,8 @@
     "appContrastLight": "rgb(200, 200, 200)",
     "appContrastDark": "rgb(55, 55, 55)",
     "language": "system",
-    "welcomeMessageDisplayed": false
+    "welcomeMessageDisplayed": false,
+    "customWallpaperPath": "",
+    "customWallpaperName": "",
+    "customWallpaperType": ""
 }

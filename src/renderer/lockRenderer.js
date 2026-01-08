@@ -98,11 +98,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         const wallpaperMode = await window.electronAPI.getSetting('wallpaperMode');
         const wallpaper = await window.electronAPI.getSetting('wallpaper');
         const colorStyle = await window.electronAPI.getSetting('colorStyle');
+        const customWallpaperPath = await window.electronAPI.getSetting('customWallpaperPath');
+        const customWallpaperType = await window.electronAPI.getSetting('customWallpaperType');
 
         let finalWallpaper;
 
         if (wallpaper === 'custom') {
-            const customWallpaperPath = await window.electronAPI.getSetting('customWallpaperPath');
             finalWallpaper = customWallpaperPath;
         }
         else {
@@ -113,12 +114,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         }
 
-        if (wallpaperMode === "video") {
+        if ((wallpaperMode === "video" && wallpaper !== 'custom') || (wallpaper === 'custom' && customWallpaperType === 'video')) {
             visualWallpaper.innerHTML = `
             <video autoplay loop muted playsinline class="video-wallpaper">
                 <source src="${finalWallpaper}" type="video/mp4">
             </video>`;
-        } else if (wallpaperMode === "image") {
+        } else if ((wallpaperMode === "image" && wallpaper !== 'custom') || (wallpaper === 'custom' && customWallpaperType === 'image')) {
             visualWallpaper.innerHTML = `<img class="img-wallpaper" src="${finalWallpaper}">`
         }
 

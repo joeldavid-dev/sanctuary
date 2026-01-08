@@ -15,6 +15,7 @@ export async function createSettingsPage(superuser) {
     const wallpaperMode = await window.electronAPI.getSetting('wallpaperMode');
     const customWallpaperPath = await window.electronAPI.getSetting('customWallpaperPath');
     const customWallpaperName = await window.electronAPI.getSetting('customWallpaperName');
+    const customWallpaperType = await window.electronAPI.getSetting('customWallpaperType');
     const paths = (await window.electronAPI.getPaths());
 
     // Elementos HTML ya existentes que se usarán
@@ -46,7 +47,7 @@ export async function createSettingsPage(superuser) {
 
     // Opción de fondo de pantalla personalizado
     if (customWallpaperPath) {
-        const thumbnailPath = (wallpaperMode === 'image') ? customWallpaperPath : paths.imageCachePath + '/' + customWallpaperName + '.png';
+        const thumbnailPath = (customWallpaperType === 'image') ? customWallpaperPath : paths.imageCachePath + '/' + customWallpaperName + '.png';
         wallpaperOptionsArea.appendChild(getCustomWallpaperHTML(thumbnailPath));
         // Seleccionar si es el actual
         if (currentWallpaper === 'custom') {
