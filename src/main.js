@@ -83,6 +83,9 @@ app.whenReady().then(async () => {
     // Cargar traducciones
     loadTranslations();
 
+    // Cargar correcciones de versiones antiguas
+    await runSettingFixes();
+
     // Crear carpetas necesarias
     if (!fs.existsSync(imageCachePath)) {
         fs.mkdirSync(imageCachePath, { recursive: true });
@@ -133,6 +136,24 @@ ipcMain.handle('get-paths', (event, key) => {
 ipcMain.handle('get-constants', (event) => {
     return constants;
 });
+
+// Correcciones de configuración entre versiones
+async function runSettingFixes() {
+    const wallpaper = getSetting('wallpaper');
+    const customWallpaperName = getSetting('customWallpaperName');
+    const customWallpaperPath = getSetting('customWallpaperPath');
+    const customWallpaperType = getSetting('customWallpaperType');
+
+    // Versión 1.2.0: Si se desconoce el path, nombre o el tipo del wallpaper personalizado, 
+    // pero esta configurado el wallpaper custom, reestablecer al wallpaper por defecto y 
+    // limpiar las configuraciones de wallpaper personalizado.
+    if (wallpaper === 'custom' && (customWallpaperName === '' || customWallpaperPath === '' || customWallpaperType === '')) {
+        await setSetting('wallpaper', '');
+        await setSetting('customWallpaperName', '');
+        await setSetting('customWallpaperPath', '');
+        await setSetting('customWallpaperType', '');
+    }
+}
 
 // Leer las configuraciones y generar colores si esta configurado de esa manera.
 async function loadSettings() {
