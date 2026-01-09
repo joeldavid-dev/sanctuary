@@ -46,7 +46,7 @@ export async function createSettingsPage(superuser) {
     });
 
     // Opción de fondo de pantalla personalizado
-    if (customWallpaperPath) {
+    if (customWallpaperPath !== 'none' && customWallpaperName !== 'none' && customWallpaperType !== 'none') {
         const thumbnailPath = (customWallpaperType === 'image') ? customWallpaperPath : paths.imageCachePath + '/' + customWallpaperName + '.png';
         wallpaperOptionsArea.appendChild(getCustomWallpaperHTML(thumbnailPath));
         // Seleccionar si es el actual

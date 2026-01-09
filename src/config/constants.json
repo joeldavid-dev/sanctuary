@@ -157,5 +157,16 @@
         "set-theme:github",
         "set-theme:green-cyan",
         "set-theme:generate"
+    ],
+    "videoWallpapersSupported": [
+        "mp4",
+        "webm"
+    ],
+    "imageWallpapersSupported": [
+        "jpg",
+        "jpeg",
+        "png",
+        "bmp",
+        "webp"
     ]
 }

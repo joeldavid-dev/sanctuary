@@ -79,12 +79,12 @@ const createMainWindow = () => {
 app.whenReady().then(async () => {
     // Cargar configuraciones
     await loadSettings();
-
+    // Cargar correcciones de versiones antiguas
+    runSettingFixes();
     // Cargar traducciones
     loadTranslations();
-
-    // Cargar correcciones de versiones antiguas
-    await runSettingFixes();
+    // Generar colores si es necesario
+    await genColors();
 
     // Crear carpetas necesarias
     if (!fs.existsSync(imageCachePath)) {
@@ -138,20 +138,34 @@ ipcMain.handle('get-constants', (event) => {
 });
 
 // Correcciones de configuración entre versiones
-async function runSettingFixes() {
+function runSettingFixes() {
     const wallpaper = getSetting('wallpaper');
-    const customWallpaperName = getSetting('customWallpaperName');
     const customWallpaperPath = getSetting('customWallpaperPath');
+    const customWallpaperName = getSetting('customWallpaperName');
     const customWallpaperType = getSetting('customWallpaperType');
 
-    // Versión 1.2.0: Si se desconoce el path, nombre o el tipo del wallpaper personalizado, 
-    // pero esta configurado el wallpaper custom, reestablecer al wallpaper por defecto y 
-    // limpiar las configuraciones de wallpaper personalizado.
-    if (wallpaper === 'custom' && (customWallpaperName === '' || customWallpaperPath === '' || customWallpaperType === '')) {
-        await setSetting('wallpaper', '');
-        await setSetting('customWallpaperName', '');
-        await setSetting('customWallpaperPath', '');
-        await setSetting('customWallpaperType', '');
+    // Versión 1.2.0: Si existe el wallpaper personalizado pero no uno de los datos necesarios, 
+    // obtenerlos o reestablecer a valores por defecto.
+    if (customWallpaperPath !== 'none' && fs.existsSync(customWallpaperPath)) {
+        // Si no existe el nombre del wallpaper personalizado, obtenerlo de la ruta
+        if (customWallpaperName === 'none') {
+            const wallpaperBaseName = path.basename(customWallpaperPath, path.extname(customWallpaperPath));
+            setSetting('customWallpaperName', wallpaperBaseName);
+        }
+        // Si no existe el tipo del wallpaper personalizado, detectarlo
+        if (customWallpaperType === 'none') {
+            if (constants.videoWallpapersSupported.some(ext => customWallpaperPath.endsWith(ext))) {
+                setSetting('customWallpaperType', 'video');
+            } else if (constants.imageWallpapersSupported.some(ext => customWallpaperPath.endsWith(ext))) {
+                setSetting('customWallpaperType', 'image');
+            }
+        }
+    } else if (wallpaper === 'custom') {
+        writeLog("La ruta del wallpaper personalizado no existe, se reestablece el wallpaper por defecto.");
+        setSetting('wallpaper', '');
+        setSetting('customWallpaperName', '');
+        setSetting('customWallpaperPath', '');
+        setSetting('customWallpaperType', '');
     }
 }
 
@@ -165,9 +179,6 @@ async function loadSettings() {
         writeLog("Error al leer configuracion: " + result.error);
         settings = {};
     }
-
-    // Generar colores si es necesario
-    await genColors();
 };
 
 async function genColors() {
@@ -175,22 +186,17 @@ async function genColors() {
     if (process.platform !== 'win32') return;
     const colorStyle = getSetting('colorStyle');
     const wallpaper = getSetting('wallpaper');
-    const customWallpaperPath = getSetting('customWallpaperPath');
-    const customWallpaperType = getSetting('customWallpaperType');
-    const customWallpaperName = getSetting('customWallpaperName');
 
     if (colorStyle === "generate") {
         if (wallpaper === 'custom') {
-            // Verificar que la ruta del wallpaper personalizado exista
-            if (fs.existsSync(customWallpaperPath)) {
-                const genColors = await cg.generateColorPalette('custom', imageCachePath, customWallpaperPath, customWallpaperType, customWallpaperName);
-                settings['appContrastLight'] = genColors.appContrastLight;
-                settings['appContrastDark'] = genColors.appContrastDark;
-            } else {
-                writeLog("La ruta del wallpaper personalizado no existe, se reestablece el wallpaper por defecto.");
-                setSetting('customWallpaperPath', ''); // Limpiar la ruta del wallpaper personalizado
-                setSetting('wallpaper', ''); // Forzar a usar un wallpaper por defecto
-            }
+            // Declaraciones dentro del if para evitar llamadas innecesarias y llenar
+            // el log de mensajes.
+            const customWallpaperPath = getSetting('customWallpaperPath');
+            const customWallpaperType = getSetting('customWallpaperType');
+            const customWallpaperName = getSetting('customWallpaperName');
+            const genColors = await cg.generateColorPalette('custom', imageCachePath, customWallpaperPath, customWallpaperType, customWallpaperName);
+            settings['appContrastLight'] = genColors.appContrastLight;
+            settings['appContrastDark'] = genColors.appContrastDark;
         }
         else {
             const genColors = await cg.generateColorPalette(wallpaper, imageCachePath);
@@ -217,6 +223,7 @@ function getSetting(key) {
 // Guarda una configuración.
 function setSetting(key, value) {
     settings[key] = value;
+    writeLog(`Configuracion "${key}" actualizada a: ${value}`);
     return st.writeSettings(settings);
 }
 
@@ -239,7 +246,6 @@ ipcMain.handle('set-setting', async (event, key, value) => {
 
     // Acciones posteriores a guardar la configuración
     if (result.success) {
-        writeLog(`Configuracion "${key}" actualizada a: ${value}`);
         if (key === 'language') loadTranslations();
         else if (key === 'wallpaper') await genColors();
     } else {
@@ -991,11 +997,17 @@ ipcMain.handle('execute-command', async (event, command) => {
 
 // Establecer un fondo de pantalla personalizado desde un archivo
 ipcMain.handle('set-custom-wallpaper', async () => {
+    // pendientes: , 'mov', 'avi', 'mkv'
+    // Concatenar las extensiones soportadas en una sola lista
+    const imageExtensions = constants.imageWallpapersSupported;
+    const videoExtensions = constants.videoWallpapersSupported;
+    const extensions = [...imageExtensions, ...videoExtensions];
+
     // Mostrar un cuadro de diálogo para seleccionar el archivo de imagen o video
     const { canceled, filePaths } = await dialog.showOpenDialog({
         tittle: mainTranslations['wallpaper-dialog-title'],
         filters: [
-            { name: 'Images and Videos', extensions: ['jpg', 'jpeg', 'png', 'bmp', 'mp4', 'webm'] }], // pendientes: , 'mov', 'avi', 'mkv'
+            { name: 'Images and Videos', extensions: extensions }],
         properties: ['openFile']
     });
     // Si se cancela la selección o no se selecciona ningún archivo, salir
@@ -1019,10 +1031,10 @@ ipcMain.handle('set-custom-wallpaper', async () => {
         // Establecer el valor como la ruta del archivo personalizado
         setSetting('customWallpaperPath', filePath);
         // Obtener la extensión del archivo
-        const fileExtension = path.extname(filePath).toLowerCase();
-        if (['.jpg', '.jpeg', '.png', '.bmp'].includes(fileExtension)) {
+        const fileExtension = path.extname(filePath).toLowerCase().slice(1); // Quitar el punto inicial
+        if (imageExtensions.includes(fileExtension)) {
             setSetting('customWallpaperType', 'image');
-        } else if (['.mp4'].includes(fileExtension)) {
+        } else if (videoExtensions.includes(fileExtension)) {
             setSetting('customWallpaperType', 'video');
         }
         // Guardar el nombre base del archivo
@@ -1044,6 +1056,8 @@ ipcMain.handle('set-custom-wallpaper', async () => {
         writeLog('Error al leer el wallpaper personalizado:' + error.message);
         // Reestablecer las configuraciones relacionadas al wallpaper personalizado
         setSetting('customWallpaperPath', '');
+        setSetting('customWallpaperType', '');
+        setSetting('customWallpaperName', '');
         setSetting('wallpaper', '');
         return {
             success: false,

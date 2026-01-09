@@ -10,7 +10,7 @@
     "appContrastDark": "rgb(55, 55, 55)",
     "language": "system",
     "welcomeMessageDisplayed": false,
-    "customWallpaperPath": "",
-    "customWallpaperName": "",
-    "customWallpaperType": ""
+    "customWallpaperPath": "none",
+    "customWallpaperName": "none",
+    "customWallpaperType": "none"
 }
