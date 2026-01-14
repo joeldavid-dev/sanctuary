@@ -163,8 +163,8 @@ function runSettingFixes() {
     } else if (wallpaper === 'custom') {
         writeLog("La ruta del wallpaper personalizado no existe, se reestablece el wallpaper por defecto.");
         setSetting('wallpaper', '');
-        setSetting('customWallpaperName', '');
         setSetting('customWallpaperPath', '');
+        setSetting('customWallpaperName', '');
         setSetting('customWallpaperType', '');
     }
 }
@@ -192,8 +192,8 @@ async function genColors() {
             // Declaraciones dentro del if para evitar llamadas innecesarias y llenar
             // el log de mensajes.
             const customWallpaperPath = getSetting('customWallpaperPath');
-            const customWallpaperType = getSetting('customWallpaperType');
             const customWallpaperName = getSetting('customWallpaperName');
+            const customWallpaperType = getSetting('customWallpaperType');
             const genColors = await cg.generateColorPalette('custom', imageCachePath, customWallpaperPath, customWallpaperType, customWallpaperName);
             settings['appContrastLight'] = genColors.appContrastLight;
             settings['appContrastDark'] = genColors.appContrastDark;
@@ -274,7 +274,6 @@ function loadTranslations() {
     try {
         const filePath = path.join(__dirname, 'locales', `${languageCode}.json`);
         const raw = fs.readFileSync(filePath, 'utf8');
-        writeLog('Cargando traduccion: ' + filePath);
         translations = JSON.parse(raw);
         mainTranslations = translations["main"];
     } catch (err) {
@@ -1030,6 +1029,10 @@ ipcMain.handle('set-custom-wallpaper', async () => {
 
         // Establecer el valor como la ruta del archivo personalizado
         setSetting('customWallpaperPath', filePath);
+        // Guardar el nombre base del archivo
+        const fileBaseName = path.parse(filePath).name;
+        setSetting('customWallpaperName', fileBaseName);
+
         // Obtener la extensión del archivo
         const fileExtension = path.extname(filePath).toLowerCase().slice(1); // Quitar el punto inicial
         if (imageExtensions.includes(fileExtension)) {
@@ -1037,9 +1040,6 @@ ipcMain.handle('set-custom-wallpaper', async () => {
         } else if (videoExtensions.includes(fileExtension)) {
             setSetting('customWallpaperType', 'video');
         }
-        // Guardar el nombre base del archivo
-        const fileBaseName = path.parse(filePath).name;
-        setSetting('customWallpaperName', fileBaseName);
 
         // Guardar el tipo de wallpaper como 'custom'
         setSetting('wallpaper', 'custom');
@@ -1056,8 +1056,8 @@ ipcMain.handle('set-custom-wallpaper', async () => {
         writeLog('Error al leer el wallpaper personalizado:' + error.message);
         // Reestablecer las configuraciones relacionadas al wallpaper personalizado
         setSetting('customWallpaperPath', '');
-        setSetting('customWallpaperType', '');
         setSetting('customWallpaperName', '');
+        setSetting('customWallpaperType', '');
         setSetting('wallpaper', '');
         return {
             success: false,

@@ -21,23 +21,31 @@
     <div id="visual-wallpaper"></div>
 
     <!-- Contenedor de todo -->
-    <div class="bloqueo-content">
+    <div class="bloqueo-content horizontal-flex">
         <!-- Panel de login con saludo -->
-        <div class="normal-padding colored-saturate-blur login-panel">
+        <div class="login-panel vertical-flex extra-big-spaced normal-padding colored-saturate-blur">
             <div class="vertical-flex">
                 <div class="horizontal-flex centered minimal-spaced">
                     <img src="../assets/ico/Logo.svg" class="logo-icon">
                     <p class="brand-text" data-i18n="brand-name"></p>
                 </div>
             </div>
-            <p id="greeting" class="login-element expresive-text"></p>
-            <label id="pass-label" class="medium-text centered-text login-element" data-i18n="password"></label>
-            <input class="option-input minimal-rounded login-element" type="password" id="password" name="password"
-                required>
+            <div class="login-margin vertical-flex expanded distributed">
+                <p id="greeting" class="expresive-text"></p>
+                <div class="vertical-flex big-spaced">
+                    <label id="pass-label" class="medium-text centered-text" data-i18n="password"></label>
+                    <div class="password-field">
+                        <input type="password" id="password" name="password" required>
+                        <button id="togglePassword">
+                            <img src="../assets/ico/feather/eye.svg" class="mini-icon darkmode-invert">
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Panel de botones superiores y área de notificaciones -->
-        <div class="normal-padding info-panel draggable">
+        <div class="info-panel normal-padding draggable">
             <!-- Área de botones superior -->
             <div class="horizontal-elem-area spaced">
                 <button id="open-about"
@@ -64,7 +72,7 @@
             <!-- Área de notificaciones -->
             <div class="reverse centered invisible">
 
-                <button class="colored-blur normal-rounded narrow-padding horizontal-elem-area spaced notification">
+                <button class="notification colored-blur normal-rounded narrow-padding horizontal-elem-area spaced">
                     <div class="horizontal-elem-area centered">
                         <img src="../assets/ico/feather/message-square.svg" class="normal-icon">
                         <span class="medium-text"></span>
@@ -76,7 +84,7 @@
 
             <!-- Área de información de versión -->
             <div class="horizontal-flex distributed">
-                <p class="small-text version saturate-blur narrow-btn-padding minimal-rounded" id="extra-info"></p>
+                <p class="version small-text saturate-blur narrow-btn-padding minimal-rounded" id="extra-info"></p>
             </div>
         </div>
 

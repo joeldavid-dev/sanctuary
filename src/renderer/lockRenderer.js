@@ -11,7 +11,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const aboutBtn = document.getElementById('open-about');
     const greeting = document.getElementById('greeting');
     const passLabel = document.getElementById('pass-label');
-    const inputPassword = document.getElementById('password');
+    const passwordInput = document.getElementById('password');
+    const togglePassword = document.getElementById('togglePassword');
     const extraInfo = document.getElementById('extra-info');
     const translations = await window.electronAPI.getTranslations('lock-view');
     const superuser = await window.electronAPI.getUserInfo();
@@ -62,14 +63,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // Enter en el input de contraseña
-    inputPassword.addEventListener('keydown', async (event) => {
+    passwordInput.addEventListener('keydown', async (event) => {
         if (event.key === 'Enter') {
-            if (inputPassword.value != '') {
-                const response = await window.electronAPI.verifyPassword(inputPassword.value);
+            if (passwordInput.value != '') {
+                const response = await window.electronAPI.verifyPassword(passwordInput.value);
                 if (!response.verified) {
                     count--;
                     if (count == 0) {
-                        inputPassword.disabled = true;
+                        passwordInput.disabled = true;
                         passLabel.textContent = translations['locked'];
                     }
                     else if (count == 1) {
@@ -82,10 +83,19 @@ document.addEventListener("DOMContentLoaded", async () => {
                     else {
                         passLabel.textContent = replaceKeysInText(translations['wrong-password'], { attempts: count });
                     }
-                    inputPassword.value = '';
+                    passwordInput.value = '';
                 }
             }
         }
+    });
+
+    // Toggle de visibilidad de la contraseña
+    togglePassword.addEventListener('click', (event) => {
+        const isPassword = passwordInput.type === 'password';
+        const icon = event.currentTarget.firstElementChild;
+
+        passwordInput.type = isPassword ? 'text' : 'password';
+        icon.src = isPassword ? '../assets/ico/feather/eye-off.svg' : '../assets/ico/feather/eye.svg';
     });
 
     // Clic en el botón para abrir el modal de acerca de

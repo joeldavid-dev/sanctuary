@@ -35,6 +35,9 @@ export function showIDModal(mode, superuser) {
         const userPass2 = document.getElementById('user-pass2');
         const userPass3 = document.getElementById('user-pass3');
         // Botones
+        const togglePassword1 = document.getElementById('togglePassword1');
+        const togglePassword2 = document.getElementById('togglePassword2');
+        const togglePassword3 = document.getElementById('togglePassword3');
         const idDoneBtn = document.getElementById('ID-done-btn');
         const importBtn = document.getElementById('import-btn');
 
@@ -70,6 +73,17 @@ export function showIDModal(mode, superuser) {
             cleanup();
             resolve({ success: false, })
         };
+
+        // Al pulsar un toggle de contraseña
+        const togglePasswordAction = (event) => {
+            const input = event.currentTarget.previousElementSibling;
+            const icon = event.currentTarget.firstElementChild;
+            const isPassword = input.type === 'password';
+
+            input.type = isPassword ? 'text' : 'password';
+            icon.src = isPassword ? '../assets/ico/feather/eye-off.svg' : '../assets/ico/feather/eye.svg';
+        };
+
         // Al pulsar el boton de importar
         const importAction = async () => {
             const response = await window.electronAPI.getJSONFile();
@@ -217,6 +231,9 @@ export function showIDModal(mode, superuser) {
         closeModal.addEventListener('click', close);
         idDoneBtn.addEventListener('click', doneAction);
         importBtn.addEventListener('click', importAction);
+        togglePassword1.addEventListener('click', togglePasswordAction);
+        togglePassword2.addEventListener('click', togglePasswordAction);
+        togglePassword3.addEventListener('click', togglePasswordAction);
 
         // Mostrar el modal
         modal.style.display = 'block';
@@ -226,6 +243,9 @@ export function showIDModal(mode, superuser) {
             closeModal.removeEventListener('click', close);
             idDoneBtn.removeEventListener('click', doneAction);
             importBtn.removeEventListener('click', importAction);
+            togglePassword1.removeEventListener('click', togglePasswordAction);
+            togglePassword2.removeEventListener('click', togglePasswordAction);
+            togglePassword3.removeEventListener('click', togglePasswordAction);
             // Resetear el ancho del modal
             modalContent.style.width = 'auto';
             modal.style.display = 'none';
@@ -247,17 +267,32 @@ function getModalHTML(translations, replaceKeysInText, constants) {
     
             <div id="pass1-container" class="vertical-elem-area">
                 <label class="small-text">${translations['current-password']}</label>
-                <input id="user-pass1" class="option-input minimal-rounded" type="password" required>
+                <div class="password-field">
+                    <input id="user-pass1" type="password" required>
+                    <button id="togglePassword1">
+                        <img src="../assets/ico/feather/eye.svg" class="mini-icon darkmode-invert">
+                    </button>
+                </div>
             </div>
     
             <div id="pass2-container" class="vertical-elem-area">
                 <label class="small-text">${translations['new-password']}</label>
-                <input id="user-pass2" class="option-input minimal-rounded" type="password" required>
+                <div class="password-field">
+                    <input id="user-pass2" type="password" required>
+                    <button id="togglePassword2">
+                        <img src="../assets/ico/feather/eye.svg" class="mini-icon darkmode-invert">
+                    </button>
+                </div>
             </div>
 
             <div id="pass3-container" class="vertical-elem-area">
                 <label class="small-text">${translations['confirm-password']}</label>
-                <input id="user-pass3" class="option-input minimal-rounded" type="password" required>
+                <div class="password-field">
+                    <input id="user-pass3" type="password" required>
+                    <button id="togglePassword3">
+                        <img src="../assets/ico/feather/eye.svg" class="mini-icon darkmode-invert">
+                    </button>
+                </div>
             </div>
     
             <div id="gender-container" class="vertical-elem-area">

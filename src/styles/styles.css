@@ -98,6 +98,7 @@ body::-webkit-scrollbar {
 
     /* Valores de margen y padding */
     --maximal-margin: 60px;
+    --extra-big-margin: 45px;
     --big-margin: 30px;
     --normal-margin: 15px;
     --narrow-margin: 10px;
@@ -395,6 +396,10 @@ pre,
     align-items: center;
 }
 
+.extra-big-spaced {
+    gap: var(--extra-big-margin);
+}
+
 .big-spaced {
     gap: var(--big-margin);
 }
@@ -433,11 +438,6 @@ pre,
 .min-content {
     height: min-content;
     width: min-content;
-}
-
-.with-70 {
-    /* Permite que el elemento ocupe el 80% del espacio disponible */
-    width: 70dvw;
 }
 
 .settings-width {
@@ -497,6 +497,25 @@ pre,
 }
 
 /* ======================= Elementos complejos ======================= */
+.img-wallpaper {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.video-wallpaper {
+    /* Fija el video en toda la ventana */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    /* Ajusta el video sin deformarlo */
+    object-fit: cover;
+}
+
 .main-element-body {
     font-family: jetBrains_mono;
     display: flex;
@@ -684,7 +703,6 @@ pre,
     border-color: var(--neutral_grey);
 }
 
-/* Botón de opciones. No tiene borde, se vuelve sólido al pasar el mouse encima. */
 .option-btn-warning {
     background: transparent;
     padding: var(--minimal-margin);
@@ -705,6 +723,53 @@ pre,
     filter: invert(1);
 }
 
+.input-warning {
+    text-align: center;
+    color: white;
+    background-color: var(--dark_gray);
+    /* oculta el borde de seleccion por defecto */
+    outline: none;
+    height: 30px;
+}
+
+.input-warning:focus {
+    background-color: var(--dark_gray_hover);
+}
+
+/* Campo de contraseña con botón para mostrar/ocultar derivado de option-input */
+.password-field {
+    display: flex;
+    flex-direction: row;
+    height: 30px;
+}
+
+.password-field input {
+    text-align: center;
+    background-color: var(--light_gray);
+    /* oculta el borde de seleccion por defecto */
+    outline: none;
+    width: 100%;
+    border-radius: var(--minimal-radius) 0px 0px var(--minimal-radius);
+}
+
+.password-field input:focus {
+    background-color: var(--light_gray_hover);
+}
+
+.password-field button {
+    background: var(--light_gray);
+    cursor: pointer;
+    padding: 0px var(--minimal-margin) 0px var(--minimal-margin);
+    border-radius: 0px var(--minimal-radius) var(--minimal-radius) 0px;
+    /* Elimina el espacio extra que agrega el botón */
+    display: flex;
+    align-items: center;
+}
+
+.password-field button:hover {
+    background-color: var(--light_gray_hover);
+}
+
 /* Botón transparente para elementos que están sobre un fondo plano.
 No tiene borde, al pasar el mouse por encima solo aparece el borde. */
 .transparent-btn {
@@ -714,8 +779,6 @@ No tiene borde, al pasar el mouse por encima solo aparece el borde. */
     transition: var(--normal-animation);
     cursor: pointer;
     /* Hacer que el botón ocupe el espacio mínimo necesario */
-    width: min-content;
-    height: min-content;
     display: flex;
     align-items: center;
 }
@@ -734,8 +797,6 @@ Siempre es blanco para mejorar la visibilidad. */
     transition: var(--normal-animation);
     cursor: pointer;
     /* Hacer que el botón ocupe el espacio mínimo necesario */
-    width: min-content;
-    height: min-content;
     display: flex;
     align-items: center;
 }
@@ -843,19 +904,6 @@ input:checked+.slider::before {
 .radio-color {
     width: 20px;
     height: 20px;
-}
-
-.input-warning {
-    text-align: center;
-    color: white;
-    background-color: var(--dark_gray);
-    /* oculta el borde de seleccion por defecto */
-    outline: none;
-    height: 30px;
-}
-
-.input-warning:focus {
-    background-color: var(--dark_gray_hover);
 }
 
 .elements-container {
@@ -1274,6 +1322,23 @@ input:checked+.slider::before {
 
     .option-input::placeholder {
         color: var(--app_light_transparent);
+    }
+
+    .password-field input {
+        color: var(--app_light);
+        background-color: var(--dark_gray);
+    }
+
+    .password-field input:focus {
+        background-color: var(--dark_gray_hover);
+    }
+
+    .password-field button {
+        background: var(--dark_gray);
+    }
+
+    .password-field button:hover {
+        background-color: var(--dark_gray_hover);
     }
 
     .transparent-btn:hover {

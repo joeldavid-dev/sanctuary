@@ -503,6 +503,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                             console.error(err);
                             showToast(translations['copied-error']);
                         });
+                        buttonPressed.firstElementChild.src = '../assets/ico/feather/eye-off.svg';
                     } else {
                         showToast(card.message);
                     }
@@ -510,6 +511,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 else {
                     userView.textContent = mask;
                     passView.textContent = mask;
+                    buttonPressed.firstElementChild.src = '../assets/ico/feather/eye.svg';
                 }
             }
             else if (mode === 'notes') {
@@ -524,13 +526,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                     const note = await window.electronAPI.decryptPreparedNote(preparedNote);
                     if (note.success) {
                         contentView.textContent = note.data.content;
+                        buttonPressed.firstElementChild.src = '../assets/ico/feather/eye-off.svg';
                     } else {
                         showToast(note.message);
                     }
                 }
                 else {
                     contentView.textContent = mask;
-                    contentView.textContent = mask;
+                    buttonPressed.firstElementChild.src = '../assets/ico/feather/eye.svg';
                 }
             }
         }
