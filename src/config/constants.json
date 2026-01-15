@@ -42,12 +42,24 @@
             "name": "한국어"
         },
         {
+            "code": "no",
+            "name": "Norsk"
+        },
+        {
             "code": "pt",
             "name": "Português"
         },
         {
             "code": "ru",
             "name": "Русский"
+        },
+        {
+            "code": "fi",
+            "name": "Suomi"
+        },
+        {
+            "code": "sv",
+            "name": "Svenska"
         },
         {
             "code": "zh",

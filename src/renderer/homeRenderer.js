@@ -243,7 +243,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Ajuste si se sale por abajo
         if (top + popupRect.height > viewportHeight) {
-            top = event.clientY - popupRect.height - 10;
+            top = viewportHeight - popupRect.height - 10;
         }
 
         popupList.style.left = `${left}px`;
