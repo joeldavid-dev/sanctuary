@@ -8,7 +8,7 @@ Desktop application built with ElectronJS to store passwords and notes, secured 
 <img width="400" alt="Captura de pantalla 2026-01-19 170836" src="https://github.com/user-attachments/assets/3558a276-41a5-4a46-a3b7-9bd2dce6c12a" />
 
 
-## Estructura del proyecto
+## Project Structure
 ```
 ├── src/
 │   ├── main.js                         # Main Electron app code (Main Process)
