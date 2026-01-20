@@ -1,9 +1,0 @@
-keytar: Se conecta con el sistema operativo para almacenar la contraseña de la aplicación de manera segura.
-https://www.npmjs.com/package/keytar
-
-SQLite: Base de datos local.
-
-AES-256: Metodo de cifrado simetrico.
-PBKDF2: Genera llaves seguras para el cifrado.
-
-
