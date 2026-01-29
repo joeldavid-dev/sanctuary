@@ -67,16 +67,35 @@ const createMainWindow = () => {
             preload: path.join(__dirname, 'preload.js'),
             // La API path.join une varios segmentos de rutas,
             // creando una cadena de ruta combinada
-
-            // Desactivar en producción
-            devTools: showDevTools, // Activa las herramientas de desarrollo si no está empaquetado
         }
     });
-    mainWindow.loadFile('src/views/splash-screen.html');
-    //mainWindow.loadFile('src/views/id.html');
 }
 
 app.whenReady().then(async () => {
+    try {
+        // Crea la ventana
+        createMainWindow()
+        // Crear una ventana si no hay una cuando se activa la aplicación
+        // en MacOS
+        app.on('activate', () => {
+            if (BrowserWindow.getAllWindows().length === 0) createMainWindow()
+        })
+
+        await startApp();
+
+        // Comprobar si hay actualizaciones disponibles
+        autoUpdater.checkForUpdatesAndNotify().catch(err => {
+            writeLog('Error al comprobar actualizaciones:', err);
+        });
+    } catch (error) {
+        writeLog('Error crítico al iniciar la app:', err)
+    }
+});
+
+async function startApp() {
+    // Cargar la pantalla de carga
+    mainWindow.loadFile('src/views/splash-screen.html');
+    
     // Cargar configuraciones
     await loadSettings();
     // Cargar correcciones de versiones antiguas
@@ -86,25 +105,13 @@ app.whenReady().then(async () => {
     // Generar colores si es necesario
     await genColors();
 
-    // Crear carpetas necesarias
-    if (!fs.existsSync(imageCachePath)) {
-        fs.mkdirSync(imageCachePath, { recursive: true });
-        writeLog('Carpeta de caché de imágenes creada en: ' + imageCachePath);
-    }
-
-    // Crea la ventana
-    createMainWindow()
-    // Crear una ventana si no hay una cuando se activa la aplicación
-    // en MacOS
-    app.on('activate', () => {
-        if (BrowserWindow.getAllWindows().length === 0) createMainWindow()
-    })
-
-    // Comprobar si hay actualizaciones disponibles
-    autoUpdater.checkForUpdatesAndNotify().catch(err => {
-        writeLog('Error al comprobar actualizaciones:', err);
-    });
-});
+    // Verificar si existe un usuario creado
+    const userExists = await getUserStatus();
+    const ruta = userExists ? 'src/views/lock.html' : 'src/views/id.html';
+    setTimeout(() => {
+        mainWindow.loadFile(ruta);
+    }, 3000);
+}
 
 // Implementa el cierre de toda la aplicación al cerrar
 // todas las ventanas, excepto en MacOS
@@ -143,6 +150,12 @@ function runSettingFixes() {
     const customWallpaperPath = getSetting('customWallpaperPath');
     const customWallpaperName = getSetting('customWallpaperName');
     const customWallpaperType = getSetting('customWallpaperType');
+
+    // Crear carpetas necesarias
+    if (!fs.existsSync(imageCachePath)) {
+        fs.mkdirSync(imageCachePath, { recursive: true });
+        writeLog('Carpeta de caché de imágenes creada en: ' + imageCachePath);
+    }
 
     // Versión 1.2.0: Si existe el wallpaper personalizado pero no uno de los datos necesarios, 
     // obtenerlos o reestablecer a valores por defecto.
@@ -184,25 +197,31 @@ async function loadSettings() {
 async function genColors() {
     // por problemas de compatibilidad de colorThief, solo se ejecuta en windows.
     if (process.platform !== 'win32') return;
-    const colorStyle = getSetting('colorStyle');
-    const wallpaper = getSetting('wallpaper');
+    try {
+        const colorStyle = getSetting('colorStyle');
+        const wallpaper = getSetting('wallpaper');
 
-    if (colorStyle === "generate") {
-        if (wallpaper === 'custom') {
-            // Declaraciones dentro del if para evitar llamadas innecesarias y llenar
-            // el log de mensajes.
-            const customWallpaperPath = getSetting('customWallpaperPath');
-            const customWallpaperName = getSetting('customWallpaperName');
-            const customWallpaperType = getSetting('customWallpaperType');
-            const genColors = await cg.generateColorPalette('custom', imageCachePath, customWallpaperPath, customWallpaperType, customWallpaperName);
-            settings['appContrastLight'] = genColors.appContrastLight;
-            settings['appContrastDark'] = genColors.appContrastDark;
+        if (colorStyle === 'generate') {
+            if (wallpaper === 'custom') {
+                // Declaraciones dentro del if para evitar llamadas innecesarias y llenar
+                // el log de mensajes.
+                const customWallpaperPath = getSetting('customWallpaperPath');
+                const customWallpaperName = getSetting('customWallpaperName');
+                const customWallpaperType = getSetting('customWallpaperType');
+                const genColors = await cg.generateColorPalette('custom', imageCachePath, customWallpaperPath, customWallpaperType, customWallpaperName);
+                settings['appContrastLight'] = genColors.appContrastLight;
+                settings['appContrastDark'] = genColors.appContrastDark;
+            }
+            else {
+                const genColors = await cg.generateColorPalette(wallpaper, imageCachePath);
+                settings['appContrastLight'] = genColors.appContrastLight;
+                settings['appContrastDark'] = genColors.appContrastDark;
+            }
         }
-        else {
-            const genColors = await cg.generateColorPalette(wallpaper, imageCachePath);
-            settings['appContrastLight'] = genColors.appContrastLight;
-            settings['appContrastDark'] = genColors.appContrastDark;
-        }
+    }
+    catch (error) {
+        writeLog("Error al generar colores: " + error.message);
+        return;
     }
 }
 
@@ -533,7 +552,7 @@ ipcMain.handle('change-password', async (event, oldPassword, newPassword) => {
 
 // Obtiene el primer registro de user, si es indefinido entonces no
 // existe usuario. Si existe, se guarda en la variable local "superUser"
-ipcMain.handle('get-user-status', async () => {
+async function getUserStatus() {
     try {
         const result = await db.getUser();
         // Si no hay error pero la consulta da un valor indefinido
@@ -547,7 +566,7 @@ ipcMain.handle('get-user-status', async () => {
         writeLog('Error al obtener el estatus del usuario:' + error.message);
         return false;
     }
-});
+}
 
 // Verificar la contraseña obtenida con la del usuario guardado.
 async function verifyPassword(password) {
@@ -1077,6 +1096,15 @@ ipcMain.handle('get-license', (event) => {
         return null;
     }
 });
+
+// Cachar errores silenciosos
+process.on('unhandledRejection', err => {
+    writeLog('UnhandledPromiseRejection:', err)
+})
+
+process.on('uncaughtException', err => {
+    writeLog('UncaughtException:', err)
+})
 
 // Funcion que genera un archivo log con informacion de debug
 function writeLog(info) {

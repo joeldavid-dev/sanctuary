@@ -1,6 +1,6 @@
 {
   "name": "codaby-sanctuary",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
@@ -47,7 +47,8 @@
     "asarUnpack": [
       "**/*.node",
       "**/*.dll",
-      "**/ffmpeg*"
+      "**/ffmpeg*",
+      "**/ffmpeg-static/**"
     ]
   },
   "keywords": [],

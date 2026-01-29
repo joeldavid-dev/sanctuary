@@ -5,12 +5,22 @@
 const fs = require('fs');
 const ColorThief = require('colorthief');
 const ffmpeg = require("fluent-ffmpeg");
-const ffmpegPath = require("ffmpeg-static");
 const path = require('path');
-ffmpeg.setFfmpegPath(ffmpegPath);
+const { app } = require('electron');
+
+const isDev = !app.isPackaged;
+const ffmpegStaticPath = require('ffmpeg-static');
+let ffmpegPathFinal = ffmpegStaticPath;
+
+if (!isDev){
+    // En producción, ajustar la ruta de ffmpeg
+    const exe = process.platform === 'win32' ? 'ffmpeg.exe' : 'ffmpeg';
+    ffmpegPathFinal = path.join(process.resourcesPath, 'app.asar.unpacked', 'node_modules', 'ffmpeg-static', exe);
+}
+ffmpeg.setFfmpegPath(ffmpegPathFinal);
 
 async function generateColorPalette(fileName, imageCachePath, filePath = null, fileType = 'image', customName = null) {
-    let appContrastLight, appContrastDark, finalImgPath, tempImgPath;
+    let appContrastLight, appContrastDark, finalImgPath;
 
     if (fileName === 'custom') {
         if (fileType === 'image') {
