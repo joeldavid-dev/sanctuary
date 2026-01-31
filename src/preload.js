@@ -48,4 +48,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
     executeCommand: (command) => ipcRenderer.invoke('execute-command', command),
     setCustomWallpaper: () => ipcRenderer.invoke('set-custom-wallpaper'),
     getLicense: () => ipcRenderer.invoke('get-license'),
+    getLog: () => ipcRenderer.invoke('get-log'),
 });

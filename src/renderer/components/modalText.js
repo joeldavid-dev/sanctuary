@@ -1,13 +1,14 @@
-/* Este modulo se encarga del manejo del modal para mostrar la licencia.
+/* Este modulo se encarga del manejo del modal para mostrar texto.
+ * Tipo de texto soportado: 'license', 'log'
  * Solo necesita ser llamado en un renderer cuyo html incluya un divider con el 
  * ID = "modal" y que contenga un divider con ID = "modal-body".
  */
 
-export function showLicenseModal() {
+export function showTextModal(mode) {
     return new Promise(async (resolve, reject) => {
         // Constantes y variables auxiliares
-        const translations = await window.electronAPI.getTranslations('license');
-        const license = await window.electronAPI.getLicense();
+        const translations = await window.electronAPI.getTranslations('text-modal');
+        let textContent = '';
 
         // Elementos HTML ya existentes que se usarán
         const modal = document.getElementById('modal');
@@ -15,14 +16,21 @@ export function showLicenseModal() {
         const modalBody = document.getElementById('modal-body');
         const closeModal = document.getElementById('close-modal');
         const modalTitle = document.getElementById('modal-title');
-        // Insertar el esqueleto HTML
-        modalBody.innerHTML = getModalHTML(license);
-
-        // Elementos HTML insertados en el esqueleto
 
         // Establecer valores iniciales
-        modalContent.style.width = '600px'; // Establecer el ancho de modal a 320px
-        modalTitle.textContent = translations['title'];
+        modalContent.style.width = 'max-content';
+        if (mode === 'license') {
+            modalTitle.textContent = translations['license-title'];
+            textContent = await window.electronAPI.getLicense();
+        } else if (mode === 'log') {
+            modalTitle.textContent = translations['log-title'];
+            textContent = await window.electronAPI.getLog();
+        } else {
+            reject('Modo de modal desconocido: ' + mode);
+            return;
+        }
+
+        modalBody.innerHTML = getModalHTML(textContent);
 
         // Funciones de botones e inputs
         const close = () => {
@@ -46,9 +54,9 @@ export function showLicenseModal() {
     });
 }
 
-function getModalHTML(license) {
+function getModalHTML(textContent) {
     return `
     <div class="normal-padding">
-        <p class="plain-text-font small-text selectable-text preserve">${license}</p>
+        <p class="plain-text-font small-text selectable-text preserve">${textContent}</p>
     </div>`;
 }

@@ -28,12 +28,9 @@
 }
 
 .command-options-bar {
-    position: fixed;
     top: 65px;
     left: 50%;
-    max-height: 80dvh;
-    z-index: 1000;
-    display: none;
+    max-height: calc(100dvh - 100px);
 }
 
 .botton-bar {

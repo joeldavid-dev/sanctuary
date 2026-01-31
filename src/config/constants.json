@@ -2,11 +2,11 @@
     "about": {
         "appName": "Sanctuary",
         "brand": "Codaby",
-        "version": "1.2.1",
+        "version": "1.2.2",
         "versionName": "Andromeda",
         "myLink": "https://joeldavid-dev.netlify.app/#",
         "developer": "Joel David C.",
-        "year": "2025"
+        "year": "2026"
     },
     "languages": [
         {
@@ -158,6 +158,7 @@
     "available_commands": [
         "change-ID-gender:male | female | other",
         "change-ID-name:New Name",
+        "clear-image-cache",
         "exit",
         "lock",
         "relaunch",
@@ -168,7 +169,8 @@
         "set-theme:pink",
         "set-theme:github",
         "set-theme:green-cyan",
-        "set-theme:generate"
+        "set-theme:generate",
+        "show-log"
     ],
     "videoWallpapersSupported": [
         "mp4",
@@ -177,8 +179,6 @@
     "imageWallpapersSupported": [
         "jpg",
         "jpeg",
-        "png",
-        "bmp",
-        "webp"
+        "png"
     ]
 }

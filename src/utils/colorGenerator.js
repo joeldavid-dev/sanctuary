@@ -3,16 +3,17 @@
  * de todo el procesamiento de colores de la aplicación.
  */
 const fs = require('fs');
-const ColorThief = require('colorthief');
 const ffmpeg = require("fluent-ffmpeg");
 const path = require('path');
 const { app } = require('electron');
+const { PNG } = require("pngjs");
+const jpeg = require("jpeg-js");
 
 const isDev = !app.isPackaged;
 const ffmpegStaticPath = require('ffmpeg-static');
 let ffmpegPathFinal = ffmpegStaticPath;
 
-if (!isDev){
+if (!isDev) {
     // En producción, ajustar la ruta de ffmpeg
     const exe = process.platform === 'win32' ? 'ffmpeg.exe' : 'ffmpeg';
     ffmpegPathFinal = path.join(process.resourcesPath, 'app.asar.unpacked', 'node_modules', 'ffmpeg-static', exe);
@@ -45,21 +46,25 @@ async function generateColorPalette(fileName, imageCachePath, filePath = null, f
     }
 
     // Extracción del color dominante
-    const dominantColor = await ColorThief.getColor(finalImgPath);
+    const dominantColor = getDominantColor(finalImgPath);
+    const colorluminance = perceivedLuminance(dominantColor);
+    const isLight = colorluminance > 0.5; // true = light, false = dark
+    //console.log("Dominant color: " + dominantColor + " Type: " + (isLight ? "light" : "dark"));
+    //console.log("Perceived luminance: " + colorluminance);
 
-    const colorType = isLightColor(dominantColor);
-    //console.log("Is light color?: " + colorType);
-    if (colorType) {
+    let adjustedColor;
+    if (isLight) {
         appContrastLight = `rgb(${dominantColor[0]}, ${dominantColor[1]}, ${dominantColor[2]})`;
-        const adjustedColor = adjustLightness(dominantColor, -0.3);
+        adjustedColor = adjustLightness(dominantColor, 0.45 - colorluminance);
         appContrastDark = `rgb(${adjustedColor[0]}, ${adjustedColor[1]}, ${adjustedColor[2]})`;
     }
     else {
         appContrastDark = `rgb(${dominantColor[0]}, ${dominantColor[1]}, ${dominantColor[2]})`;
-        const adjustedColor = adjustLightness(dominantColor, 0.3);
+        adjustedColor = adjustLightness(dominantColor, 0.55 - colorluminance);
         appContrastLight = `rgb(${adjustedColor[0]}, ${adjustedColor[1]}, ${adjustedColor[2]})`;
     }
 
+    //console.log("Adjusted color luminance: " + perceivedLuminance(adjustedColor) + " type: " + (perceivedLuminance(adjustedColor) > 0.5 ? "light" : "dark"));
     const result = {
         appContrastLight,
         appContrastDark
@@ -69,10 +74,10 @@ async function generateColorPalette(fileName, imageCachePath, filePath = null, f
 
 function copyImageToCache(imgAsarPath, finalImgPath) {
     // Copiamos la imagen al file system real
-        // Copiar solo si no existe
-        if (!fs.existsSync(finalImgPath)) {
-            fs.copyFileSync(imgAsarPath, finalImgPath);
-        }
+    // Copiar solo si no existe
+    if (!fs.existsSync(finalImgPath)) {
+        fs.copyFileSync(imgAsarPath, finalImgPath);
+    }
 }
 
 function extractFirstFrame(videoPath, outputPath) {
@@ -89,21 +94,77 @@ function extractFirstFrame(videoPath, outputPath) {
     });
 }
 
-function isLightColor(dominantColor) {
-    // Cálculo de luminancia percibida
-    const luminancia = (0.299 * dominantColor[0] + 0.587 * dominantColor[1] + 0.114 * dominantColor[2]);
+function getPixels(imagePath) {
+    const buffer = fs.readFileSync(imagePath);
+    const ext = path.extname(imagePath).toLowerCase();
 
-    // Si la luminancia es mayor a 128, es un color claro.
-    return luminancia > 128;
+    if (ext === ".png") {
+        const png = PNG.sync.read(buffer);
+        return { data: png.data, width: png.width, height: png.height };
+    }
+
+    if (ext === ".jpg" || ext === ".jpeg") {
+        const jpg = jpeg.decode(buffer, { useTArray: true });
+        return { data: jpg.data, width: jpg.width, height: jpg.height };
+    }
+
+    throw new Error("Formato no soportado");
+}
+
+function getDominantColor(imagePath) {
+    const { data } = getPixels(imagePath);
+    const colorMap = new Map();
+
+    for (let i = 0; i < data.length; i += 512) { // saltar algunos pixeles para mejorar performance
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+        //const a = data[i + 3];
+
+        //if (a < 128) continue; // ignora transparencia
+
+        // cuantización para agrupar colores
+        const key = `${r >> 4 << 4},${g >> 4 << 4},${b >> 4 << 4}`;
+        if (key !== "0,0,0" && key !== "255,255,255") // ignorar blanco y negro
+            colorMap.set(key, (colorMap.get(key) || 0) + 1);
+    }
+
+    let selectedColor = 0;
+    let dominant = null;
+
+    // Ordenar el colorMap por colores más frecuentes
+    const sortedColors = Array.from(colorMap.entries()).sort((a, b) => b[1] - a[1]);
+    for (const [color, count] of sortedColors) {
+        // Encontrar el color dominante que cumpla con la luminancia
+        const rgb = color.split(',').map(Number);
+        const luminance = perceivedLuminance(rgb);
+        if (luminance > 0.2 && luminance < 0.8) {
+            dominant = rgb;
+            break;
+        }
+        selectedColor++;
+    }
+
+    //console.log(`Selected color index: ${selectedColor} out of ${sortedColors.length}`);
+
+    // Si no se encontró ningún color adecuado, usar el más frecuente
+    if (!dominant) {
+        const [color] = sortedColors[0];
+        dominant = color.split(',').map(Number);
+    }
+
+    return dominant;
+}
+
+function perceivedLuminance(rgb) {
+    // Cálculo de luminancia percibida, fórmula ITU-R BT.601
+    return (0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]) / 255;
 }
 
 function adjustLightness(rgb, percent) {
-    //console.log("rgb input: " + rgb);
     let [r, g, b] = rgb;
     let [h, s, l] = rgbToHsl(r, g, b);
-    //console.log("l previo: " + l);
     l = Math.min(1, Math.max(0, l + percent)); // Asegura que esté entre 0 y 1
-    //console.log("l ajustado: " + l);
     return hslToRgb(h, s, l);
 }
 
@@ -160,4 +221,4 @@ function hslToRgb(h, s, l) {
     ];
 }
 
-module.exports = { generateColorPalette }; 
+module.exports = { generateColorPalette };

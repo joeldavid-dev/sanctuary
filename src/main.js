@@ -95,7 +95,7 @@ app.whenReady().then(async () => {
 async function startApp() {
     // Cargar la pantalla de carga
     mainWindow.loadFile('src/views/splash-screen.html');
-    
+
     // Cargar configuraciones
     await loadSettings();
     // Cargar correcciones de versiones antiguas
@@ -966,6 +966,27 @@ ipcMain.handle('import-data', async (event, key) => {
     }
 });
 
+// Función para limpiar la caché de imagenes
+async function clearImageCache() {
+    fs.readdir(imageCachePath, (err, files) => {
+        if (err) {
+            writeLog('Error al leer la carpeta de caché de imágenes: ' + err.message);
+            return { success: false, message: mainTranslations['image-cache-clear-error'] };
+        }
+        files.forEach(file => {
+            const filePath = path.join(imageCachePath, file);
+            fs.unlink(filePath, (err) => {
+                if (err) {
+                    writeLog('Error al eliminar archivo de caché: ' + err.message);
+                    return { success: false, message: mainTranslations['image-cache-clear-error'] };
+                }
+            });
+        });
+    });
+    writeLog('Cache de imagenes limpiada.');
+    return { success: true, message: mainTranslations['image-cache-cleared'] };
+}
+
 // Manejo de comandos
 ipcMain.handle('execute-command', async (event, command) => {
     const [cmd, ...args] = command.split(':');
@@ -1007,6 +1028,8 @@ ipcMain.handle('execute-command', async (event, command) => {
             } else {
                 return { success: false, message: mainTranslations['command-invalid-args'] };
             }
+        case 'clear-image-cache':
+            return await clearImageCache();
         default:
             // Comando no reconocido
             return { success: false, message: `${cmd}: ${mainTranslations['command-not-found']}` };
@@ -1093,6 +1116,17 @@ ipcMain.handle('get-license', (event) => {
         return licenseText;
     } else {
         writeLog('Error al obtener la licencia: LICENSE no existe.');
+        return null;
+    }
+});
+
+// Obtener el archivo de log de la aplicacion
+ipcMain.handle('get-log', () => {
+    try {
+        const logContent = fs.readFileSync(logPath, 'utf-8');
+        return logContent;
+    } catch (error) {
+        writeLog('Error al leer el archivo de log: ' + error.message);
         return null;
     }
 });

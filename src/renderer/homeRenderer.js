@@ -7,7 +7,7 @@ import { showIDModal } from './components/modalID.js';
 import { createSettingsPage } from './components/settingsPage.js';
 import { createCommandOption } from './components/commandOption.js';
 import { showDeleteIDModal } from './components/modalDeleteID.js';
-import { showLicenseModal } from './components/modalLicense.js';
+import { showTextModal } from './components/modalText.js';
 import { showAboutModal } from './components/modalAbout.js';
 import { showWelcomeModal } from './components/modalWelcome.js';
 import { createPopupOption } from './components/popupOption.js';
@@ -293,6 +293,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
+    // Escuchar cada pulsación de tecla en el input de búsqueda
     searchInput.addEventListener('keydown', async (event) => {
         // Si se presiona tabulador, se enfoca el primer botón de la barra de opciones
         if (event.key === 'Tab' && commandOptionsBar.style.display === 'flex') {
@@ -306,13 +307,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         else if (event.key === 'Enter' && searchMode === 'command') {
             const command = searchInput.value.slice(2).trim(); // Obtener el comando ingresado
+            clearSearch(); // Limpiar la búsqueda
             if (command === '') {
                 showToast(translations['empty-command'], true); // Mostrar mensaje si no hay comando
             }
             else {
                 await executeCommand(command); // Ejecutar el comando correspondiente
             }
-            clearSearch(); // Limpiar la búsqueda
         }
     });
 
@@ -444,6 +445,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     // Main content ==============================================================================
+    // Escuchar clics en la barra de opciones de comando
     commandOptionsBar.addEventListener('click', async (event) => {
         const buttonPressed = event.target.closest('button');
         if (!buttonPressed) return; // Si no se hizo clic en un botón, salir
@@ -456,9 +458,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 searchInput.focus();
             }
             else {
+                clearSearch(); // Limpiar la búsqueda
                 const option = buttonPressed.getAttribute('data-option');
                 await executeCommand(option); // Ejecutar el comando correspondiente
-                clearSearch(); // Limpiar la búsqueda
             }
         }
     });
@@ -628,7 +630,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Clic en botón ver licencia
         else if (buttonPressed.id === 'view-license') {
-            await showLicenseModal();
+            await showTextModal('license');
         }
     });
 
@@ -691,14 +693,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Función para ejecutar comandos ============================================================
     async function executeCommand(command) {
-        // ejecutar el comando correspondiente
-        const result = await window.electronAPI.executeCommand(command);
-        if (result.success) {
-            showToast(result.message);
-            await applySettings(); // Aplicar las nuevas configuraciones si las hay
-            createSettingsPage(superuser); // Recrear la página de configuración si las hay
-        } else showToast(result.message, true);
-        clearSearch(); // Limpiar la búsqueda
+        // Comandos a nivel de interfaz
+        if (command === 'show-log') {
+            await showTextModal('log');
+        } else {
+            // Comandos a nivel de aplicación
+            const result = await window.electronAPI.executeCommand(command);
+            if (result.success) {
+                showToast(result.message);
+                await applySettings(); // Aplicar las nuevas configuraciones si las hay
+                createSettingsPage(superuser); // Recrear la página de configuración si las hay
+            } else showToast(result.message, true);
+        }
     }
 
     // Función del toast notification ============================================================
