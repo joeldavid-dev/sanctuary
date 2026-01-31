@@ -98,7 +98,9 @@
         "wallpaper-dialog-cancelled": "Auswahl der Hintergrunddatei abgebrochen",
         "wallpaper-dialog-error": "Fehler beim Öffnen der Hintergrunddatei",
         "wallpaper-dialog-success": "Hintergrund erfolgreich festgelegt.",
-        "wallpaper-dialog-invalid": "Die Hintergrunddatei ist ungültig."
+        "wallpaper-dialog-invalid": "Die Hintergrunddatei ist ungültig.",
+        "image-cache-cleared": "Bild-Cache erfolgreich geleert.",
+        "image-cache-clear-error": "Fehler beim Leeren des Bild-Cache."
     },
     "home-view": {
         "search": "Suchen...",
@@ -186,8 +188,9 @@
         "view-license": "Lizenz anzeigen",
         "system-default": "Systemstandard"
     },
-    "license": {
-        "title": "LIZENZ"
+    "text-modal": {
+        "license-title": "LIZENZ",
+        "log-title": "Aktivitätsprotokoll"
     },
     "about": {
         "title": "Über {appName}",

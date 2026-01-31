@@ -98,7 +98,9 @@
         "wallpaper-dialog-cancelled": "背景ファイルの選択がキャンセルされました",
         "wallpaper-dialog-error": "背景ファイルを開く際にエラーが発生しました",
         "wallpaper-dialog-success": "背景が正常に設定されました。",
-        "wallpaper-dialog-invalid": "背景ファイルが無効です。"
+        "wallpaper-dialog-invalid": "背景ファイルが無効です。",
+        "image-cache-cleared": "画像キャッシュが正常にクリアされました。",
+        "image-cache-clear-error": "画像キャッシュのクリア中にエラーが発生しました。"
     },
     "home-view": {
         "search": "検索...",
@@ -186,8 +188,9 @@
         "view-license": "ライセンスを表示",
         "system-default": "システムデフォルト"
     },
-    "license": {
-        "title": "ライセンス"
+    "text-modal": {
+        "license-title": "ライセンス",
+        "log-title": "アクティビティログ"
     },
     "about": {
         "title": "{appName}について",

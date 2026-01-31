@@ -98,7 +98,9 @@
         "wallpaper-dialog-cancelled": "Выбор файла фона отменен",
         "wallpaper-dialog-error": "Ошибка при открытии файла фона",
         "wallpaper-dialog-success": "Фон успешно установлен.",
-        "wallpaper-dialog-invalid": "Файл фона недействителен."
+        "wallpaper-dialog-invalid": "Файл фона недействителен.",
+        "image-cache-cleared": "Кэш изображений успешно очищен.",
+        "image-cache-clear-error": "Ошибка при очистке кэша изображений."
     },
     "home-view": {
         "search": "Поиск...",
@@ -186,8 +188,9 @@
         "view-license": "Посмотреть лицензию",
         "system-default": "По умолчанию"
     },
-    "license": {
-        "title": "ЛИЦЕНЗИЯ"
+    "text-modal": {
+        "license-title": "ЛИЦЕНЗИЯ",
+        "log-title": "Журнал активности"
     },
     "about": {
         "title": "О программе",

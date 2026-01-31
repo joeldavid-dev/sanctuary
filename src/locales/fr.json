@@ -98,7 +98,9 @@
         "wallpaper-dialog-cancelled": "Sélection du fichier d'arrière-plan annulée",
         "wallpaper-dialog-error": "Erreur lors de l'ouverture du fichier d'arrière-plan",
         "wallpaper-dialog-success": "Arrière-plan défini avec succès.",
-        "wallpaper-dialog-invalid": "Le fichier d'arrière-plan n'est pas valide."
+        "wallpaper-dialog-invalid": "Le fichier d'arrière-plan n'est pas valide.",
+        "image-cache-cleared": "Cache d'images vidé avec succès.",
+        "image-cache-clear-error": "Erreur lors du vidage du cache d'images."
     },
     "home-view": {
         "search": "Rechercher...",
@@ -186,8 +188,9 @@
         "view-license": "Voir la licence",
         "system-default": "Par défaut du système"
     },
-    "license": {
-        "title": "LICENCE"
+    "text-modal": {
+        "license-title": "LICENCE",
+        "log-title": "Journal d'activité"
     },
     "about": {
         "title": "À propos de {appName}",

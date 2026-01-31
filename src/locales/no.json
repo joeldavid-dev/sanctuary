@@ -98,7 +98,9 @@
         "wallpaper-dialog-cancelled": "Valg av bakgrunnsfil avbrutt",
         "wallpaper-dialog-error": "Feil ved åpning av bakgrunnsfil",
         "wallpaper-dialog-success": "Bakgrunn satt.",
-        "wallpaper-dialog-invalid": "Bakgrunnsfilen er ugyldig."
+        "wallpaper-dialog-invalid": "Bakgrunnsfilen er ugyldig.",
+        "image-cache-cleared": "Bildebuffer tømt.",
+        "image-cache-clear-error": "Feil ved tømming av bildebuffer."
     },
     "home-view": {
         "search": "Søk...",
@@ -186,8 +188,9 @@
         "view-license": "Se lisens",
         "system-default": "Systemstandard"
     },
-    "license": {
-        "title": "LISENS"
+    "text-modal": {
+        "license-title": "LISENS",
+        "log-title": "Aktivitetslogg"
     },
     "about": {
         "title": "Om {appName}",

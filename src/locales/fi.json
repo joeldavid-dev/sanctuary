@@ -98,7 +98,9 @@
         "wallpaper-dialog-cancelled": "Taustatiedoston valinta peruttu",
         "wallpaper-dialog-error": "Virhe avattaessa taustatiedostoa",
         "wallpaper-dialog-success": "Tausta asetettu onnistuneesti.",
-        "wallpaper-dialog-invalid": "Taustatiedosto on virheellinen."
+        "wallpaper-dialog-invalid": "Taustatiedosto on virheellinen.",
+        "image-cache-cleared": "Kuvavälimuisti tyhjennetty onnistuneesti.",
+        "image-cache-clear-error": "Virhe tyhjennettäessä kuvavälimuistia."
     },
     "home-view": {
         "search": "Hae...",
@@ -186,8 +188,9 @@
         "view-license": "Näytä lisenssi",
         "system-default": "Järjestelmän oletus"
     },
-    "license": {
-        "title": "LISENSSI"
+    "text-modal": {
+        "license-title": "LISENSSI",
+        "log-title": "Toimintaloki"
     },
     "about": {
         "title": "Tietoja {appName}-sovelluksesta",

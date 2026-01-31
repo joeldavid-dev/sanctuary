@@ -98,7 +98,9 @@
         "wallpaper-dialog-cancelled": "배경 파일 선택이 취소되었습니다",
         "wallpaper-dialog-error": "배경 파일을 여는 중 오류가 발생했습니다",
         "wallpaper-dialog-success": "배경이 성공적으로 설정되었습니다.",
-        "wallpaper-dialog-invalid": "배경 파일이 유효하지 않습니다."
+        "wallpaper-dialog-invalid": "배경 파일이 유효하지 않습니다.",
+        "image-cache-cleared": "이미지 캐시가 성공적으로 지워졌습니다.",
+        "image-cache-clear-error": "이미지 캐시를 지우는 중 오류가 발생했습니다."
     },
     "home-view": {
         "search": "검색...",
@@ -186,8 +188,9 @@
         "view-license": "라이선스 보기",
         "system-default": "시스템 기본값"
     },
-    "license": {
-        "title": "라이선스"
+    "text-modal": {
+        "license-title": "라이선스",
+        "log-title": "활동 로그"
     },
     "about": {
         "title": "정보",

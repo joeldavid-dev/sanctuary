@@ -98,7 +98,9 @@
         "wallpaper-dialog-cancelled": "Seleção de arquivo de fundo cancelada",
         "wallpaper-dialog-error": "Erro ao abrir o arquivo de fundo",
         "wallpaper-dialog-success": "Fundo definido com sucesso.",
-        "wallpaper-dialog-invalid": "O arquivo de fundo não é válido."
+        "wallpaper-dialog-invalid": "O arquivo de fundo não é válido.",
+        "image-cache-cleared": "Cache de imagens limpo com sucesso.",
+        "image-cache-clear-error": "Erro ao limpar o cache de imagens."
     },
     "home-view": {
         "search": "Buscar...",
@@ -186,8 +188,9 @@
         "view-license": "Ver licença",
         "system-default": "Padrão do sistema"
     },
-    "license": {
-        "title": "LICENÇA"
+    "text-modal": {
+        "license-title": "LICENÇA",
+        "log-title": "Registro de atividade"
     },
     "about": {
         "title": "Sobre {appName}",

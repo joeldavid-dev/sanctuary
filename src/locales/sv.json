@@ -98,7 +98,9 @@
         "wallpaper-dialog-cancelled": "Val av bakgrundsfil avbrutet",
         "wallpaper-dialog-error": "Fel vid öppning av bakgrundsfil",
         "wallpaper-dialog-success": "Bakgrund inställd framgångsrikt.",
-        "wallpaper-dialog-invalid": "Bakgrundsfilen är ogiltig."
+        "wallpaper-dialog-invalid": "Bakgrundsfilen är ogiltig.",
+        "image-cache-cleared": "Bildcache rensad framgångsrikt.",
+        "image-cache-clear-error": "Fel vid rensning av bildcache."
     },
     "home-view": {
         "search": "Sök...",
@@ -186,8 +188,9 @@
         "view-license": "Visa licens",
         "system-default": "Systemstandard"
     },
-    "license": {
-        "title": "LICENS"
+    "text-modal": {
+        "license-title": "LICENS",
+        "log-title": "Aktivitetslogg"
     },
     "about": {
         "title": "Om {appName}",

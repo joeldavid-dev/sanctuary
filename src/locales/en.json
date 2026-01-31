@@ -98,7 +98,9 @@
         "wallpaper-dialog-cancelled": "Background file selection cancelled",
         "wallpaper-dialog-error": "Error opening background file",
         "wallpaper-dialog-success": "Background set successfully.",
-        "wallpaper-dialog-invalid": "The background file is invalid."
+        "wallpaper-dialog-invalid": "The background file is invalid.",
+        "image-cache-cleared": "Image cache cleared successfully.",
+        "image-cache-clear-error": "Error clearing image cache."
     },
     "home-view": {
         "search": "Search...",
@@ -186,8 +188,9 @@
         "view-license": "View license",
         "system-default": "System Default"
     },
-    "license": {
-        "title": "LICENSE"
+    "text-modal": {
+        "license-title": "LICENSE",
+        "log-title": "Activity Log"
     },
     "about": {
         "title": "About {appName}",

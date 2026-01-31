@@ -98,7 +98,9 @@
         "wallpaper-dialog-cancelled": "背景文件选择已取消",
         "wallpaper-dialog-error": "打开背景文件时出错",
         "wallpaper-dialog-success": "背景设置成功。",
-        "wallpaper-dialog-invalid": "背景文件无效。"
+        "wallpaper-dialog-invalid": "背景文件无效。",
+        "image-cache-cleared": "图像缓存已成功清除。",
+        "image-cache-clear-error": "清除图像缓存时出错。"
     },
     "home-view": {
         "search": "搜索...",
@@ -186,8 +188,9 @@
         "view-license": "查看许可证",
         "system-default": "系统默认"
     },
-    "license": {
-        "title": "许可证"
+    "text-modal": {
+        "license-title": "许可证",
+        "log-title": "活动日志"
     },
     "about": {
         "title": "关于",
