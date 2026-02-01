@@ -887,6 +887,7 @@ input:checked+.slider::before {
     padding: var(--narrow-margin);
     border-radius: calc(var(--minimal-radius) + var(--narrow-margin));
     box-shadow: 0px 0px 30px 8px rgba(0, 0, 0, 0.20);
+    max-height: 90dvh;
 }
 
 .radio-ico {
@@ -1045,6 +1046,7 @@ input:checked+.slider::before {
 .modal-header {
     position: sticky;
     top: 0px;
+    left: 0px;
     display: flex;
     flex-direction: row;
     /* Distribuye los elementos en los extremos */
@@ -1066,17 +1068,28 @@ input:checked+.slider::before {
     overflow-y: auto;
 }
 
+/* Tamaño general del scrollbar */
 .scrolleable::-webkit-scrollbar {
     width: 4px;
+    height: 4px;
+    background: transparent;
 }
 
+/* La barrita que se mueve */
 .scrolleable::-webkit-scrollbar-thumb {
     background: var(--neutral_grey);
     border-radius: 2px;
 }
 
+/* Hover */
+.scrolleable::-webkit-scrollbar-thumb:hover  {
+  background: var(--app_contrast_dark);
+}
+
+/* Fondo del scrollbar */
 .scrolleable::-webkit-scrollbar-track {
-    display: none;
+    background: transparent;
+    margin: calc(var(--minimal-radius) + var(--narrow-margin));
 }
 
 .no-scrolleable {
@@ -1372,6 +1385,10 @@ input:checked+.slider::before {
 
     .profile-pic-container {
         background-color: var(--app_contrast_dark);
+    }
+
+    .scrolleable::-webkit-scrollbar-thumb:hover {
+        background: var(--app_contrast_light);
     }
 
     .darkmode-invert {
