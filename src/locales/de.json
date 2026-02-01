@@ -12,7 +12,7 @@
         "wrong-password-last": "Falsches Passwort. Das ist dein letzter Versuch",
         "locked": "Du hast keine Versuche mehr. Die Anwendung ist vorübergehend gesperrt",
         "notification-btn": "Klicken zum Lesen",
-        "extra-info": "{brand} | {appName} {version} für Windows"
+        "extra-info": "{brand} | {appName} {version} für {platform}"
     },
     "id": {
         "title": "{appName} ID",
@@ -194,7 +194,7 @@
     },
     "about": {
         "title": "Über {appName}",
-        "version": "Version {version} {versionName} für Windows.",
+        "version": "Version {version} {versionName} für {platform}.",
         "description": "{appName} ist ein unabhängiges Softwareprojekt zur sicheren Speicherung von Passwörtern und Notizen.",
         "fun-fact": "Die Andromeda-Galaxie nähert sich uns mit etwa 110 km pro Sekunde. Das bedeutet, dass in 4 bis 5 Milliarden Jahren die Milchstraße und Andromeda kollidieren und zu einer neuen riesigen Galaxie verschmelzen werden, die Astronomen Milkomeda oder Lactomeda nennen.",
         "made-in": "Kodiert in Mexiko.",

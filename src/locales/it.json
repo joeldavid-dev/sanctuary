@@ -12,7 +12,7 @@
         "wrong-password-last": "Password errata. Questo è il tuo ultimo tentativo",
         "locked": "Non hai più tentativi. L'applicazione è temporaneamente bloccata",
         "notification-btn": "Clicca per leggere",
-        "extra-info": "{brand} | {appName} {version} per Windows"
+        "extra-info": "{brand} | {appName} {version} per {platform}"
     },
     "id": {
         "title": "ID {appName}",
@@ -194,7 +194,7 @@
     },
     "about": {
         "title": "Informazioni su {appName}",
-        "version": "Versione {version} {versionName} per Windows.",
+        "version": "Versione {version} {versionName} per {platform}.",
         "description": "{appName} è un progetto software indipendente per archiviare password e note in modo sicuro.",
         "fun-fact": "La galassia di Andromeda si sta avvicinando a noi a circa 110 km al secondo. Ciò significa che tra 4 o 5 miliardi di anni, la Via Lattea e Andromeda si scontreranno e si fonderanno in una nuova galassia gigante, che gli astronomi chiamano Milkomeda o Lattomeda.",
         "made-in": "Codificato in Messico.",

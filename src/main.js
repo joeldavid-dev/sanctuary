@@ -195,8 +195,6 @@ async function loadSettings() {
 };
 
 async function genColors() {
-    // por problemas de compatibilidad de colorThief, solo se ejecuta en windows.
-    if (process.platform !== 'win32') return;
     try {
         const colorStyle = getSetting('colorStyle');
         const wallpaper = getSetting('wallpaper');
@@ -453,6 +451,7 @@ ipcMain.handle('deleteID', async (event, password) => {
             const result = await db.deleteAll();
             if (result.success) {
                 resetSettings();
+                clearLog();
                 writeLog('Usuario eliminado. Reiniciando la aplicacion...');
                 return { success: true, message: mainTranslations['deleteID-success'] };
             } else {
@@ -1128,6 +1127,30 @@ ipcMain.handle('get-log', () => {
     } catch (error) {
         writeLog('Error al leer el archivo de log: ' + error.message);
         return null;
+    }
+});
+
+// Vaciar el archivo de log
+function clearLog() {
+    try {
+        fs.writeFileSync(logPath, '');
+    } catch (error) {
+        writeLog('Error al vaciar el archivo de log: ' + error.message);
+    }
+}
+
+// Obtener plataforma del sistema
+ipcMain.handle('get-platform', () => {
+    const platform = process.platform;
+    switch (platform) {
+        case 'win32':
+            return 'Windows';
+        case 'darwin':
+            return 'MacOS';
+        case 'linux':
+            return 'Linux';
+        default:
+            return 'unknown';
     }
 });
 

@@ -12,7 +12,7 @@
         "wrong-password-last": "Fel lösenord. Detta är ditt sista försök",
         "locked": "Du har inga fler försök kvar. Applikationen är tillfälligt låst",
         "notification-btn": "Klicka för att läsa",
-        "extra-info": "{brand} | {appName} {version} för Windows"
+        "extra-info": "{brand} | {appName} {version} för {platform}"
     },
     "id": {
         "title": "{appName} ID",
@@ -194,7 +194,7 @@
     },
     "about": {
         "title": "Om {appName}",
-        "version": "Version {version} {versionName} för Windows.",
+        "version": "Version {version} {versionName} för {platform}.",
         "description": "{appName} är ett oberoende mjukvaruprojekt för att säkert lagra lösenord och anteckningar.",
         "fun-fact": "Andromedagalaxen närmar sig oss med cirka 110 km per sekund. Det betyder att om 4 till 5 miljarder år kommer Vintergatan och Andromeda att kollidera och smälta samman till en ny jättegalax, som astronomer kallar Milkomeda.",
         "made-in": "Kodad i Mexiko.",

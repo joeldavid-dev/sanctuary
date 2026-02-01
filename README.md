@@ -50,7 +50,7 @@ Desktop application built with ElectronJS to store passwords and notes, secured 
 ```
 
 ## Prerequisites
-Before using this template, make sure you have:
+Before running this project, make sure you have:
 - **Node.js**
 - A code editor (VS Code recommended)
 

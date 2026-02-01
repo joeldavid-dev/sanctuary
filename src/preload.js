@@ -49,4 +49,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
     setCustomWallpaper: () => ipcRenderer.invoke('set-custom-wallpaper'),
     getLicense: () => ipcRenderer.invoke('get-license'),
     getLog: () => ipcRenderer.invoke('get-log'),
+    getPlatform: () => ipcRenderer.invoke('get-platform'),
 });

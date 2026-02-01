@@ -12,7 +12,7 @@
         "wrong-password-last": "パスワードが違います。これが最後の試行です",
         "locked": "試行回数の上限に達しました。アプリは一時的にロックされています",
         "notification-btn": "クリックして読む",
-        "extra-info": "{brand} | Windows版 {appName} {version}"
+        "extra-info": "{brand} | {platform}版 {appName} {version}"
     },
     "id": {
         "title": "{appName} ID",
@@ -194,7 +194,7 @@
     },
     "about": {
         "title": "{appName}について",
-        "version": "Windows版 バージョン {version} {versionName}",
+        "version": "{platform}版 バージョン {version} {versionName}",
         "description": "{appName}は、パスワードやノートを安全に保管するための独立したソフトウェアプロジェクトです。",
         "fun-fact": "豆知識：アンドロメダ銀河は、秒速約110kmで私たちに近づいています。つまり、40億から50億年後には、天の川銀河とアンドロメダ銀河が衝突・合体し、天文学者たちが「ミルコメダ」または「ラクトメダ」と呼ぶ新しい巨大な銀河になると言われています。",
         "made-in": "メキシコでコーディングされました。",

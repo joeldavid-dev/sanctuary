@@ -19,7 +19,7 @@ export function showAboutModal() {
         const modalContent = document.getElementById('modal-content');
 
         // Insertar el esqueleto HTML
-        modalBody.innerHTML = getModalHTML(translations, constants);
+        modalBody.innerHTML = await getModalHTML(translations, constants);
 
         // Elementos HTML insertados en el esqueleto
         const myLinkBtn = document.getElementById('my-link-btn');
@@ -76,7 +76,7 @@ export function showAboutModal() {
     });
 }
 
-function getModalHTML(translations, constants) {
+async function getModalHTML(translations, constants) {
     return `
     <div class="vertical-flex big-spaced normal-padding">
         <div class="vertical-flex centered big-spaced top-bottom-big-margin">
@@ -91,7 +91,7 @@ function getModalHTML(translations, constants) {
         </div>
 
         <div class="vertical-elem-area">
-            <p class="medium-text">${replaceKeysInText(translations['version'], { 'version': constants.about.version, 'versionName': constants.about.versionName })}</p>
+            <p class="medium-text">${replaceKeysInText(translations['version'], { 'version': constants.about.version, 'versionName': constants.about.versionName, 'platform': await window.electronAPI.getPlatform() })}</p>
             <p class="medium-text">${replaceKeysInText(translations['description'], { 'appName': constants.about.appName })}</p>
             <p class="medium-text">${translations['made-in']}</p>
         </div>

@@ -12,7 +12,7 @@
         "wrong-password-last": "Feil passord. Dette er ditt siste forsøk",
         "locked": "Du har ingen flere forsøk igjen. Applikasjonen er midlertidig låst",
         "notification-btn": "Klikk for å lese",
-        "extra-info": "{brand} | {appName} {version} for Windows"
+        "extra-info": "{brand} | {appName} {version} for {platform}"
     },
     "id": {
         "title": "{appName} ID",
@@ -194,7 +194,7 @@
     },
     "about": {
         "title": "Om {appName}",
-        "version": "Versjon {version} {versionName} for Windows.",
+        "version": "Versjon {version} {versionName} for {platform}.",
         "description": "{appName} er et uavhengig programvareprosjekt for sikker lagring av passord og notater.",
         "fun-fact": "Andromedagalaksen nærmer seg oss med ca. 110 km i sekundet. Det betyr at om 4 til 5 milliarder år vil Melkeveien og Andromeda kollidere og smelte sammen til en ny gigantisk galakse, som astronomene kaller Milkomeda.",
         "made-in": "Kodet i Mexico.",

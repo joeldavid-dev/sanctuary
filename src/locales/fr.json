@@ -12,7 +12,7 @@
         "wrong-password-last": "Mot de passe incorrect. C'est ta dernière tentative",
         "locked": "Tu n'as plus de tentatives. L'application est temporairement verrouillée",
         "notification-btn": "Cliquer pour lire",
-        "extra-info": "{brand} | {appName} {version} pour Windows"
+        "extra-info": "{brand} | {appName} {version} pour {platform}"
     },
     "id": {
         "title": "ID {appName}",
@@ -194,7 +194,7 @@
     },
     "about": {
         "title": "À propos de {appName}",
-        "version": "Version {version} {versionName} pour Windows.",
+        "version": "Version {version} {versionName} pour {platform}.",
         "description": "{appName} est un projet logiciel indépendant pour stocker des mots de passe et des notes en toute sécurité.",
         "fun-fact": "La galaxie d'Andromède s'approche de nous à environ 110 km par seconde. Cela signifie que, dans 4 à 5 milliards d'années, la Voie Lactée et Andromède entreront en collision et fusionneront en une nouvelle galaxie géante, que les astronomes appellent Milkomeda ou Lactomeda.",
         "made-in": "Codé au Mexique.",

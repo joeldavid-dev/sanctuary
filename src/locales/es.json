@@ -12,7 +12,7 @@
         "wrong-password-last": "Contraseña incorrecta. Este es tu último intento",
         "locked": "Ya no tienes más intentos. La aplicación está temporalmente bloqueada",
         "notification-btn": "Clic para leer",
-        "extra-info": "{brand} | {appName} {version} para Windows"
+        "extra-info": "{brand} | {appName} {version} para {platform}"
     },
     "id": {
         "title": "{appName} ID",
@@ -194,7 +194,7 @@
     },
     "about": {
         "title": "Acerca de {appName}",
-        "version": "Versión {version} {versionName} para Windows.",
+        "version": "Versión {version} {versionName} para {platform}.",
         "description": "{appName} es un proyecto de software independiente para almacenar contraseñas y notas de forma segura.",
         "fun-fact": "La galaxia Andrómeda se está acercando a nosotros a unos 110 km por segundo. Eso significa que, dentro de 4 a 5 mil millones de años, la Vía Láctea y Andrómeda chocarán y se fusionarán en una nueva galaxia gigante, a la que los astrónomos llaman Milkomeda o Lactómeda.",
         "made-in": "Codificado en México.",

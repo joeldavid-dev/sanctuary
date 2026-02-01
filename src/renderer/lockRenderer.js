@@ -44,7 +44,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     extraInfo.textContent = replaceKeysInText(translations['extra-info'], {
         'brand': constants.about.brand,
         'appName': constants.about.appName,
-        'version': constants.about.version
+        'version': constants.about.version,
+        'platform': await window.electronAPI.getPlatform()
     });
 
     // Obtener el saludo dependiendo de la hora

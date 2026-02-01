@@ -943,6 +943,7 @@ input:checked+.slider::before {
 .wallpaper-icon {
     width: 130px;
     height: 83px;
+    object-fit: cover;
 }
 
 .big-icon {
@@ -1082,8 +1083,8 @@ input:checked+.slider::before {
 }
 
 /* Hover */
-.scrolleable::-webkit-scrollbar-thumb:hover  {
-  background: var(--app_contrast_dark);
+.scrolleable::-webkit-scrollbar-thumb:hover {
+    background: var(--app_contrast_dark);
 }
 
 /* Fondo del scrollbar */

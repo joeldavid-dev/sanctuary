@@ -12,7 +12,7 @@
         "wrong-password-last": "비밀번호가 틀렸습니다. 마지막 시도입니다.",
         "locked": "더 이상 시도할 수 없습니다. 앱이 일시적으로 잠겼습니다.",
         "notification-btn": "클릭해서 읽기",
-        "extra-info": "{brand} | Windows용 {appName} {version}"
+        "extra-info": "{brand} | {platform}용 {appName} {version}"
     },
     "id": {
         "title": "{appName} ID",
@@ -194,7 +194,7 @@
     },
     "about": {
         "title": "정보",
-        "version": "Windows용 버전 {version} {versionName}",
+        "version": "{platform}용 버전 {version} {versionName}",
         "description": "{appName}은 비밀번호와 노트를 안전하게 저장하기 위한 독립 소프트웨어 프로젝트입니다.",
         "fun-fact": "재미있는 사실: 안드로메다 은하는 초속 약 110km의 속도로 우리에게 다가오고 있습니다. 이는 40억에서 50억 년 안에 우리 은하와 안드로메다 은하가 충돌하여 '밀코메다' 또는 '락토메다'라고 불리는 새로운 거대 은하로 합쳐질 것이라는 의미입니다.",
         "made-in": "멕시코에서 코딩됨.",

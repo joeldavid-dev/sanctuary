@@ -12,7 +12,7 @@
         "wrong-password-last": "Väärä salasana. Tämä on viimeinen yrityksesi",
         "locked": "Sinulla ei ole enää yrityksiä. Sovellus on väliaikaisesti lukittu",
         "notification-btn": "Klikkaa lukeaksesi",
-        "extra-info": "{brand} | {appName} {version} Windowsille"
+        "extra-info": "{brand} | {appName} {version} {platform}ille"
     },
     "id": {
         "title": "{appName} ID",
@@ -194,7 +194,7 @@
     },
     "about": {
         "title": "Tietoja {appName}-sovelluksesta",
-        "version": "Versio {version} {versionName} Windowsille.",
+        "version": "Versio {version} {versionName} {platform}ille.",
         "description": "{appName} on itsenäinen ohjelmistoprojekti salasanojen ja muistiinpanojen turvalliseen tallentamiseen.",
         "fun-fact": "Andromedan galaksi lähestyy meitä noin 110 km sekunnissa. Tämä tarkoittaa, että 4–5 miljardin vuoden kuluttua Linnunrata ja Andromeda törmäävät ja sulautuvat uudeksi jättiläisgalaksiksi, jota tähtitieteilijät kutsuvat nimellä Milkomeda.",
         "made-in": "Koodattu Meksikossa.",
