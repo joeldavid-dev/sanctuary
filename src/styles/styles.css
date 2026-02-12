@@ -81,8 +81,8 @@ body::-webkit-scrollbar {
     --app_contrast_dark: rgb(55, 55, 55);
 
     /* Tiempos de animación */
-    --fast-animation: 0.1s;
-    --normal-animation: 0.2s;
+    --fast-animation: 0.2s;
+    --normal-animation: 0.3s;
 
     /* Colores de las tarjetas */
     --color1: rgb(30, 35, 40);
@@ -131,6 +131,11 @@ body::-webkit-scrollbar {
     -webkit-app-region: no-drag;
 }
 
+::selection {
+    background: var(--app_contrast_dark);
+    color: var(--app_light);
+}
+
 /* Estilos generales para la aplicación web en modo claro */
 body {
     font-family: Nunito, sans-serif;
@@ -168,11 +173,6 @@ h2 {
 
 h3 {
     font-size: 14px;
-}
-
-p {
-    /* permite cortar palabras largas */
-    word-wrap: break-word;
 }
 
 .expresive-text {
@@ -222,6 +222,25 @@ p {
     cursor: text;
 }
 
+.no-wrapped-text {
+    /* Evita que el texto se divida en varias líneas */
+    white-space: nowrap;
+}
+
+/* Oculta el texto desbordado */
+.overflow-hidden {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* Permite que el texto se ajuste al contenedor */
+.wrapped-text {
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+/* Preserva los saltos de línea y espacios en blanco */
 pre,
 .preserve {
     white-space: pre-wrap;
@@ -440,6 +459,11 @@ pre,
     width: min-content;
 }
 
+.max-content {
+    height: max-content;
+    width: max-content;
+}
+
 .settings-width {
     /* Permite que el elemento ocupe el 70% del espacio disponible */
     width: 70dvw;
@@ -516,48 +540,85 @@ pre,
     object-fit: cover;
 }
 
-.main-element-body {
-    font-family: jetBrains_mono;
-    display: flex;
-    flex-direction: column;
-    max-width: 50vw;
-    min-width: 150px;
+.main-element-btn {
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: var(--minimal-margin);
+    width: 30px;
+    height: 30px;
     border-radius: 30px;
-    color: white;
-    padding: 40px 15px 15px 15px;
-    gap: var(--normal-margin);
-    justify-content: space-between;
-    /* permite cortar palabras largas */
-    word-wrap: break-word;
-    transition: box-shadow var(--normal-animation) ease;
+    cursor: pointer;
+    transition: var(--normal-animation);
 }
 
-.main-element-body input {
+.main-element-btn:hover {
+    background-color: rgb(255, 255, 255);
+    transition-duration: 0s;
+}
+
+.main-element-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.main-element-static-icon {
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: var(--minimal-margin);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 30px;
+
+}
+
+/* Caracteristicas que comparten todos los elementos principales */
+.main-element {
+    display: flex;
+    font-family: jetBrains_mono;
+}
+
+.main-element input {
     /*Oculta el radio button original */
     display: none;
 }
 
-/* Clase que agregaremos a la tarjeta seleccionada */
+.card-body {
+    flex-direction: column;
+    height: min-content;
+    max-width: 250px;
+    min-width: 150px;
+    border-radius: var(--ultra-radius);
+    color: white;
+    padding: 40px var(--normal-margin) var(--normal-margin) var(--normal-margin);
+    gap: var(--normal-margin);
+    transition: box-shadow var(--fast-animation) ease;
+}
+
+.note-body {
+    flex-direction: column;
+    height: min-content;
+    max-width: 600px;
+    min-width: 120px;
+    border-radius: var(--normal-radius);
+    color: white;
+    padding: var(--big-margin) var(--normal-margin) var(--normal-margin) var(--normal-margin);
+    gap: var(--normal-margin);
+    transition: box-shadow var(--fast-animation) ease;
+}
+
+.note-preview {
+    height: min-content;
+    min-width: 120px;
+    border-radius: var(--normal-radius);
+    color: white;
+    padding: var(--normal-margin);
+}
+
+/* Clase que agregaremos al elemento seleccionado */
 .selected-element {
     border: solid 2px;
     border-color: white;
     box-shadow: 0px 0px 50px 0px var(--element-color, #000000);
-}
-
-/* Vista previa de notas */
-.element-preview {
-    font-family: jetBrains_mono;
-    display: flex;
-    flex-direction: column;
-    max-width: 50vw;
-    min-width: 150px;
-    border-radius: 30px;
-    color: white;
-    padding: 40px 15px 15px 15px;
-    gap: var(--normal-margin);
-    justify-content: space-between;
-    /* permite cortar palabras largas */
-    word-wrap: break-word;
 }
 
 .element-textarea {
@@ -580,14 +641,16 @@ pre,
 .action-btn:hover {
     color: var(--app_light);
     background-color: var(--app_contrast_dark);
-}
-
-.action-btn:hover img {
-    filter: invert(1);
+    transition-duration: 0s;
 }
 
 .action-btn img {
     transition: filter var(--normal-animation) ease;
+}
+
+.action-btn:hover img {
+    filter: invert(1);
+    transition-duration: 0s;
 }
 
 .action-btn:disabled {
@@ -608,6 +671,7 @@ pre,
 .action-btn-warning:hover {
     color: var(--warning_red);
     background-color: white;
+    transition-duration: 0s;
 }
 
 /* Botón de opciones. No tiene borde, se vuelve sólido al pasar el mouse encima. */
@@ -625,10 +689,12 @@ pre,
 .option-btn:hover {
     background-color: var(--app_contrast_dark);
     color: var(--app_light);
+    transition-duration: 0s;
 }
 
 .option-btn:hover img {
     filter: invert(1);
+    transition-duration: 0s;
 }
 
 .option-btn2 {
@@ -641,6 +707,7 @@ pre,
 
 .option-btn2:hover {
     border: dashed 1px var(--app_contrast_dark);
+    transition-duration: 0s;
 }
 
 .option-radio {
@@ -690,7 +757,7 @@ pre,
     height: min-content;
     width: min-content;
     cursor: pointer;
-    border: solid 1px transparent;
+    border: solid 2px transparent;
     transition: var(--normal-animation);
 }
 
@@ -700,7 +767,7 @@ pre,
 }
 
 .option-radio2:has(input:checked) {
-    border-color: var(--neutral_grey);
+    border-color: var(--app_dark_transparent);
 }
 
 .option-btn-warning {
@@ -785,6 +852,7 @@ No tiene borde, al pasar el mouse por encima solo aparece el borde. */
 
 .transparent-btn:hover {
     background-color: var(--light_gray);
+    transition-duration: 0s;
 }
 
 /* Botón transparente para elementos que están sobre un fondo colorido.
@@ -803,6 +871,7 @@ Siempre es blanco para mejorar la visibilidad. */
 
 .transparent-btn-white:hover {
     background-color: var(--dark_gray_hover);
+    transition-duration: 0s;
 }
 
 .transparent-radio {
@@ -831,10 +900,12 @@ Siempre es blanco para mejorar la visibilidad. */
 
 .transparent-radio input[type="radio"]:checked+.normal-icon {
     filter: invert(1);
+    transition-duration: 0s;
 }
 
 .transparent-radio:hover {
     background-color: var(--light_gray);
+    transition-duration: 0s;
 }
 
 .switch {
@@ -978,36 +1049,6 @@ input:checked+.slider::before {
     filter: invert(1);
 }
 
-.main-element-btn {
-    background-color: rgba(255, 255, 255, 0.7);
-    padding: var(--minimal-margin);
-    width: 30px;
-    height: 30px;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: var(--normal-animation);
-}
-
-.main-element-btn:hover {
-    background-color: rgb(255, 255, 255);
-}
-
-.main-element-icon {
-    width: 20px;
-    height: 20px;
-}
-
-.main-element-static-icon {
-    background-color: rgba(255, 255, 255, 0.7);
-    padding: var(--minimal-margin);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    border-radius: 30px;
-
-}
-
 /* Estilos para el modal */
 .modal {
     display: none;
@@ -1055,6 +1096,19 @@ input:checked+.slider::before {
     /* Alinea verticalmente */
     align-items: center;
     -webkit-app-region: drag;
+}
+
+.modal-bottom {
+    position: sticky;
+    bottom: 0px;
+    left: 0px;
+    display: flex;
+    /* Alinea verticalmente */
+    align-items: center;
+}
+
+.modal-margin {
+    margin: 0px var(--normal-margin);
 }
 
 .placeholder-content {
@@ -1226,6 +1280,11 @@ input:checked+.slider::before {
 
 /* Estilos específicos para modo oscuro */
 @media (prefers-color-scheme: dark) {
+    ::selection {
+        background: var(--app_contrast_light);
+        color: var(--app_dark);
+    }
+
     body {
         background-color: var(--app_dark);
         color: var(--app_light);
@@ -1323,6 +1382,10 @@ input:checked+.slider::before {
 
     .option-radio input:checked+.radio-ico {
         filter: invert(0);
+    }
+
+    .option-radio2:has(input:checked) {
+        border-color: var(--app_light_transparent);
     }
 
     .option-input {

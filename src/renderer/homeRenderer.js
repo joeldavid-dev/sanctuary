@@ -99,11 +99,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (mode === 'keys') {
                 content.forEach((element, index) => {
                     mainContent.appendChild(createCardElement(element, index, cardTranslations));
+                    // Agregar el nombre después de crear el elemento para evitar inyección de código malicioso
+                    document.getElementById(`card-name-${element.id}`).textContent = element.name;
+                    // Agregar la ruta web después de crear el elemento para evitar inyección de código malicioso
+                    document.getElementById(`card-web-${element.id}`).textContent = element.web;
                 });
             }
             else if (mode === 'notes') {
                 content.forEach((element, index) => {
                     mainContent.appendChild(createNoteElement(element, index, translations));
+                    // Agregar el nombre después de crear el elemento para evitar inyección de código malicioso
+                    document.getElementById(`note-name-${element.id}`).textContent = element.name;
                 });
             }
         } else {
@@ -144,7 +150,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Funcion para deseleccionar todos los elementos
     function deselectAllElements() {
         /// Quitar la clase 'selected-element' de todas los elementos
-        document.querySelectorAll('.main-element-body').forEach((element) => {
+        document.querySelectorAll('.main-element').forEach((element) => {
             element.classList.remove('selected-element');
         });
         editElementBody.classList.add('invisible'); // Ocultar el contenedor de edición

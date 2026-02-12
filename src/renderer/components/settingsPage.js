@@ -25,10 +25,16 @@ export async function createSettingsPage(superuser) {
     settingsArea.innerHTML = getSettingsHTML(translations, constants, superuser);
 
     // Elementos insertados
+    const profileInitial = document.getElementById('profile-initial');
+    const profileName = document.getElementById('profile-name');
     const chooseLanguageBtn = document.getElementById('choose-language');
     const wallpaperOptionsArea = document.getElementById('wallpaper-options-area');
     const motionSwitch = document.getElementById('motion-toggle-input');
     const motionSwitchArea = document.getElementById('motion-switch-area');
+
+    // Llenar los datos del perfil
+    profileInitial.textContent = superuser.name.charAt(0).toUpperCase();
+    profileName.textContent = superuser.name;
 
     // Llenar el botón de selección de idioma
     if (await window.electronAPI.getSetting('language') === 'system') {
@@ -68,14 +74,14 @@ export async function createSettingsPage(superuser) {
     }
 };
 
-function getSettingsHTML(translations, constants, superuser) {
+function getSettingsHTML(translations, constants) {
     return `
         <div class="vertical-flex big-spaced settings-width">
             <div class="vertical-elem-area centered">
                 <div class="profile-pic-container">
-                    <p>${superuser.name.charAt(0).toUpperCase()}</p>
+                    <p id="profile-initial"></p>
                 </div>
-                <p class="expresive-text">${superuser.name}</p>
+                <p id="profile-name" class="expresive-text"></p>
             </div>
 
             <div class="div-options vertical-elem-area narrow-padding external-radius-2">

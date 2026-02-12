@@ -5,7 +5,7 @@
 
 export function createCardElement(card, index, translations) {
     const cardBody = document.createElement('label');
-    cardBody.classList.add('main-element-body'); // clase para estilos
+    cardBody.classList.add('main-element', 'card-body'); // clase para estilos
     cardBody.setAttribute('id', card.id); // id para el elemento
     cardBody.setAttribute('data-name', card.name);
     cardBody.style.backgroundColor = card.color; // Cambia el color de fondo de la tarjeta
@@ -22,7 +22,7 @@ export function createCardElement(card, index, translations) {
     const cardHTML = `
             <input type="radio" name="mainElement" value="${card.id}">
             <div class="horizontal-elem-area spaced centered">
-                <p class="bold">${card.name}</p>
+                <p id="card-name-${card.id}" class="bold wrapped-text"></p>
                 <div class="${heartVisible}">
                     <div class="main-element-static-icon">
                         <img src="../assets/ico/feather/heart.svg" class="main-element-icon">
@@ -42,13 +42,13 @@ export function createCardElement(card, index, translations) {
 
             <div class="${urlVisible}">
                 <strong class="minimum-text">${translations['url']}</strong>
-                <p class="small-text">${card.web}</p>
+                <p id="card-web-${card.id}" class="small-text overflow-hidden"></p>
             </div>
 
-            <div class="horizontal-flex spaced centered">
+            <div class="horizontal-elem-area spaced centered">
                 <button class="external-link-btn main-element-btn ${urlVisible}" data-url="${card.web}"">
                     <img src="../assets/ico/feather/external-link.svg" class="main-element-icon">
-                    </button>
+                </button>
 
                 <strong class="minimum-text">${index + 1}</strong>
 

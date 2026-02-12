@@ -13,6 +13,7 @@ export function showNewEditCardModal(mode, card) {
         const warningTranslations = await window.electronAPI.getTranslations('warning');
         // Elementos HTML ya existentes que se usarán
         const modal = document.getElementById('modal');
+        const modalContent = document.getElementById('modal-content');
         const modalBody = document.getElementById('modal-body');
         const closeModal = document.getElementById('close-modal');
         const modalTitle = document.getElementById('modal-title');
@@ -40,6 +41,7 @@ export function showNewEditCardModal(mode, card) {
         const icoLove = document.getElementById('ico-love');
 
         // Establecer valores dependiendo del modo
+        modalContent.style.width = 'max-content'; // Ajustar el ancho del modal
         if (mode === 'create') {
             modalTitle.textContent = translations['title-new-card'];
             colorSelected = 'var(--color1)';
@@ -214,15 +216,17 @@ export function showNewEditCardModal(mode, card) {
             newEditDone.removeEventListener('click', doneAction);
 
             modal.style.display = 'none';
+            // Reiniciar tamaño del modal
+            modalContent.style.width = 'auto';
         }
     });
 }
 
 function getModalHTML(translations, cardTranslations) {
     return `
-    <div class="vertical-elem-area normal-padding">
-        <div class="horizontal-elem-area">
-            <div class="vertical-elem-area normal-padding normal-rounded div-options">
+    <div class="vertical-flex">
+        <div class="horizontal-elem-area centered modal-margin">
+            <div class="vertical-elem-area normal-padding normal-rounded div-options min-content">
                 <label>${translations['name']}</label>
                 <input type="text" id="name-input" class="option-input minimal-rounded" placeholder=${translations["name-placeholder"]}>
                 <label>${translations['user']}</label>
@@ -244,12 +248,12 @@ function getModalHTML(translations, cardTranslations) {
                 </div>
             </div>
 
-            <div class="vertical-flex centered distributed expanded">
+            <div class="vertical-elem-area centered distributed expanded">
                 <label for="preview-card">${translations['preview']}</label>
 
-                <div id="preview-card" class="main-element-body color1 contracted">
+                <div id="preview-card" class="main-element card-body color1">
                     <div class="horizontal-elem-area spaced centered">
-                        <p id="name-preview" class="bold">${cardTranslations['new-card']}</p>
+                        <p id="name-preview" class="bold wrapped-text">${cardTranslations['new-card']}</p>
                         <div id="ico-love">
                             <div class="main-element-static-icon">
                                 <img src="../assets/ico/feather/heart.svg" class="main-element-icon">
@@ -257,27 +261,27 @@ function getModalHTML(translations, cardTranslations) {
                         </div>
                     </div>
 
-                    <label id="user-preview-section" class="minimum-text vertical-flex">
-                        ${cardTranslations['user']}
-                        <p id="user-preview" class="small-text"></p>
-                    </label>
+                    <div id="user-preview-section">
+                        <strong class="minimum-text">${cardTranslations['user']}</strong>
+                        <p id="user-preview" class="small-text wrapped-text"></p>
+                    </div>
 
-                    <label class="minimum-text vertical-elem-area">
-                        ${cardTranslations['password']}
-                        <p id="pass-preview" class="small-text"></p>
-                    </label>
+                    <div>
+                        <strong class="minimum-text">${cardTranslations['password']}</strong>
+                        <p id="pass-preview" class="small-text wrapped-text"></p>
+                    </div>
 
-                    <label id="url-preview-section" class="minimum-text vertical-elem-area">
-                        ${cardTranslations['url']}
-                        <p id="url-preview" class="small-text"></p>
-                    </label>
+                    <div id="url-preview-section">
+                        <strong class="minimum-text">${cardTranslations['url']}</strong>
+                        <p id="url-preview" class="small-text overflow-hidden"></p>
+                    </div>
 
-                    <div class="horizontal-flex spaced centered">
+                    <div class="horizontal-elem-area spaced centered">
                         <button id="open-link-preview" class="main-element-btn">
                             <img id="ico-link" src="../assets/ico/feather/external-link.svg" class="main-element-icon">
                         </button>
 
-                        <p class="minimum-text">#</p>
+                        <strong class="minimum-text">#</strong>
 
                         <button id="view-preview" class="main-element-btn">
                             <img id="ico-eye" src="../assets/ico/feather/eye.svg" class="main-element-icon">
@@ -287,7 +291,7 @@ function getModalHTML(translations, cardTranslations) {
             </div>
         </div>
 
-        <div class="horizontal-elem-area centered spaced">
+        <div class="modal-bottom normal-padding colored-blur normal-spaced elements-container">
             <div id="colors-section" class="horizontal-elem-area centered minimal-padding ultra-rounded div-options">
                 <label class="option-radio2 circular nano-padding">
                     <input id="color1" type="radio" name="color" value="var(--color1)">
@@ -340,7 +344,7 @@ function getModalHTML(translations, cardTranslations) {
                 </label>
             </div>
 
-            <button id="new-edit-done" class="action-btn big-btn-padding normal-rounded">${translations['done']}</button>
+            <button id="new-edit-done" class="action-btn big-btn-padding normal-rounded no-wrapped-text">${translations['done']}</button>
         </div>
     </div>`;
 }

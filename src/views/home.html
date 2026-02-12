@@ -9,6 +9,9 @@
     script-src 'self';
     style-src 'self';
     font-src 'self';
+    img-src 'self' data:;
+    object-src 'none';
+    base-uri 'none';
     ">
     <link rel="stylesheet" href="../styles/styles.css">
     <link rel="stylesheet" href="../styles/home.css">
@@ -17,7 +20,7 @@
 </head>
 
 <body>
-    <div class="layout">
+    <div class="layout horizontal-flex">
         <!-- Sidebar -->
         <section id="sidebar" class="sidebar normal-padding vertical-flex centered spaced">
             <div class="vertical-flex big-spaced">
@@ -98,7 +101,7 @@
                 class="command-options-bar popup-list vertical-elem-area colored-blur scrolleable">
             </div>
 
-            <div id="main-content" class="elements-container normal-padding normal-spaced">
+            <div id="main-content" class="elements-container normal-padding normal-spaced centered reverse">
                 <!-- Aquí se insertan los elementos creados -->
             </div>
 
@@ -109,14 +112,14 @@
                     <button id="edit-element" class="transparent-btn transparent-btn-padding minimal-rounded invisible">
                         <img src="../assets/ico/feather/edit.svg" class="normal-icon darkmode-invert">
                     </button>
-                    <label class="small-text" data-i18n="edit"></label>
+                    <label class="small-text no-wrapped-text" data-i18n="edit"></label>
                 </div>
 
                 <div class="vertical-flex centered">
                     <button id="new-element" class="transparent-btn transparent-btn-padding minimal-rounded">
                         <img src="../assets/ico/feather/plus-circle.svg" class="normal-icon darkmode-invert">
                     </button>
-                    <label class="small-text" data-i18n="new"></label>
+                    <label class="small-text no-wrapped-text" data-i18n="new"></label>
                 </div>
 
                 <div id="delete-element-body" class="vertical-flex centered">
@@ -124,50 +127,49 @@
                         class="transparent-btn transparent-btn-padding minimal-rounded invisible">
                         <img src="../assets/ico/feather/trash.svg" class="normal-icon darkmode-invert">
                     </button>
-                    <label class="small-text" data-i18n="delete"></label>
+                    <label class="small-text no-wrapped-text" data-i18n="delete"></label>
                 </div>
 
             </div>
             <!-- Área de configuraciones -->
             <div id="settings-area" class="elements-container normal-padding"></div>
         </section>
+    </div>
 
-        <!-- Place holder -->
-        <div id="placeholder" class="modal blur draggable">
-            <div class="placeholder-content">
-                <div class="spinner"></div>
-                <p id="placeholder-loading" data-i18n="placeholder-loading"></p>
-            </div>
+    <!-- Place holder -->
+    <div id="placeholder" class="modal blur draggable">
+        <div class="placeholder-content">
+            <div class="spinner"></div>
+            <p id="placeholder-loading" data-i18n="placeholder-loading"></p>
         </div>
+    </div>
 
-        <!-- Modal -->
-        <div id="modal" class="modal blur">
-            <div id="modal-content" class="modal-content scrolleable">
-                <div class="modal-header normal-padding colored-blur">
-                    <h2 id="modal-title"></h2>
-                    <button id="close-modal" class="transparent-btn transparent-btn-padding minimal-rounded">
-                        <img src="../assets/ico/feather/x-circle.svg" class="normal-icon darkmode-invert">
-                    </button>
-                </div>
-                <!-- Contenido del modal -->
-                <div id="modal-body"></div>
+    <!-- Modal -->
+    <div id="modal" class="modal blur">
+        <div id="modal-content" class="modal-content scrolleable">
+            <div class="modal-header normal-padding colored-blur">
+                <h2 id="modal-title"></h2>
+                <button id="close-modal" class="transparent-btn transparent-btn-padding minimal-rounded">
+                    <img src="../assets/ico/feather/x-circle.svg" class="normal-icon darkmode-invert">
+                </button>
             </div>
+            <!-- Contenido del modal -->
+            <div id="modal-body"></div>
         </div>
+    </div>
 
-        <!-- Modal de advertencia -->
-        <div id="modal-warning" class="modal blur no-draggable">
-            <div class="modal-content-warning scrolleable">
-                <div class="modal-header normal-padding">
-                    <img src="../assets/ico/feather/alert-triangle.svg" class="normal-icon-white">
-                    <h2 id="modal-warning-title"></h2>
-                    <button id="close-modal-warning"
-                        class="transparent-btn-white transparent-btn-padding minimal-rounded">
-                        <img src="../assets/ico/feather/x-circle.svg" class="normal-icon-white">
-                    </button>
-                </div>
-                <!-- Contenido del modal warning -->
-                <div id="modal-warning-body"></div>
+    <!-- Modal de advertencia -->
+    <div id="modal-warning" class="modal blur no-draggable">
+        <div class="modal-content-warning scrolleable">
+            <div class="modal-header normal-padding">
+                <img src="../assets/ico/feather/alert-triangle.svg" class="normal-icon-white">
+                <h2 id="modal-warning-title"></h2>
+                <button id="close-modal-warning" class="transparent-btn-white transparent-btn-padding minimal-rounded">
+                    <img src="../assets/ico/feather/x-circle.svg" class="normal-icon-white">
+                </button>
             </div>
+            <!-- Contenido del modal warning -->
+            <div id="modal-warning-body"></div>
         </div>
     </div>
 

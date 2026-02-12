@@ -43,6 +43,8 @@ export function showTextModal(mode) {
 
         // Mostrar el modal
         modal.style.display = 'block';
+        // Ir al inicio del modal
+        modalContent.scrollTo({ top: 0, behavior: 'smooth' });
 
         // Limpiar Listeners y ocultar
         function cleanup() {

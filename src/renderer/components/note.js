@@ -5,7 +5,7 @@
 
 export function createNoteElement(note, index, translations) {
     const noteBody = document.createElement('label');
-    noteBody.classList.add('main-element-body'); // clase para estilos
+    noteBody.classList.add('main-element', 'note-body'); // clase para estilos
     noteBody.setAttribute('id', note.id); // id para el elemento
     noteBody.setAttribute('data-name', note.name);
     noteBody.style.backgroundColor = note.color; // Cambia el color de fondo de la nota
@@ -15,12 +15,13 @@ export function createNoteElement(note, index, translations) {
     }
 
     const heartVisible = (note.favorite == 1) ? 'visible' : 'invisible'; // Cambia la visibilidad del icono de favorito
+    const contentVisible = (note.content == null || note.content == '') ? 'invisible' : 'visible'; // Cambia la visibilidad del contenido
 
     // Crea el contenido de la nota
     const noteHTML = `
             <input type="radio" name="mainElement" value="${note.id}">
             <div class="horizontal-elem-area spaced centered">
-                <p class="bold">${note.name}</p>
+                <p id="note-name-${note.id}" class="bold"></p>
                 <div class="${heartVisible}">
                     <div class="main-element-static-icon">
                         <img src="../assets/ico/feather/heart.svg" class="main-element-icon">
@@ -28,12 +29,11 @@ export function createNoteElement(note, index, translations) {
                 </div>
             </div>
 
-            <p id="content-${note.id}" class="small-text selectable-text preserve">••••••••</p>            
+            <p id="content-${note.id}" class="small-text selectable-text preserve ${contentVisible}">••••••••</p>            
 
             <div class="horizontal-flex spaced centered">
                 <strong class="minimum-text">${index + 1}</strong>
-
-                <button class="eye-btn main-element-btn" data-noteID="${note.id}" data-contentID="content-${note.id}">
+                <button class="eye-btn main-element-btn ${contentVisible}" data-noteID="${note.id}" data-contentID="content-${note.id}">
                     <img src="../assets/ico/feather/eye.svg" class="main-element-icon">
                 </button>
             </div>

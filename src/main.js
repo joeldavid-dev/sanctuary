@@ -10,6 +10,10 @@ const st = require('./utils/settings.js');
 const cg = require('./utils/colorGenerator.js');
 const fs = require('fs');
 
+// 🔐 Seguridad / comportamiento global
+const isDev = !app.isPackaged;
+app.commandLine.appendSwitch('disable-http-cache')
+
 // Configuraciones globales
 const globalConfigPath = path.join(__dirname, 'config', 'globalConfig.json');
 const globalConfig = JSON.parse(fs.readFileSync(globalConfigPath, 'utf8'));
@@ -17,7 +21,6 @@ const globalConfig = JSON.parse(fs.readFileSync(globalConfigPath, 'utf8'));
 // Constantes
 const constantsPath = path.join(__dirname, 'config', 'constants.json');
 const constants = JSON.parse(fs.readFileSync(constantsPath, 'utf-8'));
-const showDevTools = (app.isPackaged) ? false : true;
 
 // Carpetas
 const imageCachePath = path.join(app.getPath('userData'), 'Image Cache');
@@ -35,7 +38,7 @@ let logPath = null;
 let preparedElements = null;
 
 // Determinar la ruta del archivo de log
-if (showDevTools) {
+if (isDev) {
     logPath = path.join(__dirname, globalConfig.logPath);
 } else {
     logPath = path.join(app.getPath('userData'), globalConfig.logPath);
@@ -47,7 +50,7 @@ const createMainWindow = () => {
     mainWindow = new BrowserWindow({
         width: 900,
         height: 600,
-        minWidth: 580,
+        minWidth: 620,
         minHeight: 360,
         autoHideMenuBar: true, // Oculta el menú de opciones de electrón
         //frame: false,
@@ -61,6 +64,8 @@ const createMainWindow = () => {
             contextIsolation: true, // Necesario para usar preload. Aísla el contexto de ejecución
             sandbox: true, // Asegura la ejecución en un entorno aislado
             experimentalFeatures: false, // Desactiva funciones experimentales
+            webSecurity: true,
+            allowRunningInsecureContent: false,
 
             // La cadena __dirname apunta a la ruta del script
             // actualmente en ejecución
@@ -69,6 +74,9 @@ const createMainWindow = () => {
             // creando una cadena de ruta combinada
         }
     });
+    if (!isDev) {
+        mainWindow.removeMenu();
+    }
 }
 
 app.whenReady().then(async () => {
@@ -1169,5 +1177,5 @@ function writeLog(info) {
     const logMessage = `[${timeStamp}] ${info}\n`;
     fs.appendFileSync(logPath, logMessage);
 
-    if (showDevTools) console.log(`(log) >> ${info}`);
+    if (isDev) console.log(`(log) >> ${info}`);
 }

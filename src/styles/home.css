@@ -1,18 +1,15 @@
 .layout {
-    display: flex;
     height: 100vh;
 }
 
 .sidebar {
-    position: sticky;
-    left: 0px;
-    top: 0px;
     border-right: 1px solid var(--light_gray);
 }
 
 .main-section {
-    position: flex;
+    /* Ocupa todo el espacio disponible */
     flex: 1;
+    /* Permite el desplazamiento vertical */
     overflow-y: auto;
 }
 

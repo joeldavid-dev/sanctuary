@@ -13,6 +13,7 @@ export function showNewEditNoteModal(mode, note) {
         const warningTranslations = await window.electronAPI.getTranslations('warning');
         // Elementos HTML ya existentes que se usarán
         const modal = document.getElementById('modal');
+        const modalContent = document.getElementById('modal-content');
         const modalBody = document.getElementById('modal-body');
         const closeModal = document.getElementById('close-modal');
         const modalTitle = document.getElementById('modal-title');
@@ -20,29 +21,25 @@ export function showNewEditNoteModal(mode, note) {
         modalBody.innerHTML = getModalHTML(translations, noteTranslations);
 
         // Elementos HTML insertados en el esqueleto
-        // Inputs
-        const nameInput = document.getElementById('name-input');
+        // Inputs y botones
+        const notePreview = document.getElementById('note-preview');
         const contentTextarea = document.getElementById('content-textarea');
         const favoriteSwitch = document.getElementById('favorite-switch');
         const colorsSection = document.getElementById('colors-section');
         const newEditDone = document.getElementById('new-edit-done');
-        // Vista previa
-        const previewNote = document.getElementById('preview-note');
-        const icoLove = document.getElementById('ico-love');
 
-        // Establecer valores dependiendo del modo
+        // Establecer valores
+        modalContent.style.width = 'max-content'; // Ajustar el ancho del modal
+        //contentTextarea.style.height = '60dvh'; // Aumenta el tamaño inicial del textarea
         if (mode === 'create') {
             modalTitle.textContent = translations['title-new-note'];
             favoriteValue = false;
-            icoLove.style.display = 'none';
         }
         else if (mode === 'edit') {
             modalTitle.textContent = translations['title-edit-note'];
             // Actualizar los campos del formulario
-            nameInput.value = note.name;
-            contentTextarea.value = note.content || '';
-            contentTextarea.style.height = '30vh'; // Aumenta el tamaño inicial del textarea
-            console.log(contentTextarea.scrollHeight);
+            const totalContent = note.name + '\n\n' + (note.content || '');
+            contentTextarea.value = totalContent;
             // Actualizar las variables de valores
             favoriteValue = note.favorite;
             colorSelected = note.color;
@@ -50,18 +47,15 @@ export function showNewEditNoteModal(mode, note) {
             document.querySelector(`input[name="color"][value="${colorSelected}"]`).checked = true;
             // Marcar el switch de favorito si es necesario
             favoriteSwitch.querySelector('input').checked = note.favorite || false;
-            icoLove.style.display = favoriteSwitch.querySelector('input').checked ? 'block' : 'none';
             // Cambiar el color de la nota en la vista previa
-            previewNote.style.backgroundColor = note.color;
+            notePreview.style.backgroundColor = note.color;
         }
         // Cambiar el color del texto dependiendo del color de la nota para mantener la legibilidad
         if (colorSelected === 'var(--color4)' || colorSelected === 'var(--color6)') {
-            previewNote.style.color = 'black'; // Cambiar el color del texto a negro
-            nameInput.style.color = 'black'; // Cambiar el color del texto del input
+            notePreview.style.color = 'black'; // Cambiar el color del texto a negro
             contentTextarea.style.color = 'black'; // Cambiar el color del texto del textarea
         } else {
-            previewNote.style.color = 'white'; // Cambiar el color del texto a blanco
-            nameInput.style.color = 'white'; // Cambiar el color del texto del input
+            notePreview.style.color = 'white'; // Cambiar el color del texto a blanco
             contentTextarea.style.color = 'white'; // Cambiar el color del texto del textarea
         }
 
@@ -70,39 +64,32 @@ export function showNewEditNoteModal(mode, note) {
             cleanup();
             resolve({ success: false, })
         }
-
         const contentAction = () => {
             contentTextarea.style.height = 'auto'; // reset para que calcule bien
             contentTextarea.style.height = contentTextarea.scrollHeight + 'px';
         }
-
         const favoriteAction = (event) => {
-            if (event.target.checked) {
-                icoLove.style.display = 'block';
-                favoriteValue = true;
-            } else {
-                icoLove.style.display = 'none';
-                favoriteValue = false;
-            }
+            favoriteValue = event.target.checked;
         }
         const colorsAction = (event) => {
             colorSelected = event.target.value;
             // Cambiar color de la vista previa
-            previewNote.style.backgroundColor = colorSelected;
+            notePreview.style.backgroundColor = colorSelected;
             if (colorSelected === 'var(--color4)' || colorSelected === 'var(--color6)') {
-                previewNote.style.color = 'black'; // Cambiar el color del texto
-                nameInput.style.color = 'black'; // Cambiar el color del texto del input
+                notePreview.style.color = 'black'; // Cambiar el color del texto
                 contentTextarea.style.color = 'black'; // Cambiar el color del texto del textarea
             } else {
-                previewNote.style.color = 'white'; // Cambiar el color del texto
-                nameInput.style.color = 'white'; // Cambiar el color del texto del input
+                notePreview.style.color = 'white'; // Cambiar el color del texto
                 contentTextarea.style.color = 'white'; // Cambiar el color del texto del textarea
             }
         }
         const doneAction = async () => {
             // Obtener datos
-            const name = nameInput.value.trim();
-            const content = contentTextarea.value.trim();
+            const totalContent = contentTextarea.value.trim();
+            // Obtener la primer línea del contenido como nombre de la nota
+            const name = totalContent.split('\n')[0].trim();
+            // Quitar la primer línea del contenido para usar el resto como contenido
+            const content = totalContent.split('\n').slice(1).join('\n').trim();
 
             const newEditnote = {
                 name: name,
@@ -165,6 +152,8 @@ export function showNewEditNoteModal(mode, note) {
 
         // Mostrar el modal
         modal.style.display = 'block';
+        contentTextarea.style.height = 'auto'; // reset para que calcule bien
+        contentTextarea.style.height = contentTextarea.scrollHeight + 'px';
 
         // Limpiar Listeners y ocultar
         function cleanup() {
@@ -175,38 +164,21 @@ export function showNewEditNoteModal(mode, note) {
             newEditDone.removeEventListener('click', doneAction);
 
             modal.style.display = 'none';
+            // Reiniciar tamaño del modal
+            modalContent.style.width = 'auto';
         }
     });
 }
 
 function getModalHTML(translations, noteTranslations) {
     return `
-    <div class="vertical-elem-area normal-padding">
-        <div class="vertical-flex">
-            <div id="preview-note" class="element-preview color1">
-                <div class="horizontal-elem-area spaced centered">
-                    <input type="text" id="name-input" class="bold expanded transparent-input" placeholder=${noteTranslations["name"]}>
-                    <div id="ico-love">
-                        <div class="main-element-static-icon">
-                            <img src="../assets/ico/feather/heart.svg" class="main-element-icon">
-                        </div>
-                    </div>
-                </div>
-
-                <textarea id="content-textarea" class="element-textarea transparent-input small-text" rows="1" placeholder=${noteTranslations["content"]}></textarea>
-
-                <div class="horizontal-flex spaced centered">
-                    <p class="minimum-text">#</p>
-
-                    <button id="view-preview" class="main-element-btn">
-                        <img id="ico-eye" src="../assets/ico/feather/eye.svg" class="main-element-icon">
-                    </button>
-                </div>
-            </div>
+    <div class="vertical-flex">
+        <div id="note-preview" class="note-preview color1 modal-margin">
+            <textarea id="content-textarea" class="element-textarea transparent-input small-text" rows="1" placeholder="${noteTranslations["name"]}\n\n${noteTranslations["content"]}"></textarea>
         </div>
-
-        <div id="colors-section" class="horizontal-elem-area minimal-padding ultra-rounded div-options">
-            <label class="option-radio2 circular nano-padding">
+        <div class="modal-bottom normal-padding colored-blur normal-spaced elements-container">
+            <div id="colors-section" class="horizontal-elem-area minimal-padding ultra-rounded div-options centered">
+                <label class="option-radio2 circular nano-padding">
                     <input id="color1" type="radio" name="color" value="var(--color1)">
                     <div class="radio-color color1 circular"></div>
                 </label>
@@ -255,10 +227,9 @@ function getModalHTML(translations, noteTranslations) {
                     <input id="color10" type="radio" name="color" value="var(--color10)">
                     <div class="radio-color color10 circular"></div>
                 </label>
-        </div>
-
-        <div class="horizontal-elem-area centered">
-            <div class="horizontal-flex minimal-padding ultra-rounded div-options expanded spaced">
+            </div>
+            
+            <div class="horizontal-flex minimal-padding ultra-rounded div-options centered">
                 <label class="minimal-margin-left-right">${translations['favorite']}</label>
                 <label id="favorite-switch" class="switch">
                     <input type="checkbox">
@@ -266,7 +237,7 @@ function getModalHTML(translations, noteTranslations) {
                 </label>
             </div>
 
-            <button id="new-edit-done" class="action-btn big-btn-padding normal-rounded colored-blur">${translations['done']}</button>
+            <button id="new-edit-done" class="action-btn big-btn-padding normal-rounded">${translations['done']}</button>
         </div>
     </div>`;
 }
