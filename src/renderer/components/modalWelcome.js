@@ -8,9 +8,9 @@ import { replaceKeysInText } from "../utils/translationsUtils.js";
 export function showWelcomeModal() {
     return new Promise(async (resolve, reject) => {
         // Constantes y variables auxiliares
-        const translations = await window.electronAPI.getTranslations('welcome');
-        const userInfo = await window.electronAPI.getUserInfo();
-        const constants = await window.electronAPI.getConstants();
+        const translations = await window.sanctuaryAPI.getTranslations('welcome');
+        const userInfo = await window.sanctuaryAPI.getUserInfo();
+        const constants = await window.sanctuaryAPI.getConstants();
 
         // Elementos HTML ya existentes que se usarán
         const modal = document.getElementById('modal');

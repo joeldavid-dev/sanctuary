@@ -36,6 +36,7 @@ let translations = null;
 let mainTranslations = null;
 let logPath = null;
 let preparedElements = null;
+let isUpdateDownloaded = false;
 
 // Determinar la ruta del archivo de log
 if (isDev) {
@@ -44,7 +45,7 @@ if (isDev) {
     logPath = path.join(app.getPath('userData'), globalConfig.logPath);
 }
 
-writeLog("============== Iniciando aplicacion ==============");
+writeLog(`============== Iniciando aplicacion (${app.getVersion()}) ==============`);
 // Creación de la ventana principal
 const createMainWindow = () => {
     mainWindow = new BrowserWindow({
@@ -127,6 +128,25 @@ app.on('window-all-closed', (event) => {
     if (process.platform !== 'darwin') app.quit()
 });
 
+// Eventos de actualización
+autoUpdater.on('download-progress', (p) => {
+    mainWindow.webContents.send('download-progress', {
+        percent: p.percent,
+        speed: p.bytesPerSecond,
+        transferred: p.transferred,
+        total: p.total
+    })
+});
+
+autoUpdater.on('update-downloaded', (info) => {
+    mainWindow.webContents.send('update-downloaded');
+    isUpdateDownloaded = true;
+});
+
+autoUpdater.on('error', (err) => {
+    writeLog('Error en updater:', err);
+});
+
 // Escuchar los eventos de manejo de ventana
 ipcMain.on('minimize-window', () => {
     mainWindow.minimize();
@@ -140,6 +160,11 @@ ipcMain.on('maximize-window', () => {
 });
 ipcMain.on('close-window', () => {
     mainWindow.close();
+});
+
+// Exponer la variable que indica si la actualización ha sido descargada
+ipcMain.handle('is-update-downloaded', () => {
+    return isUpdateDownloaded;
 });
 
 // Exponer las rutas de carpetas importantes
@@ -310,9 +335,9 @@ ipcMain.handle('get-translations', (event, view) => {
     return translations[view];
 });
 
-// Escucha el evento de cambio de vista
-ipcMain.on('change-view', (event, newView) => {
-    mainWindow.loadFile(newView);
+// Escucha el evento para bloquear la aplicación, que carga la vista de lock.
+ipcMain.on('lock', (event) => {
+    mainWindow.loadFile('src/views/lock.html');
 });
 
 // Mostrar dialogo de advertencia del sistema
@@ -1037,6 +1062,8 @@ ipcMain.handle('execute-command', async (event, command) => {
             }
         case 'clear-image-cache':
             return await clearImageCache();
+        case 'clear-log':
+            return clearLog();
         default:
             // Comando no reconocido
             return { success: false, message: `${cmd}: ${mainTranslations['command-not-found']}` };
@@ -1142,8 +1169,10 @@ ipcMain.handle('get-log', () => {
 function clearLog() {
     try {
         fs.writeFileSync(logPath, '');
+        return { success: true, message: mainTranslations['log-cleared'] };
     } catch (error) {
         writeLog('Error al vaciar el archivo de log: ' + error.message);
+        return { success: false, error: mainTranslations['log-clear-error'] };
     }
 }
 

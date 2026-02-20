@@ -159,6 +159,7 @@
         "change-ID-gender:male | female | other",
         "change-ID-name:New Name",
         "clear-image-cache",
+        "clear-log",
         "exit",
         "lock",
         "relaunch",

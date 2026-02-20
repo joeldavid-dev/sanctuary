@@ -8,7 +8,7 @@ import { replaceKeysInText } from '../utils/translationsUtils.js';
 export function showDeleteModal(element, mode) {
     return new Promise(async (resolve, reject) => {
         // Constantes y variables auxiliares
-        const translations = await window.electronAPI.getTranslations('delete-element');
+        const translations = await window.sanctuaryAPI.getTranslations('delete-element');
         // Elementos HTML ya existentes que se usarán
         const modalWarning = document.getElementById('modal-warning');
         const modalWarningTitle = document.getElementById('modal-warning-title');
@@ -43,10 +43,10 @@ export function showDeleteModal(element, mode) {
         const deleteElementAction = async () => {
             let result = null;
             if (mode === 'keys') {
-                result = await window.electronAPI.deleteCard(element.id);
+                result = await window.sanctuaryAPI.deleteCard(element.id);
             }
             else if (mode === 'notes') {
-                result = await window.electronAPI.deleteNote(element.id);
+                result = await window.sanctuaryAPI.deleteNote(element.id);
             }
 
             console.log(mode);

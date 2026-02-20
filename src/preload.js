@@ -10,15 +10,17 @@ contextBridge.exposeInMainWorld('electron', {
     openExternal: (url) => ipcRenderer.send('open-external-link', url),
 })
 
-contextBridge.exposeInMainWorld('electronAPI', {
+contextBridge.exposeInMainWorld('sanctuaryAPI', {
     send: (channel, data) => ipcRenderer.send(channel, data),
     on: (channel, callback) => ipcRenderer.on(channel, (event, ...args) => callback(...args)),
-    // Expone el cambio de vista
-    changeView: (newView) => ipcRenderer.send('change-view', newView),
+    // Bloqueo de la aplicación
+    lock: () => ipcRenderer.send('lock'),
     // Dialogos
     showWarning: (title, message) => ipcRenderer.invoke('show-warning', title, message),
     // Notificaciones
     showNotification: (title, body) => ipcRenderer.invoke('show-notification', title, body),
+    // Actualizaciones
+    isUpdateDownloaded: () => ipcRenderer.invoke('is-update-downloaded'),
     // Obtener archivo JSON
     getJSONFile: () => ipcRenderer.invoke('get-json-file'),
     // Exponer las funciones de manejo de datos

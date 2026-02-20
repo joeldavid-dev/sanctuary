@@ -1,5 +1,9 @@
 {
     "language-name": "Français",
+    "update": {
+        "update-downloaded": "Mise à jour téléchargée",
+        "update-downloading": "Téléchargement de la mise à jour... {percent}%"
+    },
     "lock-view": {
         "brand-name": "Codaby",
         "greeting-early-morning": "C'est l'heure de dormir, {name}. Fais de beaux rêves !",
@@ -100,7 +104,9 @@
         "wallpaper-dialog-success": "Arrière-plan défini avec succès.",
         "wallpaper-dialog-invalid": "Le fichier d'arrière-plan n'est pas valide.",
         "image-cache-cleared": "Cache d'images vidé avec succès.",
-        "image-cache-clear-error": "Erreur lors du vidage du cache d'images."
+        "image-cache-clear-error": "Erreur lors du vidage du cache d'images.",
+        "log-cleared": "Journal d'activité vidé avec succès.",
+        "log-clear-error": "Erreur lors du vidage du journal d'activité."
     },
     "home-view": {
         "search": "Rechercher...",

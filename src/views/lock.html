@@ -48,7 +48,7 @@
         </div>
 
         <!-- Panel de botones superiores y área de notificaciones -->
-        <div class="info-panel normal-padding draggable">
+        <div class="vertical-flex spaced normal-padding draggable expanded">
             <!-- Área de botones superior -->
             <div class="horizontal-elem-area spaced">
                 <button id="open-about"
@@ -56,7 +56,8 @@
                     <img src="../assets/ico/feather/info.svg" class="normal-icon-white">
                 </button>
 
-                <div class="horizontal-elem-area">
+                <div class="horizontal-elem-area centered">
+                    <label id="friendly-reminder" class="friendly-reminder invisible"></label>
                     <button id="minimize"
                         class="transparent-btn-white transparent-btn-padding minimal-rounded saturate-blur">
                         <img src="../assets/ico/feather/minus-circle.svg" class="normal-icon-white bloqueo-ico">
@@ -72,22 +73,19 @@
                 </div>
             </div>
 
-            <!-- Área de notificaciones -->
-            <div class="reverse centered invisible">
-
-                <button class="notification colored-blur normal-rounded narrow-padding horizontal-elem-area spaced">
-                    <div class="horizontal-elem-area centered">
-                        <img src="../assets/ico/feather/message-square.svg" class="normal-icon">
-                        <span class="medium-text"></span>
-                    </div>
-                    <span class="medium-text" data-i18n="notification_btn"></span>
-                </button>
-
-            </div>
-
-            <!-- Área de información de versión -->
-            <div class="horizontal-flex distributed">
-                <p class="version small-text saturate-blur narrow-btn-padding minimal-rounded" id="extra-info"></p>
+            <div class="vertical-flex centered extra-big-spaced">
+                <!-- Área de notificaciones -->
+                <div class="invisible">
+                    <button
+                        class="notification transparent-btn-white colored-blur normal-rounded narrow-padding horizontal-elem-area spaced centered">
+                        <div class="horizontal-elem-area centered">
+                            <img src="../assets/ico/feather/message-square.svg" class="normal-icon darkmode-invert">
+                            <p class="medium-text bold"></p>
+                        </div>
+                        <p class="small-text" data-i18n="notification-btn"></p>
+                    </button>
+                </div>
+                <p class="version small-text saturate-blur narrow-btn-padding ultra-rounded" id="extra-info"></p>
             </div>
         </div>
 

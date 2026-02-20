@@ -7,6 +7,17 @@ Desktop application built with ElectronJS to store passwords and notes, secured 
 <img width="400" alt="Captura de pantalla 2026-01-19 170742" src="https://github.com/user-attachments/assets/f2f6d94b-6f35-468b-b1ee-312b00ddc332" />
 <img width="400" alt="Captura de pantalla 2026-01-19 170836" src="https://github.com/user-attachments/assets/3558a276-41a5-4a46-a3b7-9bd2dce6c12a" />
 
+## Features
+- AES-256 symmetric encryption.
+- Password verification using hashes.
+- HTML configuration to prevent XSS attacks.
+- Configuration storage.
+- Event logging to a log file.
+- Multi-language support.
+- One-command packaging configuration.
+- One-command publishing configuration.
+- Automatic updates.
+- Color generation using images or videos.
 
 ## Project Structure
 ```

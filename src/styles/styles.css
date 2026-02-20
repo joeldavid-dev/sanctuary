@@ -80,6 +80,10 @@ body::-webkit-scrollbar {
     --app_contrast_light: rgb(200, 200, 200);
     --app_contrast_dark: rgb(55, 55, 55);
 
+    /* Colores del logo */
+    --logo_color1: rgb(58, 195, 205);
+    --logo_color2: rgb(230, 110, 80);
+
     /* Tiempos de animación */
     --fast-animation: 0.2s;
     --normal-animation: 0.3s;
@@ -521,25 +525,6 @@ pre,
 }
 
 /* ======================= Elementos complejos ======================= */
-.img-wallpaper {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.video-wallpaper {
-    /* Fija el video en toda la ventana */
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    height: 100%;
-    /* Ajusta el video sin deformarlo */
-    object-fit: cover;
-}
-
 .main-element-btn {
     background-color: rgba(255, 255, 255, 0.7);
     padding: var(--minimal-margin);
@@ -1212,9 +1197,55 @@ input:checked+.slider::before {
     margin: 20px auto;
 }
 
+.friendly-reminder {
+    color: var(--app_light);
+    background-color: var(--app_contrast_dark);
+    font-size: 10px;
+    padding: var(--nano-margin) var(--minimal-margin);
+    border-radius: var(--ultra-radius);
+    text-align: center;
+}
+
+.animated-item {
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.animated-item.active {
+    opacity: 1;
+}
+
+.update-icon {
+    width: 16px;
+    height: 16px;
+}
+
+.update-container {
+    background-image: url('../assets/ico/sanctuary-background.png');
+    background-size: cover;
+    background-position: center;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 2px;
+}
+
+.update-container.active {
+    display: flex;
+}
+
 /* Clases para aplicar animaciones */
 .pulse-animation {
     animation: pulse 4s infinite;
+}
+
+.bounce-animation {
+    animation: bounce 1s infinite;
+}
+
+.up-down-animation {
+    animation: up-down 2s infinite;
 }
 
 /* Animaciones */
@@ -1234,27 +1265,27 @@ input:checked+.slider::before {
 
 @keyframes pulse {
     0% {
-        box-shadow: 0 0 0 0 rgba(58, 195, 205, 1);
+        box-shadow: 0 0 0 0 var(--logo_color1);
     }
 
     35% {
-        box-shadow: 0 0 0 10px rgba(0, 150, 255, 0);
+        box-shadow: 0 0 0 10px transparent;
     }
 
     50% {
-        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+        box-shadow: 0 0 0 0 transparent;
     }
 
     51% {
-        box-shadow: 0 0 0 0 rgba(230, 110, 80, 1);
+        box-shadow: 0 0 0 0 var(--logo_color2);
     }
 
     85% {
-        box-shadow: 0 0 0 10px rgba(0, 150, 255, 0);
+        box-shadow: 0 0 0 10px transparent;
     }
 
     100% {
-        box-shadow: 0 0 0 0 rgba(0, 150, 255, 0);
+        box-shadow: 0 0 0 0 transparent;
     }
 }
 
@@ -1275,6 +1306,38 @@ input:checked+.slider::before {
 @keyframes spin {
     to {
         transform: rotate(360deg);
+    }
+}
+
+@keyframes bounce {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(10px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes up-down {
+    0% {
+        transform: translateY(-20px);
+    }
+
+    25% {
+        transform: translateY(0);
+    }
+
+    75% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(20px);
     }
 }
 
@@ -1449,6 +1512,11 @@ input:checked+.slider::before {
 
     .profile-pic-container {
         background-color: var(--app_contrast_dark);
+    }
+
+    .friendly-reminder {
+        color: var(--app_dark);
+        background-color: var(--app_contrast_light);
     }
 
     .scrolleable::-webkit-scrollbar-thumb:hover {

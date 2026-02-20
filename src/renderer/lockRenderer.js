@@ -14,10 +14,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     const passwordInput = document.getElementById('password');
     const togglePassword = document.getElementById('togglePassword');
     const extraInfo = document.getElementById('extra-info');
-    const translations = await window.electronAPI.getTranslations('lock-view');
-    const superuser = await window.electronAPI.getUserInfo();
-    const constants = await window.electronAPI.getConstants();
+    const translations = await window.sanctuaryAPI.getTranslations('lock-view');
+    const updateTranslations = await window.sanctuaryAPI.getTranslations('update');
+    const superuser = await window.sanctuaryAPI.getUserInfo();
+    const constants = await window.sanctuaryAPI.getConstants();
+    const friendlyReminder = document.getElementById('friendly-reminder');
     let count = 5;
+
+    // Escuchar el progreso de descarga de la actualización
+    window.sanctuaryAPI.on('download-progress', (progressInfo) => {
+        friendlyReminder.classList.remove('invisible');
+        const percent = Math.round(progressInfo.percent);
+        friendlyReminder.textContent = replaceKeysInText(updateTranslations['update-downloading'], { percent: percent });
+    });
+
+    // Escuchar si la actualización se descargó completamente
+    window.sanctuaryAPI.on('update-downloaded', () => {
+        friendlyReminder.textContent = updateTranslations['update-downloaded'];
+    });
 
     // Clic en botón minimizar
     minimize.addEventListener('click', () => {
@@ -45,7 +59,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         'brand': constants.about.brand,
         'appName': constants.about.appName,
         'version': constants.about.version,
-        'platform': await window.electronAPI.getPlatform()
+        'platform': await window.sanctuaryAPI.getPlatform()
     });
 
     // Obtener el saludo dependiendo de la hora
@@ -67,7 +81,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     passwordInput.addEventListener('keydown', async (event) => {
         if (event.key === 'Enter') {
             if (passwordInput.value != '') {
-                const response = await window.electronAPI.verifyPassword(passwordInput.value);
+                const response = await window.sanctuaryAPI.verifyPassword(passwordInput.value);
                 if (!response.verified) {
                     count--;
                     if (count == 0) {
@@ -106,16 +120,24 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     async function applySettings() {
         // Obtener configuraciones a utilizar
-        const wallpaperMode = await window.electronAPI.getSetting('wallpaperMode');
-        const wallpaper = await window.electronAPI.getSetting('wallpaper');
-        const colorStyle = await window.electronAPI.getSetting('colorStyle');
+        const wallpaperMode = await window.sanctuaryAPI.getSetting('wallpaperMode');
+        const wallpaper = await window.sanctuaryAPI.getSetting('wallpaper');
+        const colorStyle = await window.sanctuaryAPI.getSetting('colorStyle');
 
         let finalWallpaper;
         let finalMode;
 
+        // Cargar traducciones y mostrarlas en la interfaz estática
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (translations[key]) {
+                el.textContent = translations[key];
+            }
+        });
+
         if (wallpaper === 'custom') {
-            finalWallpaper = await window.electronAPI.getSetting('customWallpaperPath');
-            finalMode = await window.electronAPI.getSetting('customWallpaperType');
+            finalWallpaper = await window.sanctuaryAPI.getSetting('customWallpaperPath');
+            finalMode = await window.sanctuaryAPI.getSetting('customWallpaperType');
         }
         else {
             if (wallpaperMode === 'image') {
@@ -137,8 +159,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Aplicar tema si es estático o generado
         if (colorStyle === "generate") {
-            const appContrastLight = await window.electronAPI.getSetting('appContrastLight');
-            const appContrastDark = await window.electronAPI.getSetting('appContrastDark');
+            const appContrastLight = await window.sanctuaryAPI.getSetting('appContrastLight');
+            const appContrastDark = await window.sanctuaryAPI.getSetting('appContrastDark');
             // Cambiar el color de contraste
             document.documentElement.style.setProperty('--app_contrast_light', appContrastLight);
             document.documentElement.style.setProperty('--app_contrast_dark', appContrastDark);
@@ -152,6 +174,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+    // Consultas iniciales =======================================================================
+    function checkUpdateStatus() {
+        window.sanctuaryAPI.isUpdateDownloaded().then(isDownloaded => {
+            if (isDownloaded) {
+                friendlyReminder.classList.remove('invisible');
+                friendlyReminder.textContent = updateTranslations['update-downloaded'];
+            }
+        });
+    }
+
     // Acciones iniciales ========================================================================
     await applySettings();
+    checkUpdateStatus();
 });

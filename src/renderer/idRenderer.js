@@ -1,7 +1,7 @@
 import { showIDModal } from './components/modalID.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
-    const translations = await window.electronAPI.getTranslations('id');
+    const translations = await window.sanctuaryAPI.getTranslations('id');
 
     // Fondo animado
     document.body.addEventListener("pointermove", (e) => {
@@ -15,8 +15,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (confirm.success) {
         const message = (confirm.imported) ? translations['import-success'] : translations['id-created-success'];
-        window.electronAPI.showNotification(translations['success'], message);
-        window.electronAPI.changeView('src/views/lock.html');
+        window.sanctuaryAPI.showNotification(translations['success'], message);
+        window.sanctuaryAPI.lock();
     } else {
         window.electron.close();
     }

@@ -7,7 +7,7 @@
 export function showTextModal(mode) {
     return new Promise(async (resolve, reject) => {
         // Constantes y variables auxiliares
-        const translations = await window.electronAPI.getTranslations('text-modal');
+        const translations = await window.sanctuaryAPI.getTranslations('text-modal');
         let textContent = '';
 
         // Elementos HTML ya existentes que se usarán
@@ -17,20 +17,25 @@ export function showTextModal(mode) {
         const closeModal = document.getElementById('close-modal');
         const modalTitle = document.getElementById('modal-title');
 
+        // Insertar el esqueleto HTML
+        modalBody.innerHTML = getModalHTML();
+
+        // Elementos HTML insertados en el esqueleto
+        const textContentElement = document.getElementById('modal-text-content');
+
         // Establecer valores iniciales
         modalContent.style.width = 'max-content';
         if (mode === 'license') {
             modalTitle.textContent = translations['license-title'];
-            textContent = await window.electronAPI.getLicense();
+            textContent = await window.sanctuaryAPI.getLicense();
         } else if (mode === 'log') {
             modalTitle.textContent = translations['log-title'];
-            textContent = await window.electronAPI.getLog();
+            textContent = await window.sanctuaryAPI.getLog();
         } else {
             reject('Modo de modal desconocido: ' + mode);
             return;
         }
-
-        modalBody.innerHTML = getModalHTML(textContent);
+        textContentElement.textContent = textContent;
 
         // Funciones de botones e inputs
         const close = () => {
@@ -56,9 +61,9 @@ export function showTextModal(mode) {
     });
 }
 
-function getModalHTML(textContent) {
+function getModalHTML() {
     return `
     <div class="normal-padding">
-        <p class="plain-text-font small-text selectable-text preserve">${textContent}</p>
+        <p id="modal-text-content" class="plain-text-font small-text selectable-text preserve"></p>
     </div>`;
 }

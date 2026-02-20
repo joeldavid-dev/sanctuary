@@ -8,9 +8,9 @@ export function showNewEditNoteModal(mode, note) {
         // Constantes y variables auxiliares
         let colorSelected = 'var(--color1)';
         let favoriteValue = false;
-        const translations = await window.electronAPI.getTranslations('new-edit');
-        const noteTranslations = await window.electronAPI.getTranslations('note');
-        const warningTranslations = await window.electronAPI.getTranslations('warning');
+        const translations = await window.sanctuaryAPI.getTranslations('new-edit');
+        const noteTranslations = await window.sanctuaryAPI.getTranslations('note');
+        const warningTranslations = await window.sanctuaryAPI.getTranslations('warning');
         // Elementos HTML ya existentes que se usarán
         const modal = document.getElementById('modal');
         const modalContent = document.getElementById('modal-content');
@@ -101,7 +101,7 @@ export function showNewEditNoteModal(mode, note) {
             if (name) {
                 if (mode === 'create') {
                     // Crear nueva nota
-                    const result = await window.electronAPI.createNote(newEditnote);
+                    const result = await window.sanctuaryAPI.createNote(newEditnote);
                     if (result.success) {
                         cleanup();
                         resolve({
@@ -120,7 +120,7 @@ export function showNewEditNoteModal(mode, note) {
                 }
                 else if (mode === 'edit') {
                     // Editar nota existente
-                    const result = await window.electronAPI.updateNote(note.id, newEditnote);
+                    const result = await window.sanctuaryAPI.updateNote(note.id, newEditnote);
                     // Cerrar modal
                     if (result.success) {
                         cleanup();
@@ -139,7 +139,7 @@ export function showNewEditNoteModal(mode, note) {
                     }
                 }
             } else {
-                window.electronAPI.showWarning(warningTranslations['title'], warningTranslations['title-required']);
+                window.sanctuaryAPI.showWarning(warningTranslations['title'], warningTranslations['title-required']);
             }
         }
 

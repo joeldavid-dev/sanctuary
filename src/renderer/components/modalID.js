@@ -8,9 +8,9 @@ import { replaceKeysInText } from "../utils/translationsUtils.js";
 export function showIDModal(mode, superuser) {
     return new Promise(async (resolve, reject) => {
         // Constantes y variables auxiliares
-        const translations = await window.electronAPI.getTranslations('id');
-        const warningTranslations = await window.electronAPI.getTranslations('warning');
-        const constants = await window.electronAPI.getConstants();
+        const translations = await window.sanctuaryAPI.getTranslations('id');
+        const warningTranslations = await window.sanctuaryAPI.getTranslations('warning');
+        const constants = await window.sanctuaryAPI.getConstants();
         let isImporting = false;
         // Elementos HTML ya existentes que se usarán
         const modal = document.getElementById('modal');
@@ -86,7 +86,7 @@ export function showIDModal(mode, superuser) {
 
         // Al pulsar el boton de importar
         const importAction = async () => {
-            const response = await window.electronAPI.getJSONFile();
+            const response = await window.sanctuaryAPI.getJSONFile();
             if (response.success) {
                 isImporting = true;
                 // Ajustar la interfaz
@@ -97,7 +97,7 @@ export function showIDModal(mode, superuser) {
                 genderContainer.style.display = 'none';
                 importBtn.style.display = 'none';
             } else {
-                window.electronAPI.showWarning(warningTranslations['title'], response.message);
+                window.sanctuaryAPI.showWarning(warningTranslations['title'], response.message);
             }
         }
         // Al pulsar el boton de done
@@ -114,17 +114,17 @@ export function showIDModal(mode, superuser) {
                     idDoneBtn.disabled = true;
                     idDoneBtn.textContent = translations['importing'];
                     // Escuchar el progreso de importación de tarjetas
-                    window.electronAPI.on('import-card-progress', (progress) => {
+                    window.sanctuaryAPI.on('import-card-progress', (progress) => {
                         idDoneBtn.textContent = `${translations['importing']} ${progress.progress}%`;
                     });
                     // Importar datos
-                    const result = await window.electronAPI.importData(pass2);
+                    const result = await window.sanctuaryAPI.importData(pass2);
                     if (result.success) {
                         cleanup();
                         resolve({ success: true, imported: true, });
                     }
                     else {
-                        window.electronAPI.showWarning(warningTranslations['title'], result.message);
+                        window.sanctuaryAPI.showWarning(warningTranslations['title'], result.message);
                         userPass2.value = '';
                         idDoneBtn.disabled = false;
                         idDoneBtn.textContent = translations['done'];
@@ -133,18 +133,18 @@ export function showIDModal(mode, superuser) {
                 } else {
                     // Validar los datos
                     if (!name || name.length < 3) {
-                        window.electronAPI.showWarning(warningTranslations['title'], warningTranslations['invalid-name']);
+                        window.sanctuaryAPI.showWarning(warningTranslations['title'], warningTranslations['invalid-name']);
                         return;
                     }
                     else if (!pass2 || pass2.length < 5) {
-                        window.electronAPI.showWarning(warningTranslations['title'], warningTranslations['short-password']);
+                        window.sanctuaryAPI.showWarning(warningTranslations['title'], warningTranslations['short-password']);
                         userPass2.value = '';
                         userPass3.value = '';
                         userPass2.focus();
                         return;
                     }
                     else if (pass2 !== pass3) {
-                        window.electronAPI.showWarning(warningTranslations['title'], warningTranslations['password-mismatch']);
+                        window.sanctuaryAPI.showWarning(warningTranslations['title'], warningTranslations['password-mismatch']);
                         userPass2.value = '';
                         userPass3.value = '';
                         userPass2.focus();
@@ -152,24 +152,24 @@ export function showIDModal(mode, superuser) {
                     }
                     else {
                         // Datos correctos, crear el ID
-                        const result = await window.electronAPI.createID(name, pass2, gender);
+                        const result = await window.sanctuaryAPI.createID(name, pass2, gender);
                         if (result.success) {
                             cleanup();
                             resolve({ success: true, imported: false, });
                         }
                         else {
-                            window.electronAPI.showWarning(warningTranslations['title'], result.message);
+                            window.sanctuaryAPI.showWarning(warningTranslations['title'], result.message);
                         }
                     }
                 }
             }
             else if (mode === 'edit-data') {
                 if (!name || name.length < 3) {
-                    window.electronAPI.showWarning(warningTranslations['title'], warningTranslations['invalid-name']);
+                    window.sanctuaryAPI.showWarning(warningTranslations['title'], warningTranslations['invalid-name']);
                     return;
                 } else {
                     // Datos correctos, actualizar el ID
-                    const result = await window.electronAPI.updateID(name, gender);
+                    const result = await window.sanctuaryAPI.updateID(name, gender);
                     if (result.success) {
                         cleanup();
                         resolve({ success: true, message: result.message });
@@ -182,20 +182,20 @@ export function showIDModal(mode, superuser) {
             else if (mode === 'edit-password') {
                 // Validar los datos
                 if (!pass1 || pass1.length < 5) {
-                    window.electronAPI.showWarning(warningTranslations['title'], warningTranslations['short-password']);
+                    window.sanctuaryAPI.showWarning(warningTranslations['title'], warningTranslations['short-password']);
                     userPass1.value = '';
                     userPass1.focus();
                     return;
                 }
                 else if (!pass2 || pass2.length < 5) {
-                    window.electronAPI.showWarning(warningTranslations['title'], warningTranslations['short-password']);
+                    window.sanctuaryAPI.showWarning(warningTranslations['title'], warningTranslations['short-password']);
                     userPass2.value = '';
                     userPass3.value = '';
                     userPass2.focus();
                     return;
                 }
                 else if (pass2 !== pass3) {
-                    window.electronAPI.showWarning(warningTranslations['title'], warningTranslations['password-mismatch']);
+                    window.sanctuaryAPI.showWarning(warningTranslations['title'], warningTranslations['password-mismatch']);
                     userPass2.value = '';
                     userPass3.value = '';
                     userPass2.focus();
@@ -206,7 +206,7 @@ export function showIDModal(mode, superuser) {
                     idDoneBtn.disabled = true;
                     idDoneBtn.textContent = translations['start-change-password'];
                     // Escuchar el progreso de preparación de tarjetas
-                    window.electronAPI.on('password-change-progress', (progress) => {
+                    window.sanctuaryAPI.on('password-change-progress', (progress) => {
                         if (progress.phase === 'card')
                             idDoneBtn.textContent = `${translations['change-cards-password']} ${progress.progress}%`;
                         else if (progress.phase === 'note')
@@ -214,7 +214,7 @@ export function showIDModal(mode, superuser) {
                         else if (progress.phase === 'save')
                             idDoneBtn.textContent = `${translations['save-password-changes']}`;
                     });
-                    const result = await window.electronAPI.changePassword(pass1, pass2);
+                    const result = await window.sanctuaryAPI.changePassword(pass1, pass2);
                     if (result.success) {
                         cleanup();
                         resolve({ success: true, message: result.message });

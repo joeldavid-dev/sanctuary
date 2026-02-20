@@ -1,5 +1,9 @@
 {
     "language-name": "Deutsch",
+    "update": {
+        "update-downloaded": "Update heruntergeladen",
+        "update-downloading": "Update wird heruntergeladen... {percent}%"
+    },
     "lock-view": {
         "brand-name": "Codaby",
         "greeting-early-morning": "Schlafenszeit, {name}. Süße Träume!",
@@ -100,7 +104,9 @@
         "wallpaper-dialog-success": "Hintergrund erfolgreich festgelegt.",
         "wallpaper-dialog-invalid": "Die Hintergrunddatei ist ungültig.",
         "image-cache-cleared": "Bild-Cache erfolgreich geleert.",
-        "image-cache-clear-error": "Fehler beim Leeren des Bild-Cache."
+        "image-cache-clear-error": "Fehler beim Leeren des Bild-Cache.",
+        "log-cleared": "Aktivitätsprotokoll erfolgreich geleert.",
+        "log-clear-error": "Fehler beim Leeren des Aktivitätsprotokolls."
     },
     "home-view": {
         "search": "Suchen...",

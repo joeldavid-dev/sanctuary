@@ -1,5 +1,9 @@
 {
     "language-name": "Русский",
+    "update": {
+        "update-downloaded": "Обновление загружено",
+        "update-downloading": "Загрузка обновления... {percent}%"
+    },
     "lock-view": {
         "brand-name": "Codaby",
         "greeting-early-morning": "Пора спать, {name}. Сладких снов!",
@@ -100,7 +104,9 @@
         "wallpaper-dialog-success": "Фон успешно установлен.",
         "wallpaper-dialog-invalid": "Файл фона недействителен.",
         "image-cache-cleared": "Кэш изображений успешно очищен.",
-        "image-cache-clear-error": "Ошибка при очистке кэша изображений."
+        "image-cache-clear-error": "Ошибка при очистке кэша изображений.",
+        "log-cleared": "Журнал активности успешно очищен.",
+        "log-clear-error": "Ошибка при очистке журнала активности."
     },
     "home-view": {
         "search": "Поиск...",

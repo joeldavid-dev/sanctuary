@@ -1,5 +1,9 @@
 {
     "language-name": "日本語",
+    "update": {
+        "update-downloaded": "アップデートがダウンロードされました",
+        "update-downloading": "アップデートをダウンロードしています... {percent}%"
+    },
     "lock-view": {
         "brand-name": "Codaby",
         "greeting-early-morning": "{name}さん、おやすみの時間です。良い夢を！",
@@ -100,7 +104,9 @@
         "wallpaper-dialog-success": "背景が正常に設定されました。",
         "wallpaper-dialog-invalid": "背景ファイルが無効です。",
         "image-cache-cleared": "画像キャッシュが正常にクリアされました。",
-        "image-cache-clear-error": "画像キャッシュのクリア中にエラーが発生しました。"
+        "image-cache-clear-error": "画像キャッシュのクリア中にエラーが発生しました。",
+        "log-cleared": "アクティビティログが正常にクリアされました。",
+        "log-clear-error": "アクティビティログのクリア中にエラーが発生しました。"
     },
     "home-view": {
         "search": "検索...",

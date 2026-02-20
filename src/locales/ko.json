@@ -1,5 +1,9 @@
 {
     "language-name": "한국어",
+    "update": {
+        "update-downloaded": "업데이트 다운로드 완료",
+        "update-downloading": "업데이트 다운로드 중... {percent}%"
+    },
     "lock-view": {
         "brand-name": "Codaby",
         "greeting-early-morning": "주무실 시간이에요, {name}님. 좋은 꿈 꾸세요!",
@@ -100,7 +104,9 @@
         "wallpaper-dialog-success": "배경이 성공적으로 설정되었습니다.",
         "wallpaper-dialog-invalid": "배경 파일이 유효하지 않습니다.",
         "image-cache-cleared": "이미지 캐시가 성공적으로 지워졌습니다.",
-        "image-cache-clear-error": "이미지 캐시를 지우는 중 오류가 발생했습니다."
+        "image-cache-clear-error": "이미지 캐시를 지우는 중 오류가 발생했습니다.",
+        "log-cleared": "활동 로그가 성공적으로 지워졌습니다.",
+        "log-clear-error": "활동 로그를 지우는 중 오류가 발생했습니다."
     },
     "home-view": {
         "search": "검색...",

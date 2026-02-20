@@ -6,8 +6,8 @@
 export function showDeleteIDModal() {
     return new Promise(async (resolve, reject) => {
         // Constantes y variables auxiliares
-        const translations = await window.electronAPI.getTranslations('deleteID');
-        const warningTranslations = await window.electronAPI.getTranslations('warning');
+        const translations = await window.sanctuaryAPI.getTranslations('deleteID');
+        const warningTranslations = await window.sanctuaryAPI.getTranslations('warning');
         // Elementos HTML ya existentes que se usarán
         const modalWarning = document.getElementById('modal-warning');
         const modalWarningTitle = document.getElementById('modal-warning-title');
@@ -31,11 +31,11 @@ export function showDeleteIDModal() {
         const deleteIDAction = async () => {
             const deleteIDpass = userPass.value;
             if (!deleteIDpass || deleteIDpass.length < 5) {
-                window.electronAPI.showWarning(warningTranslations['title'], warningTranslations['short-password']);
+                window.sanctuaryAPI.showWarning(warningTranslations['title'], warningTranslations['short-password']);
                 userPass.value = '';
                 return;
             }
-            const result = await window.electronAPI.deleteID(deleteIDpass);
+            const result = await window.sanctuaryAPI.deleteID(deleteIDpass);
             (result.success) ? resolve({ success: true }) : resolve({ success: false, error: result.message });
             cleanup();
         };

@@ -1,5 +1,9 @@
 {
     "language-name": "简体中文",
+    "update": {
+        "update-downloaded": "更新已下载",
+        "update-downloading": "正在下载更新... {percent}%"
+    },
     "lock-view": {
         "brand-name": "Codaby",
         "greeting-early-morning": "该睡觉了，{name}。做个好梦！",
@@ -100,7 +104,9 @@
         "wallpaper-dialog-success": "背景设置成功。",
         "wallpaper-dialog-invalid": "背景文件无效。",
         "image-cache-cleared": "图像缓存已成功清除。",
-        "image-cache-clear-error": "清除图像缓存时出错。"
+        "image-cache-clear-error": "清除图像缓存时出错。",
+        "log-cleared": "活动日志已成功清除。",
+        "log-clear-error": "清除活动日志时出错。"
     },
     "home-view": {
         "search": "搜索...",

@@ -11,6 +11,7 @@ import { showTextModal } from './components/modalText.js';
 import { showAboutModal } from './components/modalAbout.js';
 import { showWelcomeModal } from './components/modalWelcome.js';
 import { createPopupOption } from './components/popupOption.js';
+import { replaceKeysInText } from "./utils/translationsUtils.js";
 
 // Barra de título
 const minimize = document.getElementById('minimize');
@@ -20,12 +21,16 @@ const title = document.getElementById('title');
 const searchArea = document.getElementById('search-area');
 const searchInput = document.getElementById('search-input');
 const searchClear = document.getElementById('search-clear');
+const friendlyReminder = document.getElementById('friendly-reminder');
 
 // Sidebar
 const sidebar = document.getElementById('sidebar');
 const keysRadio = document.getElementById('keys-radio');
 const notesRadio = document.getElementById('notes-radio');
 const settingsRadio = document.getElementById('settings-radio');
+const updateImg = document.getElementById('update-img');
+const updateContainer = document.getElementById('update-container');
+const appIcon = document.getElementById('app-icon');
 
 // Barra de opciones
 const commandOptionsBar = document.getElementById('command-options-bar');
@@ -63,7 +68,9 @@ let preparedNotes = []; // Lista que almacena las notas preparadas (contenido de
 document.addEventListener("DOMContentLoaded", async () => {
     let translations = null;
     let cardTranslations = null;
-    const constants = await window.electronAPI.getConstants();
+    let updateTranslations = null;
+
+    const constants = await window.sanctuaryAPI.getConstants();
 
     // Superusuario
     let superuser = null;
@@ -72,14 +79,28 @@ document.addEventListener("DOMContentLoaded", async () => {
     const commands = constants['available_commands'];
 
     // Escuchar el progreso de preparación de tarjetas
-    window.electronAPI.on('prepare-elements-progress', (progress) => {
+    window.sanctuaryAPI.on('prepare-elements-progress', (progress) => {
         placeholderLoading.textContent = `${translations['placeholder-loading']} ${progress}%`;
+    });
+
+    // Escuchar el progreso de descarga de la actualización
+    window.sanctuaryAPI.on('download-progress', (progressInfo) => {
+        showUpdateInfo(); // Mostrar la información de actualización disponible
+        updateImg.classList.add('up-down-animation');
+        const percent = Math.round(progressInfo.percent);
+        friendlyReminder.textContent = replaceKeysInText(updateTranslations['update-downloading'], { percent: percent });
+    });
+
+    // Escuchar si la actualización se descargó completamente
+    window.sanctuaryAPI.on('update-downloaded', () => {
+        updateImg.classList.remove('up-down-animation');
+        friendlyReminder.textContent = updateTranslations['update-downloaded'];
     });
 
     // Funciones del contenedor principal ========================================================
     // Traer los datos al iniciar la vista
     async function getPreparedElements() {
-        const result = await window.electronAPI.getPreparedElements();
+        const result = await window.sanctuaryAPI.getPreparedElements();
         if (result.success) {
             preparedCards = result.preparedCards; // Actualizar la lista de tarjetas preparadas
             preparedNotes = result.preparedNotes; // Actualizar la lista de notas preparadas
@@ -230,6 +251,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         mainSection.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    // Función para mostrar información de actualización disponible
+    function showUpdateInfo() {
+        appIcon.classList.add('invisible'); // Ocultar el ícono de la aplicación
+        updateContainer.classList.add('active');
+        friendlyReminder.classList.remove('invisible'); // Mostrar el porcentaje de descarga
+    }
+
     // Función para mostrar el popup list
     function showPopupList(event) {
         popupList.style.display = 'flex';
@@ -367,10 +395,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (selectedPreparedElement) {
             let selectedElement;
             if (mode === 'keys') {
-                selectedElement = await window.electronAPI.decryptPreparedCard(selectedPreparedElement);
+                selectedElement = await window.sanctuaryAPI.decryptPreparedCard(selectedPreparedElement);
             }
             else if (mode === 'notes') {
-                selectedElement = await window.electronAPI.decryptPreparedNote(selectedPreparedElement);
+                selectedElement = await window.sanctuaryAPI.decryptPreparedNote(selectedPreparedElement);
             }
 
             // Si el elemento se descifró correctamente, mostrar el modal de edición
@@ -422,7 +450,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Clic en botón bloquear
         if (buttonPressed.id === 'lock-btn') {
-            window.electronAPI.changeView('src/views/lock.html');
+            window.sanctuaryAPI.lock();
         }
 
         // Clic en botón Acerca de
@@ -499,7 +527,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 // Cambiar el texto del usuario y la contraseña al hacer clic en el botón
                 if (passView.textContent === mask) {
                     const preparedCard = actualPreparedElements.find(card => card.id == cardID);
-                    const card = await window.electronAPI.decryptPreparedCard(preparedCard);
+                    const card = await window.sanctuaryAPI.decryptPreparedCard(preparedCard);
                     if (card.success) {
                         userView.textContent = card.data.user;
                         passView.textContent = card.data.password;
@@ -531,7 +559,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 // Cambiar el texto del contenido al hacer clic en el botón
                 if (contentView.textContent === mask) {
                     const preparedNote = actualPreparedElements.find(note => note.id == noteID);
-                    const note = await window.electronAPI.decryptPreparedNote(preparedNote);
+                    const note = await window.sanctuaryAPI.decryptPreparedNote(preparedNote);
                     if (note.success) {
                         contentView.textContent = note.data.content;
                         buttonPressed.firstElementChild.src = '../assets/ico/feather/eye-off.svg';
@@ -603,7 +631,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         else if (buttonPressed.id === 'delete-ID') {
             const confirm = await showDeleteIDModal();
             if (confirm.success) {
-                window.electronAPI.executeCommand('relaunch');
+                window.sanctuaryAPI.executeCommand('relaunch');
             } else if (confirm.error) showToast(confirm.error, true);
         }
 
@@ -620,7 +648,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Clic en el botón para elegir un wallpaper personalizado
         else if (buttonPressed.id === 'custom-wallpaper-btn') {
-            const result = await window.electronAPI.setCustomWallpaper();
+            const result = await window.sanctuaryAPI.setCustomWallpaper();
             if (result.success) {
                 showToast(result.message);
                 await applySettings(); // Aplicar las nuevas configuraciones
@@ -647,7 +675,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const selectedOption = radioPressed.value;
         // Guardar la opción seleccionada
-        const result = await window.electronAPI.setSetting('wallpaper', selectedOption);
+        const result = await window.sanctuaryAPI.setSetting('wallpaper', selectedOption);
         if (result.success) {
             await applySettings(); // Aplicar las nuevas configuraciones
         } else {
@@ -662,14 +690,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (switchPressed.id === 'motion-toggle-input') {
             const isEnabled = switchPressed.checked;
             // Guardar la opción seleccionada
-            const result = await window.electronAPI.setSetting('wallpaperMode', isEnabled ? 'video' : 'image');
+            const result = await window.sanctuaryAPI.setSetting('wallpaperMode', isEnabled ? 'video' : 'image');
             if (!result.success) {
                 showToast(result.error, true);
             }
         }
     });
 
-    // Clic fuera del popup para cerrarlo
+    // Clic fuera de los popups para cerrarlos
     document.addEventListener('click', (event) => {
         if (!popupList.contains(event.target) && event.target.id !== 'choose-language') {
             popupList.style.display = 'none';
@@ -685,7 +713,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Si se selecciona un idioma
         if (optionType === 'language') {
-            const result = await window.electronAPI.setSetting('language', optionValue);
+            const result = await window.sanctuaryAPI.setSetting('language', optionValue);
             if (result.success) {
                 await applySettings(); // Aplicar las nuevas configuraciones
                 title.textContent = translations['settings']; // Cambiar el título de la vista
@@ -704,7 +732,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             await showTextModal('log');
         } else {
             // Comandos a nivel de aplicación
-            const result = await window.electronAPI.executeCommand(command);
+            const result = await window.sanctuaryAPI.executeCommand(command);
             if (result.success) {
                 showToast(result.message);
                 await applySettings(); // Aplicar las nuevas configuraciones si las hay
@@ -729,9 +757,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Aplicar configuraciones ===================================================================
     async function applySettings() {
         // Actualizar la información del superusuario e idiomas
-        superuser = await window.electronAPI.getUserInfo();
-        translations = await window.electronAPI.getTranslations('home-view');
-        cardTranslations = await window.electronAPI.getTranslations('card');
+        superuser = await window.sanctuaryAPI.getUserInfo();
+        translations = await window.sanctuaryAPI.getTranslations('home-view');
+        cardTranslations = await window.sanctuaryAPI.getTranslations('card');
+        updateTranslations = await window.sanctuaryAPI.getTranslations('update');
 
         // Cargar traducciones y mostrarlas en la interfaz estática
         document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -743,12 +772,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         searchInput.placeholder = translations['search'];
 
         // Obtener configuraciones a utilizar
-        const colorStyle = await window.electronAPI.getSetting('colorStyle');
+        const colorStyle = await window.sanctuaryAPI.getSetting('colorStyle');
 
         // Aplicar tema si es estático o generado
         if (colorStyle === "generate") {
-            const appContrastLight = await window.electronAPI.getSetting('appContrastLight');
-            const appContrastDark = await window.electronAPI.getSetting('appContrastDark');
+            const appContrastLight = await window.sanctuaryAPI.getSetting('appContrastLight');
+            const appContrastDark = await window.sanctuaryAPI.getSetting('appContrastDark');
             // Cambiar el color de contraste
             document.documentElement.style.setProperty('--app_contrast_light', appContrastLight);
             document.documentElement.style.setProperty('--app_contrast_dark', appContrastDark);
@@ -762,15 +791,25 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         // Mostrar mensaje de bienvenida si es la primera vez que se abre la aplicación
-        const welcomeMessageDisplayed = await window.electronAPI.getSetting('welcomeMessageDisplayed');
+        const welcomeMessageDisplayed = await window.sanctuaryAPI.getSetting('welcomeMessageDisplayed');
         if (!welcomeMessageDisplayed) {
             const confirm = await showWelcomeModal();
             if (confirm.success) {
                 // Marcar que el mensaje de bienvenida ya fue mostrado
-                await window.electronAPI.setSetting('welcomeMessageDisplayed', true);
+                await window.sanctuaryAPI.setSetting('welcomeMessageDisplayed', true);
             }
         }
         createSettingsPage(superuser); // Crear la página de configuración
+    }
+
+    // Consultas iniciales =======================================================================
+    function checkUpdateStatus() {
+        window.sanctuaryAPI.isUpdateDownloaded().then(isDownloaded => {
+            if (isDownloaded) {
+                showUpdateInfo(); // Mostrar la información de actualización si ya fue descargada
+                friendlyReminder.textContent = updateTranslations['update-downloaded'];
+            }
+        });
     }
 
     // Hollydays =================================================================================
@@ -787,6 +826,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Acciones iniciales ========================================================================
     await applySettings();
+    checkUpdateStatus();
     checkHollydays();
     await loadContent(); // Cargar el contenido inicial
 });

@@ -1,5 +1,9 @@
 {
     "language-name": "Italiano",
+    "update": {
+        "update-downloaded": "Aggiornamento scaricato",
+        "update-downloading": "Scaricamento dell'aggiornamento... {percent}%"
+    },
     "lock-view": {
         "brand-name": "Codaby",
         "greeting-early-morning": "È ora di dormire, {name}. Sogni d'oro!",
@@ -100,7 +104,9 @@
         "wallpaper-dialog-success": "Sfondo impostato con successo.",
         "wallpaper-dialog-invalid": "Il file di sfondo non è valido.",
         "image-cache-cleared": "Cache immagini svuotata con successo.",
-        "image-cache-clear-error": "Errore durante lo svuotamento della cache immagini."
+        "image-cache-clear-error": "Errore durante lo svuotamento della cache immagini.",
+        "log-cleared": "Registro attività svuotato con successo.",
+        "log-clear-error": "Errore durante lo svuotamento del registro attività."
     },
     "home-view": {
         "search": "Cerca...",

@@ -1,5 +1,9 @@
 {
     "language-name": "English",
+    "update": {
+        "update-downloaded": "Update downloaded",
+        "update-downloading": "Downloading update... {percent}%"
+    },
     "lock-view": {
         "brand-name": "Codaby",
         "greeting-early-morning": "Time to sleep, {name}! Sweet dreams!",
@@ -100,7 +104,9 @@
         "wallpaper-dialog-success": "Background set successfully.",
         "wallpaper-dialog-invalid": "The background file is invalid.",
         "image-cache-cleared": "Image cache cleared successfully.",
-        "image-cache-clear-error": "Error clearing image cache."
+        "image-cache-clear-error": "Error clearing image cache.",
+        "log-cleared": "Activity log cleared successfully.",
+        "log-clear-error": "Error clearing activity log."
     },
     "home-view": {
         "search": "Search...",

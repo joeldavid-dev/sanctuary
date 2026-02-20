@@ -1,5 +1,9 @@
 {
     "language-name": "Norsk",
+    "update": {
+        "update-downloaded": "Oppdatering lastet ned",
+        "update-downloading": "Laster ned oppdatering... {percent}%"
+    },
     "lock-view": {
         "brand-name": "Codaby",
         "greeting-early-morning": "Tid for å sove, {name}. Sov godt!",
@@ -100,7 +104,9 @@
         "wallpaper-dialog-success": "Bakgrunn satt.",
         "wallpaper-dialog-invalid": "Bakgrunnsfilen er ugyldig.",
         "image-cache-cleared": "Bildebuffer tømt.",
-        "image-cache-clear-error": "Feil ved tømming av bildebuffer."
+        "image-cache-clear-error": "Feil ved tømming av bildebuffer.",
+        "log-cleared": "Aktivitetslogg tømt.",
+        "log-clear-error": "Feil ved tømming av aktivitetslogg."
     },
     "home-view": {
         "search": "Søk...",

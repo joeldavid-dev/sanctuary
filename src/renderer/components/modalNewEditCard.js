@@ -8,9 +8,9 @@ export function showNewEditCardModal(mode, card) {
         // Constantes y variables auxiliares
         let colorSelected = 'var(--color1)';
         let favoriteValue = false;
-        const translations = await window.electronAPI.getTranslations('new-edit');
-        const cardTranslations = await window.electronAPI.getTranslations('card');
-        const warningTranslations = await window.electronAPI.getTranslations('warning');
+        const translations = await window.sanctuaryAPI.getTranslations('new-edit');
+        const cardTranslations = await window.sanctuaryAPI.getTranslations('card');
+        const warningTranslations = await window.sanctuaryAPI.getTranslations('warning');
         // Elementos HTML ya existentes que se usarán
         const modal = document.getElementById('modal');
         const modalContent = document.getElementById('modal-content');
@@ -149,7 +149,7 @@ export function showNewEditCardModal(mode, card) {
             if (name && password) {
                 if (mode === 'create') {
                     // Crear nueva tarjeta
-                    const result = await window.electronAPI.createCard(newEditCard);
+                    const result = await window.sanctuaryAPI.createCard(newEditCard);
                     if (result.success) {
                         cleanup();
                         resolve({
@@ -168,7 +168,7 @@ export function showNewEditCardModal(mode, card) {
                 }
                 else if (mode === 'edit') {
                     // Editar tarjeta existente
-                    const result = await window.electronAPI.updateCard(card.id, newEditCard);
+                    const result = await window.sanctuaryAPI.updateCard(card.id, newEditCard);
                     // Cerrar modal
                     if (result.success) {
                         cleanup();
@@ -187,7 +187,7 @@ export function showNewEditCardModal(mode, card) {
                     }
                 }
             } else {
-                window.electronAPI.showWarning(warningTranslations['title'], warningTranslations['name-password-required']);
+                window.sanctuaryAPI.showWarning(warningTranslations['title'], warningTranslations['name-password-required']);
             }
         }
 

@@ -7,16 +7,16 @@ import { replaceKeysInText } from '../utils/translationsUtils.js';
 
 export async function createSettingsPage(superuser) {
     // Constantes y variables auxiliares
-    const translations = await window.electronAPI.getTranslations('settings');
-    const constants = await window.electronAPI.getConstants();
-    const currentLanguage = await window.electronAPI.getTranslations('language-name');
+    const translations = await window.sanctuaryAPI.getTranslations('settings');
+    const constants = await window.sanctuaryAPI.getConstants();
+    const currentLanguage = await window.sanctuaryAPI.getTranslations('language-name');
     const wallpapers = constants.wallpapers;
-    const currentWallpaper = await window.electronAPI.getSetting('wallpaper');
-    const wallpaperMode = await window.electronAPI.getSetting('wallpaperMode');
-    const customWallpaperPath = await window.electronAPI.getSetting('customWallpaperPath');
-    const customWallpaperName = await window.electronAPI.getSetting('customWallpaperName');
-    const customWallpaperType = await window.electronAPI.getSetting('customWallpaperType');
-    const paths = (await window.electronAPI.getPaths());
+    const currentWallpaper = await window.sanctuaryAPI.getSetting('wallpaper');
+    const wallpaperMode = await window.sanctuaryAPI.getSetting('wallpaperMode');
+    const customWallpaperPath = await window.sanctuaryAPI.getSetting('customWallpaperPath');
+    const customWallpaperName = await window.sanctuaryAPI.getSetting('customWallpaperName');
+    const customWallpaperType = await window.sanctuaryAPI.getSetting('customWallpaperType');
+    const paths = (await window.sanctuaryAPI.getPaths());
 
     // Elementos HTML ya existentes que se usarán
     const settingsArea = document.getElementById('settings-area');
@@ -37,7 +37,7 @@ export async function createSettingsPage(superuser) {
     profileName.textContent = superuser.name;
 
     // Llenar el botón de selección de idioma
-    if (await window.electronAPI.getSetting('language') === 'system') {
+    if (await window.sanctuaryAPI.getSetting('language') === 'system') {
         chooseLanguageBtn.insertAdjacentText('afterbegin', translations['system-default']);
     } else
         chooseLanguageBtn.insertAdjacentText('afterbegin', currentLanguage);

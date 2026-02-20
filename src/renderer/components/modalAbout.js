@@ -8,8 +8,8 @@ import { replaceKeysInText } from "../utils/translationsUtils.js";
 export function showAboutModal() {
     return new Promise(async (resolve, reject) => {
         // Constantes y variables auxiliares
-        const translations = await window.electronAPI.getTranslations('about');
-        const constants = await window.electronAPI.getConstants();
+        const translations = await window.sanctuaryAPI.getTranslations('about');
+        const constants = await window.sanctuaryAPI.getConstants();
 
         // Elementos HTML ya existentes que se usarán
         const modal = document.getElementById('modal');
@@ -93,7 +93,7 @@ async function getModalHTML(translations, constants) {
         </div>
 
         <div class="vertical-elem-area">
-            <p class="medium-text">${replaceKeysInText(translations['version'], { 'version': constants.about.version, 'versionName': constants.about.versionName, 'platform': await window.electronAPI.getPlatform() })}</p>
+            <p class="medium-text">${replaceKeysInText(translations['version'], { 'version': constants.about.version, 'versionName': constants.about.versionName, 'platform': await window.sanctuaryAPI.getPlatform() })}</p>
             <p class="medium-text">${replaceKeysInText(translations['description'], { 'appName': constants.about.appName })}</p>
             <p class="medium-text">${translations['made-in']}</p>
         </div>
