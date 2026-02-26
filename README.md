@@ -2,7 +2,7 @@
 Desktop application built with ElectronJS to store passwords and notes, secured using AES-256 symmetric encryption, with a focus on user privacy and a great user experience.
 
 ## Preview
-https://github.com/user-attachments/assets/752279e7-7490-49e7-b72d-3986008a1229
+![Sanctuary Github README](https://github.com/user-attachments/assets/8545e5c9-9c6e-4c60-8b6a-1594dc2019e2)
 
 ## Features
 - AES-256 symmetric encryption.
