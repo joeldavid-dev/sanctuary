@@ -385,7 +385,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (confirm.success) {
             actualPreparedElements.push(confirm.generated);
-            showContent(actualPreparedElements); // Mostrar los elementos actualizados en la vista
+            if (searchMode === 'searching') {
+                showContent(search(searchTerm));
+            } else if (searchMode === 'none') {
+                showContent(actualPreparedElements);
+            }
         }
         if (confirm.message) showToast(confirm.message);
     });
@@ -436,7 +440,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const actualIndex = actualPreparedElements.findIndex(element => element.id == selectedPreparedElement.id);
                 actualPreparedElements.splice(actualIndex, 1);
 
-                showContent(actualPreparedElements); // Mostrar los elementos actualizados en la vista
+                if (searchMode === 'searching') {
+                    showContent(search(searchTerm));
+                } else if (searchMode === 'none') {
+                    showContent(actualPreparedElements);
+                }
             }
             if (confirm.message) showToast(confirm.message);
         }
