@@ -46,14 +46,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         window.electron.close();
     });
 
-    // Cargar traducciones y mostrarlas en la interfaz estática
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (translations[key]) {
-            el.textContent = translations[key];
-        }
-    });
-
     // Insertar textos
     extraInfo.textContent = replaceKeysInText(translations['extra-info'], {
         'brand': constants.about.brand,

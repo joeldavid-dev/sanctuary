@@ -14,13 +14,13 @@ import { createPopupOption } from './components/popupOption.js';
 import { replaceKeysInText } from "./utils/translationsUtils.js";
 
 // Barra de título
-const minimize = document.getElementById('minimize');
-const maximize = document.getElementById('maximize');
-const close = document.getElementById('close');
+const titleBar = document.getElementById('title-bar');
 const title = document.getElementById('title');
 const searchArea = document.getElementById('search-area');
 const searchInput = document.getElementById('search-input');
-const searchClear = document.getElementById('search-clear');
+const orderArea = document.getElementById('order-area');
+const orderLabel = document.getElementById('order-label');
+const sortToggleIco = document.getElementById('sort-toggle-ico');
 const friendlyReminder = document.getElementById('friendly-reminder');
 
 // Sidebar
@@ -55,9 +55,11 @@ const toastContainer = document.getElementById('toast-container');
 const popupList = document.getElementById('popup-list');
 
 // Variable para controlar el modo actual de la vista (llaves, notas o configuración)
-let mode = 'keys'; // keys || notes
+let actualPage = '';
 let searchMode = 'none'; // Variable para controlar el modo de búsqueda
 let searchTerm = ''; // Término de búsqueda actual
+let orderDirection = 'asc'; // Variable para controlar la dirección del ordenamiento
+let orderBy = 'date'; // Variable para controlar el criterio de ordenamiento
 
 let selectedPreparedElement = null; // Variable para almacenar el elemento seleccionado
 let selectedElementID = null; // Variable para almacenar el ID del elemento seleccionada
@@ -112,12 +114,36 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     async function showContent(content) {
+        // Aplicar configuración
+        orderLabel.textContent = translations[`order-by-${orderBy}`];
+
         // Limpiar el contenedor de elementos antes de agregar nuevos
         mainContent.innerHTML = '';
         deselectAllElements(); // Deseleccionar todos los elementos
+
+        // Ordenar el contenido según el criterio seleccionado
+        if (orderBy === 'date') {
+            content.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        }
+        else if (orderBy === 'name') {
+            content.sort((a, b) => a.name.localeCompare(b.name));
+        }
+        else if (orderBy === 'color') {
+            content.sort((a, b) => a.color.localeCompare(b.color));
+        }
+        else if (orderBy === 'only-favorites') {
+            content = content.filter(element => element.favorite);
+        }
+
+        // Dirección del ordenamiento
+        if (orderDirection === 'desc') {
+            // Invertir el orden de content
+            content = content.slice().reverse();
+        }
+
         if (content && content.length > 0) {
             // Crear y agregar cada elemento al contenedor
-            if (mode === 'keys') {
+            if (actualPage === 'keys') {
                 content.forEach((element, index) => {
                     mainContent.appendChild(createCardElement(element, index, cardTranslations));
                     // Agregar el nombre después de crear el elemento para evitar inyección de código malicioso
@@ -126,7 +152,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     document.getElementById(`card-web-${element.id}`).textContent = element.web;
                 });
             }
-            else if (mode === 'notes') {
+            else if (actualPage === 'notes') {
                 content.forEach((element, index) => {
                     mainContent.appendChild(createNoteElement(element, index, translations));
                     // Agregar el nombre después de crear el elemento para evitar inyección de código malicioso
@@ -210,14 +236,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         showPlaceholderSpinner(); // Mostrar spinner de carga
         await getPreparedElements(); // Cargar los elementos preparados
         hidePlaceholderSpinner(); // Ocultar spinner de carga
-        showKeysView(); // Mostrar la vista de inicio
-        // Seleccionar el radioboton de llaves
-        keysRadio.querySelector('input[type="radio"]').checked = true;
+
+        if (actualPage === 'keys') {
+            showKeysView(); // Mostrar la vista de inicio
+            keysRadio.querySelector('input[type="radio"]').checked = true;
+        } else if (actualPage === 'notes') {
+            showNotesView(); // Mostrar la vista de notas
+            notesRadio.querySelector('input[type="radio"]').checked = true;
+        }
     }
 
     function showKeysView() {
         clearSearch(); // Limpiar las búsquedas
-        mode = 'keys'; // Cambiar el modo a llaves
+        orderArea.style.display = 'flex'; // Mostrar el área de ordenamiento en la vista de llaves
+        actualPage = 'keys'; // Cambiar el modo a llaves
         actualPreparedElements = preparedCards; // Obtener todas las tarjetas y almacenarlas en la lista de elementos mostrados
         showContent(actualPreparedElements); // Mostrar las tarjetas en la vista
         title.textContent = translations['my-keys']; // Cambiar el título de la vista
@@ -227,9 +259,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         mainContent.style.display = 'flex'; // Mostrar el contenedor principal
     }
 
-    async function showNotesView() {
+    function showNotesView() {
         clearSearch(); // Limpiar las búsquedas
-        mode = 'notes'; // Cambiar el modo a notas
+        orderArea.style.display = 'flex'; // Mostrar el área de ordenamiento en la vista de notas
+        actualPage = 'notes'; // Cambiar el modo a notas
         actualPreparedElements = preparedNotes; // Obtener todas las notas y almacenarlas en la lista de elementos mostrados
         showContent(actualPreparedElements); // Mostrar las notas en la vista
         title.textContent = translations['my-notes']; // Cambiar el título de la vista
@@ -241,10 +274,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     function showSettingsView() {
         clearSearch(); // Limpiar la búsquedas
+        orderArea.style.display = 'none'; // Ocultar el área de ordenamiento en la vista de configuración
         title.textContent = translations['settings']; // Cambiar el título de la vista
         searchArea.style.display = 'none'; // Ocultar la barra de búsqueda en la vista de configuración
         bottonBar.style.display = 'none'; // Ocultar la barra de botones en la vista de configuración
-        mode = 'settings'; // Cambiar el modo a configuración
         settingsArea.style.display = 'flex'; // Mostrar el área de configuración
         mainContent.style.display = 'none'; // Ocultar el contenedor principal de tarjetas
         // Ir al inicio del área de configuración
@@ -284,18 +317,56 @@ document.addEventListener("DOMContentLoaded", async () => {
         popupList.style.top = `${top}px`;
     }
 
-    // Acciones de la barra de título ============================================================
-    // Clic en botón minimizar
-    minimize.addEventListener('click', () => {
-        window.electron.minimize();
-    });
-    // Clic en botón maximizar
-    maximize.addEventListener('click', () => {
-        window.electron.maximize();
-    });
-    // Clic en botón cerrar
-    close.addEventListener('click', () => {
-        window.electron.close();
+    // Acciones de la titlebar ============================================================
+    titleBar.addEventListener('click', async (event) => {
+        const buttonPressed = event.target.closest('button');
+        if (!buttonPressed) return; // Si no se hizo clic en un botón, salir
+
+        // Clic en el botón de limpiar búsqueda
+        if (buttonPressed.id === 'search-clear') {
+            clearSearch();
+        }
+
+        // Clic en el botón de ordenamiento
+        if (buttonPressed.id === 'order-btn') {
+            // Limpiar el popup list
+            popupList.innerHTML = '';
+            popupList.appendChild(createPopupOption('orderBy', 'date', translations['order-by-date']));
+            popupList.appendChild(createPopupOption('orderBy', 'name', translations['order-by-name']));
+            popupList.appendChild(createPopupOption('orderBy', 'color', translations['order-by-color']));
+            popupList.appendChild(createPopupOption('orderBy', 'only-favorites', translations['order-by-only-favorites']));
+            showPopupList(event);
+        }
+
+        // Clic en el toggle de ordenamiento
+        if (buttonPressed.id === 'sort-toggle') {
+            orderDirection = orderDirection === 'asc' ? 'desc' : 'asc';
+            sortToggleIco.src = orderDirection === 'asc' ? '../assets/ico/feather/arrow-up.svg' : '../assets/ico/feather/arrow-down.svg';
+            if (searchMode === 'searching') {
+                showContent(search(searchTerm));
+            } else if (searchMode === 'none') {
+                showContent(actualPreparedElements);
+            }
+        }
+
+        // Clic en botón de minimizar
+        if (buttonPressed.id === 'minimize') {
+            window.electron.minimize();
+        }
+
+        // Clic en botón de maximizar
+        if (buttonPressed.id === 'maximize') {
+            window.electron.maximize();
+        }
+
+        // Clic en botón de cerrar
+        if (buttonPressed.id === 'close') {
+            // Guardar configuraciones de la vista
+            await window.sanctuaryAPI.setSetting('lastPage', actualPage);
+            await window.sanctuaryAPI.setSetting('orderDirection', orderDirection);
+            await window.sanctuaryAPI.setSetting('orderBy', orderBy);
+            window.electron.close();
+        }
     });
 
     // Barra de busqueda
@@ -365,20 +436,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    // Clic en el botón de limpiar búsqueda
-    searchClear.addEventListener('click', () => {
-        clearSearch();
-    });
-
     //Funciones de los botones de la bottonbar ===================================================
     // Clic en el botón para crar un nuevo elemento
     newElement.addEventListener('click', async () => {
         let confirm;
         // Si estamos en la vista de llaves, mostrar el modal para crear una tarjeta
-        if (mode === 'keys') {
+        if (actualPage === 'keys') {
             confirm = await showNewEditCardModal('create');
         }
-        else if (mode === 'notes') {
+        else if (actualPage === 'notes') {
             // Si estamos en la vista de notas, mostrar el modal para crear una nota
             confirm = await showNewEditNoteModal('create');
         }
@@ -398,19 +464,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     editElement.addEventListener('click', async () => {
         if (selectedPreparedElement) {
             let selectedElement;
-            if (mode === 'keys') {
+            if (actualPage === 'keys') {
                 selectedElement = await window.sanctuaryAPI.decryptPreparedCard(selectedPreparedElement);
             }
-            else if (mode === 'notes') {
+            else if (actualPage === 'notes') {
                 selectedElement = await window.sanctuaryAPI.decryptPreparedNote(selectedPreparedElement);
             }
 
             // Si el elemento se descifró correctamente, mostrar el modal de edición
             if (selectedElement.success) {
                 let confirm;
-                if (mode === 'keys') {
+                if (actualPage === 'keys') {
                     confirm = await showNewEditCardModal('edit', selectedElement.data);
-                } else if (mode === 'notes') {
+                } else if (actualPage === 'notes') {
                     confirm = await showNewEditNoteModal('edit', selectedElement.data);
                 }
 
@@ -434,7 +500,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Clic en el botón para eliminar el elemento seleccionado
     deleteElement.addEventListener('click', async () => {
         if (selectedPreparedElement) {
-            const confirm = await showDeleteModal(selectedPreparedElement, mode);
+            const confirm = await showDeleteModal(selectedPreparedElement, actualPage);
             if (confirm.success) {
                 // Eliminar el elemento de la lista de elementos mostrados
                 const actualIndex = actualPreparedElements.findIndex(element => element.id == selectedPreparedElement.id);
@@ -458,6 +524,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Clic en botón bloquear
         if (buttonPressed.id === 'lock-btn') {
+            // Guardar configuraciones de la vista
+            await window.sanctuaryAPI.setSetting('lastPage', actualPage);
+            await window.sanctuaryAPI.setSetting('orderDirection', orderDirection);
+            await window.sanctuaryAPI.setSetting('orderBy', orderBy);
             window.sanctuaryAPI.lock();
         }
 
@@ -524,7 +594,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         else if (buttonPressed.classList.contains('eye-btn')) {
             const mask = '••••••••';
 
-            if (mode === 'keys') {
+            if (actualPage === 'keys') {
                 // Obtener el ID de la tarjeta y los elementos de usuario y contraseña
                 const cardID = buttonPressed.getAttribute('data-cardID');
                 const userID = buttonPressed.getAttribute('data-userID');
@@ -558,7 +628,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     buttonPressed.firstElementChild.src = '../assets/ico/feather/eye.svg';
                 }
             }
-            else if (mode === 'notes') {
+            else if (actualPage === 'notes') {
                 // Obtener el ID de la nota y del contenido
                 const noteID = buttonPressed.getAttribute('data-noteID');
                 const contentID = buttonPressed.getAttribute('data-contentID');
@@ -707,7 +777,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Clic fuera de los popups para cerrarlos
     document.addEventListener('click', (event) => {
-        if (!popupList.contains(event.target) && event.target.id !== 'choose-language') {
+        if (!popupList.contains(event.target)
+            && event.target.id !== 'choose-language'
+            && event.target.id !== 'order-label'
+            && event.target.id !== 'order-btn'
+            && event.target.id !== 'order-ico') {
             popupList.style.display = 'none';
         }
     });
@@ -726,6 +800,16 @@ document.addEventListener("DOMContentLoaded", async () => {
                 await applySettings(); // Aplicar las nuevas configuraciones
                 title.textContent = translations['settings']; // Cambiar el título de la vista
                 showToast(translations['language-changed']);
+            }
+        }
+
+        // Si se selecciona una opción de ordenamiento
+        if (optionType === 'orderBy') {
+            orderBy = optionValue;
+            if (searchMode === 'searching') {
+                showContent(search(searchTerm));
+            } else if (searchMode === 'none') {
+                showContent(actualPreparedElements);
             }
         }
 
@@ -807,6 +891,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                 await window.sanctuaryAPI.setSetting('welcomeMessageDisplayed', true);
             }
         }
+        // Configuraciones en la vista principal
+        actualPage = await window.sanctuaryAPI.getSetting('lastPage');
+        orderDirection = await window.sanctuaryAPI.getSetting('orderDirection');
+        orderBy = await window.sanctuaryAPI.getSetting('orderBy');
+        sortToggleIco.src = orderDirection === 'asc' ? '../assets/ico/feather/arrow-up.svg' : '../assets/ico/feather/arrow-down.svg';
         createSettingsPage(superuser); // Crear la página de configuración
     }
 

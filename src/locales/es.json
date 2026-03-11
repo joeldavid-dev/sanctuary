@@ -1,6 +1,6 @@
 {
     "language-name": "Español",
-    "update":{
+    "update": {
         "update-downloaded": "Actualización descargada",
         "update-downloading": "Obteniendo actualización... {percent}%"
     },
@@ -130,7 +130,11 @@
         "exe-command": "Ejecutando comando",
         "empty-command": "No se ingresó ningún comando",
         "placeholder-loading": "Desbloqueando tus claves y notas…",
-        "language-changed": "Idioma cambiado exitosamente."
+        "language-changed": "Idioma cambiado exitosamente.",
+        "order-by-date": "Por fecha",
+        "order-by-name": "Por nombre",
+        "order-by-color": "Por color",
+        "order-by-only-favorites": "Solo favoritos"
     },
     "card": {
         "user": "Usuario:",

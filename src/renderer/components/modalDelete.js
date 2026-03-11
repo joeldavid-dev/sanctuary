@@ -49,7 +49,6 @@ export function showDeleteModal(element, mode) {
                 result = await window.sanctuaryAPI.deleteNote(element.id);
             }
 
-            console.log(mode);
             if (result.success) {
                 cleanup();
                 resolve({

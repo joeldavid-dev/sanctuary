@@ -30,7 +30,7 @@ export function showNewEditNoteModal(mode, note) {
 
         // Establecer valores
         modalContent.style.width = 'max-content'; // Ajustar el ancho del modal
-        //contentTextarea.style.height = '60dvh'; // Aumenta el tamaño inicial del textarea
+        contentTextarea.style.minHeight = '50dvh'; // Aumenta el tamaño mínimo del textarea
         if (mode === 'create') {
             modalTitle.textContent = translations['title-new-note'];
             favoriteValue = false;

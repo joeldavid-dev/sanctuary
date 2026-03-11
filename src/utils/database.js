@@ -108,7 +108,7 @@ function deleteAll() {
             DELETE FROM cardsData;
             DELETE FROM notesData;
             COMMIT;`;
-            
+
         db.exec(query, function (err) {
             if (err) {
                 reject(err);
@@ -129,20 +129,15 @@ function createCard(card) {
         db.run(query, [card.name, card.user, card.password, card.web,
         card.color, card.favorite, card.salt, card.iv], function (err) {
             if (err) {
-                reject(err);
-            } else {
-                resolve({
-                    id: this.lastID,
-                    name: card.name,
-                    user: card.user,
-                    password: card.password,
-                    web: card.web,
-                    color: card.color,
-                    favorite: card.favorite,
-                    salt: card.salt,
-                    iv: card.iv,
-                });
+                return reject(err);
             }
+            db.get(`SELECT * FROM cardsData WHERE id = ?`, [this.lastID], (err, row) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(row);
+                }
+            });
         });
     });
 }
@@ -171,20 +166,15 @@ function updateCard(id, card) {
         db.run(query, [card.name, card.user, card.password, card.web,
         card.color, card.favorite, card.salt, card.iv, id], function (err) {
             if (err) {
-                reject(err);
-            } else {
-                resolve({
-                    id: id,
-                    name: card.name,
-                    user: card.user,
-                    password: card.password,
-                    web: card.web,
-                    color: card.color,
-                    favorite: card.favorite,
-                    salt: card.salt,
-                    iv: card.iv,
-                });
+                return reject(err);
             }
+            db.get(`SELECT * FROM cardsData WHERE id = ?`, [id], (err, row) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(row);
+                }
+            });
         });
     });
 }
@@ -213,18 +203,15 @@ function createNote(note) {
         db.run(query, [note.name, note.content, note.color, note.favorite,
         note.salt, note.iv], function (err) {
             if (err) {
-                reject(err);
-            } else {
-                resolve({
-                    id: this.lastID,
-                    name: note.name,
-                    content: note.content,
-                    color: note.color,
-                    favorite: note.favorite,
-                    salt: note.salt,
-                    iv: note.iv,
-                });
+                return reject(err);
             }
+            db.get(`SELECT * FROM notesData WHERE id = ?`, [this.lastID], (err, row) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(row);
+                }
+            });
         });
     });
 }
@@ -253,18 +240,15 @@ function updateNote(id, note) {
         db.run(query, [note.name, note.content,
         note.color, note.favorite, note.salt, note.iv, id], function (err) {
             if (err) {
-                reject(err);
-            } else {
-                resolve({
-                    id: id,
-                    name: note.name,
-                    content: note.content,
-                    color: note.color,
-                    favorite: note.favorite,
-                    salt: note.salt,
-                    iv: note.iv,
-                });
+                return reject(err);
             }
+            db.get(`SELECT * FROM notesData WHERE id = ?`, [id], (err, row) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(row);
+                }
+            });
         });
     });
 }

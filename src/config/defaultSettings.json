@@ -12,5 +12,8 @@
     "welcomeMessageDisplayed": false,
     "customWallpaperPath": "none",
     "customWallpaperName": "none",
-    "customWallpaperType": "none"
+    "customWallpaperType": "none",
+    "orderBy": "date",
+    "orderDirection": "asc",
+    "lastPage": "keys"
 }
