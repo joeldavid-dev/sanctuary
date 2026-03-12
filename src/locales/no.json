@@ -130,7 +130,11 @@
         "exe-command": "Kjører kommando",
         "empty-command": "Ingen kommando ble skrevet inn",
         "placeholder-loading": "Låser opp nøkler og notater...",
-        "language-changed": "Språk endret."
+        "language-changed": "Språk endret.",
+        "order-by-date": "Etter dato",
+        "order-by-name": "Etter navn",
+        "order-by-color": "Etter farge",
+        "order-by-only-favorites": "Kun favoritter"
     },
     "card": {
         "user": "Bruker:",

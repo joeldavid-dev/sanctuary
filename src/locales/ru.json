@@ -130,7 +130,11 @@
         "exe-command": "Выполнение команды",
         "empty-command": "Команда не введена",
         "placeholder-loading": "Разблокировка твоих ключей и заметок...",
-        "language-changed": "Язык успешно изменен."
+        "language-changed": "Язык успешно изменен.",
+        "order-by-date": "По дате",
+        "order-by-name": "По имени",
+        "order-by-color": "По цвету",
+        "order-by-only-favorites": "Только избранные"
     },
     "card": {
         "user": "Пользователь:",

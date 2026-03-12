@@ -79,9 +79,9 @@ function getSettingsHTML(translations, constants) {
         <div class="vertical-flex big-spaced settings-width">
             <div class="vertical-elem-area centered">
                 <div class="profile-pic-container">
-                    <p id="profile-initial"></p>
+                    <p id="profile-initial" class="expresive-text"></p>
                 </div>
-                <p id="profile-name" class="expresive-text"></p>
+                <p id="profile-name" class="expresive-text ultra-text"></p>
             </div>
 
             <div class="div-options vertical-elem-area narrow-padding external-radius-2">
@@ -104,7 +104,7 @@ function getSettingsHTML(translations, constants) {
             </div>
 
             <div class="vertical-elem-area">
-                <p class="bold">${translations['language']}</p>
+                <h3>${translations['language']}</h3>
                 <div class="div-options vertical-elem-area narrow-padding external-radius-2">
                     <div class="horizontal-flex centered spaced minimal-margin-left-right">
                         <p>${translations['app-language']}</p>
@@ -119,7 +119,7 @@ function getSettingsHTML(translations, constants) {
             </div>
 
             <div class="vertical-elem-area">
-                <p class="bold">${translations['customization']}</p>
+                <h3>${translations['customization']}</h3>
                 <div class="div-options vertical-elem-area narrow-padding external-radius-2">
                     <p class="minimal-margin-left-right">${translations['lock-wallpaper']}</p>
                     <div id="wallpaper-options-area" class="elements-container minimal-spaced"></div>
@@ -135,7 +135,7 @@ function getSettingsHTML(translations, constants) {
             </div>
 
             <div class="vertical-elem-area">
-                <p class="bold">${translations['about']}</p>
+                <h3>${translations['about']}</h3>
                 <div class="div-options vertical-elem-area narrow-padding external-radius-2">
                     <button id="view-info-about" class="option-btn minimal-rounded left-text horizontal-flex centered spaced">
                         ${replaceKeysInText(translations['view-info-about'], { 'appName': constants.about.appName })}

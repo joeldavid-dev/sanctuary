@@ -21,7 +21,7 @@ export function createNoteElement(note, index, translations) {
     const noteHTML = `
             <input type="radio" name="mainElement" value="${note.id}">
             <div class="horizontal-elem-area spaced centered">
-                <p id="note-name-${note.id}" class="bold"></p>
+                <p id="note-name-${note.id}" class="bold large-text wrapped-text"></p>
                 <div class="${heartVisible}">
                     <div class="main-element-static-icon">
                         <img src="../assets/ico/feather/heart.svg" class="main-element-icon">

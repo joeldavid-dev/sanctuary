@@ -130,7 +130,11 @@
         "exe-command": "Executing command",
         "empty-command": "No command entered",
         "placeholder-loading": "Unlocking your keys and notes…",
-        "language-changed": "Language changed successfully."
+        "language-changed": "Language changed successfully.",
+        "order-by-date": "By date",
+        "order-by-name": "By name",
+        "order-by-color": "By color",
+        "order-by-only-favorites": "Favorites only"
     },
     "card": {
         "user": "User:",

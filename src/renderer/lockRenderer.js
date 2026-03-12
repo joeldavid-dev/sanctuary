@@ -158,9 +158,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             document.documentElement.style.setProperty('--app_contrast_dark', appContrastDark);
         } else {
             document.documentElement.style.setProperty('--app_light', constants[colorStyle].app_light);
-            document.documentElement.style.setProperty('--app_light_transparent', constants[colorStyle].app_light_transparent);
+            document.documentElement.style.setProperty('--app_light_translucent', constants[colorStyle].app_light_translucent);
+            document.documentElement.style.setProperty('--app_light_overlay_ui', constants[colorStyle].app_light_overlay_ui);
             document.documentElement.style.setProperty('--app_dark', constants[colorStyle].app_dark);
-            document.documentElement.style.setProperty('--app_dark_transparent', constants[colorStyle].app_dark_transparent);
+            document.documentElement.style.setProperty('--app_dark_translucent', constants[colorStyle].app_dark_translucent);
+            document.documentElement.style.setProperty('--app_dark_overlay_ui', constants[colorStyle].app_dark_overlay_ui);
             document.documentElement.style.setProperty('--app_contrast_light', constants[colorStyle].app_contrast_light);
             document.documentElement.style.setProperty('--app_contrast_dark', constants[colorStyle].app_contrast_dark);
         }

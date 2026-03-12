@@ -130,7 +130,11 @@
         "exe-command": "명령 실행 중",
         "empty-command": "입력된 명령이 없습니다.",
         "placeholder-loading": "키와 노트를 잠금 해제하는 중...",
-        "language-changed": "언어가 성공적으로 변경되었습니다."
+        "language-changed": "언어가 성공적으로 변경되었습니다.",
+        "order-by-date": "날짜순",
+        "order-by-name": "이름순",
+        "order-by-color": "색상순",
+        "order-by-only-favorites": "즐겨찾기만"
     },
     "card": {
         "user": "사용자명:",

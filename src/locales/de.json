@@ -130,7 +130,11 @@
         "exe-command": "Befehl wird ausgeführt",
         "empty-command": "Kein Befehl eingegeben",
         "placeholder-loading": "Entsperre deine Schlüssel und Notizen...",
-        "language-changed": "Sprache erfolgreich geändert."
+        "language-changed": "Sprache erfolgreich geändert.",
+        "order-by-date": "Nach Datum",
+        "order-by-name": "Nach Name",
+        "order-by-color": "Nach Farbe",
+        "order-by-only-favorites": "Nur Favoriten"
     },
     "card": {
         "user": "Benutzer:",

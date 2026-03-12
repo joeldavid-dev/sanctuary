@@ -253,7 +253,7 @@ function getModalHTML(translations, cardTranslations) {
 
                 <div id="preview-card" class="main-element card-body color1">
                     <div class="horizontal-elem-area spaced centered">
-                        <p id="name-preview" class="bold wrapped-text">${cardTranslations['new-card']}</p>
+                        <p id="name-preview" class="bold large-text wrapped-text">${cardTranslations['new-card']}</p>
                         <div id="ico-love">
                             <div class="main-element-static-icon">
                                 <img src="../assets/ico/feather/heart.svg" class="main-element-icon">

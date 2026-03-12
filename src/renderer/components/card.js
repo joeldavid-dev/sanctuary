@@ -22,7 +22,7 @@ export function createCardElement(card, index, translations) {
     const cardHTML = `
             <input type="radio" name="mainElement" value="${card.id}">
             <div class="horizontal-elem-area spaced centered">
-                <p id="card-name-${card.id}" class="bold wrapped-text"></p>
+                <p id="card-name-${card.id}" class="bold large-text wrapped-text"></p>
                 <div class="${heartVisible}">
                     <div class="main-element-static-icon">
                         <img src="../assets/ico/feather/heart.svg" class="main-element-icon">

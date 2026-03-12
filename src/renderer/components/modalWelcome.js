@@ -64,7 +64,7 @@ export function showWelcomeModal() {
 function getModalHTML(translations, replaceKeysInText, constants) {
     return `
     <div class="vertical-elem-area normal-padding">
-        <p id="modalWelcomeGreeting" class="expresive-text"></p>
+        <p id="modalWelcomeGreeting" class="expresive-text ultra-text"></p>
         <p class="plain-text-font small-text">${replaceKeysInText(translations['body-1'], { appName: constants['about'].appName })}</p>
         <p class="plain-text-font small-text">${translations['body-2']}</p>
         <p class="plain-text-font small-text">${translations['closing']}</p>

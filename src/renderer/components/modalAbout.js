@@ -84,25 +84,25 @@ async function getModalHTML(translations, constants) {
         <div class="vertical-flex centered big-spaced top-bottom-big-margin">
             <img src="../assets/ico/sanctuary.png" class="icon-25">
             <div class="vertical-flex centered minimal-spaced">
-                <div class="horizontal-flex minimal-spaced">
+                <div class="horizontal-flex minimal-spaced centered">
                     <img src="../assets/ico/Logo.svg" class="logo-icon">
                     <p class="brand-text">${constants.about.brand}</p>
                 </div>
-                <p class="expresive-text">${constants.about.appName}</p>
+                <p class="expresive-text ultra-text">${constants.about.appName}</p>
             </div>
         </div>
 
         <div class="vertical-elem-area">
-            <p class="medium-text">${replaceKeysInText(translations['version'], { 'version': constants.about.version, 'versionName': constants.about.versionName, 'platform': await window.sanctuaryAPI.getPlatform() })}</p>
-            <p class="medium-text">${replaceKeysInText(translations['description'], { 'appName': constants.about.appName })}</p>
-            <p class="medium-text">${translations['made-in']}</p>
+            <p class="small-text">${replaceKeysInText(translations['version'], { 'version': constants.about.version, 'versionName': constants.about.versionName, 'platform': await window.sanctuaryAPI.getPlatform() })}</p>
+            <p class="small-text">${replaceKeysInText(translations['description'], { 'appName': constants.about.appName })}</p>
+            <p class="small-text">${translations['made-in']}</p>
         </div>
         
         <div class="vertical-elem-area">
-            <p class="medium-text bold">${translations['about-me-title']}</p>
-            <p class="medium-text">${translations['my-info']}</p>
+            <h3>${translations['about-me-title']}</h3>
+            <p class="small-text">${translations['my-info']}</p>
             <div class="vertical-flex centered">
-                <button id="my-link-btn" class="medium-text action-btn btn-padding minimal-rounded horizontal-elem-area centered pulse-animation">
+                <button id="my-link-btn" class="action-btn btn-padding minimal-rounded horizontal-elem-area centered pulse-animation">
                     ${translations['my-link']}
                     <img src="../assets/ico/feather/external-link.svg" class="mini-icon">
                 </button>
@@ -110,10 +110,10 @@ async function getModalHTML(translations, constants) {
         </div>
 
         <div class="vertical-elem-area">
-            <p class="medium-text bold">${translations['icons-title']}</p>
-            <p class="medium-text">${replaceKeysInText(translations['icons-info'], { 'author': constants.icons.author })}</p>
+            <h3>${translations['icons-title']}</h3>
+            <p class="small-text">${replaceKeysInText(translations['icons-info'], { 'author': constants.icons.author })}</p>
             <div class="vertical-flex centered">
-                <button id="icons-link-btn" class="medium-text action-btn btn-padding minimal-rounded horizontal-elem-area centered">
+                <button id="icons-link-btn" class="action-btn btn-padding minimal-rounded horizontal-elem-area centered">
                     ${replaceKeysInText(translations['icons-link'], { 'author': constants.icons.author })}
                     <img src="../assets/ico/feather/external-link.svg" class="mini-icon">
                 </button>
@@ -121,24 +121,24 @@ async function getModalHTML(translations, constants) {
         </div>
 
         <div class="vertical-elem-area">
-            <p class="medium-text bold">${translations['wallpapers-title']}</p>
+            <h3>${translations['wallpapers-title']}</h3>
             <div id="wallpapers-about-area" class="elements-container normal-spaced"></div>
         </div>
 
         <div class="vertical-elem-area">
-            <p class="medium-text bold">${translations['illustrations-title']}</p>
-            <p class="medium-text">${replaceKeysInText(translations['illustrations-info'], { 'author': constants.illustrations.author })}</p>
+            <h3>${translations['illustrations-title']}</h3>
+            <p class="small-text">${replaceKeysInText(translations['illustrations-info'], { 'author': constants.illustrations.author })}</p>
             <div class="vertical-flex centered">
-                <button id="illustrations-link-btn" class="medium-text action-btn btn-padding minimal-rounded horizontal-elem-area centered">
+                <button id="illustrations-link-btn" class="action-btn btn-padding minimal-rounded horizontal-elem-area centered">
                     ${replaceKeysInText(translations['illustrations-link'], { 'author': constants.illustrations.author })}
                     <img src="../assets/ico/feather/external-link.svg" class="mini-icon">
                 </button>
             </div>
         </div>
             
-        <p class="medium-text">${translations['fun-fact']}</p>
+        <p class="small-text">${translations['fun-fact']}</p>
 
-        <p class="medium-text bold centered-text">${replaceKeysInText(translations['copyright'], { 'appName': constants.about.appName, 'year': constants.about.year, 'developer': constants.about.developer })}</p>
+        <h3 class="centered-text">${replaceKeysInText(translations['copyright'], { 'appName': constants.about.appName, 'year': constants.about.year, 'developer': constants.about.developer })}</h3>
     </div>`;
 }
 

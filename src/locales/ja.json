@@ -130,7 +130,11 @@
         "exe-command": "コマンドを実行中",
         "empty-command": "コマンドが入力されていません",
         "placeholder-loading": "キーとノートのロックを解除しています…",
-        "language-changed": "言語が正常に変更されました。"
+        "language-changed": "言語が正常に変更されました。",
+        "order-by-date": "日付順",
+        "order-by-name": "名前順",
+        "order-by-color": "色順",
+        "order-by-only-favorites": "お気に入りのみ"
     },
     "card": {
         "user": "ユーザー名：",

@@ -22,7 +22,7 @@
 <body>
     <div class="layout horizontal-flex">
         <!-- Sidebar -->
-        <section id="sidebar" class="sidebar normal-padding vertical-flex centered spaced">
+        <aside id="sidebar" class="sidebar normal-padding vertical-flex centered spaced">
             <div class="vertical-flex big-spaced">
                 <div class="vertical-flex centered">
                     <button id="lock-btn" class="transparent-btn transparent-btn-padding minimal-rounded">
@@ -72,12 +72,12 @@
                     <img id="update-img" src="../assets/ico/feather/arrow-down.svg" class="update-icon mini-icon-white">
                 </div>
             </button>
-        </section>
+        </aside>
 
         <!-- Contenido -->
-        <section id="main-section" class="main-section hidden-scrollbar">
+        <main id="main-section" class="main-section hidden-scrollbar">
             <!-- Barra de titulo -->
-            <div id="title-bar"
+            <header id="title-bar"
                 class="title-bar normal-padding horizontal-elem-area draggable spaced centered colored-blur">
                 <h2 id="title"></h2>
                 <div id="search-area" class="horizontal-elem-area centered">
@@ -110,7 +110,7 @@
                         <img src="../assets/ico/feather/x-circle.svg" class="normal-icon darkmode-invert">
                     </button>
                 </div>
-            </div>
+            </header>
             <!-- Barra de opciones -->
             <div id="command-options-bar"
                 class="command-options-bar popup-list vertical-elem-area colored-blur scrolleable">
@@ -121,7 +121,7 @@
             </div>
 
             <!-- bottonbar -->
-            <div id="botton-bar" class="botton-bar popup-list horizontal-flex colored-blur big-spaced">
+            <footer id="botton-bar" class="botton-bar popup-list horizontal-flex colored-blur big-spaced">
 
                 <div id="edit-element-body" class="vertical-flex centered">
                     <button id="edit-element" class="transparent-btn transparent-btn-padding minimal-rounded invisible">
@@ -145,10 +145,10 @@
                     <label class="small-text no-wrapped-text" data-i18n="delete"></label>
                 </div>
 
-            </div>
+            </footer>
             <!-- Área de configuraciones -->
             <div id="settings-area" class="elements-container normal-padding"></div>
-        </section>
+        </main>
     </div>
 
     <!-- Place holder -->

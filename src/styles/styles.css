@@ -11,18 +11,13 @@
 
 /* Carga de tipografías personalizadas. */
 @font-face {
-    font-family: Varela;
+    font-family: VarelaRound;
     src: url(../assets/fonts/VarelaRound-Regular.ttf);
 }
 
 @font-face {
-    font-family: IBM_plex_mono;
-    src: url(../assets/fonts/IBMPlexMono-Regular.ttf);
-}
-
-@font-face {
-    font-family: Nunito;
-    src: url(../assets/fonts/NunitoSans-Regular.ttf);
+    font-family: NunitoSans;
+    src: url(../assets/fonts/NunitoSans-VariableFont.ttf);
 }
 
 @font-face {
@@ -31,23 +26,13 @@
 }
 
 @font-face {
-    font-family: oswald;
-    src: url(../assets/fonts/Oswald-Bold.ttf);
-}
-
-@font-face {
-    font-family: inter;
-    src: url(../assets/fonts/Inter-ExtraBold.ttf);
-}
-
-@font-face {
-    font-family: source_code;
-    src: url(../assets/fonts/SourceCodePro-VariableFont_wght.ttf);
+    font-family: Inter;
+    src: url(../assets/fonts/Inter-VariableFont.ttf);
 }
 
 @font-face {
     font-family: jetBrains_mono;
-    src: url(../assets/fonts/JetBrainsMono-VariableFont_wght.ttf);
+    src: url(../assets/fonts/JetBrainsMono-VariableFont.ttf);
 }
 
 /* Desactiva el scroll bar. */
@@ -67,9 +52,11 @@ body::-webkit-scrollbar {
 /* Definición de constantes */
 :root {
     --app_light: rgb(245, 245, 245);
-    --app_light_transparent: rgba(245, 245, 245, 0.6);
+    --app_light_translucent: rgba(245, 245, 245, 0.6);
+    --app_light_overlay_ui: rgba(245, 245, 245, 0.8);
     --app_dark: rgb(10, 10, 10);
-    --app_dark_transparent: rgba(10, 10, 10, 0.6);
+    --app_dark_translucent: rgba(10, 10, 10, 0.6);
+    --app_dark_overlay_ui: rgba(10, 10, 10, 0.8);
     --neutral_grey: rgb(130, 130, 130);
     --light_gray: rgba(0, 0, 0, 0.15);
     --light_gray_hover: rgba(0, 0, 0, 0.20);
@@ -142,26 +129,29 @@ body::-webkit-scrollbar {
 
 /* Estilos generales para la aplicación web en modo claro */
 body {
-    font-family: Nunito, sans-serif;
-    font-size: 16px;
+    font-family: Inter;
+    font-size: 14px;
     background: var(--app_light);
     color: var(--app_dark);
     user-select: none;
 }
 
 button {
+    font-family: Inter;
     color: var(--app_dark);
     /* Permite hacer clic en los botones sobre una area draggable*/
     -webkit-app-region: no-drag;
 }
 
 input {
+    font-family: Inter;
     -webkit-app-region: no-drag;
 }
 
 /* Estilos primitivos que se repiten. */
 .brand-text {
-    font-family: Varela;
+    font-family: VarelaRound;
+    font-size: 16px;
     width: min-content;
     height: min-content;
     grid-column: 2;
@@ -172,16 +162,18 @@ h1 {
 }
 
 h2 {
+    font-family: NunitoSans;
     font-size: 16px;
 }
 
 h3 {
+    font-family: NunitoSans;
     font-size: 14px;
 }
 
 .expresive-text {
     font-family: inter;
-    font-size: 24px;
+    font-weight: bolder;
 }
 
 .plain-text-font {
@@ -201,7 +193,11 @@ h3 {
 }
 
 .large-text {
-    font-size: 18px;
+    font-size: 16px;
+}
+
+.ultra-text {
+    font-size: 24px;
 }
 
 .mayus {
@@ -359,18 +355,18 @@ pre,
 }
 
 .colored-blur {
-    background: var(--app_light_transparent);
+    background: var(--app_light_overlay_ui);
     backdrop-filter: blur(50px);
 }
 
 .colored-saturate-blur {
-    background: var(--app_light_transparent);
+    background: var(--app_light_translucent);
     filter: saturate(2);
     backdrop-filter: blur(50px);
 }
 
-.colored-overlay {
-    background: var(--app_light_transparent);
+.translucent-colored {
+    background: var(--app_light_translucent);
     position: fixed;
     top: 0;
     left: 0;
@@ -735,7 +731,7 @@ pre,
 }
 
 .option-input::placeholder {
-    color: var(--app_dark_transparent);
+    color: var(--app_dark_overlay_ui);
 }
 
 .option-radio2 {
@@ -752,7 +748,7 @@ pre,
 }
 
 .option-radio2:has(input:checked) {
-    border-color: var(--app_dark_transparent);
+    border-color: var(--app_dark_translucent);
 }
 
 .option-btn-warning {
@@ -973,7 +969,6 @@ input:checked+.slider::before {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: inter;
     font-size: 36px;
     width: 80px;
     height: 80px;
@@ -1375,15 +1370,15 @@ input:checked+.slider::before {
     }
 
     .colored-blur {
-        background: var(--app_dark_transparent);
+        background: var(--app_dark_overlay_ui);
     }
 
     .colored-saturate-blur {
-        background: var(--app_dark_transparent);
+        background: var(--app_dark_translucent);
     }
 
-    .colored-overlay {
-        background: var(--app_dark_transparent);
+    .translucent-colored {
+        background: var(--app_dark_translucent);
     }
 
     .radio-ico {
@@ -1448,7 +1443,7 @@ input:checked+.slider::before {
     }
 
     .option-radio2:has(input:checked) {
-        border-color: var(--app_light_transparent);
+        border-color: var(--app_light_translucent);
     }
 
     .option-input {
@@ -1461,7 +1456,7 @@ input:checked+.slider::before {
     }
 
     .option-input::placeholder {
-        color: var(--app_light_transparent);
+        color: var(--app_light_overlay_ui);
     }
 
     .password-field input {

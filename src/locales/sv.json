@@ -130,7 +130,11 @@
         "exe-command": "Kör kommando",
         "empty-command": "Inget kommando angavs",
         "placeholder-loading": "Låser upp dina nycklar och anteckningar...",
-        "language-changed": "Språk ändrat framgångsrikt."
+        "language-changed": "Språk ändrat framgångsrikt.",
+        "order-by-date": "Efter datum",
+        "order-by-name": "Efter namn",
+        "order-by-color": "Efter färg",
+        "order-by-only-favorites": "Endast favoriter"
     },
     "card": {
         "user": "Användare:",
