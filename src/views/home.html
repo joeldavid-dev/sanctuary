@@ -22,8 +22,8 @@
 <body>
     <div class="layout horizontal-flex">
         <!-- Sidebar -->
-        <aside id="sidebar" class="sidebar normal-padding vertical-flex centered spaced">
-            <div class="vertical-flex big-spaced">
+        <aside id="sidebar" class="sidebar vertical-flex centered spaced">
+            <div class="vertical-flex big-spaced normal-padding">
                 <div class="vertical-flex centered">
                     <button id="lock-btn" class="transparent-btn transparent-btn-padding minimal-rounded">
                         <img src="../assets/ico/feather/lock.svg" class="normal-icon darkmode-invert">
@@ -66,12 +66,15 @@
 
             </div>
 
-            <button id="app-btn" class="transparent-btn transparent-btn-padding minimal-rounded">
-                <img id="app-icon" src="../assets/ico/sanctuary.png" class="normal-icon">
-                <div id="update-container" class="update-container">
-                    <img id="update-img" src="../assets/ico/feather/arrow-down.svg" class="update-icon mini-icon-white">
-                </div>
-            </button>
+            <div id="hollydays-background" class="vertical-flex centered normal-padding background-image">
+                <button id="app-btn" class="transparent-btn transparent-btn-padding minimal-rounded">
+                    <img id="app-icon" src="../assets/ico/sanctuary.png" class="normal-icon">
+                    <div id="update-container" class="update-container">
+                        <img id="update-img" src="../assets/ico/feather/arrow-down.svg"
+                            class="update-icon mini-icon-white">
+                    </div>
+                </button>
+            </div>
         </aside>
 
         <!-- Contenido -->

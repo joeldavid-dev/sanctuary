@@ -1230,6 +1230,11 @@ input:checked+.slider::before {
     display: flex;
 }
 
+.background-image {
+    background-size: cover;
+    background-position: center;
+}
+
 /* Clases para aplicar animaciones */
 .pulse-animation {
     animation: pulse 4s infinite;

@@ -10,6 +10,9 @@ export function showAboutModal() {
         // Constantes y variables auxiliares
         const translations = await window.sanctuaryAPI.getTranslations('about');
         const constants = await window.sanctuaryAPI.getConstants();
+        const today = new Date();
+        const day = today.getDate();
+        const month = today.getMonth() + 1;
 
         // Elementos HTML ya existentes que se usarán
         const modal = document.getElementById('modal');
@@ -22,6 +25,7 @@ export function showAboutModal() {
         modalBody.innerHTML = await getModalHTML(translations, constants);
 
         // Elementos HTML insertados en el esqueleto
+        const appIcon = document.getElementById('app-icon-about');
         const myLinkBtn = document.getElementById('my-link-btn');
         const iconsLinkBtn = document.getElementById('icons-link-btn');
         const illustrationsLinkBtn = document.getElementById('illustrations-link-btn');
@@ -30,6 +34,30 @@ export function showAboutModal() {
         // Establecer valores iniciales
         modalContent.style.width = '460px';
         modalTitle.textContent = replaceKeysInText(translations['title'], { 'appName': constants.about.appName });
+
+        // Easter egg
+        // Icono del día del medio ambiente el 5 de junio
+        if (day === 5 && month === 6) {
+            appIcon.src = '../assets/ico/sanctuary-earth.png';
+        }
+        // Icono del día de independencia de México el 15 y 16 de septiembre
+        if (day === 15 || day === 16 && month === 9) {
+            appIcon.src = '../assets/ico/sanctuary-mexico.png';
+        }
+        // Icono de halloween el 31 de octubre
+        if (day === 31 && month === 10) {
+            appIcon.src = '../assets/ico/sanctuary-halloween.png';
+        }
+        // Icono del día de muertos el 1 y 2 de noviembre
+        if (day === 1 || day === 2 && month === 11) {
+            appIcon.src = '../assets/ico/sanctuary-purple-pink.png';
+        }
+        // Icono de navidad desde el 20 de diciembre hasta el 31 de diciembre
+        if (month === 12 && day >= 20 && day <= 31) {
+            appIcon.src = '../assets/ico/sanctuary-christmas.png';
+        }
+
+
         constants.wallpapers.forEach(element => {
             wallpapersAboutArea.appendChild(getWallpaperIconHTML(element.name, replaceKeysInText(translations['Wallpaper-info'], {
                 'author': element.author, 'platform': element.platform
@@ -82,7 +110,7 @@ async function getModalHTML(translations, constants) {
     return `
     <div class="vertical-flex big-spaced normal-padding">
         <div class="vertical-flex centered big-spaced top-bottom-big-margin">
-            <img src="../assets/ico/sanctuary.png" class="icon-25">
+            <img id="app-icon-about" src="../assets/ico/sanctuary.png" class="icon-25">
             <div class="vertical-flex centered minimal-spaced">
                 <div class="horizontal-flex minimal-spaced centered">
                     <img src="../assets/ico/Logo.svg" class="logo-icon">

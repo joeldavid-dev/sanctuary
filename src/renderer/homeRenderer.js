@@ -915,11 +915,40 @@ document.addEventListener("DOMContentLoaded", async () => {
     function checkHollydays() {
         const today = new Date();
         const day = today.getDate();
-        const month = today.getMonth() + 1; // Los meses van de 0 a 11
+        const month = today.getMonth() + 1;
 
-        // Icono navideño todo el mes de diciembre
-        if (month === 12) {
-            document.getElementById('app-icon').src = '../assets/ico/sanctuary-christmas.png';
+        // Icono de año nuevo el 1 de enero
+        if (day === 1 && month === 1) {
+            document.getElementById('hollydays-background').style.backgroundImage = 'url("../assets/ico/new-year-bg.png")';
+        }
+
+        // Icono del día del medio ambiente el 5 de junio
+        if (day === 5 && month === 6) {
+            document.getElementById('app-icon').src = '../assets/ico/sanctuary-earth.png';
+        }
+
+        // Icono de la independencia de México el 15 y 16 de septiembre
+        if (day === 15 || day === 16 && month === 9) {
+            document.getElementById('hollydays-background').style.backgroundImage = 'url("../assets/ico/mexican-independence-bg.png")';
+            document.getElementById('app-icon').src = '../assets/ico/sanctuary-mexico.png';
+        }
+
+        // Icono de halloween el 31 de octubre
+        if (day === 31 && month === 10) {
+            document.getElementById('hollydays-background').style.backgroundImage = 'url("../assets/ico/halloween-bg.png")';
+            document.getElementById('app-icon').src = '../assets/ico/sanctuary-purple.png';
+        }
+
+        // Icono de día de los muertos el 1 y 2 de noviembre
+        if (day === 1 || day === 2 && month === 11) {
+            document.getElementById('hollydays-background').style.backgroundImage = 'url("../assets/ico/day-of-the-dead-bg.png")';
+            document.getElementById('app-icon').src = '../assets/ico/sanctuary-purple-pink.png';
+        }
+
+        // Icono navideño desde el 20 de diciembre hasta el 31 de diciembre
+        if (month === 12 && day >= 20 && day <= 31) {
+            document.getElementById('hollydays-background').style.backgroundImage = 'url("../assets/ico/christmas-bg.png")';
+            document.getElementById('app-icon').src = '../assets/ico/sanctuary-christmas-snow.png';
         }
     }
 
