@@ -139,7 +139,7 @@
     "card": {
         "user": "ユーザー名：",
         "password": "パスワード：",
-        "url": "URL：",
+        "note": "メモ:",
         "new-card": "新しいキー"
     },
     "note": {
@@ -152,13 +152,15 @@
         "title-new-note": "新しいノート",
         "title-edit-note": "ノートを編集",
         "name": "名前：",
-        "name-placeholder": "名前",
         "user": "ユーザー名：",
-        "user-placeholder": "ユーザー名 (オプション)",
         "password": "パスワード：",
-        "password-placeholder": "パスワード",
         "url": "URL：",
-        "url-placeholder": "https://example.com (オプション)",
+        "note": "メモ:",
+        "name-placeholder": "必須",
+        "user-placeholder": "任意",
+        "password-placeholder": "必須",
+        "url-placeholder": "任意",
+        "note-placeholder": "任意",
         "color": "色：",
         "favorite": "お気に入り",
         "preview": "プレビュー：",

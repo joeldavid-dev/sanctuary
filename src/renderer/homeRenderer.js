@@ -148,8 +148,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                     mainContent.appendChild(createCardElement(element, index, cardTranslations));
                     // Agregar el nombre después de crear el elemento para evitar inyección de código malicioso
                     document.getElementById(`card-name-${element.id}`).textContent = element.name;
-                    // Agregar la ruta web después de crear el elemento para evitar inyección de código malicioso
-                    document.getElementById(`card-web-${element.id}`).textContent = element.web;
+                    // Agregar la nota de la clave después de crear el elemento para evitar inyección de código malicioso
+                    document.getElementById(`card-note-${element.id}`).textContent = element.note;
                 });
             }
             else if (actualPage === 'notes') {
@@ -439,30 +439,36 @@ document.addEventListener("DOMContentLoaded", async () => {
     //Funciones de los botones de la bottonbar ===================================================
     // Clic en el botón para crar un nuevo elemento
     newElement.addEventListener('click', async () => {
-        let confirm;
-        // Si estamos en la vista de llaves, mostrar el modal para crear una tarjeta
-        if (actualPage === 'keys') {
-            confirm = await showNewEditCardModal('create');
-        }
-        else if (actualPage === 'notes') {
-            // Si estamos en la vista de notas, mostrar el modal para crear una nota
-            confirm = await showNewEditNoteModal('create');
-        }
+        try {
+            let confirm;
+            // Si estamos en la vista de llaves, mostrar el modal para crear una tarjeta
+            if (actualPage === 'keys') {
+                confirm = await showNewEditCardModal('create');
+            }
+            else if (actualPage === 'notes') {
+                // Si estamos en la vista de notas, mostrar el modal para crear una nota
+                confirm = await showNewEditNoteModal('create');
+            }
+            if (!confirm.success) return;
 
-        if (confirm.success) {
             actualPreparedElements.push(confirm.generated);
             if (searchMode === 'searching') {
                 showContent(search(searchTerm));
             } else if (searchMode === 'none') {
                 showContent(actualPreparedElements);
             }
+            showToast(confirm.message);
         }
-        if (confirm.message) showToast(confirm.message);
+        catch (err) {
+            showToast(err.message, true);
+        }
     });
 
     // Clic en el botón para editar un elemento seleccionado
     editElement.addEventListener('click', async () => {
-        if (selectedPreparedElement) {
+        if (!selectedPreparedElement) return;
+
+        try {
             let selectedElement;
             if (actualPage === 'keys') {
                 selectedElement = await window.sanctuaryAPI.decryptPreparedCard(selectedPreparedElement);
@@ -472,47 +478,50 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
             // Si el elemento se descifró correctamente, mostrar el modal de edición
-            if (selectedElement.success) {
-                let confirm;
-                if (actualPage === 'keys') {
-                    confirm = await showNewEditCardModal('edit', selectedElement.data);
-                } else if (actualPage === 'notes') {
-                    confirm = await showNewEditNoteModal('edit', selectedElement.data);
-                }
-
-                if (confirm.success) {
-                    const actualIndex = actualPreparedElements.findIndex(element => element.id == selectedElement.data.id);
-                    // Actualizar el elemento en la lista de elementos preparados que se está mostrando
-                    actualPreparedElements[actualIndex] = confirm.edited;
-                    if (searchMode === 'searching') {
-                        showContent(search(searchTerm));
-                    } else if (searchMode === 'none') {
-                        showContent(actualPreparedElements);
-                    }
-                }
-                if (confirm.message) showToast(confirm.message);
-            } else {
-                showToast(selectedElement.message);
+            let confirm;
+            if (actualPage === 'keys') {
+                confirm = await showNewEditCardModal('edit', selectedElement.data);
+            } else if (actualPage === 'notes') {
+                confirm = await showNewEditNoteModal('edit', selectedElement.data);
             }
+            if (!confirm.success) return;
+
+            const actualIndex = actualPreparedElements.findIndex(element => element.id == selectedElement.data.id);
+            // Actualizar el elemento en la lista de elementos preparados que se está mostrando
+            actualPreparedElements[actualIndex] = confirm.edited;
+            if (searchMode === 'searching') {
+                showContent(search(searchTerm));
+            } else if (searchMode === 'none') {
+                showContent(actualPreparedElements);
+            }
+            showToast(confirm.message);
+        }
+        catch (err) {
+            showToast(err.message, true);
         }
     });
 
     // Clic en el botón para eliminar el elemento seleccionado
     deleteElement.addEventListener('click', async () => {
-        if (selectedPreparedElement) {
-            const confirm = await showDeleteModal(selectedPreparedElement, actualPage);
-            if (confirm.success) {
-                // Eliminar el elemento de la lista de elementos mostrados
-                const actualIndex = actualPreparedElements.findIndex(element => element.id == selectedPreparedElement.id);
-                actualPreparedElements.splice(actualIndex, 1);
+        if (!selectedPreparedElement) return;
 
-                if (searchMode === 'searching') {
-                    showContent(search(searchTerm));
-                } else if (searchMode === 'none') {
-                    showContent(actualPreparedElements);
-                }
+        try {
+            const confirm = await showDeleteModal(selectedPreparedElement, actualPage);
+            if (!confirm.success) return;
+
+            // Eliminar el elemento de la lista de elementos mostrados
+            const actualIndex = actualPreparedElements.findIndex(element => element.id == selectedPreparedElement.id);
+            actualPreparedElements.splice(actualIndex, 1);
+
+            if (searchMode === 'searching') {
+                showContent(search(searchTerm));
+            } else if (searchMode === 'none') {
+                showContent(actualPreparedElements);
             }
-            if (confirm.message) showToast(confirm.message);
+            showToast(confirm.message);
+        }
+        catch (err) {
+            showToast(err.message, true);
         }
     });
 

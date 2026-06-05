@@ -58,6 +58,15 @@ async function encryptCard(masterKey, newCard) {
         webEncrypted = cipherWeb.update(newCard.web, 'utf8', 'hex');
         webEncrypted += cipherWeb.final('hex');
     }
+
+    // Cifrado de la nota de la clave (si existe)
+    let cardNoteEncrypted = null;
+    if (newCard.note !== null && newCard.note !== '') {
+        const cipherNote = crypto.createCipheriv(algorithm, key, iv);
+        cardNoteEncrypted = cipherNote.update(newCard.note, 'utf8', 'hex');
+        cardNoteEncrypted += cipherNote.final('hex');
+    }
+
     // Retornar la tarjeta cifrada
     return {
         id: newCard.id,
@@ -65,6 +74,7 @@ async function encryptCard(masterKey, newCard) {
         user: userEncrypted,
         password: passwordEncrypted,
         web: webEncrypted,
+        note: cardNoteEncrypted,
         color: newCard.color,
         favorite: newCard.favorite,
         salt: salt.toString('hex'), // Guardamos el salt
@@ -90,13 +100,23 @@ async function prepareCard(masterKey, encryptedCard) {
         webDecrypted = decipherWeb.update(encryptedCard.web, 'hex', 'utf8');
         webDecrypted += decipherWeb.final('utf8');
     }
-    // Retornar la tarjeta preparada, solo el nombre y el sitio web descifrados
+
+    // Descifrado de la nota de clave (si existe)
+    let cardNoteDecrypted = null;
+    if (encryptedCard.note !== null && encryptedCard.note !== '') {
+        const decipherNote = crypto.createDecipheriv(algorithm, key, iv);
+        cardNoteDecrypted = decipherNote.update(encryptedCard.note, 'hex', 'utf8');
+        cardNoteDecrypted += decipherNote.final('utf8');
+    }
+
+    // Retornar la tarjeta preparada, solo el nombre, el sitio web y la nota de clave descifrados
     return {
         id: encryptedCard.id,
         name: nameDecrypted,
         user: encryptedCard.user, // Mantenemos el usuario cifrado
         password: encryptedCard.password, // Mantenemos la contraseña cifrada
         web: webDecrypted,
+        note: cardNoteDecrypted,
         color: encryptedCard.color,
         favorite: encryptedCard.favorite,
         salt: encryptedCard.salt,
@@ -130,6 +150,7 @@ async function decryptPreparedCard(masterKey, preparedCard) {
         user: userDecrypted,
         password: passwordDecrypted,
         web: preparedCard.web,
+        note: preparedCard.note,
         color: preparedCard.color,
         favorite: preparedCard.favorite,
     };
@@ -166,6 +187,15 @@ async function decryptCard(masterKey, encryptedCard) {
         webDecrypted = decipherWeb.update(encryptedCard.web, 'hex', 'utf8');
         webDecrypted += decipherWeb.final('utf8');
     }
+
+    // Descifrado de la nota de clave (si existe)
+    let cardNoteDecrypted = null;
+    if (encryptedCard.note !== null && encryptedCard.note !== '') {
+        const decipherNote = crypto.createDecipheriv(algorithm, key, iv);
+        cardNoteDecrypted = decipherNote.update(encryptedCard.note, 'hex', 'utf8');
+        cardNoteDecrypted += decipherNote.final('utf8');
+    }
+
     // Retornar la tarjeta descifrada
     return {
         id: encryptedCard.id,
@@ -173,6 +203,7 @@ async function decryptCard(masterKey, encryptedCard) {
         user: userDecrypted,
         password: passwordDecrypted,
         web: webDecrypted,
+        note: cardNoteDecrypted,
         color: encryptedCard.color,
         favorite: encryptedCard.favorite,
         createdAt: encryptedCard.created_at,

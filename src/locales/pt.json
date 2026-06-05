@@ -139,7 +139,7 @@
     "card": {
         "user": "Usuário:",
         "password": "Senha:",
-        "url": "URL:",
+        "note": "Nota:",
         "new-card": "Nova chave"
     },
     "note": {
@@ -152,13 +152,15 @@
         "title-new-note": "Nova Nota",
         "title-edit-note": "Editar Nota",
         "name": "Nome:",
-        "name-placeholder": "Nome",
         "user": "Usuário:",
-        "user-placeholder": "Usuário (opcional)",
         "password": "Senha:",
-        "password-placeholder": "Senha",
         "url": "URL:",
-        "url-placeholder": "https://exemplo.com (opcional)",
+        "note": "Nota:",
+        "name-placeholder": "Obrigatório",
+        "user-placeholder": "Opcional",
+        "password-placeholder": "Obrigatório",
+        "url-placeholder": "Opcional",
+        "note-placeholder": "Opcional",
         "color": "Cor:",
         "favorite": "Favorito",
         "preview": "Pré-visualização:",

@@ -139,7 +139,7 @@
     "card": {
         "user": "Пользователь:",
         "password": "Пароль:",
-        "url": "URL:",
+        "note": "Заметка:",
         "new-card": "Новый ключ"
     },
     "note": {
@@ -152,13 +152,15 @@
         "title-new-note": "Новая Заметка",
         "title-edit-note": "Редактировать Заметку",
         "name": "Имя:",
-        "name-placeholder": "Имя",
         "user": "Пользователь:",
-        "user-placeholder": "Пользователь (необязательно)",
         "password": "Пароль:",
-        "password-placeholder": "Пароль",
         "url": "URL:",
-        "url-placeholder": "https://example.com (необязательно)",
+        "note": "Заметка:",
+        "name-placeholder": "Обязательно",
+        "user-placeholder": "Необязательно",
+        "password-placeholder": "Обязательно",
+        "url-placeholder": "Необязательно",
+        "note-placeholder": "Необязательно",
         "color": "Цвет:",
         "favorite": "Избранное",
         "preview": "Предпросмотр:",

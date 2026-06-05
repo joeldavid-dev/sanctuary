@@ -139,7 +139,7 @@
     "card": {
         "user": "Användare:",
         "password": "Lösenord:",
-        "url": "URL:",
+        "note": "Anteckning:",
         "new-card": "Ny nyckel"
     },
     "note": {
@@ -152,13 +152,15 @@
         "title-new-note": "Ny Anteckning",
         "title-edit-note": "Redigera Anteckning",
         "name": "Namn:",
-        "name-placeholder": "Namn",
         "user": "Användare:",
-        "user-placeholder": "Användare (valfritt)",
         "password": "Lösenord:",
-        "password-placeholder": "Lösenord",
         "url": "URL:",
-        "url-placeholder": "https://exempel.se (valfritt)",
+        "note": "Anteckning:",
+        "name-placeholder": "Krävs",
+        "user-placeholder": "Valfritt",
+        "password-placeholder": "Krävs",
+        "url-placeholder": "Valfritt",
+        "note-placeholder": "Valfritt",
         "color": "Färg:",
         "favorite": "Favorit",
         "preview": "Förhandsgranskning:",

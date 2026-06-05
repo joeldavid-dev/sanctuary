@@ -139,7 +139,7 @@
     "card": {
         "user": "用户名：",
         "password": "密码：",
-        "url": "网址：",
+        "note": "备注：",
         "new-card": "新密钥"
     },
     "note": {
@@ -152,13 +152,15 @@
         "title-new-note": "新笔记",
         "title-edit-note": "编辑笔记",
         "name": "名称：",
-        "name-placeholder": "名称",
         "user": "用户名：",
-        "user-placeholder": "用户名（可选）",
         "password": "密码：",
-        "password-placeholder": "密码",
         "url": "网址：",
-        "url-placeholder": "https://example.com（可选）",
+        "note": "备注：",
+        "name-placeholder": "必填",
+        "user-placeholder": "选填",
+        "password-placeholder": "必填",
+        "url-placeholder": "选填",
+        "note-placeholder": "选填",
         "color": "颜色：",
         "favorite": "收藏",
         "preview": "预览：",

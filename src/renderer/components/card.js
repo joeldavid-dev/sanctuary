@@ -14,9 +14,11 @@ export function createCardElement(card, index, translations) {
         cardBody.style.color = 'black'; // Cambia el color del texto
     }
 
-    const heartVisible = (card.favorite == 1) ? 'visible' : 'invisible'; // Cambia la visibilidad del icono de favorito
-    const userVisible = (card.user == null || card.user == '') ? 'invisible' : 'visible'; // Cambia la visibilidad del usuario
-    const urlVisible = (card.web == null || card.web == '') ? 'invisible' : 'visible'; // Cambia la visibilidad de la url
+    // Visibilidad de elementos
+    const heartVisible = (card.favorite == 1) ? 'visible' : 'invisible';
+    const userVisible = (card.user == null || card.user == '') ? 'invisible' : 'visible';
+    const urlVisible = (card.web == null || card.web == '') ? 'invisible' : 'visible';
+    const noteVisible = (card.note == null || card.note == '') ? 'invisible' : 'visible';
 
     // Crea el contenido de la tarjeta
     const cardHTML = `
@@ -40,9 +42,9 @@ export function createCardElement(card, index, translations) {
                 <p id="pass-${card.id}" class="small-text selectable-text">••••••••</p>
             </div>
 
-            <div class="${urlVisible}">
-                <strong class="minimum-text">${translations['url']}</strong>
-                <p id="card-web-${card.id}" class="small-text overflow-hidden"></p>
+            <div class="${noteVisible}">
+                <strong class="minimum-text">${translations['note']}</strong>
+                <p id="card-note-${card.id}" class="small-text"></p>
             </div>
 
             <div class="horizontal-elem-area spaced centered">

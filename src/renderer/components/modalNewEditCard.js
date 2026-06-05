@@ -26,6 +26,7 @@ export function showNewEditCardModal(mode, card) {
         const userInput = document.getElementById('user-input');
         const passInput = document.getElementById('pass-input');
         const urlInput = document.getElementById('url-input');
+        const noteInput = document.getElementById('cardNote-input');
         const favoriteSwitch = document.getElementById('favorite-switch');
         const colorsSection = document.getElementById('colors-section');
         const newEditDone = document.getElementById('new-edit-done');
@@ -35,8 +36,8 @@ export function showNewEditCardModal(mode, card) {
         const userPreviewSection = document.getElementById('user-preview-section');
         const userPreview = document.getElementById('user-preview');
         const passPreview = document.getElementById('pass-preview');
-        const urlPreviewSection = document.getElementById('url-preview-section');
-        const urlPreview = document.getElementById('url-preview');
+        const cardNotePreviewSection = document.getElementById('cardNote-preview-section');
+        const cardNotePreview = document.getElementById('cardNote-preview');
         const openLinkPreview = document.getElementById('open-link-preview');
         const icoLove = document.getElementById('ico-love');
 
@@ -47,7 +48,7 @@ export function showNewEditCardModal(mode, card) {
             colorSelected = 'var(--color1)';
             favoriteValue = false;
             userPreviewSection.style.display = 'none';
-            urlPreviewSection.style.display = 'none';
+            cardNotePreviewSection.style.display = 'none';
             icoLove.style.display = 'none';
             openLinkPreview.style.display = 'none';
         }
@@ -58,6 +59,7 @@ export function showNewEditCardModal(mode, card) {
             userInput.value = card.user || '';
             passInput.value = card.password;
             urlInput.value = card.web || '';
+            noteInput.value = card.note || '';
             // Actualizar las variables de valores
             favoriteValue = card.favorite;
             colorSelected = card.color;
@@ -65,12 +67,13 @@ export function showNewEditCardModal(mode, card) {
             namePreview.textContent = card.name;
             (card.user) ? userPreview.textContent = card.user : userPreviewSection.style.display = 'none';
             passPreview.textContent = card.password;
-            if (card.web) {
-                urlPreview.textContent = card.web;
-            } else {
-                urlPreviewSection.style.display = 'none';
-                openLinkPreview.style.display = 'none';
+            if (card.note) {
+                cardNotePreviewSection.style.display = 'block';
+                cardNotePreview.textContent = card.note;
             }
+            else cardNotePreviewSection.style.display = 'none';
+            if (card.web) openLinkPreview.style.display = 'block'
+            else openLinkPreview.style.display = 'none';
             // Marcar el color seleccionado
             document.querySelector(`input[name="color"][value="${colorSelected}"]`).checked = true;
             // Marcar el switch de favorito si es necesario
@@ -101,15 +104,15 @@ export function showNewEditCardModal(mode, card) {
             passPreview.textContent = passInput.value.trim();
         }
         const urlAction = () => {
-            if (urlInput.value.length > 0) {
-                urlPreview.textContent = urlInput.value.trim();
-                urlPreviewSection.style.display = 'block';
-                openLinkPreview.style.display = 'block';
+            if (urlInput.value.length > 0) openLinkPreview.style.display = 'block';
+            else openLinkPreview.style.display = 'none';
+        }
+        const noteAction = () => {
+            if (noteInput.value.length > 0) {
+                cardNotePreviewSection.style.display = 'block';
+                cardNotePreview.textContent = noteInput.value.trim();
             }
-            else {
-                urlPreviewSection.style.display = 'none';
-                openLinkPreview.style.display = 'none';
-            }
+            else cardNotePreviewSection.style.display = 'none';
         }
         const favoriteAction = (event) => {
             if (event.target.checked) {
@@ -136,12 +139,14 @@ export function showNewEditCardModal(mode, card) {
             const user = userInput.value.trim();
             const password = passInput.value.trim();
             const web = urlInput.value.trim();
+            const note = noteInput.value.trim();
 
             const newEditCard = {
                 name: name,
                 user: user,
                 password: password,
                 web: web,
+                note: note,
                 color: colorSelected,
                 favorite: favoriteValue
             }
@@ -197,6 +202,7 @@ export function showNewEditCardModal(mode, card) {
         userInput.addEventListener('input', userAction);
         passInput.addEventListener('input', passAction);
         urlInput.addEventListener('input', urlAction);
+        noteInput.addEventListener('input', noteAction);
         favoriteSwitch.addEventListener('change', favoriteAction);
         colorsSection.addEventListener('change', colorsAction);
         newEditDone.addEventListener('click', doneAction);
@@ -211,6 +217,7 @@ export function showNewEditCardModal(mode, card) {
             userInput.removeEventListener('input', userAction);
             passInput.removeEventListener('input', passAction);
             urlInput.removeEventListener('input', urlAction);
+            noteInput.removeEventListener('input', noteAction);
             favoriteSwitch.removeEventListener('change', favoriteAction);
             colorsSection.removeEventListener('change', colorsAction);
             newEditDone.removeEventListener('click', doneAction);
@@ -228,7 +235,8 @@ function getModalHTML(translations, cardTranslations) {
         <div class="horizontal-elem-area centered modal-margin">
             <div class="vertical-elem-area normal-padding normal-rounded div-options min-content">
                 <label>${translations['name']}</label>
-                <input type="text" id="name-input" class="option-input minimal-rounded" placeholder=${translations["name-placeholder"]}>
+                <input type="text" id="name-input" class="option-input minimal-rounded" 
+                    placeholder=${translations["name-placeholder"]}>
                 <label>${translations['user']}</label>
                 <input type="text" id="user-input" class="option-input minimal-rounded"
                     placeholder=${translations['user-placeholder']}>
@@ -238,7 +246,10 @@ function getModalHTML(translations, cardTranslations) {
                 <label>${translations['url']}</label>
                 <input type="text" inputmode="url" id="url-input" class="option-input minimal-rounded"
                     placeholder=${translations['url-placeholder']}>
-
+                <label>${translations['note']}</label>
+                <input type="text" id="cardNote-input" class="option-input minimal-rounded"
+                    placeholder=${translations['note-placeholder']}>
+                
                 <div class="horizontal-flex spaced centered">
                     <labe>${translations['favorite']}</labe>
                     <label id="favorite-switch" class="switch">
@@ -271,9 +282,9 @@ function getModalHTML(translations, cardTranslations) {
                         <p id="pass-preview" class="small-text wrapped-text"></p>
                     </div>
 
-                    <div id="url-preview-section">
-                        <strong class="minimum-text">${cardTranslations['url']}</strong>
-                        <p id="url-preview" class="small-text overflow-hidden"></p>
+                    <div id="cardNote-preview-section">
+                        <strong class="minimum-text">${cardTranslations['note']}</strong>
+                        <p id="cardNote-preview" class="small-text"></p>
                     </div>
 
                     <div class="horizontal-elem-area spaced centered">

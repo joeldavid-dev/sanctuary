@@ -56,6 +56,31 @@ db.run(`CREATE TABLE IF NOT EXISTS notesData (
     created_at TEXT DEFAULT CURRENT_TIMESTAMP
     )`);
 
+// Actualización de tablas en la versión 1.3.0, version 2 del esquema.
+getSchemaVersion().then(version => {
+    if (version < 2) {
+        db.run(`ALTER TABLE cardsData ADD COLUMN note TEXT`, (err) => {
+            if (err) {
+                console.error(err.message);
+            }
+        });
+
+        db.run(`ALTER TABLE cardsData ADD COLUMN updated_at TEXT`, (err) => {
+            if (err) {
+                console.error(err.message);
+            }
+        });
+
+        db.run(`ALTER TABLE notesData ADD COLUMN updated_at TEXT`, (err) => {
+            if (err) {
+                console.error(err.message);
+            }
+        });
+
+        db.run(`PRAGMA user_version = 2`);
+    }
+});
+
 // Función para crear un usuario
 function addUser(name, gender, hash) {
     return new Promise((resolve, reject) => {
@@ -123,10 +148,10 @@ function deleteAll() {
 function createCard(card) {
     return new Promise((resolve, reject) => {
         const query = `INSERT INTO cardsData 
-        (name, user, password, web, color, favorite, salt, iv) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+        (name, user, password, web, note, color, favorite, salt, iv, updated_at) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)`;
 
-        db.run(query, [card.name, card.user, card.password, card.web,
+        db.run(query, [card.name, card.user, card.password, card.web, card.note,
         card.color, card.favorite, card.salt, card.iv], function (err) {
             if (err) {
                 return reject(err);
@@ -160,10 +185,10 @@ function deleteCard(id) {
 function updateCard(id, card) {
     return new Promise((resolve, reject) => {
         const query = `UPDATE cardsData SET 
-        name = ?, user = ?, password = ?, web = ?, color = ?, favorite = ?, salt = ?, iv = ? 
+        name = ?, user = ?, password = ?, web = ?, note = ?, color = ?, favorite = ?, salt = ?, iv = ? , updated_at = CURRENT_TIMESTAMP
         WHERE id = ?`;
 
-        db.run(query, [card.name, card.user, card.password, card.web,
+        db.run(query, [card.name, card.user, card.password, card.web, card.note,
         card.color, card.favorite, card.salt, card.iv, id], function (err) {
             if (err) {
                 return reject(err);
@@ -197,8 +222,8 @@ function getAllCards() {
 function createNote(note) {
     return new Promise((resolve, reject) => {
         const query = `INSERT INTO notesData 
-        (name, content, color, favorite, salt, iv) 
-        VALUES (?, ?, ?, ?, ?, ?)`;
+        (name, content, color, favorite, salt, iv, updated_at) 
+        VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)`;
 
         db.run(query, [note.name, note.content, note.color, note.favorite,
         note.salt, note.iv], function (err) {
@@ -234,7 +259,7 @@ function deleteNote(id) {
 function updateNote(id, note) {
     return new Promise((resolve, reject) => {
         const query = `UPDATE notesData SET 
-        name = ?, content = ?, color = ?, favorite = ?, salt = ?, iv = ? 
+        name = ?, content = ?, color = ?, favorite = ?, salt = ?, iv = ?, updated_at = CURRENT_TIMESTAMP
         WHERE id = ?`;
 
         db.run(query, [note.name, note.content,
@@ -265,6 +290,21 @@ function getAllNotes() {
             }
         });
     });
+}
+
+// Obtener la versión del esquema
+function getSchemaVersion() {
+    return new Promise((resolve, reject) => {
+        db.get("PRAGMA user_version", (err, row) => {
+            if (err) reject(err);
+            else resolve(row.user_version);
+        });
+    });
+}
+
+// Establecer versión de esquema
+function setSchemaVersion() {
+    db.run();
 }
 
 module.exports = { addUser, getUser, updateUser, deleteAll, createCard, deleteCard, updateCard, getAllCards, createNote, deleteNote, updateNote, getAllNotes };

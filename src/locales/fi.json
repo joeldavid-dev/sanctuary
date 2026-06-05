@@ -139,7 +139,7 @@
     "card": {
         "user": "Käyttäjä:",
         "password": "Salasana:",
-        "url": "URL:",
+        "note": "Muistiinpano:",
         "new-card": "Uusi avain"
     },
     "note": {
@@ -152,13 +152,15 @@
         "title-new-note": "Uusi Muistiinpano",
         "title-edit-note": "Muokkaa Muistiinpanoa",
         "name": "Nimi:",
-        "name-placeholder": "Nimi",
         "user": "Käyttäjä:",
-        "user-placeholder": "Käyttäjä (valinnainen)",
         "password": "Salasana:",
-        "password-placeholder": "Salasana",
         "url": "URL:",
-        "url-placeholder": "https://esimerkki.fi (valinnainen)",
+        "note": "Muistiinpano:",
+        "name-placeholder": "Pakollinen",
+        "user-placeholder": "Valinnainen",
+        "password-placeholder": "Pakollinen",
+        "url-placeholder": "Valinnainen",
+        "note-placeholder": "Valinnainen",
         "color": "Väri:",
         "favorite": "Suosikki",
         "preview": "Esikatselu:",

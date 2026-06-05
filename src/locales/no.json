@@ -139,7 +139,7 @@
     "card": {
         "user": "Bruker:",
         "password": "Passord:",
-        "url": "URL:",
+        "note": "Notat:",
         "new-card": "Ny nøkkel"
     },
     "note": {
@@ -152,13 +152,15 @@
         "title-new-note": "Nytt Notat",
         "title-edit-note": "Rediger Notat",
         "name": "Navn:",
-        "name-placeholder": "Navn",
         "user": "Bruker:",
-        "user-placeholder": "Bruker (valgfritt)",
         "password": "Passord:",
-        "password-placeholder": "Passord",
         "url": "URL:",
-        "url-placeholder": "https://eksempel.no (valgfritt)",
+        "note": "Notat:",
+        "name-placeholder": "Påkrevd",
+        "user-placeholder": "Valgfritt",
+        "password-placeholder": "Påkrevd",
+        "url-placeholder": "Valgfritt",
+        "note-placeholder": "Valgfritt",
         "color": "Farge:",
         "favorite": "Favoritt",
         "preview": "Forhåndsvisning:",
