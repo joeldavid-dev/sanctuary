@@ -93,14 +93,6 @@ async function prepareCard(masterKey, encryptedCard) {
     let nameDecrypted = decipherName.update(encryptedCard.name, 'hex', 'utf8');
     nameDecrypted += decipherName.final('utf8');
 
-    // Descifrado del sitio web (si existe)
-    let webDecrypted = null;
-    if (encryptedCard.web !== null && encryptedCard.web !== '') {
-        const decipherWeb = crypto.createDecipheriv(algorithm, key, iv);
-        webDecrypted = decipherWeb.update(encryptedCard.web, 'hex', 'utf8');
-        webDecrypted += decipherWeb.final('utf8');
-    }
-
     // Descifrado de la nota de clave (si existe)
     let cardNoteDecrypted = null;
     if (encryptedCard.note !== null && encryptedCard.note !== '') {
@@ -109,13 +101,13 @@ async function prepareCard(masterKey, encryptedCard) {
         cardNoteDecrypted += decipherNote.final('utf8');
     }
 
-    // Retornar la tarjeta preparada, solo el nombre, el sitio web y la nota de clave descifrados
+    // Retornar la tarjeta preparada, solo el nombre, y la nota de clave descifrados
     return {
         id: encryptedCard.id,
         name: nameDecrypted,
-        user: encryptedCard.user, // Mantenemos el usuario cifrado
-        password: encryptedCard.password, // Mantenemos la contraseña cifrada
-        web: webDecrypted,
+        user: encryptedCard.user,
+        password: encryptedCard.password,
+        web: encryptedCard.web,
         note: cardNoteDecrypted,
         color: encryptedCard.color,
         favorite: encryptedCard.favorite,
@@ -144,12 +136,20 @@ async function decryptPreparedCard(masterKey, preparedCard) {
     let passwordDecrypted = decipherPass.update(preparedCard.password, 'hex', 'utf8');
     passwordDecrypted += decipherPass.final('utf8');
 
+    // Descifrado del sitio web (si existe)
+    let webDecrypted = null;
+    if (preparedCard.web !== null && preparedCard.web !== '') {
+        const decipherWeb = crypto.createDecipheriv(algorithm, key, iv);
+        webDecrypted = decipherWeb.update(preparedCard.web, 'hex', 'utf8');
+        webDecrypted += decipherWeb.final('utf8');
+    }
+
     return {
         id: preparedCard.id,
         name: preparedCard.name,
         user: userDecrypted,
         password: passwordDecrypted,
-        web: preparedCard.web,
+        web: webDecrypted,
         note: preparedCard.note,
         color: preparedCard.color,
         favorite: preparedCard.favorite,

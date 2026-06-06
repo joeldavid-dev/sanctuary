@@ -48,7 +48,7 @@ export function createCardElement(card, index, translations) {
             </div>
 
             <div class="horizontal-elem-area spaced centered">
-                <button class="external-link-btn main-element-btn ${urlVisible}" data-url="${card.web}"">
+                <button class="external-link-btn main-element-btn ${urlVisible}" data-cardID="${card.id}" data-urlVisibility="${urlVisible}">
                     <img src="../assets/ico/feather/external-link.svg" class="main-element-icon">
                 </button>
 

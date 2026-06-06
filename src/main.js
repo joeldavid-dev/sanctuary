@@ -94,10 +94,10 @@ app.whenReady().then(async () => {
 
         // Comprobar si hay actualizaciones disponibles
         autoUpdater.checkForUpdatesAndNotify().catch(err => {
-            writeLog('Error al comprobar actualizaciones:', err);
+            writeLog('Error al comprobar actualizaciones: ' + err.message);
         });
     } catch (error) {
-        writeLog('Error crítico al iniciar la app:', err)
+        writeLog('Error crítico al iniciar la app: ' + err.message)
     }
 });
 
@@ -144,7 +144,7 @@ autoUpdater.on('update-downloaded', (info) => {
 });
 
 autoUpdater.on('error', (err) => {
-    writeLog('Error en updater:', err);
+    writeLog('Error en updater: ' + err.message);
 });
 
 // Escuchar los eventos de manejo de ventana
@@ -327,7 +327,7 @@ function loadTranslations() {
         translations = JSON.parse(raw);
         mainTranslations = translations["main"];
     } catch (err) {
-        writeLog('Error al cargar traduccion: ', err);
+        writeLog('Error al cargar traduccion: ' + err.message);
     }
 };
 
@@ -336,8 +336,13 @@ ipcMain.handle('get-translations', (event, view) => {
 });
 
 // Escucha el evento para bloquear la aplicación, que carga la vista de lock.
-ipcMain.on('lock', (event) => {
+function lock() {
     mainWindow.loadFile('src/views/lock.html');
+    masterKey = null;
+}
+
+ipcMain.on('lock', (event) => {
+    lock();
 });
 
 // Mostrar dialogo de advertencia del sistema
@@ -391,7 +396,7 @@ ipcMain.handle('get-json-file', async () => {
             };
         }
     } catch (error) {
-        writeLog('Error al leer el archivo JSON:' + error.message);
+        writeLog('Error al leer el archivo JSON: ' + error.message);
         return {
             success: false,
             message: mainTranslations['json-dialog-error'],
@@ -445,7 +450,7 @@ ipcMain.handle('createID', async (event, name, password, gender) => {
     }
     // Hay errores
     catch (error) {
-        writeLog('Error al crear el usuario:' + error.message);
+        writeLog('Error al crear el usuario: ' + error.message);
         return {
             success: false,
             message: mainTranslations['createID-error'],
@@ -464,7 +469,7 @@ async function updateID(name, gender) {
     }
     // Hay errores
     catch (error) {
-        writeLog('Error al actualizar el usuario:' + error.message);
+        writeLog('Error al actualizar el usuario: ' + error.message);
         return {
             success: false,
             message: mainTranslations['updateID-error'],
@@ -491,7 +496,7 @@ ipcMain.handle('deleteID', async (event, password) => {
                 return { success: false, message: mainTranslations['deleteID-error'] };
             }
         } catch (error) {
-            writeLog('Error al eliminar el usuario:' + error.message);
+            writeLog('Error al eliminar el usuario: ' + error.message);
             return { success: false, message: mainTranslations['deleteID-error'] };
         }
     } else {
@@ -595,7 +600,7 @@ async function getUserStatus() {
         } else return false;
     }
     catch (error) {
-        writeLog('Error al obtener el estatus del usuario:' + error.message);
+        writeLog('Error al obtener el estatus del usuario: ' + error.message);
         return false;
     }
 }
@@ -642,7 +647,7 @@ ipcMain.handle('create-card', async (event, newCard) => {
             data: preparedCard,
         };
     } catch (error) {
-        writeLog('Error al crear la tarjeta:' + error.message);
+        writeLog('Error al crear la tarjeta: ' + error.message);
         return {
             success: false,
             message: mainTranslations['create-card-error'],
@@ -671,7 +676,7 @@ ipcMain.handle('update-card', async (event, id, updatedCard) => {
             data: preparedCard,
         };
     } catch (error) {
-        writeLog('Error al actualizar la tarjeta:' + error.message);
+        writeLog('Error al actualizar la tarjeta: ' + error.message);
         return {
             success: false,
             message: mainTranslations['update-card-error'],
@@ -681,16 +686,19 @@ ipcMain.handle('update-card', async (event, id, updatedCard) => {
 });
 
 // Desencriptar una tarjeta
-ipcMain.handle('decrypt-prepared-card', async (event, encryptedCard) => {
+ipcMain.handle('decrypt-card', async (event, id) => {
     try {
-        const decryptedCard = await cr.decryptPreparedCard(masterKey, encryptedCard);
+        if (!masterKey) throw new Error("Master key no establecida");
+
+        const preparedCard = preparedElements.cards.find(card => card.id == id);
+        const decryptedCard = await cr.decryptPreparedCard(masterKey, preparedCard);
         return {
             success: true,
             message: mainTranslations['decrypt-card-success'],
             data: decryptedCard,
         };
     } catch (error) {
-        writeLog('Error al desencriptar la tarjeta:' + error.message);
+        writeLog('Error al desencriptar la tarjeta: ' + error.message);
         return {
             success: false,
             message: mainTranslations['decrypt-card-error'],
@@ -714,7 +722,7 @@ ipcMain.handle('delete-card', async (event, id) => {
             };
         }
     } catch (error) {
-        writeLog('Error al eliminar la tarjeta:' + error.message);
+        writeLog('Error al eliminar la tarjeta: ' + error.message);
         return {
             success: false,
             message: mainTranslations['delete-card-error'],
@@ -740,7 +748,7 @@ ipcMain.handle('create-note', async (event, newNote) => {
             data: preparedNote,
         };
     } catch (error) {
-        writeLog('Error al crear la nota:' + error.message);
+        writeLog('Error al crear la nota: ' + error.message);
         return {
             success: false,
             message: mainTranslations['create-note-error'],
@@ -769,7 +777,7 @@ ipcMain.handle('update-note', async (event, id, updatedNote) => {
             data: preparedNote,
         };
     } catch (error) {
-        writeLog('Error al actualizar la nota:' + error.message);
+        writeLog('Error al actualizar la nota: ' + error.message);
         return {
             success: false,
             message: mainTranslations['update-note-error'],
@@ -779,35 +787,19 @@ ipcMain.handle('update-note', async (event, id, updatedNote) => {
 });
 
 // Desencriptar una nota preparada
-ipcMain.handle('decrypt-prepared-note', async (event, encryptedNote) => {
+ipcMain.handle('decrypt-note', async (event, id) => {
     try {
-        const decryptedNote = await cr.decryptPreparedNote(masterKey, encryptedNote);
-        return {
-            success: true,
-            message: mainTranslations['decrypt-note-success'],
-            data: decryptedNote,
-        };
-    } catch (error) {
-        writeLog('Error al desencriptar la nota preparada:' + error.message);
-        return {
-            success: false,
-            message: mainTranslations['decrypt-note-error'],
-            error: error.message,
-        };
-    }
-});
+        if (!masterKey) throw new Error("Master key no establecida");
 
-// Desencriptar una nota
-ipcMain.handle('decrypt-note', async (event, encryptedNote) => {
-    try {
-        const decryptedNote = await cr.decryptNote(masterKey, encryptedNote);
+        const preparedNote = preparedElements.notes.find(note => note.id == id);
+        const decryptedNote = await cr.decryptPreparedNote(masterKey, preparedNote);
         return {
             success: true,
             message: mainTranslations['decrypt-note-success'],
             data: decryptedNote,
         };
     } catch (error) {
-        writeLog('Error al desencriptar la nota:' + error.message);
+        writeLog('Error al desencriptar la nota preparada: ' + error.message);
         return {
             success: false,
             message: mainTranslations['decrypt-note-error'],
@@ -831,7 +823,7 @@ ipcMain.handle('delete-note', async (event, id) => {
             };
         }
     } catch (error) {
-        writeLog('Error al eliminar la nota:' + error.message);
+        writeLog('Error al eliminar la nota: ' + error.message);
         return {
             success: false,
             message: mainTranslations['delete-note-error'],
@@ -902,7 +894,7 @@ function startPreparingElements(encryptedCards, encryptedNotes, masterKey) {
 
             // imprimir errores del worker
             worker.on("error", (error) => {
-                writeLog('Error en el worker de preparar elementos:' + error.message);
+                writeLog('Error en el worker que prepara elementos: ' + error.message);
                 reject(error);
             });
         });
@@ -927,6 +919,8 @@ function chunkify(arrayCards, arrayNotes, chunks) {
 // Obtener todas las tarjetas y notas preparadas (desencriptar nombre y web)
 ipcMain.handle('get-prepared-elements', async () => {
     try {
+        if (!masterKey) throw new Error("Master key no establecida");
+
         if (!preparedElements) {
             const encryptedCards = await db.getAllCards();
             const encryptedNotes = await db.getAllNotes();
@@ -939,7 +933,7 @@ ipcMain.handle('get-prepared-elements', async () => {
             preparedNotes: preparedElements.notes
         };
     } catch (error) {
-        writeLog('Error al obtener elementos preparados:' + error.message);
+        writeLog('Error al obtener elementos preparados: ' + error.message);
         return { success: false, error: error.message };
     }
 });
@@ -955,7 +949,7 @@ ipcMain.handle('import-data', async (event, key) => {
             superUser = await db.addUser(adaptedID.name, adaptedID.gender, hashPassword,);
         }
         catch (error) {
-            writeLog('Error al importar el usuario:' + error.message);
+            writeLog('Error al importar el usuario: ' + error.message);
             return {
                 success: false,
                 message: mainTranslations['import-data-error'],
@@ -976,7 +970,7 @@ ipcMain.handle('import-data', async (event, key) => {
                 currentCard++;
                 mainWindow.webContents.send('import-card-progress', { progress: Math.round((currentCard / totalCards) * 100) });
             } catch (error) {
-                writeLog('Error al importar la tarjeta:' + error.message);
+                writeLog('Error al importar la tarjeta: ' + error.message);
                 return {
                     success: false,
                     message: mainTranslations['import-card-error'],
@@ -1034,7 +1028,7 @@ ipcMain.handle('execute-command', async (event, command) => {
             app.quit();
             break;
         case 'lock':
-            mainWindow.loadFile('src/views/lock.html');
+            lock();
             break;
         case 'change-ID-gender':
             if (args.length === 1 && (args[0] === 'male' || args[0] === 'female' || args[0] === 'other')) {
@@ -1129,7 +1123,7 @@ ipcMain.handle('set-custom-wallpaper', async () => {
         };
 
     } catch (error) {
-        writeLog('Error al leer el wallpaper personalizado:' + error.message);
+        writeLog('Error al leer el wallpaper personalizado: ' + error.message);
         // Reestablecer las configuraciones relacionadas al wallpaper personalizado
         setSetting('customWallpaperPath', '');
         setSetting('customWallpaperName', '');
@@ -1193,11 +1187,11 @@ ipcMain.handle('get-platform', () => {
 
 // Cachar errores silenciosos
 process.on('unhandledRejection', err => {
-    writeLog('UnhandledPromiseRejection:', err)
+    writeLog('UnhandledPromiseRejection: ', err)
 })
 
 process.on('uncaughtException', err => {
-    writeLog('UncaughtException:', err)
+    writeLog('UncaughtException: ', err)
 })
 
 // Funcion que genera un archivo log con informacion de debug

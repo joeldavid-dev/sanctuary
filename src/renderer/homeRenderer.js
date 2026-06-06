@@ -61,7 +61,6 @@ let searchTerm = ''; // Término de búsqueda actual
 let orderDirection = 'asc'; // Variable para controlar la dirección del ordenamiento
 let orderBy = 'date'; // Variable para controlar el criterio de ordenamiento
 
-let selectedPreparedElement = null; // Variable para almacenar el elemento seleccionado
 let selectedElementID = null; // Variable para almacenar el ID del elemento seleccionada
 let actualPreparedElements = []; // Lista que almacena los elementos mostrados en la vista
 let preparedCards = []; // Lista que almacena las tarjetas preparadas (nombre y web desencriptados)
@@ -206,7 +205,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         deleteElementBody.classList.remove('vertical-flex');
 
         selectedElementID = null;
-        selectedPreparedElement = null;
 
         // Deseleccionar todos los radio
         document.querySelectorAll('input[type="radio"][name="mainElement"]').forEach((radio) => {
@@ -466,15 +464,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Clic en el botón para editar un elemento seleccionado
     editElement.addEventListener('click', async () => {
-        if (!selectedPreparedElement) return;
+        if (!selectedElementID) return;
 
         try {
             let selectedElement;
             if (actualPage === 'keys') {
-                selectedElement = await window.sanctuaryAPI.decryptPreparedCard(selectedPreparedElement);
+                selectedElement = await window.sanctuaryAPI.decryptCard(selectedElementID);
             }
             else if (actualPage === 'notes') {
-                selectedElement = await window.sanctuaryAPI.decryptPreparedNote(selectedPreparedElement);
+                selectedElement = await window.sanctuaryAPI.decryptNote(selectedElementID);
             }
 
             // Si el elemento se descifró correctamente, mostrar el modal de edición
@@ -503,9 +501,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Clic en el botón para eliminar el elemento seleccionado
     deleteElement.addEventListener('click', async () => {
-        if (!selectedPreparedElement) return;
+        if (!selectedElementID) return;
 
         try {
+            const selectedPreparedElement = actualPreparedElements.find(element => element.id == selectedElementID);
             const confirm = await showDeleteModal(selectedPreparedElement, actualPage);
             if (!confirm.success) return;
 
@@ -594,10 +593,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Si el botón es un botón de enlace externo de una tarjeta
         else if (buttonPressed.classList.contains('external-link-btn')) {
-            const url = buttonPressed.getAttribute('data-url');
-            if (url) {
-                window.electron.openExternal(url);
-            }
+            const cardID = buttonPressed.getAttribute('data-cardID');
+            const urlVisibility = buttonPressed.getAttribute('data-urlVisibility');
+            if (urlVisibility === 'invisible') return;
+
+            const result = await window.sanctuaryAPI.decryptCard(cardID);
+            window.electron.openExternal(result.data.web);
         }
         // Si el botón es un botón de ojo para mostrar/ocultar contraseña
         else if (buttonPressed.classList.contains('eye-btn')) {
@@ -613,8 +614,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 // Cambiar el texto del usuario y la contraseña al hacer clic en el botón
                 if (passView.textContent === mask) {
-                    const preparedCard = actualPreparedElements.find(card => card.id == cardID);
-                    const card = await window.sanctuaryAPI.decryptPreparedCard(preparedCard);
+                    const card = await window.sanctuaryAPI.decryptCard(cardID);
                     if (card.success) {
                         userView.textContent = card.data.user;
                         passView.textContent = card.data.password;
@@ -645,8 +645,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 // Cambiar el texto del contenido al hacer clic en el botón
                 if (contentView.textContent === mask) {
-                    const preparedNote = actualPreparedElements.find(note => note.id == noteID);
-                    const note = await window.sanctuaryAPI.decryptPreparedNote(preparedNote);
+                    const note = await window.sanctuaryAPI.decryptNote(noteID);
                     if (note.success) {
                         contentView.textContent = note.data.content;
                         buttonPressed.firstElementChild.src = '../assets/ico/feather/eye-off.svg';
@@ -671,7 +670,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (elementPressed.checked) {
             deselectAllElements(); // Deseleccionar todos los elementos
             selectedElementID = elementPressed.value;
-            selectedPreparedElement = actualPreparedElements.find(element => element.id == selectedElementID);
             const elementBody = document.getElementById(selectedElementID);
 
             // Establecer el color personalizado como una variable CSS

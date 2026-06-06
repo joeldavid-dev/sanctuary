@@ -35,7 +35,7 @@ function decrypt(texto, llave) {
         );
         contLlave++;
         clavesTexto.push(originalCharCode);
-        
+
         if (contLlave === llave.length) {
             contLlave = 0;
         }
@@ -67,9 +67,10 @@ function adaptOldID(oldID) {
 }
 
 function adaptOldCard(key, oldCard) {
-    user = decrypt(oldCard.user, key);
-    password = decrypt(oldCard.password, key);
-    web = decrypt(oldCard.web, key);
+    const user = decrypt(oldCard.user, key);
+    const password = decrypt(oldCard.password, key);
+    const web = decrypt(oldCard.web, key);
+    const note = null;
     let color = '';
     let favorite = false;
 
@@ -122,6 +123,7 @@ function adaptOldCard(key, oldCard) {
         user,
         password,
         web,
+        note,
         color,
         favorite,
     }
