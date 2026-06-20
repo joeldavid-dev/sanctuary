@@ -5,8 +5,7 @@
   "scripts": {
     "start": "electron .",
     "build": "electron-builder",
-    "publish": "electron-builder --publish always",
-    "postinstall": "electron-builder install-app-deps"
+    "publish": "electron-builder --publish always"
   },
   "build": {
     "appId": "com.codaby.sanctuary",
