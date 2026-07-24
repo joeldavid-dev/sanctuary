@@ -112,7 +112,7 @@ async function startApp() {
     // Cargar traducciones
     loadTranslations();
     // Generar colores si es necesario
-    await genColors();
+    if (settings['appContrastLight'] == 'none' || settings['appContrastDark'] == 'none') await genColors();
 
     // Verificar si existe un usuario creado
     const userExists = await getUserStatus();
@@ -318,8 +318,6 @@ function loadTranslations() {
             languageCode = 'en'; // Por defecto inglés
         }
     }
-
-    writeLog('Idioma mostrado: ' + languageCode);
 
     try {
         const filePath = path.join(__dirname, 'locales', `${languageCode}.json`);
