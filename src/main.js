@@ -112,7 +112,9 @@ async function startApp() {
     // Cargar traducciones
     loadTranslations();
     // Generar colores si es necesario
-    if (settings['appContrastLight'] == 'none' || settings['appContrastDark'] == 'none') await genColors();
+    const contrastLight = getSetting('appContrastLight');
+    const contrastDark = getSetting('appContrastDark');
+    if (contrastLight == 'none' || contrastDark == 'none') await genColors();
 
     // Verificar si existe un usuario creado
     const userExists = await getUserStatus();
