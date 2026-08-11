@@ -8,6 +8,7 @@ export function showNewEditNoteModal(mode, note) {
         // Constantes y variables auxiliares
         let colorSelected = 'var(--color1)';
         let favoriteValue = false;
+        let scrollPosition = 0; // Variable para almacenar la posición de desplazamiento del modal
         const translations = await window.sanctuaryAPI.getTranslations('new-edit');
         const noteTranslations = await window.sanctuaryAPI.getTranslations('note');
         const warningTranslations = await window.sanctuaryAPI.getTranslations('warning');
@@ -65,8 +66,10 @@ export function showNewEditNoteModal(mode, note) {
             resolve({ success: false, })
         }
         const contentAction = () => {
+            scrollPosition = modalContent.scrollTop;
             contentTextarea.style.height = 'auto'; // reset para que calcule bien
-            contentTextarea.style.height = contentTextarea.scrollHeight + 'px';
+            contentTextarea.style.height = contentTextarea.scrollHeight + 200 + 'px';
+            modalContent.scrollTop = scrollPosition;
         }
         const favoriteAction = (event) => {
             favoriteValue = event.target.checked;
