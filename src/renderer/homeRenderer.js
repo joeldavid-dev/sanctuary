@@ -935,7 +935,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         // Icono de la independencia de México el 15 y 16 de septiembre
-        if (day === 15 || day === 16 && month === 9) {
+        if ((day === 15 || day === 16) && month === 9) {
             document.getElementById('hollydays-background').style.backgroundImage = 'url("../assets/ico/mexican-independence-bg.png")';
             document.getElementById('app-icon').src = '../assets/ico/sanctuary-mexico.png';
         }
@@ -947,7 +947,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         // Icono de día de los muertos el 1 y 2 de noviembre
-        if (day === 1 || day === 2 && month === 11) {
+        if ((day === 1 || day === 2) && month === 11) {
             document.getElementById('hollydays-background').style.backgroundImage = 'url("../assets/ico/day-of-the-dead-bg.png")';
             document.getElementById('app-icon').src = '../assets/ico/sanctuary-purple-pink.png';
         }

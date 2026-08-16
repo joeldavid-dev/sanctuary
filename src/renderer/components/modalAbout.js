@@ -41,7 +41,7 @@ export function showAboutModal() {
             appIcon.src = '../assets/ico/sanctuary-earth.png';
         }
         // Icono del día de independencia de México el 15 y 16 de septiembre
-        if (day === 15 || day === 16 && month === 9) {
+        if ((day === 15 || day === 16) && month === 9) {
             appIcon.src = '../assets/ico/sanctuary-mexico.png';
         }
         // Icono de halloween el 31 de octubre
@@ -49,7 +49,7 @@ export function showAboutModal() {
             appIcon.src = '../assets/ico/sanctuary-halloween.png';
         }
         // Icono del día de muertos el 1 y 2 de noviembre
-        if (day === 1 || day === 2 && month === 11) {
+        if ((day === 1 || day === 2) && month === 11) {
             appIcon.src = '../assets/ico/sanctuary-purple-pink.png';
         }
         // Icono de navidad desde el 20 de diciembre hasta el 31 de diciembre
