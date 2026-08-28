@@ -106,7 +106,9 @@
         "image-cache-cleared": "Bild-Cache erfolgreich geleert.",
         "image-cache-clear-error": "Fehler beim Leeren des Bild-Cache.",
         "log-cleared": "Aktivitätsprotokoll erfolgreich geleert.",
-        "log-clear-error": "Fehler beim Leeren des Aktivitätsprotokolls."
+        "log-clear-error": "Fehler beim Leeren des Aktivitätsprotokolls.",
+        "tray-open": "Öffnen",
+        "tray-quit": "Beenden"
     },
     "home-view": {
         "search": "Suchen...",
@@ -194,6 +196,9 @@
         "lock-wallpaper": "Sperrhintergrund",
         "background-motion": "Hintergrundbewegung",
         "background-motion-info": "Die Hintergrundbewegung kann die Leistung auf einigen Geräten beeinträchtigen.",
+        "general": "Allgemein",
+        "run-in-background": "Im Hintergrund ausführen",
+        "run-in-background-info": "Die App läuft beim Schließen des Fensters im Infobereich weiter.",
         "about": "Über",
         "view-info-about": "Informationen über {appName} anzeigen",
         "view-version-info": "Neuigkeiten der Version anzeigen",

@@ -16,6 +16,7 @@ export async function createSettingsPage(superuser) {
     const customWallpaperPath = await window.sanctuaryAPI.getSetting('customWallpaperPath');
     const customWallpaperName = await window.sanctuaryAPI.getSetting('customWallpaperName');
     const customWallpaperType = await window.sanctuaryAPI.getSetting('customWallpaperType');
+    const runInBackground = await window.sanctuaryAPI.getSetting('runInBackground');
     const paths = (await window.sanctuaryAPI.getPaths());
 
     // Elementos HTML ya existentes que se usarán
@@ -31,6 +32,7 @@ export async function createSettingsPage(superuser) {
     const wallpaperOptionsArea = document.getElementById('wallpaper-options-area');
     const motionSwitch = document.getElementById('motion-toggle-input');
     const motionSwitchArea = document.getElementById('motion-switch-area');
+    const backgroundSwitch = document.getElementById('background-toggle-input');
 
     // Llenar los datos del perfil
     profileInitial.textContent = superuser.name.charAt(0).toUpperCase();
@@ -72,6 +74,9 @@ export async function createSettingsPage(superuser) {
     else {
         motionSwitchArea.style.display = 'none';
     }
+
+    // Configurar el estado inicial del switch de ejecución en segundo plano
+    backgroundSwitch.checked = runInBackground;
 };
 
 function getSettingsHTML(translations, constants) {
@@ -131,6 +136,20 @@ function getSettingsHTML(translations, constants) {
                         </label>
                     </div>
                     <p class="minimum-text centered-text">${translations['background-motion-info']}</p>
+                </div>
+            </div>
+
+            <div class="vertical-elem-area">
+                <h3>${translations['general']}</h3>
+                <div class="div-options vertical-elem-area narrow-padding external-radius-2">
+                    <div class="horizontal-flex centered spaced minimal-margin-left-right">
+                        <p>${translations['run-in-background']}</p>
+                        <label class="switch">
+                            <input type="checkbox" id="background-toggle-input">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <p class="minimum-text centered-text">${translations['run-in-background-info']}</p>
                 </div>
             </div>
 

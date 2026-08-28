@@ -15,5 +15,6 @@
     "customWallpaperType": "none",
     "orderBy": "date",
     "orderDirection": "asc",
-    "lastPage": "keys"
+    "lastPage": "keys",
+    "runInBackground": false
 }

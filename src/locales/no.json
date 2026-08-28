@@ -106,7 +106,9 @@
         "image-cache-cleared": "Bildebuffer tømt.",
         "image-cache-clear-error": "Feil ved tømming av bildebuffer.",
         "log-cleared": "Aktivitetslogg tømt.",
-        "log-clear-error": "Feil ved tømming av aktivitetslogg."
+        "log-clear-error": "Feil ved tømming av aktivitetslogg.",
+        "tray-open": "Åpne",
+        "tray-quit": "Avslutt"
     },
     "home-view": {
         "search": "Søk...",
@@ -194,6 +196,9 @@
         "lock-wallpaper": "Låseskjerm-bakgrunn",
         "background-motion": "Bakgrunnsbevegelse",
         "background-motion-info": "Bakgrunnsbevegelse kan påvirke ytelsen på enkelte enheter.",
+        "general": "Generelt",
+        "run-in-background": "Kjør i bakgrunnen",
+        "run-in-background-info": "Appen fortsetter å kjøre i systemstatusfeltet når vinduet lukkes.",
         "about": "Om",
         "view-info-about": "Se informasjon om {appName}",
         "view-version-info": "Se hva som er nytt i versjonen",

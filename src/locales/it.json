@@ -106,7 +106,9 @@
         "image-cache-cleared": "Cache immagini svuotata con successo.",
         "image-cache-clear-error": "Errore durante lo svuotamento della cache immagini.",
         "log-cleared": "Registro attività svuotato con successo.",
-        "log-clear-error": "Errore durante lo svuotamento del registro attività."
+        "log-clear-error": "Errore durante lo svuotamento del registro attività.",
+        "tray-open": "Apri",
+        "tray-quit": "Esci"
     },
     "home-view": {
         "search": "Cerca...",
@@ -194,6 +196,9 @@
         "lock-wallpaper": "Sfondo di blocco",
         "background-motion": "Movimento dello sfondo",
         "background-motion-info": "Il movimento dello sfondo può influire sulle prestazioni su alcuni dispositivi.",
+        "general": "Generale",
+        "run-in-background": "Esegui in background",
+        "run-in-background-info": "L'app continuerà a funzionare nella barra delle applicazioni quando la finestra viene chiusa.",
         "about": "Informazioni",
         "view-info-about": "Visualizza informazioni su {appName}",
         "view-version-info": "Visualizza le novità della versione",

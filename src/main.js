@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, shell, dialog, Notification } = require('electron');
+const { app, BrowserWindow, ipcMain, shell, dialog, Notification, Tray, Menu, nativeImage } = require('electron');
 const { autoUpdater } = require('electron-updater');
 const { Worker } = require("worker_threads");
 const path = require('node:path');
@@ -37,6 +37,8 @@ let mainTranslations = null;
 let logPath = null;
 let preparedElements = null;
 let isUpdateDownloaded = false;
+let tray = null;
+let isQuitting = false;
 
 // Determinar la ruta del archivo de log
 if (isDev) {
@@ -78,6 +80,53 @@ const createMainWindow = () => {
     if (!isDev) {
         mainWindow.removeMenu();
     }
+
+    // Si la app se mantiene en segundo plano, ocultar la ventana en lugar de cerrarla
+    mainWindow.on('close', (event) => {
+        if (!isQuitting && getSetting('runInBackground')) {
+            event.preventDefault();
+            mainWindow.hide();
+        }
+    });
+}
+
+// Crea o destruye el ícono de la bandeja del sistema según la configuración
+// "runInBackground", y mantiene sus textos actualizados con el idioma actual.
+function syncTray() {
+    const runInBackground = getSetting('runInBackground');
+
+    if (!runInBackground) {
+        if (tray) {
+            tray.destroy();
+            tray = null;
+        }
+        return;
+    }
+
+    if (!tray) {
+        const trayIconPath = path.join(__dirname, 'assets', 'ico', 'sanctuary.png');
+        tray = new Tray(nativeImage.createFromPath(trayIconPath));
+        tray.setToolTip(constants.about.appName);
+        tray.on('click', () => {
+            mainWindow.show();
+        });
+    }
+
+    const contextMenu = Menu.buildFromTemplate([
+        {
+            label: mainTranslations['tray-open'],
+            click: () => {
+                mainWindow.show();
+            }
+        },
+        {
+            label: mainTranslations['tray-quit'],
+            click: () => {
+                app.quit();
+            }
+        }
+    ]);
+    tray.setContextMenu(contextMenu);
 }
 
 app.whenReady().then(async () => {
@@ -111,6 +160,8 @@ async function startApp() {
     runSettingFixes();
     // Cargar traducciones
     loadTranslations();
+    // Crear el ícono de bandeja si está configurado
+    syncTray();
     // Generar colores si es necesario
     const contrastLight = getSetting('appContrastLight');
     const contrastDark = getSetting('appContrastDark');
@@ -128,6 +179,12 @@ async function startApp() {
 // todas las ventanas, excepto en MacOS
 app.on('window-all-closed', (event) => {
     if (process.platform !== 'darwin') app.quit()
+});
+
+// Marca que se trata de un cierre real de la aplicación (no solo de la ventana),
+// para permitir que el evento 'close' de la ventana no la oculte en su lugar.
+app.on('before-quit', () => {
+    isQuitting = true;
 });
 
 // Eventos de actualización
@@ -261,7 +318,7 @@ async function genColors() {
 // Verifica si existe la configuración, si existe, la retorna, si no, toma la configuración por defecto.
 function getSetting(key) {
     const setting = settings[key];
-    if (setting) {
+    if (setting !== undefined) {
         return setting;
     } else {
         writeLog(`Configuracion "${key}" no encontrada. Se escribe la configuracion por defecto`);
@@ -298,8 +355,12 @@ ipcMain.handle('set-setting', async (event, key, value) => {
 
     // Acciones posteriores a guardar la configuración
     if (result.success) {
-        if (key === 'language') loadTranslations();
+        if (key === 'language') {
+            loadTranslations();
+            syncTray();
+        }
         else if (key === 'wallpaper') await genColors();
+        else if (key === 'runInBackground') syncTray();
     } else {
         writeLog(`Error al actualizar la configuracion "${key}": ${result.error}`);
     }

@@ -106,7 +106,9 @@
         "image-cache-cleared": "이미지 캐시가 성공적으로 지워졌습니다.",
         "image-cache-clear-error": "이미지 캐시를 지우는 중 오류가 발생했습니다.",
         "log-cleared": "활동 로그가 성공적으로 지워졌습니다.",
-        "log-clear-error": "활동 로그를 지우는 중 오류가 발생했습니다."
+        "log-clear-error": "활동 로그를 지우는 중 오류가 발생했습니다.",
+        "tray-open": "열기",
+        "tray-quit": "종료"
     },
     "home-view": {
         "search": "검색...",
@@ -194,6 +196,9 @@
         "lock-wallpaper": "잠금 화면 배경",
         "background-motion": "배경 모션",
         "background-motion-info": "배경 모션은 일부 기기에서 성능에 영향을 줄 수 있습니다.",
+        "general": "일반",
+        "run-in-background": "백그라운드에서 실행",
+        "run-in-background-info": "창을 닫아도 앱이 시스템 트레이에서 계속 실행됩니다.",
         "about": "정보",
         "view-info-about": "{appName} 정보 보기",
         "view-version-info": "버전의 새로운 기능 보기",

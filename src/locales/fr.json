@@ -106,7 +106,9 @@
         "image-cache-cleared": "Cache d'images vidé avec succès.",
         "image-cache-clear-error": "Erreur lors du vidage du cache d'images.",
         "log-cleared": "Journal d'activité vidé avec succès.",
-        "log-clear-error": "Erreur lors du vidage du journal d'activité."
+        "log-clear-error": "Erreur lors du vidage du journal d'activité.",
+        "tray-open": "Ouvrir",
+        "tray-quit": "Quitter"
     },
     "home-view": {
         "search": "Rechercher...",
@@ -194,6 +196,9 @@
         "lock-wallpaper": "Fond d'écran de verrouillage",
         "background-motion": "Mouvement de l'arrière-plan",
         "background-motion-info": "Le mouvement de l'arrière-plan peut affecter les performances sur certains appareils.",
+        "general": "Général",
+        "run-in-background": "Exécuter en arrière-plan",
+        "run-in-background-info": "L'application continuera de fonctionner dans la barre d'état système lorsque la fenêtre est fermée.",
         "about": "À propos",
         "view-info-about": "Voir les informations sur {appName}",
         "view-version-info": "Voir les nouveautés de la version",

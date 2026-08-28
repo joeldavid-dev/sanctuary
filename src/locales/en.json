@@ -106,7 +106,9 @@
         "image-cache-cleared": "Image cache cleared successfully.",
         "image-cache-clear-error": "Error clearing image cache.",
         "log-cleared": "Activity log cleared successfully.",
-        "log-clear-error": "Error clearing activity log."
+        "log-clear-error": "Error clearing activity log.",
+        "tray-open": "Open",
+        "tray-quit": "Quit"
     },
     "home-view": {
         "search": "Search...",
@@ -194,6 +196,9 @@
         "lock-wallpaper": "Lock screen wallpaper",
         "background-motion": "Background motion",
         "background-motion-info": "Background motion may affect performance on some devices.",
+        "general": "General",
+        "run-in-background": "Run in background",
+        "run-in-background-info": "The app will keep running in the system tray when the window is closed.",
         "about": "About",
         "view-info-about": "View information about {appName}",
         "view-version-info": "View what's new in this version",

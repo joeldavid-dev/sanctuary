@@ -106,7 +106,9 @@
         "image-cache-cleared": "Bildcache rensad framgångsrikt.",
         "image-cache-clear-error": "Fel vid rensning av bildcache.",
         "log-cleared": "Aktivitetslogg rensad framgångsrikt.",
-        "log-clear-error": "Fel vid rensning av aktivitetslogg."
+        "log-clear-error": "Fel vid rensning av aktivitetslogg.",
+        "tray-open": "Öppna",
+        "tray-quit": "Avsluta"
     },
     "home-view": {
         "search": "Sök...",
@@ -194,6 +196,9 @@
         "lock-wallpaper": "Bakgrund för låsskärm",
         "background-motion": "Bakgrundsrörelse",
         "background-motion-info": "Bakgrundsrörelse kan påverka prestandan på vissa enheter.",
+        "general": "Allmänt",
+        "run-in-background": "Kör i bakgrunden",
+        "run-in-background-info": "Appen fortsätter att köras i systemfältet när fönstret stängs.",
         "about": "Om",
         "view-info-about": "Visa information om {appName}",
         "view-version-info": "Visa vad som är nytt i versionen",

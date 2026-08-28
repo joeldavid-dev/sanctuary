@@ -106,7 +106,9 @@
         "image-cache-cleared": "画像キャッシュが正常にクリアされました。",
         "image-cache-clear-error": "画像キャッシュのクリア中にエラーが発生しました。",
         "log-cleared": "アクティビティログが正常にクリアされました。",
-        "log-clear-error": "アクティビティログのクリア中にエラーが発生しました。"
+        "log-clear-error": "アクティビティログのクリア中にエラーが発生しました。",
+        "tray-open": "開く",
+        "tray-quit": "終了"
     },
     "home-view": {
         "search": "検索...",
@@ -194,6 +196,9 @@
         "lock-wallpaper": "ロック画面の壁紙",
         "background-motion": "背景モーション",
         "background-motion-info": "背景モーションは、一部のデバイスでパフォーマンスに影響を与える可能性があります。",
+        "general": "一般",
+        "run-in-background": "バックグラウンドで実行",
+        "run-in-background-info": "ウィンドウを閉じてもアプリはシステムトレイで実行され続けます。",
         "about": "概要",
         "view-info-about": "{appName}に関する情報を表示",
         "view-version-info": "バージョンの新機能を表示",

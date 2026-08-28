@@ -106,7 +106,9 @@
         "image-cache-cleared": "图像缓存已成功清除。",
         "image-cache-clear-error": "清除图像缓存时出错。",
         "log-cleared": "活动日志已成功清除。",
-        "log-clear-error": "清除活动日志时出错。"
+        "log-clear-error": "清除活动日志时出错。",
+        "tray-open": "打开",
+        "tray-quit": "退出"
     },
     "home-view": {
         "search": "搜索...",
@@ -194,6 +196,9 @@
         "lock-wallpaper": "锁屏壁纸",
         "background-motion": "背景动态效果",
         "background-motion-info": "背景动态效果可能会影响某些设备的性能。",
+        "general": "通用",
+        "run-in-background": "在后台运行",
+        "run-in-background-info": "关闭窗口后，应用将继续在系统托盘中运行。",
         "about": "关于",
         "view-info-about": "查看关于 {appName} 的信息",
         "view-version-info": "查看版本新功能",

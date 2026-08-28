@@ -106,7 +106,9 @@
         "image-cache-cleared": "Kuvavälimuisti tyhjennetty onnistuneesti.",
         "image-cache-clear-error": "Virhe tyhjennettäessä kuvavälimuistia.",
         "log-cleared": "Toimintaloki tyhjennetty onnistuneesti.",
-        "log-clear-error": "Virhe tyhjennettäessä toimintalokia."
+        "log-clear-error": "Virhe tyhjennettäessä toimintalokia.",
+        "tray-open": "Avaa",
+        "tray-quit": "Lopeta"
     },
     "home-view": {
         "search": "Hae...",
@@ -194,6 +196,9 @@
         "lock-wallpaper": "Lukitusnäytön tausta",
         "background-motion": "Taustan liike",
         "background-motion-info": "Taustan liike voi vaikuttaa suorituskykyyn joillakin laitteilla.",
+        "general": "Yleiset",
+        "run-in-background": "Suorita taustalla",
+        "run-in-background-info": "Sovellus jatkaa toimintaansa ilmaisinalueella, kun ikkuna suljetaan.",
         "about": "Tietoja",
         "view-info-about": "Näytä tietoja {appName}-sovelluksesta",
         "view-version-info": "Näytä version uutiset",

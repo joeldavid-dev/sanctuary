@@ -106,7 +106,9 @@
         "image-cache-cleared": "Caché de imágenes limpiada exitosamente.",
         "image-cache-clear-error": "Error al limpiar la caché de imágenes.",
         "log-cleared": "Registro de actividad limpiado exitosamente.",
-        "log-clear-error": "Error al limpiar el registro de actividad."
+        "log-clear-error": "Error al limpiar el registro de actividad.",
+        "tray-open": "Abrir",
+        "tray-quit": "Salir"
     },
     "home-view": {
         "search": "Buscar...",
@@ -194,6 +196,9 @@
         "lock-wallpaper": "Fondo de bloqueo",
         "background-motion": "Movimiento de fondo",
         "background-motion-info": "El movimiento de fondo puede afectar el rendimiento en algunos dispositivos.",
+        "general": "General",
+        "run-in-background": "Ejecutar en segundo plano",
+        "run-in-background-info": "La aplicación seguirá ejecutándose en la bandeja del sistema al cerrar la ventana.",
         "about": "Acerca de",
         "view-info-about": "Ver información acerca de {appName}",
         "view-version-info": "Ver novedades de la versión",

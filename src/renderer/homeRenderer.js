@@ -782,6 +782,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
+    // Escuchar cambios en el switch de ejecución en segundo plano
+    settingsArea.addEventListener('change', async (event) => {
+        const switchPressed = event.target.closest('input[type="checkbox"]');
+        if (!switchPressed) return; // Si no se hizo clic en el switch, salir
+        if (switchPressed.id === 'background-toggle-input') {
+            const isEnabled = switchPressed.checked;
+            // Guardar la opción seleccionada
+            const result = await window.sanctuaryAPI.setSetting('runInBackground', isEnabled);
+            if (!result.success) {
+                showToast(result.error, true);
+            }
+        }
+    });
+
     // Clic fuera de los popups para cerrarlos
     document.addEventListener('click', (event) => {
         if (!popupList.contains(event.target)
