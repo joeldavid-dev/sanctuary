@@ -158,15 +158,9 @@ function getSettingsHTML(translations, constants) {
                 <div class="div-options vertical-elem-area narrow-padding external-radius-2">
                     <button id="view-info-about" class="option-btn minimal-rounded left-text horizontal-flex centered spaced">
                         ${replaceKeysInText(translations['view-info-about'], { 'appName': constants.about.appName })}
-                        <img src="../assets/ico/sanctuary.png" class="mini-icon">
+                        <img src="../assets/ico/sanctuary-mini.png" class="mini-icon">
                     </button>
 
-                    <!--
-                    <button id="app-language" class="option-btn minimal-rounded left-text horizontal-flex centered spaced">
-                        ${translations['view-version-info']}
-                        <img src="../assets/ico/feather/info.svg" class="mini-icon">
-                    </button>
-                    -->
                     <button id="view-license" class="option-btn minimal-rounded left-text horizontal-flex centered spaced">
                         ${translations['view-license']}
                         <img src="../assets/ico/feather/file-text.svg" class="mini-icon">

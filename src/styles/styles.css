@@ -892,7 +892,7 @@ Siempre es blanco para mejorar la visibilidad. */
 .switch {
     position: relative;
     display: inline-block;
-    width: 50px;
+    width: 42px;
     height: 24px;
 }
 
@@ -921,7 +921,7 @@ Siempre es blanco para mejorar la visibilidad. */
     bottom: 3px;
     background-color: var(--app_light);
     border-radius: 50%;
-    transition: var(--normal-animation);
+    transition: var(--fast-animation);
 }
 
 input:checked+.slider {
@@ -929,7 +929,7 @@ input:checked+.slider {
 }
 
 input:checked+.slider::before {
-    transform: translateX(26px);
+    transform: translateX(18px);
 }
 
 /* Contenedor flotante */

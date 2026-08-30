@@ -85,6 +85,7 @@ const createMainWindow = () => {
     mainWindow.on('close', (event) => {
         if (!isQuitting && getSetting('runInBackground')) {
             event.preventDefault();
+            lock();
             mainWindow.hide();
         }
     });
@@ -104,7 +105,7 @@ function syncTray() {
     }
 
     if (!tray) {
-        const trayIconPath = path.join(__dirname, 'assets', 'ico', 'sanctuary.png');
+        const trayIconPath = path.join(__dirname, 'assets', 'ico', 'sanctuary-mini.png');
         tray = new Tray(nativeImage.createFromPath(trayIconPath));
         tray.setToolTip(constants.about.appName);
         tray.on('click', () => {
