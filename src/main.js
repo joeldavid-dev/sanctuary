@@ -47,7 +47,37 @@ if (isDev) {
     logPath = path.join(app.getPath('userData'), globalConfig.logPath);
 }
 
+// 🔒 Instancia única: si ya hay una instancia corriendo (por ejemplo, oculta en
+// segundo plano), esta nueva instancia se cierra y se le cede el control a la
+// original, que mostrará su ventana.
+const gotTheLock = app.requestSingleInstanceLock();
+if (!gotTheLock) {
+    app.quit();
+    return;
+}
+
+// La instancia original recibe este evento cuando se intenta abrir otra
+// (clic en el icono del menú inicio, la barra de tareas o el menú de aplicaciones).
+app.on('second-instance', () => {
+    writeLog('Se intento abrir una segunda instancia. Se muestra la ventana existente.');
+    showMainWindow();
+});
+
 writeLog(`============== Iniciando aplicacion (${app.getVersion()}) ==============`);
+
+// Muestra y enfoca la ventana principal, restaurándola si está minimizada u oculta.
+function showMainWindow() {
+    if (!mainWindow || mainWindow.isDestroyed()) {
+        createMainWindow();
+        startApp();
+        return;
+    }
+    if (mainWindow.isMinimized()) mainWindow.restore();
+    // show() sobre una ventana ya visible la trae al frente
+    mainWindow.show();
+    mainWindow.focus();
+}
+
 // Creación de la ventana principal
 const createMainWindow = () => {
     mainWindow = new BrowserWindow({
@@ -109,7 +139,7 @@ function syncTray() {
         tray = new Tray(nativeImage.createFromPath(trayIconPath));
         tray.setToolTip(constants.about.appName);
         tray.on('click', () => {
-            mainWindow.show();
+            showMainWindow();
         });
     }
 
@@ -117,7 +147,7 @@ function syncTray() {
         {
             label: mainTranslations['tray-open'],
             click: () => {
-                mainWindow.show();
+                showMainWindow();
             }
         },
         {
@@ -134,10 +164,10 @@ app.whenReady().then(async () => {
     try {
         // Crea la ventana
         createMainWindow()
-        // Crear una ventana si no hay una cuando se activa la aplicación
-        // en MacOS
+        // Mostrar la ventana (o crearla si no existe) cuando se activa la
+        // aplicación en MacOS, por ejemplo al hacer clic en su icono del Dock.
         app.on('activate', () => {
-            if (BrowserWindow.getAllWindows().length === 0) createMainWindow()
+            showMainWindow();
         })
 
         await startApp();
