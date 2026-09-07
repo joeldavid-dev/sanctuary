@@ -1,9 +1,10 @@
-import { createCardElement } from './components/card.js'; // Importar el módulo de tarjeta
-import { createNoteElement } from './components/note.js'; // Importar el módulo de nota
-import { showNewEditCardModal } from './components/modalNewEditCard.js'; // Importar el módulo de modal para agregar o editar tarjetas
-import { showNewEditNoteModal } from './components/modalNewEditNote.js'; // Importar el módulo de modal para agregar o editar notas
-import { showDeleteModal } from './components/modalDelete.js'; // Importar el módulo de modal para eliminar una tarjeta
+import { createCardElement } from './components/card.js';
+import { createNoteElement } from './components/note.js';
+import { showNewEditCardModal } from './components/modalNewEditCard.js';
+import { showNewEditNoteModal } from './components/modalNewEditNote.js';
+import { showDeleteModal } from './components/modalDelete.js';
 import { showIDModal } from './components/modalID.js';
+import { showExportDataModal } from './components/modalExportData.js';
 import { createSettingsPage } from './components/settingsPage.js';
 import { createCommandOption } from './components/commandOption.js';
 import { showDeleteIDModal } from './components/modalDeleteID.js';
@@ -708,8 +709,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                 showToast(confirm.error, true);
             }
         }
-        // Clic en botón exportar llaves
-        else if (buttonPressed.id === 'export-keys') {
+        // Clic en botón exportar datos
+        else if (buttonPressed.id === 'export-data') {
+            const confirm = await showExportDataModal();
+            if (confirm.success) {
+                showToast(confirm.message);
+            } else if (confirm.error) {
+                showToast(confirm.error, true);
+            }
         }
 
         // Clic en botón eliminar ID

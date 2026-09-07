@@ -25,14 +25,14 @@
         <aside id="sidebar" class="sidebar vertical-flex centered spaced">
             <div class="vertical-flex big-spaced normal-padding">
                 <div class="vertical-flex centered">
-                    <button id="lock-btn" class="transparent-btn transparent-btn-padding minimal-rounded">
+                    <button id="lock-btn" class="transparent-btn transparent-btn-padding radius-1">
                         <img src="../assets/ico/feather/lock.svg" class="normal-icon darkmode-invert">
                     </button>
                     <label class="small-text hide-in-small" data-i18n="block"></label>
                 </div>
 
                 <div class="vertical-flex centered">
-                    <label id="keys-radio" class="transparent-radio transparent-btn-padding minimal-rounded">
+                    <label id="keys-radio" class="transparent-radio transparent-btn-padding radius-1">
                         <input type="radio" name="sidebar-option" id="keys" checked>
                         <img src="../assets/ico/feather/key.svg" class="normal-icon darkmode-invert">
                     </label>
@@ -40,7 +40,7 @@
                 </div>
 
                 <div class="vertical-flex centered">
-                    <label id="notes-radio" class="transparent-radio transparent-btn-padding minimal-rounded">
+                    <label id="notes-radio" class="transparent-radio transparent-btn-padding radius-1">
                         <input type="radio" name="sidebar-option" id="notes">
                         <img src="../assets/ico/feather/book.svg" class="normal-icon darkmode-invert">
                     </label>
@@ -48,7 +48,7 @@
                 </div>
 
                 <div class="vertical-flex centered">
-                    <label id="settings-radio" class="transparent-radio transparent-btn-padding minimal-rounded">
+                    <label id="settings-radio" class="transparent-radio transparent-btn-padding radius-1">
                         <input type="radio" name="sidebar-option" id="settings">
                         <img src="../assets/ico/feather/settings.svg" class="normal-icon darkmode-invert">
                     </label>
@@ -67,7 +67,7 @@
             </div>
 
             <div id="hollydays-background" class="vertical-flex centered normal-padding background-image">
-                <button id="app-btn" class="transparent-btn transparent-btn-padding minimal-rounded">
+                <button id="app-btn" class="transparent-btn transparent-btn-padding radius-1">
                     <img id="app-icon" src="../assets/ico/sanctuary.png" class="normal-icon">
                     <div id="update-container" class="update-container">
                         <img id="update-img" src="../assets/ico/feather/arrow-down.svg"
@@ -84,39 +84,39 @@
                 class="title-bar normal-padding horizontal-elem-area draggable spaced centered colored-blur">
                 <h2 id="title"></h2>
                 <div id="search-area" class="horizontal-elem-area centered">
-                    <input id="search-input" type="text" class="search option-input minimal-rounded" inputmode="search">
-                    <button id="search-clear" class="transparent-btn transparent-btn-padding minimal-rounded">
+                    <input id="search-input" type="text" class="search option-input radius-1" inputmode="search">
+                    <button id="search-clear" class="transparent-btn transparent-btn-padding radius-1">
                         <img id="search-clear-ico" src="../assets/ico/feather/search.svg"
                             class="mini-icon darkmode-invert">
                     </button>
                 </div>
                 <div id="order-area" class="horizontal-elem-area centered">
                     <button id="order-btn"
-                        class="action-btn horizontal-elem-area centered transparent-btn-padding minimal-rounded">
+                        class="action-btn horizontal-elem-area centered transparent-btn-padding radius-1">
                         <label id="order-label" class="small-text"></label>
                         <img id="order-ico" src="../assets/ico/feather/chevron-down.svg" class="mini-icon">
                     </button>
-                    <button id="sort-toggle" class="action-btn horizontal-flex transparent-btn-padding minimal-rounded">
+                    <button id="sort-toggle" class="action-btn horizontal-flex transparent-btn-padding radius-1">
                         <img id="sort-toggle-ico" src="../assets/ico/feather/arrow-up.svg"
                             class="mini-icon darkmode-invert">
                     </button>
                 </div>
                 <div class="horizontal-elem-area centered">
                     <label id="friendly-reminder" class="friendly-reminder invisible"></label>
-                    <button id="minimize" class="transparent-btn transparent-btn-padding minimal-rounded">
+                    <button id="minimize" class="transparent-btn transparent-btn-padding radius-1">
                         <img src="../assets/ico/feather/minus-circle.svg" class="normal-icon darkmode-invert">
                     </button>
-                    <button id="maximize" class="transparent-btn transparent-btn-padding minimal-rounded">
+                    <button id="maximize" class="transparent-btn transparent-btn-padding radius-1">
                         <img src="../assets/ico/feather/maximize.svg" class="normal-icon darkmode-invert">
                     </button>
-                    <button id="close" class="transparent-btn transparent-btn-padding minimal-rounded">
+                    <button id="close" class="transparent-btn transparent-btn-padding radius-1">
                         <img src="../assets/ico/feather/x-circle.svg" class="normal-icon darkmode-invert">
                     </button>
                 </div>
             </header>
             <!-- Barra de opciones -->
             <div id="command-options-bar"
-                class="command-options-bar popup-list vertical-elem-area colored-blur scrolleable">
+                class="command-options-bar popup-list narrow-padding external-radius-1 vertical-elem-area colored-blur scrolleable">
             </div>
 
             <div id="main-content" class="elements-container normal-padding normal-spaced centered reverse">
@@ -124,25 +124,25 @@
             </div>
 
             <!-- bottonbar -->
-            <footer id="botton-bar" class="botton-bar popup-list horizontal-flex colored-blur big-spaced">
+            <footer id="botton-bar"
+                class="botton-bar popup-list narrow-padding external-radius-1 horizontal-flex colored-blur big-spaced">
 
                 <div id="edit-element-body" class="vertical-flex centered">
-                    <button id="edit-element" class="transparent-btn transparent-btn-padding minimal-rounded invisible">
+                    <button id="edit-element" class="transparent-btn transparent-btn-padding radius-1 invisible">
                         <img src="../assets/ico/feather/edit.svg" class="normal-icon darkmode-invert">
                     </button>
                     <label class="small-text no-wrapped-text" data-i18n="edit"></label>
                 </div>
 
                 <div class="vertical-flex centered">
-                    <button id="new-element" class="transparent-btn transparent-btn-padding minimal-rounded">
+                    <button id="new-element" class="transparent-btn transparent-btn-padding radius-1">
                         <img src="../assets/ico/feather/plus-circle.svg" class="normal-icon darkmode-invert">
                     </button>
                     <label class="small-text no-wrapped-text" data-i18n="new"></label>
                 </div>
 
                 <div id="delete-element-body" class="vertical-flex centered">
-                    <button id="delete-element"
-                        class="transparent-btn transparent-btn-padding minimal-rounded invisible">
+                    <button id="delete-element" class="transparent-btn transparent-btn-padding radius-1 invisible">
                         <img src="../assets/ico/feather/trash.svg" class="normal-icon darkmode-invert">
                     </button>
                     <label class="small-text no-wrapped-text" data-i18n="delete"></label>
@@ -167,7 +167,7 @@
         <div id="modal-content" class="modal-content scrolleable">
             <div class="modal-header normal-padding colored-blur">
                 <h2 id="modal-title"></h2>
-                <button id="close-modal" class="transparent-btn transparent-btn-padding minimal-rounded">
+                <button id="close-modal" class="transparent-btn transparent-btn-padding radius-1">
                     <img src="../assets/ico/feather/x-circle.svg" class="normal-icon darkmode-invert">
                 </button>
             </div>
@@ -182,7 +182,7 @@
             <div class="modal-header normal-padding">
                 <img src="../assets/ico/feather/alert-triangle.svg" class="normal-icon-white">
                 <h2 id="modal-warning-title"></h2>
-                <button id="close-modal-warning" class="transparent-btn-white transparent-btn-padding minimal-rounded">
+                <button id="close-modal-warning" class="transparent-btn-white transparent-btn-padding radius-1">
                     <img src="../assets/ico/feather/x-circle.svg" class="normal-icon-white">
                 </button>
             </div>
@@ -192,7 +192,8 @@
     </div>
 
     <div id="toast-container"></div>
-    <div id="popup-list" class="popup-list vertical-elem-area colored-blur scrolleable"></div>
+    <div id="popup-list"
+        class="popup-list narrow-padding external-radius-1 vertical-elem-area colored-blur scrolleable"></div>
 </body>
 
 </html>

@@ -12,12 +12,14 @@ export function showIDModal(mode, superuser) {
         const warningTranslations = await window.sanctuaryAPI.getTranslations('warning');
         const constants = await window.sanctuaryAPI.getConstants();
         let isImporting = false;
+
         // Elementos HTML ya existentes que se usarán
         const modal = document.getElementById('modal');
         const modalContent = document.getElementById('modal-content');
         const modalBody = document.getElementById('modal-body');
         const closeModal = document.getElementById('close-modal');
         const modalTitle = document.getElementById('modal-title');
+
         // Insertar el esqueleto HTML
         modalBody.innerHTML = getModalHTML(translations, replaceKeysInText, constants);
 
@@ -71,7 +73,7 @@ export function showIDModal(mode, superuser) {
         // Funciones de botones e inputs
         const close = () => {
             cleanup();
-            resolve({ success: false, })
+            resolve({ success: false });
         };
 
         // Al pulsar un toggle de contraseña
@@ -246,7 +248,7 @@ export function showIDModal(mode, superuser) {
             togglePassword1.removeEventListener('click', togglePasswordAction);
             togglePassword2.removeEventListener('click', togglePasswordAction);
             togglePassword3.removeEventListener('click', togglePasswordAction);
-            // Resetear el ancho del modal
+            // Resetear el estado del modal
             modalContent.style.width = 'auto';
             modal.style.display = 'none';
         }
@@ -262,7 +264,7 @@ function getModalHTML(translations, replaceKeysInText, constants) {
 
             <div id="name-container" class="vertical-elem-area">
                 <label class="small-text">${translations['name']}</label>
-                <input id="user-name" class="option-input minimal-rounded" type="text" required>
+                <input id="user-name" class="option-input radius-1" type="text" required>
             </div>
     
             <div id="pass1-container" class="vertical-elem-area">
@@ -301,30 +303,30 @@ function getModalHTML(translations, replaceKeysInText, constants) {
                     <img src="../assets/ico/feather/help-circle.svg" class="mini-icon darkmode-invert" title="${replaceKeysInText(translations['gender-help'], { appName: constants.about.appName })}">
                 </div>
                 <div class="horizontal-flex spaced">
-                    <label class="option-radio minimal-rounded minimal-padding horizontal-elem-area">
-                        <p class="small-text">${translations['gender-male']}</p>
+                    <label class="option-radio radius-1 minimal-padding horizontal-elem-area">
                         <input id="gender1" type="radio" name="gender" value="male">
                         <div class="radio-ico"></div>
+                        <p class="small-text">${translations['gender-male']}</p>
                     </label>
     
-                    <label class="option-radio minimal-rounded minimal-padding horizontal-elem-area">
-                        <p class="small-text">${translations['gender-female']}</p>
+                    <label class="option-radio radius-1 minimal-padding horizontal-elem-area">
                         <input id="gender2" type="radio" name="gender" value="female">
                         <div class="radio-ico"></div>
+                        <p class="small-text">${translations['gender-female']}</p>
                     </label>
     
-                    <label class="option-radio minimal-rounded minimal-padding horizontal-elem-area">
-                        <p class="small-text">${translations['gender-other']}</p>
+                    <label class="option-radio radius-1 minimal-padding horizontal-elem-area">
                         <input id="gender3" type="radio" name="gender" value="neutral">
                         <div class="radio-ico"></div>
+                        <p class="small-text">${translations['gender-other']}</p>
                     </label>
                 </div>
             </div>
         </div>
 
         <div class="vertical-elem-area">
-            <button id="ID-done-btn" class="action-btn minimal-rounded big-btn-padding">${translations['done']}</button>
-            <button id="import-btn" class="option-btn minimal-rounded small-text">${translations['import-data']}</button>
+            <button id="ID-done-btn" class="action-btn ultra-radius big-btn-padding">${translations['done']}</button>
+            <button id="import-btn" class="option-btn radius-1 small-text">${translations['import-data']}</button>
         </div>
     </div>`;
 }

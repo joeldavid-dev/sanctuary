@@ -89,20 +89,22 @@ function getSettingsHTML(translations, constants) {
                 <p id="profile-name" class="expresive-text ultra-text"></p>
             </div>
 
-            <div class="div-options vertical-elem-area narrow-padding external-radius-2">
-                <button id="edit-ID" class="option-btn minimal-rounded left-text horizontal-flex centered spaced">
+            <div class="div-options vertical-elem-area narrow-padding external-radius-1">
+                <button id="edit-ID" class="option-btn radius-1 left-text horizontal-flex centered spaced">
                     ${translations['edit-ID']}
                     <img src="../assets/ico/feather/edit-2.svg" class="mini-icon">
                 </button>
-                <button id="edit-password" class="option-btn minimal-rounded left-text horizontal-flex centered spaced">
+                <button id="edit-password" class="option-btn radius-1 left-text horizontal-flex centered spaced">
                     ${translations['edit-password']}
                     <img src="../assets/ico/feather/edit-3.svg" class="mini-icon">
                 </button>
-                <!--
-                <button id="export-keys" class="option-btn minimal-rounded left-text">${translations['export-keys']}</button>
-                <button id="export-notes" class="option-btn minimal-rounded left-text">${translations['export-notes']}</button>
-                -->
-                <button id="delete-ID" class="option-btn-warning minimal-rounded left-text horizontal-flex centered spaced">
+                
+                <button id="export-data" class="option-btn radius-1 left-text horizontal-flex centered spaced">
+                    ${translations['export-data']}
+                    <img src="../assets/ico/feather/download.svg" class="mini-icon">
+                </button>
+
+                <button id="delete-ID" class="option-btn-warning radius-1 left-text horizontal-flex centered spaced">
                     ${translations['delete-ID']}
                     <img src="../assets/ico/feather/trash-2.svg" class="mini-icon">
                 </button>
@@ -110,11 +112,11 @@ function getSettingsHTML(translations, constants) {
 
             <div class="vertical-elem-area">
                 <h3>${translations['language']}</h3>
-                <div class="div-options vertical-elem-area narrow-padding external-radius-2">
+                <div class="div-options vertical-elem-area narrow-padding external-radius-1">
                     <div class="horizontal-flex centered spaced minimal-margin-left-right">
                         <p>${translations['app-language']}</p>
                         <div class="horizontal-elem-area centered">
-                            <button id="choose-language" class="option-btn minimal-rounded left-text horizontal-elem-area centered">
+                            <button id="choose-language" class="option-btn radius-1 left-text horizontal-elem-area centered">
                                 <img src="../assets/ico/feather/chevron-down.svg" class="mini-icon">
                             </button>
                             <img src="../assets/ico/feather/globe.svg" class="mini-icon darkmode-invert">
@@ -125,7 +127,7 @@ function getSettingsHTML(translations, constants) {
 
             <div class="vertical-elem-area">
                 <h3>${translations['customization']}</h3>
-                <div class="div-options vertical-elem-area narrow-padding external-radius-2">
+                <div class="div-options vertical-elem-area narrow-padding external-radius-1">
                     <p class="minimal-margin-left-right">${translations['lock-wallpaper']}</p>
                     <div id="wallpaper-options-area" class="elements-container minimal-spaced"></div>
                     <div id="motion-switch-area" class="horizontal-flex centered spaced minimal-margin-left-right">
@@ -141,7 +143,7 @@ function getSettingsHTML(translations, constants) {
 
             <div class="vertical-elem-area">
                 <h3>${translations['general']}</h3>
-                <div class="div-options vertical-elem-area narrow-padding external-radius-2">
+                <div class="div-options vertical-elem-area narrow-padding external-radius-1">
                     <div class="horizontal-flex centered spaced minimal-margin-left-right">
                         <p>${translations['run-in-background']}</p>
                         <label class="switch">
@@ -155,13 +157,13 @@ function getSettingsHTML(translations, constants) {
 
             <div class="vertical-elem-area">
                 <h3>${translations['about']}</h3>
-                <div class="div-options vertical-elem-area narrow-padding external-radius-2">
-                    <button id="view-info-about" class="option-btn minimal-rounded left-text horizontal-flex centered spaced">
+                <div class="div-options vertical-elem-area narrow-padding external-radius-1">
+                    <button id="view-info-about" class="option-btn radius-1 left-text horizontal-flex centered spaced">
                         ${replaceKeysInText(translations['view-info-about'], { 'appName': constants.about.appName })}
                         <img src="../assets/ico/sanctuary-mini.png" class="mini-icon">
                     </button>
 
-                    <button id="view-license" class="option-btn minimal-rounded left-text horizontal-flex centered spaced">
+                    <button id="view-license" class="option-btn radius-1 left-text horizontal-flex centered spaced">
                         ${translations['view-license']}
                         <img src="../assets/ico/feather/file-text.svg" class="mini-icon">
                     </button>
@@ -173,10 +175,10 @@ function getSettingsHTML(translations, constants) {
 
 function getWallpaperRadioHTML(img) {
     const wallpaperRadioBody = document.createElement('label');
-    wallpaperRadioBody.classList.add('transparent-radio', 'external-radius-4', 'nano-padding');
+    wallpaperRadioBody.classList.add('transparent-radio', 'external-radius-1', 'nano-padding');
 
     wallpaperRadioBody.innerHTML = `
-        <img src="../assets/thumbnail/${img}.jpg" class="wallpaper-icon normal-rounded">
+        <img src="../assets/thumbnail/${img}.jpg" class="wallpaper-icon external-radius-1">
         <input type="radio" name="settings-wallpaper-option" id="${img}-radio" value="${img}">
     `;
     return wallpaperRadioBody;
@@ -184,10 +186,10 @@ function getWallpaperRadioHTML(img) {
 
 function getCustomWallpaperHTML(imgPath) {
     const customWallpaperRadioBody = document.createElement('label');
-    customWallpaperRadioBody.classList.add('transparent-radio', 'external-radius-4', 'nano-padding');
+    customWallpaperRadioBody.classList.add('transparent-radio', 'external-radius-1', 'nano-padding');
 
     customWallpaperRadioBody.innerHTML = `
-        <img src="${imgPath}" class="wallpaper-icon normal-rounded">
+        <img src="${imgPath}" class="wallpaper-icon external-radius-1">
         <input type="radio" name="settings-wallpaper-option" id="custom-radio" value="custom">
     `;
     return customWallpaperRadioBody;
@@ -196,7 +198,7 @@ function getCustomWallpaperHTML(imgPath) {
 function getCustomWallpaperBtnHTML() {
     const customWallpaperBody = document.createElement('button');
     customWallpaperBody.id = 'custom-wallpaper-btn';
-    customWallpaperBody.classList.add('option-btn', 'external-radius-4', 'nano-margin', 'wallpaper-icon', 'normal-rounded');
+    customWallpaperBody.classList.add('option-btn', 'external-radius-1', 'nano-margin', 'wallpaper-icon', 'radius-1');
 
     customWallpaperBody.innerHTML = `
         <img src="../assets/ico/feather/plus.svg" class="normal-icon">

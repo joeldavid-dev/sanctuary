@@ -65,11 +65,11 @@ function getDeleteIDModalHTML(translations) {
             <label id="warning-message">${translations['message']}</label>
             <div class="vertical-elem-area">
                 <label class="small-text">${translations['password']}</label>
-                <input id="deteteID-user-pass" class="input-warning minimal-rounded" type="password" required>
+                <input id="deteteID-user-pass" class="input-warning radius-1" type="password" required>
             </div>
             <div class="horizontal-flex distributed">
-                <button id="cancel-deleteID-btn" class="action-btn-warning btn-padding minimal-rounded">${translations['cancel']}</button>
-                <button id="confirm-deleteID-btn" class="action-btn-warning btn-padding minimal-rounded">${translations['delete-ID']}</button>
+                <button id="cancel-deleteID-btn" class="action-btn-warning btn-padding ultra-radius">${translations['cancel']}</button>
+                <button id="confirm-deleteID-btn" class="action-btn-warning btn-padding ultra-radius">${translations['delete-ID']}</button>
             </div>
         </div>
         `;

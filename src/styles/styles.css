@@ -97,20 +97,12 @@ body::-webkit-scrollbar {
     --transparent-btn-margin: 4px;
     --nano-margin: 2px;
 
-    /* Valores de redondeo */
-    --minimal-radius: 6px;
-    --normal-radius: 11px;
-    --maximal-radius: 16px;
+    /* Valores de redondeo de elementos */
+    --radius-1: 6px;
+    --external-radius-1: calc(var(--radius-1) + var(--narrow-margin));
+    --external-radius-2: calc(var(--radius-1) + var(--normal-margin));
+    /* Redondeo para circulos */
     --ultra-radius: 30px;
-
-    /* Redondeo exterior de un contenedor con margen minimo y elemento hijo minimo. */
-    --external-radius: calc(var(--minimal-radius) + var(--minimal-margin));
-    /* Redondeo exterior de un contenedor con margen estrecho y elemento hijo minimo. */
-    --external-radius-2: calc(var(--minimal-radius) + var(--narrow-margin));
-    /* Redondeo exterior de un contenedor con margen normal y elemento hijo minimo. */
-    --external-radius-3: calc(var(--minimal-radius) + var(--normal-margin));
-    /* Redondeo exterior de un contenedor con margen nano y elemento hijo normal. */
-    --external-radius-4: calc(var(--normal-radius) + var(--nano-margin));
 }
 
 /* Permite arrastrar la app */
@@ -254,40 +246,22 @@ pre,
     border-radius: 50%;
 }
 
-/* Redondeo de elementos con borde circular */
-.ultra-rounded {
+/* Redondeo de elementos circulares */
+.ultra-radius {
     border-radius: var(--ultra-radius);
 }
 
-/* Redondeo de elementos grandes */
-.maximal-rounded {
-    border-radius: var(--maximal-radius);
+/* Redondeo de elementos pequeños */
+.radius-1 {
+    border-radius: var(--radius-1);
 }
 
-/* Redondeo de elementos medianos*/
-.normal-rounded {
-    border-radius: var(--normal-radius);
-}
-
-/* Redondeo de elementos pequeños*/
-.minimal-rounded {
-    border-radius: var(--minimal-radius);
-}
-
-.external-radius {
-    border-radius: var(--external-radius);
+.external-radius-1 {
+    border-radius: var(--external-radius-1);
 }
 
 .external-radius-2 {
     border-radius: var(--external-radius-2);
-}
-
-.external-radius-3 {
-    border-radius: var(--external-radius-3);
-}
-
-.external-radius-4 {
-    border-radius: var(--external-radius-4);
 }
 
 .top-bottom-big-margin {
@@ -580,7 +554,7 @@ pre,
     height: min-content;
     max-width: 600px;
     min-width: 120px;
-    border-radius: var(--normal-radius);
+    border-radius: var(--radius-1);
     color: white;
     padding: var(--big-margin) var(--normal-margin) var(--normal-margin) var(--normal-margin);
     gap: var(--normal-margin);
@@ -590,7 +564,7 @@ pre,
 .note-preview {
     height: min-content;
     min-width: 120px;
-    border-radius: var(--normal-radius);
+    border-radius: var(--radius-1);
     color: white;
     padding: var(--normal-margin);
 }
@@ -718,6 +692,33 @@ pre,
     filter: invert(1);
 }
 
+.option-checkbox {
+    display: flex;
+    align-items: center;
+    background-color: var(--light_gray);
+    cursor: pointer;
+    transition: var(--normal-animation);
+}
+
+.option-checkbox input {
+    /*Oculta el checkbox original */
+    display: none;
+}
+
+.option-checkbox:has(input:checked) {
+    color: var(--app_light);
+    background-color: var(--app_contrast_dark);
+}
+
+.option-checkbox .checkbox-ico {
+    transition: filter var(--normal-animation) ease;
+}
+
+.option-checkbox input:checked+.checkbox-ico {
+    background-image: url('../assets/ico/feather/check-square.svg');
+    filter: invert(1);
+}
+
 .option-input {
     text-align: center;
     background-color: var(--light_gray);
@@ -797,7 +798,7 @@ pre,
     /* oculta el borde de seleccion por defecto */
     outline: none;
     width: 100%;
-    border-radius: var(--minimal-radius) 0px 0px var(--minimal-radius);
+    border-radius: var(--radius-1) 0px 0px var(--radius-1);
 }
 
 .password-field input:focus {
@@ -808,7 +809,7 @@ pre,
     background: var(--light_gray);
     cursor: pointer;
     padding: 0px var(--minimal-margin) 0px var(--minimal-margin);
-    border-radius: 0px var(--minimal-radius) var(--minimal-radius) 0px;
+    border-radius: 0px var(--radius-1) var(--radius-1) 0px;
     /* Elimina el espacio extra que agrega el botón */
     display: flex;
     align-items: center;
@@ -936,8 +937,6 @@ input:checked+.slider::before {
 .popup-list {
     position: absolute;
     display: none;
-    padding: var(--narrow-margin);
-    border-radius: calc(var(--minimal-radius) + var(--narrow-margin));
     box-shadow: 0px 0px 30px 8px rgba(0, 0, 0, 0.20);
     max-height: 90dvh;
 }
@@ -946,6 +945,18 @@ input:checked+.slider::before {
     width: 15px;
     height: 15px;
     background-image: url('../assets/ico/feather/circle.svg');
+    /* Asegura que la imagen cubra todo el contenedor */
+    background-size: cover;
+    /* Centra la imagen */
+    background-position: center;
+    /* Evita que la imagen se repita */
+    background-repeat: no-repeat;
+}
+
+.checkbox-ico {
+    width: 15px;
+    height: 15px;
+    background-image: url('../assets/ico/feather/square.svg');
     /* Asegura que la imagen cubra todo el contenedor */
     background-size: cover;
     /* Centra la imagen */
@@ -1048,7 +1059,7 @@ input:checked+.slider::before {
     background-color: var(--app_light);
     border: 1px solid var(--neutral_grey);
     box-shadow: 0px 0px 60px 8px rgba(0, 0, 0, 0.20);
-    border-radius: var(--maximal-radius);
+    border-radius: var(--external-radius-2);
     max-height: 90dvh;
     max-width: 90dvw;
 }
@@ -1062,7 +1073,7 @@ input:checked+.slider::before {
     color: white;
     border: 1px solid white;
     box-shadow: 0px 0px 60px 8px rgba(0, 0, 0, 0.20);
-    border-radius: var(--maximal-radius);
+    border-radius: var(--external-radius-2);
 }
 
 .modal-header {
@@ -1124,7 +1135,7 @@ input:checked+.slider::before {
 /* Fondo del scrollbar */
 .scrolleable::-webkit-scrollbar-track {
     background: transparent;
-    margin: calc(var(--minimal-radius) + var(--narrow-margin));
+    margin: calc(var(--external-radius-1) + var(--narrow-margin));
 }
 
 .no-scrolleable {
@@ -1164,7 +1175,7 @@ input:checked+.slider::before {
     background-color: var(--app_contrast_dark);
     color: var(--app_light);
     padding: var(--narrow-margin) var(--normal-margin);
-    border-radius: var(--normal-radius);
+    border-radius: var(--radius-1);
     font-size: 14px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     transform: translateX(100%);
@@ -1175,7 +1186,7 @@ input:checked+.slider::before {
     background-color: var(--warning_red);
     color: white;
     padding: var(--narrow-margin) var(--normal-margin);
-    border-radius: var(--normal-radius);
+    border-radius: var(--radius-2);
     font-size: 14px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     transform: translateX(100%);
@@ -1386,10 +1397,6 @@ input:checked+.slider::before {
         background: var(--app_dark_translucent);
     }
 
-    .radio-ico {
-        filter: invert(1);
-    }
-
     .action-btn {
         color: white;
         background-color: var(--dark_gray);
@@ -1447,8 +1454,29 @@ input:checked+.slider::before {
         filter: invert(0);
     }
 
+    .radio-ico {
+        filter: invert(1);
+    }
+
     .option-radio2:has(input:checked) {
         border-color: var(--app_light_translucent);
+    }
+
+    .option-checkbox {
+        background-color: var(--dark_gray);
+    }
+
+    .option-checkbox:has(input:checked) {
+        color: var(--app_dark);
+        background-color: var(--app_contrast_light);
+    }
+
+    .option-checkbox input:checked+.checkbox-ico {
+        filter: invert(0);
+    }
+
+    .checkbox-ico {
+        filter: invert(1);
     }
 
     .option-input {

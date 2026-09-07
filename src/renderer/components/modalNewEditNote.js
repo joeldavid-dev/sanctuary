@@ -180,7 +180,7 @@ function getModalHTML(translations, noteTranslations) {
             <textarea id="content-textarea" class="element-textarea transparent-input small-text" rows="1" placeholder="${noteTranslations["name"]}\n\n${noteTranslations["content"]}"></textarea>
         </div>
         <div class="modal-bottom normal-padding colored-blur normal-spaced elements-container">
-            <div id="colors-section" class="horizontal-elem-area minimal-padding ultra-rounded div-options centered">
+            <div id="colors-section" class="horizontal-elem-area minimal-padding ultra-radius div-options centered">
                 <label class="option-radio2 circular nano-padding">
                     <input id="color1" type="radio" name="color" value="var(--color1)">
                     <div class="radio-color color1 circular"></div>
@@ -232,7 +232,7 @@ function getModalHTML(translations, noteTranslations) {
                 </label>
             </div>
             
-            <div class="horizontal-flex minimal-padding ultra-rounded div-options centered">
+            <div class="horizontal-flex minimal-padding ultra-radius div-options centered">
                 <label class="minimal-margin-left-right">${translations['favorite']}</label>
                 <label id="favorite-switch" class="switch">
                     <input type="checkbox">
@@ -240,7 +240,7 @@ function getModalHTML(translations, noteTranslations) {
                 </label>
             </div>
 
-            <button id="new-edit-done" class="action-btn big-btn-padding normal-rounded">${translations['done']}</button>
+            <button id="new-edit-done" class="action-btn big-btn-padding ultra-radius no-wrapped-text">${translations['done']}</button>
         </div>
     </div>`;
 }

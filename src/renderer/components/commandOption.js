@@ -6,7 +6,7 @@ export function createCommandOption(option) {
     // Si la opción inicia con 'change' o 'delete', se crea un botón con una clase específica
     if (option.startsWith('change') || option.startsWith('delete')) {
         const optionElement = document.createElement('button');
-        optionElement.classList.add('option-btn2', 'minimal-rounded', 'left-text', 'small-text');
+        optionElement.classList.add('option-btn2', 'radius-1', 'left-text', 'small-text');
         // Establece el atributo 'data-option' con el primer valor de la opción, antes de los dos puntos
         const optionParts = option.split(':');
         optionElement.setAttribute('data-option', optionParts[0]);
@@ -16,7 +16,7 @@ export function createCommandOption(option) {
     }
     else {
         const optionElement = document.createElement('button');
-        optionElement.classList.add('option-btn', 'minimal-rounded', 'left-text', 'small-text');
+        optionElement.classList.add('option-btn', 'radius-1', 'left-text', 'small-text');
         optionElement.setAttribute('data-option', option);
         optionElement.textContent = option;
 

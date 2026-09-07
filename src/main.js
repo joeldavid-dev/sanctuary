@@ -1150,6 +1150,10 @@ ipcMain.handle('execute-command', async (event, command) => {
             return await clearImageCache();
         case 'clear-log':
             return clearLog();
+        case 'reload-translations':
+            loadTranslations();
+            mainWindow.reload();
+            break;
         default:
             // Comando no reconocido
             return { success: false, message: `${cmd}: ${mainTranslations['command-not-found']}` };

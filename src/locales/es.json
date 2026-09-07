@@ -48,6 +48,24 @@
         "change-notes-password": "Cifrando notas...",
         "save-password-changes": "Guardando los cambios..."
     },
+    "export-data": {
+        "title": "Datos de {appName}",
+        "export-data": "Exportar datos",
+        "which-data-export": "Selecciona qué datos deseas exportar:",
+        "export-keys": "Exportar claves",
+        "export-notes": "Exportar notas",
+        "format-export": "Selecciona en qué formato deseas exportar los datos:",
+        "json-format": "Formato JSON",
+        "json-format-info": "El formato JSON exportará los datos en un archivo cifrado que puede ser importado nuevamente a la aplicación.",
+        "csv-format": "Formato CSV",
+        "csv-format-info": "El formato CSV exportará los datos a una hoja de cálculo sin cifrar.",
+        "txt-format": "Formato de texto",
+        "txt-format-info": "El formato de texto exportará los datos en un formato legible.",
+        "warning": "CUIDADO: Exportar tus datos en un formato sin cifrar puede comprometer tu seguridad y privacidad. Asegúrate de mantener los archivos exportados en un lugar seguro.",
+        "export": "Exportar",
+        "export-success": "Tus datos han sido exportados exitosamente.",
+        "export-error": "Error al exportar los datos."
+    },
     "warning": {
         "title": "Advertencia",
         "wrong-password": "Contraseña incorrecta.",
@@ -187,8 +205,7 @@
     "settings": {
         "edit-ID": "Edita los datos de tu ID",
         "edit-password": "Cambiar tu contraseña",
-        "export-keys": "Exportar todas las claves",
-        "export-notes": "Exportar todas las notas",
+        "export-data": "Exportar tus datos",
         "delete-ID": "Eliminar ID",
         "language": "Idioma",
         "app-language": "Idioma de la aplicación",

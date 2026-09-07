@@ -233,21 +233,21 @@ function getModalHTML(translations, cardTranslations) {
     return `
     <div class="vertical-flex">
         <div class="horizontal-elem-area centered modal-margin">
-            <div class="vertical-elem-area normal-padding normal-rounded div-options min-content">
+            <div class="vertical-elem-area normal-padding external-radius-1 div-options min-content">
                 <label>${translations['name']}</label>
-                <input type="text" id="name-input" class="option-input minimal-rounded" 
+                <input type="text" id="name-input" class="option-input radius-1" 
                     placeholder=${translations["name-placeholder"]}>
                 <label>${translations['user']}</label>
-                <input type="text" id="user-input" class="option-input minimal-rounded"
+                <input type="text" id="user-input" class="option-input radius-1"
                     placeholder=${translations['user-placeholder']}>
                 <label>${translations['password']}</label>
-                <input type="text" id="pass-input" class="option-input minimal-rounded"
+                <input type="text" id="pass-input" class="option-input radius-1"
                     placeholder=${translations['password-placeholder']}>
                 <label>${translations['url']}</label>
-                <input type="text" inputmode="url" id="url-input" class="option-input minimal-rounded"
+                <input type="text" inputmode="url" id="url-input" class="option-input radius-1"
                     placeholder=${translations['url-placeholder']}>
                 <label>${translations['note']}</label>
-                <input type="text" id="cardNote-input" class="option-input minimal-rounded"
+                <input type="text" id="cardNote-input" class="option-input radius-1"
                     placeholder=${translations['note-placeholder']}>
                 
                 <div class="horizontal-flex spaced centered">
@@ -303,7 +303,7 @@ function getModalHTML(translations, cardTranslations) {
         </div>
 
         <div class="modal-bottom normal-padding colored-blur normal-spaced elements-container">
-            <div id="colors-section" class="horizontal-elem-area centered minimal-padding ultra-rounded div-options">
+            <div id="colors-section" class="horizontal-elem-area centered minimal-padding ultra-radius div-options">
                 <label class="option-radio2 circular nano-padding">
                     <input id="color1" type="radio" name="color" value="var(--color1)">
                     <div class="radio-color color1 circular"></div>
@@ -355,7 +355,7 @@ function getModalHTML(translations, cardTranslations) {
                 </label>
             </div>
 
-            <button id="new-edit-done" class="action-btn big-btn-padding normal-rounded no-wrapped-text">${translations['done']}</button>
+            <button id="new-edit-done" class="action-btn big-btn-padding ultra-radius no-wrapped-text">${translations['done']}</button>
         </div>
     </div>`;
 }
