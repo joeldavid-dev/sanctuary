@@ -48,6 +48,37 @@
         "change-notes-password": "Notizen werden verschlüsselt...",
         "save-password-changes": "Änderungen werden gespeichert..."
     },
+    "export-data": {
+        "title": "Daten von {appName}",
+        "export-data": "Daten exportieren",
+        "which-data-export": "Wähle aus, welche Daten du exportieren möchtest:",
+        "export-keys": "Passwörter exportieren",
+        "export-notes": "Notizen exportieren",
+        "format-export": "Wähle aus, in welchem Format du die Daten exportieren möchtest:",
+        "json-format": "JSON-Format",
+        "json-format-info": "Das JSON-Format exportiert die Daten in eine verschlüsselte Datei, die wieder in die Anwendung importiert werden kann.",
+        "csv-format": "CSV-Format",
+        "csv-format-info": "Das CSV-Format exportiert die Daten unverschlüsselt in eine Tabelle.",
+        "txt-format": "Textformat",
+        "txt-format-info": "Das Textformat exportiert die Daten in einem lesbaren Format.",
+        "warning": "ACHTUNG: Das Exportieren deiner Daten in einem unverschlüsselten Format kann deine Sicherheit und Privatsphäre gefährden. Bewahre die exportierten Dateien an einem sicheren Ort auf.",
+        "export": "Exportieren",
+        "export-success": "Deine Daten wurden erfolgreich exportiert.",
+        "export-error": "Fehler beim Exportieren der Daten.",
+        "select-data-required": "Wähle mindestens einen Datentyp zum Exportieren aus.",
+        "select-format-required": "Wähle ein Exportformat aus.",
+        "file-header": "Exportierte Daten",
+        "exported-at": "Exportiert am",
+        "keys-section-title": "Passwörter",
+        "notes-section-title": "Notizen",
+        "field-name": "Name",
+        "field-user": "Benutzer",
+        "field-password": "Passwort",
+        "field-web": "Webseite",
+        "field-note": "Notiz",
+        "field-content": "Inhalt",
+        "no-data": "Keine Daten zum Exportieren."
+    },
     "warning": {
         "title": "Warnung",
         "wrong-password": "Falsches Passwort.",
@@ -108,7 +139,8 @@
         "log-cleared": "Aktivitätsprotokoll erfolgreich geleert.",
         "log-clear-error": "Fehler beim Leeren des Aktivitätsprotokolls.",
         "tray-open": "Öffnen",
-        "tray-quit": "Beenden"
+        "tray-quit": "Beenden",
+        "export-dialog-title": "Exportierte Daten speichern"
     },
     "home-view": {
         "search": "Suchen...",
@@ -187,8 +219,7 @@
     "settings": {
         "edit-ID": "Bearbeite deine ID-Daten",
         "edit-password": "Ändere dein Passwort",
-        "export-keys": "Alle Schlüssel exportieren",
-        "export-notes": "Alle Notizen exportieren",
+        "export-data": "Daten exportieren",
         "delete-ID": "ID löschen",
         "language": "Sprache",
         "app-language": "Anwendungssprache",

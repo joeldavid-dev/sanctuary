@@ -48,6 +48,37 @@
         "change-notes-password": "Krypterar anteckningar...",
         "save-password-changes": "Sparar ändringar..."
     },
+    "export-data": {
+        "title": "{appName}-data",
+        "export-data": "Exportera data",
+        "which-data-export": "Välj vilka data du vill exportera:",
+        "export-keys": "Exportera lösenord",
+        "export-notes": "Exportera anteckningar",
+        "format-export": "Välj i vilket format du vill exportera data:",
+        "json-format": "JSON-format",
+        "json-format-info": "JSON-formatet exporterar data till en krypterad fil som kan importeras tillbaka till appen.",
+        "csv-format": "CSV-format",
+        "csv-format-info": "CSV-formatet exporterar data till ett okrypterat kalkylblad.",
+        "txt-format": "Textformat",
+        "txt-format-info": "Textformatet exporterar data i ett läsbart format.",
+        "warning": "VARNING: Att exportera dina data i ett okrypterat format kan äventyra din säkerhet och integritet. Se till att förvara de exporterade filerna på en säker plats.",
+        "export": "Exportera",
+        "export-success": "Dina data har exporterats.",
+        "export-error": "Fel vid export av data.",
+        "select-data-required": "Välj minst en datatyp att exportera.",
+        "select-format-required": "Välj ett exportformat.",
+        "file-header": "Exporterad data",
+        "exported-at": "Exporterad",
+        "keys-section-title": "Lösenord",
+        "notes-section-title": "Anteckningar",
+        "field-name": "Namn",
+        "field-user": "Användare",
+        "field-password": "Lösenord",
+        "field-web": "Webbplats",
+        "field-note": "Anteckning",
+        "field-content": "Innehåll",
+        "no-data": "Inga data att exportera."
+    },
     "warning": {
         "title": "Varning",
         "wrong-password": "Fel lösenord.",
@@ -108,7 +139,8 @@
         "log-cleared": "Aktivitetslogg rensad framgångsrikt.",
         "log-clear-error": "Fel vid rensning av aktivitetslogg.",
         "tray-open": "Öppna",
-        "tray-quit": "Avsluta"
+        "tray-quit": "Avsluta",
+        "export-dialog-title": "Spara exporterad data"
     },
     "home-view": {
         "search": "Sök...",
@@ -187,8 +219,7 @@
     "settings": {
         "edit-ID": "Redigera din ID-data",
         "edit-password": "Byt ditt lösenord",
-        "export-keys": "Exportera alla nycklar",
-        "export-notes": "Exportera alla anteckningar",
+        "export-data": "Exportera data",
         "delete-ID": "Radera ID",
         "language": "Språk",
         "app-language": "Applikationsspråk",

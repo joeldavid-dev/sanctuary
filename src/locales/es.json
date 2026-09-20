@@ -64,7 +64,20 @@
         "warning": "CUIDADO: Exportar tus datos en un formato sin cifrar puede comprometer tu seguridad y privacidad. Asegúrate de mantener los archivos exportados en un lugar seguro.",
         "export": "Exportar",
         "export-success": "Tus datos han sido exportados exitosamente.",
-        "export-error": "Error al exportar los datos."
+        "export-error": "Error al exportar los datos.",
+        "select-data-required": "Selecciona al menos un tipo de dato para exportar.",
+        "select-format-required": "Selecciona un formato de exportación.",
+        "file-header": "Datos exportados",
+        "exported-at": "Exportado el",
+        "keys-section-title": "Claves",
+        "notes-section-title": "Notas",
+        "field-name": "Nombre",
+        "field-user": "Usuario",
+        "field-password": "Contraseña",
+        "field-web": "Sitio web",
+        "field-note": "Nota",
+        "field-content": "Contenido",
+        "no-data": "Sin datos para exportar."
     },
     "warning": {
         "title": "Advertencia",
@@ -126,7 +139,8 @@
         "log-cleared": "Registro de actividad limpiado exitosamente.",
         "log-clear-error": "Error al limpiar el registro de actividad.",
         "tray-open": "Abrir",
-        "tray-quit": "Salir"
+        "tray-quit": "Salir",
+        "export-dialog-title": "Guardar datos exportados"
     },
     "home-view": {
         "search": "Buscar...",

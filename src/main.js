@@ -448,7 +448,7 @@ ipcMain.handle('show-warning', async (event, title, message) => {
 });
 
 // Obtener arvhivo JSON con datos a importar desde el explorador de archivos
-ipcMain.handle('get-json-file', async () => {
+ipcMain.handle('import-json', async () => {
     // Mostrar un cuadro de diálogo para seleccionar el archivo JSON
     const { canceled, filePaths } = await dialog.showOpenDialog({
         tittle: mainTranslations['json-dialog-title'],
@@ -469,23 +469,53 @@ ipcMain.handle('get-json-file', async () => {
         const content = fs.readFileSync(filePath, 'utf-8');
         const jsonData = JSON.parse(content);
 
-        // Verificar que el archivo JSON tenga la estructura correcta
-        const oldSanctuaryKey = constants.oldSanctuaryKey;
-        const requiredKeys = ['name', 'password', 'gender', 'Sanctuary', 'cards'];
-        const hasRequiredKeys = requiredKeys.every(key => key in jsonData);
-        if (hasRequiredKeys && jsonData.Sanctuary === oldSanctuaryKey && Array.isArray(jsonData.cards)) {
-            oldData = jsonData;
-            return {
-                success: true,
-                message: mainTranslations['json-dialog-success'],
-                name: jsonData.name,
-            };
+        // Obtener versión, quitar puntos y convertir a número para comparar
+        const version = jsonData.version ? parseInt(jsonData.version.replace(/\./g, '')) : 0;
+
+        if (version >= 133) {
+            // Importación de datos de Sanctuary 1.3.3 o superior
+            // Verificar que el archivo JSON tenga la estructura correcta
+            const requiredKeys = ['name', 'gender', 'hash', 'cards', 'notes'];
+            const hasRequiredKeys = requiredKeys.every(key => key in jsonData);
+            if (hasRequiredKeys) {
+                // Proceso de importación de datos
+                superUser = await db.addUser(jsonData.name, jsonData.gender, jsonData.hash);
+                await db.importCards(jsonData.cards);
+                await db.importNotes(jsonData.notes);
+                // Proceso terminado de forma exitosa
+                return {
+                    success: true,
+                    isLegacyData: false,
+                    message: mainTranslations['import-data-success'],
+                };
+            } else {
+                return {
+                    success: false,
+                    message: mainTranslations['json-dialog-invalid'],
+                };
+            }
         }
         else {
-            return {
-                success: false,
-                message: mainTranslations['json-dialog-invalid'],
-            };
+            // Importación de datos de Sanctuary legacy
+            // Verificar que el archivo JSON tenga la estructura correcta
+            const oldSanctuaryKey = constants.oldSanctuaryKey;
+            const requiredKeys = ['name', 'password', 'gender', 'Sanctuary', 'cards'];
+            const hasRequiredKeys = requiredKeys.every(key => key in jsonData);
+            if (hasRequiredKeys && jsonData.Sanctuary === oldSanctuaryKey && Array.isArray(jsonData.cards)) {
+                oldData = jsonData;
+                return {
+                    success: true,
+                    isLegacyData: true,
+                    message: mainTranslations['json-dialog-success'],
+                    name: jsonData.name,
+                };
+            }
+            else {
+                return {
+                    success: false,
+                    message: mainTranslations['json-dialog-invalid'],
+                };
+            }
         }
     } catch (error) {
         writeLog('Error al leer el archivo JSON: ' + error.message);
@@ -1031,7 +1061,7 @@ ipcMain.handle('get-prepared-elements', async () => {
 });
 
 // Importar datos de la version anterior
-ipcMain.handle('import-data', async (event, key) => {
+ipcMain.handle('import-legacy-data', async (event, key) => {
     const encryptedKey = oldCr.encrypt(key, key);
     if (encryptedKey === oldData.password) {
         const adaptedID = oldCr.adaptOldID(oldData);
@@ -1081,6 +1111,91 @@ ipcMain.handle('import-data', async (event, key) => {
             success: false,
             message: mainTranslations['import-data-wrong-password'],
         };
+    }
+});
+
+// Exportar los datos del usuario (claves y/o notas) en formato JSON (cifrado,
+// reimportable) o TXT (legible, descifrado).
+ipcMain.handle('export-data', async (event, options) => {
+    const { cards: exportCards, notes: exportNotes, format } = options;
+    const exportTranslations = translations['export-data'];
+
+    // Mostrar un cuadro de diálogo para elegir dónde guardar el archivo
+    const { canceled, filePath } = await dialog.showSaveDialog({
+        title: mainTranslations['export-dialog-title'],
+        defaultPath: `sanctuary-export-${new Date().toISOString().slice(0, 10)}.${format}`,
+        filters: [format === 'json'
+            ? { name: 'JSON', extensions: ['json'] }
+            : { name: 'Text', extensions: ['txt'] }]
+    });
+    if (canceled || !filePath) {
+        return { success: false, canceled: true };
+    }
+
+    try {
+        const cardsData = exportCards ? await db.getAllCards() : [];
+        const notesData = exportNotes ? await db.getAllNotes() : [];
+
+        if (format === 'json') {
+            // Los datos se exportan tal como están almacenados (cifrados),
+            // para que puedan ser reimportados a la aplicación.
+            const exportObject = {
+                name: superUser.name,
+                gender: superUser.gender,
+                hash: superUser.hash,
+                created_at: superUser.created_at,
+                app: constants.about.appName,
+                version: constants.about.version,
+                exported_at: new Date().toISOString(),
+                cards: cardsData,
+                notes: notesData,
+            };
+            fs.writeFileSync(filePath, JSON.stringify(exportObject, null, 2), 'utf-8');
+        } else {
+            if (!masterKey) throw new Error('Master key no establecida');
+
+            let content = `${constants.about.appName} - ${exportTranslations['file-header']}\n`;
+            content += `${exportTranslations['exported-at']}: ${new Date().toLocaleString()}\n`;
+
+            if (exportCards) {
+                content += `\n=== ${exportTranslations['keys-section-title']} ===\n\n`;
+                if (cardsData.length === 0) {
+                    content += `${exportTranslations['no-data']}\n`;
+                } else {
+                    for (const encryptedCard of cardsData) {
+                        const card = await cr.decryptCard(masterKey, encryptedCard);
+                        content += `${exportTranslations['field-name']}: ${card.name}\n`;
+                        content += `${exportTranslations['field-user']}: ${card.user ?? ''}\n`;
+                        content += `${exportTranslations['field-password']}: ${card.password}\n`;
+                        content += `${exportTranslations['field-web']}: ${card.web ?? ''}\n`;
+                        content += `${exportTranslations['field-note']}: ${card.note ?? ''}\n`;
+                        content += '-'.repeat(40) + '\n';
+                    }
+                }
+            }
+
+            if (exportNotes) {
+                content += `\n=== ${exportTranslations['notes-section-title']} ===\n\n`;
+                if (notesData.length === 0) {
+                    content += `${exportTranslations['no-data']}\n`;
+                } else {
+                    for (const encryptedNote of notesData) {
+                        const note = await cr.decryptNote(masterKey, encryptedNote);
+                        content += `${exportTranslations['field-name']}: ${note.name}\n`;
+                        content += `${exportTranslations['field-content']}: ${note.content ?? ''}\n`;
+                        content += '-'.repeat(40) + '\n';
+                    }
+                }
+            }
+
+            fs.writeFileSync(filePath, content, 'utf-8');
+        }
+
+        writeLog('Datos exportados exitosamente en: ' + filePath);
+        return { success: true };
+    } catch (error) {
+        writeLog('Error al exportar los datos: ' + error.message);
+        return { success: false, error: error.message };
     }
 });
 

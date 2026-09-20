@@ -204,6 +204,42 @@ function updateCard(id, card) {
     });
 }
 
+// Función para importar un arreglo de tarjetas directamente a la tabla cardsData.
+// Usada para importar datos desde un archivo JSON exportado previamente.
+function importCards(cards) {
+    return new Promise((resolve, reject) => {
+        const query = `INSERT INTO cardsData
+        (name, user, password, web, note, color, favorite, salt, iv, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+        db.serialize(() => {
+            db.run('BEGIN TRANSACTION');
+            const stmt = db.prepare(query);
+            let statementError = null;
+
+            for (const card of cards) {
+                stmt.run([
+                    card.name, card.user, card.password, card.web, card.note,
+                    card.color, card.favorite, card.salt, card.iv,
+                    card.created_at ?? new Date().toISOString(), card.updated_at ?? null
+                ], (err) => {
+                    if (err) statementError = err;
+                });
+            }
+
+            stmt.finalize((err) => {
+                if (err || statementError) {
+                    return db.run('ROLLBACK', () => reject(err || statementError));
+                }
+                db.run('COMMIT', (err) => {
+                    if (err) reject(err);
+                    else resolve({ imported: cards.length });
+                });
+            });
+        });
+    });
+}
+
 // Función para obtener todas las tarjetas
 function getAllCards() {
     return new Promise((resolve, reject) => {
@@ -278,6 +314,41 @@ function updateNote(id, note) {
     });
 }
 
+// Función para importar un arreglo de notas directamente a la tabla notesData.
+// Usada para importar datos desde un archivo JSON exportado previamente.
+function importNotes(notes) {
+    return new Promise((resolve, reject) => {
+        const query = `INSERT INTO notesData
+        (name, content, color, favorite, salt, iv, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+
+        db.serialize(() => {
+            db.run('BEGIN TRANSACTION');
+            const stmt = db.prepare(query);
+            let statementError = null;
+
+            for (const note of notes) {
+                stmt.run([
+                    note.name, note.content, note.color, note.favorite, note.salt, note.iv,
+                    note.created_at ?? new Date().toISOString(), note.updated_at ?? null
+                ], (err) => {
+                    if (err) statementError = err;
+                });
+            }
+
+            stmt.finalize((err) => {
+                if (err || statementError) {
+                    return db.run('ROLLBACK', () => reject(err || statementError));
+                }
+                db.run('COMMIT', (err) => {
+                    if (err) reject(err);
+                    else resolve({ imported: notes.length });
+                });
+            });
+        });
+    });
+}
+
 // Función para obtener todas las notas
 function getAllNotes() {
     return new Promise((resolve, reject) => {
@@ -307,4 +378,4 @@ function setSchemaVersion() {
     db.run();
 }
 
-module.exports = { addUser, getUser, updateUser, deleteAll, createCard, deleteCard, updateCard, getAllCards, createNote, deleteNote, updateNote, getAllNotes };
+module.exports = { addUser, getUser, updateUser, deleteAll, createCard, deleteCard, updateCard, getAllCards, importCards, createNote, deleteNote, updateNote, getAllNotes, importNotes };

@@ -22,7 +22,7 @@ contextBridge.exposeInMainWorld('sanctuaryAPI', {
     // Actualizaciones
     isUpdateDownloaded: () => ipcRenderer.invoke('is-update-downloaded'),
     // Obtener archivo JSON
-    getJSONFile: () => ipcRenderer.invoke('get-json-file'),
+    importJSON: () => ipcRenderer.invoke('import-json'),
     // Exponer las funciones de manejo de datos
     createID: (name, password, gender) => ipcRenderer.invoke('createID', name, password, gender),
     updateID: (name, gender) => ipcRenderer.invoke('updateID', name, gender),
@@ -39,7 +39,8 @@ contextBridge.exposeInMainWorld('sanctuaryAPI', {
     decryptNote: (id) => ipcRenderer.invoke('decrypt-note', id),
     deleteNote: (id) => ipcRenderer.invoke('delete-note', id),
     getPreparedElements: () => ipcRenderer.invoke('get-prepared-elements'),
-    importData: (key) => ipcRenderer.invoke('import-data', key),
+    importLegacyData: (key) => ipcRenderer.invoke('import-legacy-data', key),
+    exportData: (options) => ipcRenderer.invoke('export-data', options),
     // Paths
     getPaths: (key) => ipcRenderer.invoke('get-paths', key),
     // Exponer las funciones de configuración

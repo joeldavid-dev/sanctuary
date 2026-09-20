@@ -48,6 +48,37 @@
         "change-notes-password": "ノートを暗号化中...",
         "save-password-changes": "変更を保存中..."
     },
+    "export-data": {
+        "title": "{appName}のデータ",
+        "export-data": "データをエクスポート",
+        "which-data-export": "エクスポートするデータを選択してください：",
+        "export-keys": "キーをエクスポート",
+        "export-notes": "メモをエクスポート",
+        "format-export": "データをエクスポートする形式を選択してください：",
+        "json-format": "JSON形式",
+        "json-format-info": "JSON形式は、アプリに再インポートできる暗号化されたファイルにデータをエクスポートします。",
+        "csv-format": "CSV形式",
+        "csv-format-info": "CSV形式は、暗号化されていない表計算ファイルにデータをエクスポートします。",
+        "txt-format": "テキスト形式",
+        "txt-format-info": "テキスト形式は、読み取り可能な形式でデータをエクスポートします。",
+        "warning": "警告：暗号化されていない形式でデータをエクスポートすると、セキュリティとプライバシーが損なわれる可能性があります。エクスポートしたファイルは安全な場所に保管してください。",
+        "export": "エクスポート",
+        "export-success": "データが正常にエクスポートされました。",
+        "export-error": "データのエクスポート中にエラーが発生しました。",
+        "select-data-required": "エクスポートするデータの種類を少なくとも1つ選択してください。",
+        "select-format-required": "エクスポート形式を選択してください。",
+        "file-header": "エクスポートされたデータ",
+        "exported-at": "エクスポート日時",
+        "keys-section-title": "キー",
+        "notes-section-title": "メモ",
+        "field-name": "名前",
+        "field-user": "ユーザー名",
+        "field-password": "パスワード",
+        "field-web": "ウェブサイト",
+        "field-note": "メモ",
+        "field-content": "内容",
+        "no-data": "エクスポートするデータがありません。"
+    },
     "warning": {
         "title": "警告",
         "wrong-password": "パスワードが違います。",
@@ -108,7 +139,8 @@
         "log-cleared": "アクティビティログが正常にクリアされました。",
         "log-clear-error": "アクティビティログのクリア中にエラーが発生しました。",
         "tray-open": "開く",
-        "tray-quit": "終了"
+        "tray-quit": "終了",
+        "export-dialog-title": "エクスポートしたデータを保存"
     },
     "home-view": {
         "search": "検索...",
@@ -187,8 +219,7 @@
     "settings": {
         "edit-ID": "IDデータを編集",
         "edit-password": "パスワードを変更",
-        "export-keys": "すべてのキーをエクスポート",
-        "export-notes": "すべてのノートをエクスポート",
+        "export-data": "データをエクスポート",
         "delete-ID": "IDを削除",
         "language": "言語",
         "app-language": "アプリの言語",

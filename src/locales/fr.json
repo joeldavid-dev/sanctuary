@@ -48,6 +48,37 @@
         "change-notes-password": "Chiffrement des notes...",
         "save-password-changes": "Enregistrement des modifications..."
     },
+    "export-data": {
+        "title": "Données de {appName}",
+        "export-data": "Exporter les données",
+        "which-data-export": "Sélectionnez les données que vous souhaitez exporter :",
+        "export-keys": "Exporter les clés",
+        "export-notes": "Exporter les notes",
+        "format-export": "Sélectionnez le format dans lequel vous souhaitez exporter les données :",
+        "json-format": "Format JSON",
+        "json-format-info": "Le format JSON exportera les données dans un fichier chiffré pouvant être réimporté dans l'application.",
+        "csv-format": "Format CSV",
+        "csv-format-info": "Le format CSV exportera les données vers une feuille de calcul non chiffrée.",
+        "txt-format": "Format texte",
+        "txt-format-info": "Le format texte exportera les données dans un format lisible.",
+        "warning": "ATTENTION : exporter vos données dans un format non chiffré peut compromettre votre sécurité et votre vie privée. Assurez-vous de conserver les fichiers exportés dans un endroit sûr.",
+        "export": "Exporter",
+        "export-success": "Vos données ont été exportées avec succès.",
+        "export-error": "Erreur lors de l'exportation des données.",
+        "select-data-required": "Sélectionnez au moins un type de données à exporter.",
+        "select-format-required": "Sélectionnez un format d'exportation.",
+        "file-header": "Données exportées",
+        "exported-at": "Exporté le",
+        "keys-section-title": "Clés",
+        "notes-section-title": "Notes",
+        "field-name": "Nom",
+        "field-user": "Utilisateur",
+        "field-password": "Mot de passe",
+        "field-web": "Site web",
+        "field-note": "Note",
+        "field-content": "Contenu",
+        "no-data": "Aucune donnée à exporter."
+    },
     "warning": {
         "title": "Avertissement",
         "wrong-password": "Mot de passe incorrect.",
@@ -108,7 +139,8 @@
         "log-cleared": "Journal d'activité vidé avec succès.",
         "log-clear-error": "Erreur lors du vidage du journal d'activité.",
         "tray-open": "Ouvrir",
-        "tray-quit": "Quitter"
+        "tray-quit": "Quitter",
+        "export-dialog-title": "Enregistrer les données exportées"
     },
     "home-view": {
         "search": "Rechercher...",
@@ -187,8 +219,7 @@
     "settings": {
         "edit-ID": "Modifier les données de ton ID",
         "edit-password": "Changer ton mot de passe",
-        "export-keys": "Exporter toutes les clés",
-        "export-notes": "Exporter toutes les notes",
+        "export-data": "Exporter les données",
         "delete-ID": "Supprimer l'ID",
         "language": "Langue",
         "app-language": "Langue de l'application",

@@ -48,6 +48,37 @@
         "change-notes-password": "Criptografando notas...",
         "save-password-changes": "Salvando as alterações..."
     },
+    "export-data": {
+        "title": "Dados do {appName}",
+        "export-data": "Exportar dados",
+        "which-data-export": "Selecione quais dados deseja exportar:",
+        "export-keys": "Exportar chaves",
+        "export-notes": "Exportar notas",
+        "format-export": "Selecione em qual formato deseja exportar os dados:",
+        "json-format": "Formato JSON",
+        "json-format-info": "O formato JSON exportará os dados em um arquivo criptografado que pode ser importado novamente para o aplicativo.",
+        "csv-format": "Formato CSV",
+        "csv-format-info": "O formato CSV exportará os dados para uma planilha sem criptografia.",
+        "txt-format": "Formato de texto",
+        "txt-format-info": "O formato de texto exportará os dados em um formato legível.",
+        "warning": "CUIDADO: exportar seus dados em um formato não criptografado pode comprometer sua segurança e privacidade. Certifique-se de manter os arquivos exportados em um local seguro.",
+        "export": "Exportar",
+        "export-success": "Seus dados foram exportados com sucesso.",
+        "export-error": "Erro ao exportar os dados.",
+        "select-data-required": "Selecione pelo menos um tipo de dado para exportar.",
+        "select-format-required": "Selecione um formato de exportação.",
+        "file-header": "Dados exportados",
+        "exported-at": "Exportado em",
+        "keys-section-title": "Chaves",
+        "notes-section-title": "Notas",
+        "field-name": "Nome",
+        "field-user": "Usuário",
+        "field-password": "Senha",
+        "field-web": "Site",
+        "field-note": "Nota",
+        "field-content": "Conteúdo",
+        "no-data": "Nenhum dado para exportar."
+    },
     "warning": {
         "title": "Aviso",
         "wrong-password": "Senha incorreta.",
@@ -108,7 +139,8 @@
         "log-cleared": "Registro de atividades limpo com sucesso.",
         "log-clear-error": "Erro ao limpar o registro de atividades.",
         "tray-open": "Abrir",
-        "tray-quit": "Sair"
+        "tray-quit": "Sair",
+        "export-dialog-title": "Salvar dados exportados"
     },
     "home-view": {
         "search": "Buscar...",
@@ -187,8 +219,7 @@
     "settings": {
         "edit-ID": "Edite os dados do seu ID",
         "edit-password": "Alterar sua senha",
-        "export-keys": "Exportar todas as chaves",
-        "export-notes": "Exportar todas as notas",
+        "export-data": "Exportar dados",
         "delete-ID": "Excluir ID",
         "language": "Idioma",
         "app-language": "Idioma do aplicativo",

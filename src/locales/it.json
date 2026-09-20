@@ -48,6 +48,37 @@
         "change-notes-password": "Crittografia delle note in corso...",
         "save-password-changes": "Salvataggio delle modifiche..."
     },
+    "export-data": {
+        "title": "Dati di {appName}",
+        "export-data": "Esporta dati",
+        "which-data-export": "Seleziona quali dati desideri esportare:",
+        "export-keys": "Esporta chiavi",
+        "export-notes": "Esporta note",
+        "format-export": "Seleziona in quale formato desideri esportare i dati:",
+        "json-format": "Formato JSON",
+        "json-format-info": "Il formato JSON esporterà i dati in un file crittografato che può essere reimportato nell'applicazione.",
+        "csv-format": "Formato CSV",
+        "csv-format-info": "Il formato CSV esporterà i dati in un foglio di calcolo non crittografato.",
+        "txt-format": "Formato di testo",
+        "txt-format-info": "Il formato di testo esporterà i dati in un formato leggibile.",
+        "warning": "ATTENZIONE: esportare i tuoi dati in un formato non crittografato può compromettere la tua sicurezza e privacy. Assicurati di conservare i file esportati in un luogo sicuro.",
+        "export": "Esporta",
+        "export-success": "I tuoi dati sono stati esportati con successo.",
+        "export-error": "Errore durante l'esportazione dei dati.",
+        "select-data-required": "Seleziona almeno un tipo di dato da esportare.",
+        "select-format-required": "Seleziona un formato di esportazione.",
+        "file-header": "Dati esportati",
+        "exported-at": "Esportato il",
+        "keys-section-title": "Chiavi",
+        "notes-section-title": "Note",
+        "field-name": "Nome",
+        "field-user": "Utente",
+        "field-password": "Password",
+        "field-web": "Sito web",
+        "field-note": "Nota",
+        "field-content": "Contenuto",
+        "no-data": "Nessun dato da esportare."
+    },
     "warning": {
         "title": "Avviso",
         "wrong-password": "Password errata.",
@@ -108,7 +139,8 @@
         "log-cleared": "Registro attività svuotato con successo.",
         "log-clear-error": "Errore durante lo svuotamento del registro attività.",
         "tray-open": "Apri",
-        "tray-quit": "Esci"
+        "tray-quit": "Esci",
+        "export-dialog-title": "Salva dati esportati"
     },
     "home-view": {
         "search": "Cerca...",
@@ -187,8 +219,7 @@
     "settings": {
         "edit-ID": "Modifica i dati del tuo ID",
         "edit-password": "Cambia la tua password",
-        "export-keys": "Esporta tutte le chiavi",
-        "export-notes": "Esporta tutte le note",
+        "export-data": "Esporta dati",
         "delete-ID": "Elimina ID",
         "language": "Lingua",
         "app-language": "Lingua dell'applicazione",

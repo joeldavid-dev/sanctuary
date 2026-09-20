@@ -48,6 +48,37 @@
         "change-notes-password": "노트 암호화 중...",
         "save-password-changes": "변경 사항 저장 중..."
     },
+    "export-data": {
+        "title": "{appName} 데이터",
+        "export-data": "데이터 내보내기",
+        "which-data-export": "내보낼 데이터를 선택하세요:",
+        "export-keys": "키 내보내기",
+        "export-notes": "메모 내보내기",
+        "format-export": "데이터를 내보낼 형식을 선택하세요:",
+        "json-format": "JSON 형식",
+        "json-format-info": "JSON 형식은 앱으로 다시 가져올 수 있는 암호화된 파일로 데이터를 내보냅니다.",
+        "csv-format": "CSV 형식",
+        "csv-format-info": "CSV 형식은 암호화되지 않은 스프레드시트로 데이터를 내보냅니다.",
+        "txt-format": "텍스트 형식",
+        "txt-format-info": "텍스트 형식은 읽을 수 있는 형식으로 데이터를 내보냅니다.",
+        "warning": "경고: 암호화되지 않은 형식으로 데이터를 내보내면 보안과 개인정보가 위험해질 수 있습니다. 내보낸 파일은 안전한 곳에 보관하세요.",
+        "export": "내보내기",
+        "export-success": "데이터가 성공적으로 내보내졌습니다.",
+        "export-error": "데이터를 내보내는 중 오류가 발생했습니다.",
+        "select-data-required": "내보낼 데이터 유형을 하나 이상 선택하세요.",
+        "select-format-required": "내보내기 형식을 선택하세요.",
+        "file-header": "내보낸 데이터",
+        "exported-at": "내보낸 날짜",
+        "keys-section-title": "키",
+        "notes-section-title": "메모",
+        "field-name": "이름",
+        "field-user": "사용자명",
+        "field-password": "비밀번호",
+        "field-web": "웹사이트",
+        "field-note": "메모",
+        "field-content": "내용",
+        "no-data": "내보낼 데이터가 없습니다."
+    },
     "warning": {
         "title": "경고",
         "wrong-password": "비밀번호가 틀렸습니다.",
@@ -108,7 +139,8 @@
         "log-cleared": "활동 로그가 성공적으로 지워졌습니다.",
         "log-clear-error": "활동 로그를 지우는 중 오류가 발생했습니다.",
         "tray-open": "열기",
-        "tray-quit": "종료"
+        "tray-quit": "종료",
+        "export-dialog-title": "내보낸 데이터 저장"
     },
     "home-view": {
         "search": "검색...",
@@ -187,8 +219,7 @@
     "settings": {
         "edit-ID": "ID 데이터 편집",
         "edit-password": "비밀번호 변경",
-        "export-keys": "모든 키 내보내기",
-        "export-notes": "모든 노트 내보내기",
+        "export-data": "데이터 내보내기",
         "delete-ID": "ID 삭제",
         "language": "언어",
         "app-language": "애플리케이션 언어",

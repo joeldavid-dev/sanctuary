@@ -6,6 +6,7 @@ export function showExportDataModal() {
     return new Promise(async (resolve, reject) => {
         // Constantes y variables auxiliares
         const translations = await window.sanctuaryAPI.getTranslations('export-data');
+        const warningTranslations = await window.sanctuaryAPI.getTranslations('warning');
         const constants = await window.sanctuaryAPI.getConstants();
 
         // Elementos HTML ya existentes que se usarán
@@ -21,8 +22,11 @@ export function showExportDataModal() {
         // Elementos HTML insertados en el esqueleto
 
         // Inputs
+        const exportKeysCheckbox = document.getElementById('export-keys');
+        const exportNotesCheckbox = document.getElementById('export-notes');
 
         // Botones
+        const exportBtn = document.getElementById('export-btn');
 
         // Establecer valores iniciales
         modalTitle.textContent = replaceKeysInText(translations['title'], { appName: constants.about.appName });
@@ -33,8 +37,44 @@ export function showExportDataModal() {
             resolve({ success: false });
         };
 
+        const exportData = async () => {
+            const exportCards = exportKeysCheckbox.checked;
+            const exportNotes = exportNotesCheckbox.checked;
+            const formatInput = modalBody.querySelector('input[name="export-format"]:checked');
+
+            // Validar que se haya seleccionado al menos un tipo de dato
+            if (!exportCards && !exportNotes) {
+                window.sanctuaryAPI.showWarning(warningTranslations['title'], translations['select-data-required']);
+                return;
+            }
+            // Validar que se haya seleccionado un formato
+            if (!formatInput) {
+                window.sanctuaryAPI.showWarning(warningTranslations['title'], translations['select-format-required']);
+                return;
+            }
+
+            exportBtn.disabled = true;
+            const result = await window.sanctuaryAPI.exportData({
+                cards: exportCards,
+                notes: exportNotes,
+                format: formatInput.value,
+            });
+            exportBtn.disabled = false;
+
+            // El usuario canceló el cuadro de diálogo para guardar el archivo
+            if (result.canceled) return;
+
+            if (result.success) {
+                resolve({ success: true, message: translations['export-success'] });
+            } else {
+                resolve({ success: false, error: translations['export-error'] });
+            }
+            cleanup();
+        };
+
         // Creación de Listeners
         closeModal.addEventListener('click', close);
+        exportBtn.addEventListener('click', exportData);
 
         // Mostrar el modal
         modal.style.display = 'block';
@@ -42,6 +82,7 @@ export function showExportDataModal() {
         // Limpiar Listeners y cerrar el modal
         function cleanup() {
             closeModal.removeEventListener('click', close);
+            exportBtn.removeEventListener('click', exportData);
             //Resetear el estado del modal
             modalContent.style.width = 'auto';
             modal.style.display = 'none';

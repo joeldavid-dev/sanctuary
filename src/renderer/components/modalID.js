@@ -88,8 +88,13 @@ export function showIDModal(mode, superuser) {
 
         // Al pulsar el boton de importar
         const importAction = async () => {
-            const response = await window.sanctuaryAPI.getJSONFile();
-            if (response.success) {
+            const response = await window.sanctuaryAPI.importJSON();
+            if (!response.success) {
+                window.sanctuaryAPI.showWarning(warningTranslations['title'], response.message);
+                return;
+            }
+
+            if (response.isLegacyData) {
                 isImporting = true;
                 // Ajustar la interfaz
                 subtitle.textContent = replaceKeysInText(translations['welcome-back'], { name: response.name });
@@ -99,7 +104,8 @@ export function showIDModal(mode, superuser) {
                 genderContainer.style.display = 'none';
                 importBtn.style.display = 'none';
             } else {
-                window.sanctuaryAPI.showWarning(warningTranslations['title'], response.message);
+                cleanup();
+                resolve({ success: true, imported: true, });
             }
         }
         // Al pulsar el boton de done
@@ -120,7 +126,7 @@ export function showIDModal(mode, superuser) {
                         idDoneBtn.textContent = `${translations['importing']} ${progress.progress}%`;
                     });
                     // Importar datos
-                    const result = await window.sanctuaryAPI.importData(pass2);
+                    const result = await window.sanctuaryAPI.importLegacyData(pass2);
                     if (result.success) {
                         cleanup();
                         resolve({ success: true, imported: true, });
@@ -326,7 +332,7 @@ function getModalHTML(translations, replaceKeysInText, constants) {
 
         <div class="vertical-elem-area">
             <button id="ID-done-btn" class="action-btn ultra-radius big-btn-padding">${translations['done']}</button>
-            <button id="import-btn" class="option-btn radius-1 small-text">${translations['import-data']}</button>
+            <button id="import-btn" class="option-btn ultra-radius small-text">${translations['import-data']}</button>
         </div>
     </div>`;
 }

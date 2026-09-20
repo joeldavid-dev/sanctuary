@@ -48,6 +48,37 @@
         "change-notes-password": "Krypterer notater...",
         "save-password-changes": "Lagrer endringer..."
     },
+    "export-data": {
+        "title": "{appName}-data",
+        "export-data": "Eksporter data",
+        "which-data-export": "Velg hvilke data du vil eksportere:",
+        "export-keys": "Eksporter passord",
+        "export-notes": "Eksporter notater",
+        "format-export": "Velg i hvilket format du vil eksportere dataene:",
+        "json-format": "JSON-format",
+        "json-format-info": "JSON-formatet eksporterer dataene til en kryptert fil som kan importeres tilbake til appen.",
+        "csv-format": "CSV-format",
+        "csv-format-info": "CSV-formatet eksporterer dataene til et ukryptert regneark.",
+        "txt-format": "Tekstformat",
+        "txt-format-info": "Tekstformatet eksporterer dataene i et lesbart format.",
+        "warning": "ADVARSEL: Å eksportere dataene dine i et ukryptert format kan sette sikkerheten og personvernet ditt i fare. Sørg for å oppbevare de eksporterte filene på et trygt sted.",
+        "export": "Eksporter",
+        "export-success": "Dataene dine er eksportert.",
+        "export-error": "Feil ved eksportering av data.",
+        "select-data-required": "Velg minst én datatype å eksportere.",
+        "select-format-required": "Velg et eksportformat.",
+        "file-header": "Eksporterte data",
+        "exported-at": "Eksportert",
+        "keys-section-title": "Passord",
+        "notes-section-title": "Notater",
+        "field-name": "Navn",
+        "field-user": "Bruker",
+        "field-password": "Passord",
+        "field-web": "Nettsted",
+        "field-note": "Notat",
+        "field-content": "Innhold",
+        "no-data": "Ingen data å eksportere."
+    },
     "warning": {
         "title": "Advarsel",
         "wrong-password": "Feil passord.",
@@ -108,7 +139,8 @@
         "log-cleared": "Aktivitetslogg tømt.",
         "log-clear-error": "Feil ved tømming av aktivitetslogg.",
         "tray-open": "Åpne",
-        "tray-quit": "Avslutt"
+        "tray-quit": "Avslutt",
+        "export-dialog-title": "Lagre eksporterte data"
     },
     "home-view": {
         "search": "Søk...",
@@ -187,8 +219,7 @@
     "settings": {
         "edit-ID": "Rediger ID-data",
         "edit-password": "Endre passordet ditt",
-        "export-keys": "Eksporter alle nøkler",
-        "export-notes": "Eksporter alle notater",
+        "export-data": "Eksporter data",
         "delete-ID": "Slett ID",
         "language": "Språk",
         "app-language": "Applikasjonsspråk",

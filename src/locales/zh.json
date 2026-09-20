@@ -48,6 +48,37 @@
         "change-notes-password": "正在加密笔记...",
         "save-password-changes": "正在保存更改..."
     },
+    "export-data": {
+        "title": "{appName} 数据",
+        "export-data": "导出数据",
+        "which-data-export": "选择要导出的数据：",
+        "export-keys": "导出密钥",
+        "export-notes": "导出笔记",
+        "format-export": "选择要导出数据的格式：",
+        "json-format": "JSON 格式",
+        "json-format-info": "JSON 格式会将数据导出为加密文件，可以重新导入应用程序。",
+        "csv-format": "CSV 格式",
+        "csv-format-info": "CSV 格式会将数据导出为未加密的电子表格。",
+        "txt-format": "文本格式",
+        "txt-format-info": "文本格式会以可读的形式导出数据。",
+        "warning": "警告：以未加密格式导出数据可能会危及您的安全和隐私。请确保将导出的文件保存在安全的地方。",
+        "export": "导出",
+        "export-success": "您的数据已成功导出。",
+        "export-error": "导出数据时出错。",
+        "select-data-required": "请至少选择一种要导出的数据类型。",
+        "select-format-required": "请选择一种导出格式。",
+        "file-header": "导出的数据",
+        "exported-at": "导出时间",
+        "keys-section-title": "密钥",
+        "notes-section-title": "笔记",
+        "field-name": "名称",
+        "field-user": "用户名",
+        "field-password": "密码",
+        "field-web": "网站",
+        "field-note": "备注",
+        "field-content": "内容",
+        "no-data": "没有可导出的数据。"
+    },
     "warning": {
         "title": "警告",
         "wrong-password": "密码错误。",
@@ -108,7 +139,8 @@
         "log-cleared": "活动日志已成功清除。",
         "log-clear-error": "清除活动日志时出错。",
         "tray-open": "打开",
-        "tray-quit": "退出"
+        "tray-quit": "退出",
+        "export-dialog-title": "保存导出的数据"
     },
     "home-view": {
         "search": "搜索...",
@@ -187,8 +219,7 @@
     "settings": {
         "edit-ID": "编辑你的 ID 数据",
         "edit-password": "更改你的密码",
-        "export-keys": "导出所有密钥",
-        "export-notes": "导出所有笔记",
+        "export-data": "导出数据",
         "delete-ID": "删除 ID",
         "language": "语言",
         "app-language": "应用程序语言",

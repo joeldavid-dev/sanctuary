@@ -48,6 +48,37 @@
         "change-notes-password": "Salataan muistiinpanoja...",
         "save-password-changes": "Tallennetaan muutoksia..."
     },
+    "export-data": {
+        "title": "{appName}-tiedot",
+        "export-data": "Vie tiedot",
+        "which-data-export": "Valitse, mitkä tiedot haluat viedä:",
+        "export-keys": "Vie salasanat",
+        "export-notes": "Vie muistiinpanot",
+        "format-export": "Valitse, missä muodossa haluat viedä tiedot:",
+        "json-format": "JSON-muoto",
+        "json-format-info": "JSON-muoto vie tiedot salattuun tiedostoon, joka voidaan tuoda takaisin sovellukseen.",
+        "csv-format": "CSV-muoto",
+        "csv-format-info": "CSV-muoto vie tiedot salaamattomana laskentataulukkoon.",
+        "txt-format": "Tekstimuoto",
+        "txt-format-info": "Tekstimuoto vie tiedot luettavassa muodossa.",
+        "warning": "VAROITUS: Tietojen vieminen salaamattomassa muodossa voi vaarantaa turvallisuutesi ja yksityisyytesi. Säilytä viedyt tiedostot turvallisessa paikassa.",
+        "export": "Vie",
+        "export-success": "Tietosi on viety onnistuneesti.",
+        "export-error": "Virhe tietojen viennissä.",
+        "select-data-required": "Valitse vähintään yksi vietävä tietotyyppi.",
+        "select-format-required": "Valitse vientimuoto.",
+        "file-header": "Viedyt tiedot",
+        "exported-at": "Viety",
+        "keys-section-title": "Salasanat",
+        "notes-section-title": "Muistiinpanot",
+        "field-name": "Nimi",
+        "field-user": "Käyttäjä",
+        "field-password": "Salasana",
+        "field-web": "Verkkosivusto",
+        "field-note": "Muistiinpano",
+        "field-content": "Sisältö",
+        "no-data": "Ei vietäviä tietoja."
+    },
     "warning": {
         "title": "Varoitus",
         "wrong-password": "Väärä salasana.",
@@ -108,7 +139,8 @@
         "log-cleared": "Toimintaloki tyhjennetty onnistuneesti.",
         "log-clear-error": "Virhe tyhjennettäessä toimintalokia.",
         "tray-open": "Avaa",
-        "tray-quit": "Lopeta"
+        "tray-quit": "Lopeta",
+        "export-dialog-title": "Tallenna viedyt tiedot"
     },
     "home-view": {
         "search": "Hae...",
@@ -187,8 +219,7 @@
     "settings": {
         "edit-ID": "Muokkaa tunnuksen tietoja",
         "edit-password": "Vaihda salasanasi",
-        "export-keys": "Vie kaikki avaimet",
-        "export-notes": "Vie kaikki muistiinpanot",
+        "export-data": "Vie tiedot",
         "delete-ID": "Poista Tunnus",
         "language": "Kieli",
         "app-language": "Sovelluksen kieli",

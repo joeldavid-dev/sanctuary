@@ -48,6 +48,37 @@
         "change-notes-password": "Encrypting notes...",
         "save-password-changes": "Saving changes..."
     },
+    "export-data": {
+        "title": "{appName} Data",
+        "export-data": "Export data",
+        "which-data-export": "Select which data you want to export:",
+        "export-keys": "Export keys",
+        "export-notes": "Export notes",
+        "format-export": "Select in which format you want to export the data:",
+        "json-format": "JSON format",
+        "json-format-info": "The JSON format will export the data in an encrypted file that can be imported back into the application.",
+        "csv-format": "CSV format",
+        "csv-format-info": "The CSV format will export the data to an unencrypted spreadsheet.",
+        "txt-format": "Text format",
+        "txt-format-info": "The text format will export the data in a readable format.",
+        "warning": "WARNING: Exporting your data in an unencrypted format may compromise your security and privacy. Make sure to keep the exported files in a safe place.",
+        "export": "Export",
+        "export-success": "Your data has been exported successfully.",
+        "export-error": "Error exporting the data.",
+        "select-data-required": "Select at least one type of data to export.",
+        "select-format-required": "Select an export format.",
+        "file-header": "Exported data",
+        "exported-at": "Exported on",
+        "keys-section-title": "Keys",
+        "notes-section-title": "Notes",
+        "field-name": "Name",
+        "field-user": "User",
+        "field-password": "Password",
+        "field-web": "Website",
+        "field-note": "Note",
+        "field-content": "Content",
+        "no-data": "No data to export."
+    },
     "warning": {
         "title": "Warning",
         "wrong-password": "Incorrect password.",
@@ -108,7 +139,8 @@
         "log-cleared": "Activity log cleared successfully.",
         "log-clear-error": "Error clearing activity log.",
         "tray-open": "Open",
-        "tray-quit": "Quit"
+        "tray-quit": "Quit",
+        "export-dialog-title": "Save exported data"
     },
     "home-view": {
         "search": "Search...",
@@ -187,8 +219,7 @@
     "settings": {
         "edit-ID": "Edit your ID information",
         "edit-password": "Change your password",
-        "export-keys": "Export all keys",
-        "export-notes": "Export all notes",
+        "export-data": "Export data",
         "delete-ID": "Delete your ID",
         "language": "Language",
         "app-language": "App Language",
