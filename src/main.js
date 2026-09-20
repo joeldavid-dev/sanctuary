@@ -955,7 +955,7 @@ ipcMain.handle('delete-note', async (event, id) => {
 });
 
 // Función para preparar elementos, calculando el número de workers necesarios.
-function startPreparingElements(encryptedCards, encryptedNotes, masterKey) {
+function startProcessingElements(mode, encryptedCards, encryptedNotes, masterKey) {
     return new Promise((resolve, reject) => {
         // Listas
         const results = [];
@@ -976,11 +976,13 @@ function startPreparingElements(encryptedCards, encryptedNotes, masterKey) {
 
         // Dividir elementos en lotes
         const elementsChunks = chunkify(encryptedCards, encryptedNotes, workersCount);
-
+        const messageType = (mode === "prepare") ? "prepare-elements-progress" : "decrypt-elements-progress";
+        // Elegir el worker según el modo
+        const selectedWorker = (mode === "prepare") ? "prepareElements-worker.js" : "decryptElements-worker.js";
         // Lanzamiento de workers paralelos
         elementsChunks.forEach((chunk, workerIndex) => {
             const worker = new Worker(
-                path.join(__dirname, "workers/prepareElements-worker.js"),
+                path.join(__dirname, `workers/${selectedWorker}`),
                 {
                     workerData: {
                         chunk,
@@ -994,7 +996,7 @@ function startPreparingElements(encryptedCards, encryptedNotes, masterKey) {
                 if (msg.type === "progress") {
                     processed++;
                     const percent = Math.round((processed / totalItems) * 100);
-                    mainWindow.webContents.send("prepare-elements-progress", percent);
+                    mainWindow.webContents.send(messageType, percent);
                 }
 
                 if (msg.type === "done") {
@@ -1047,7 +1049,7 @@ ipcMain.handle('get-prepared-elements', async () => {
             const encryptedCards = await db.getAllCards();
             const encryptedNotes = await db.getAllNotes();
             // Preparar las tarjetas (desencriptar nombre y web) usando un worker
-            preparedElements = await startPreparingElements(encryptedCards, encryptedNotes, masterKey);
+            preparedElements = await startProcessingElements("prepare", encryptedCards, encryptedNotes, masterKey);
         }
         return {
             success: true,
@@ -1152,18 +1154,17 @@ ipcMain.handle('export-data', async (event, options) => {
             };
             fs.writeFileSync(filePath, JSON.stringify(exportObject, null, 2), 'utf-8');
         } else {
-            if (!masterKey) throw new Error('Master key no establecida');
+            const elementsToExport = await startProcessingElements("decrypt", cardsData, notesData, masterKey);
 
             let content = `${constants.about.appName} - ${exportTranslations['file-header']}\n`;
             content += `${exportTranslations['exported-at']}: ${new Date().toLocaleString()}\n`;
 
             if (exportCards) {
                 content += `\n=== ${exportTranslations['keys-section-title']} ===\n\n`;
-                if (cardsData.length === 0) {
+                if (elementsToExport.cards.length === 0) {
                     content += `${exportTranslations['no-data']}\n`;
                 } else {
-                    for (const encryptedCard of cardsData) {
-                        const card = await cr.decryptCard(masterKey, encryptedCard);
+                    for (const card of elementsToExport.cards) {
                         content += `${exportTranslations['field-name']}: ${card.name}\n`;
                         content += `${exportTranslations['field-user']}: ${card.user ?? ''}\n`;
                         content += `${exportTranslations['field-password']}: ${card.password}\n`;
@@ -1176,11 +1177,10 @@ ipcMain.handle('export-data', async (event, options) => {
 
             if (exportNotes) {
                 content += `\n=== ${exportTranslations['notes-section-title']} ===\n\n`;
-                if (notesData.length === 0) {
+                if (elementsToExport.notes.length === 0) {
                     content += `${exportTranslations['no-data']}\n`;
                 } else {
-                    for (const encryptedNote of notesData) {
-                        const note = await cr.decryptNote(masterKey, encryptedNote);
+                    for (const note of elementsToExport.notes) {
                         content += `${exportTranslations['field-name']}: ${note.name}\n`;
                         content += `${exportTranslations['field-content']}: ${note.content ?? ''}\n`;
                         content += '-'.repeat(40) + '\n';

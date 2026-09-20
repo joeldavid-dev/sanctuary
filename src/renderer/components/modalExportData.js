@@ -52,7 +52,10 @@ export function showExportDataModal() {
                 window.sanctuaryAPI.showWarning(warningTranslations['title'], translations['select-format-required']);
                 return;
             }
-
+            // Escuchar el progreso de importación de tarjetas
+            window.sanctuaryAPI.on('decrypt-elements-progress', (progress) => {
+                exportBtn.textContent = `${progress}%`;
+            });
             exportBtn.disabled = true;
             const result = await window.sanctuaryAPI.exportData({
                 cards: exportCards,
