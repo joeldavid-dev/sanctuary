@@ -13,6 +13,7 @@ contextBridge.exposeInMainWorld('electron', {
 contextBridge.exposeInMainWorld('sanctuaryAPI', {
     send: (channel, data) => ipcRenderer.send(channel, data),
     on: (channel, callback) => ipcRenderer.on(channel, (event, ...args) => callback(...args)),
+    removeAllListeners: (channel) => ipcRenderer.removeAllListeners(channel),
     // Bloqueo de la aplicación
     lock: () => ipcRenderer.send('lock'),
     // Dialogos

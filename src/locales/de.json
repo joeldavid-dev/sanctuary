@@ -56,11 +56,11 @@
         "export-notes": "Notizen exportieren",
         "format-export": "Wähle aus, in welchem Format du die Daten exportieren möchtest:",
         "json-format": "JSON-Format",
-        "json-format-info": "Das JSON-Format exportiert die Daten in eine verschlüsselte Datei, die wieder in die Anwendung importiert werden kann.",
+        "json-format-info": "Verschlüsselt und wieder importierbar.",
         "csv-format": "CSV-Format",
-        "csv-format-info": "Das CSV-Format exportiert die Daten unverschlüsselt in eine Tabelle.",
+        "csv-format-info": "Unverschlüsselte Tabelle.",
         "txt-format": "Textformat",
-        "txt-format-info": "Das Textformat exportiert die Daten in einem lesbaren Format.",
+        "txt-format-info": "Unverschlüsselter, lesbarer Text.",
         "warning": "ACHTUNG: Das Exportieren deiner Daten in einem unverschlüsselten Format kann deine Sicherheit und Privatsphäre gefährden. Bewahre die exportierten Dateien an einem sicheren Ort auf.",
         "export": "Exportieren",
         "export-success": "Deine Daten wurden erfolgreich exportiert.",
@@ -77,7 +77,12 @@
         "field-web": "Webseite",
         "field-note": "Notiz",
         "field-content": "Inhalt",
-        "no-data": "Keine Daten zum Exportieren."
+        "field-type": "Typ",
+        "no-data": "Keine Daten zum Exportieren.",
+        "unencrypted-warning-title": "Unverschlüsselt exportieren",
+        "unencrypted-warning-message": "Du bist dabei, deine Daten unverschlüsselt zu exportieren. Jeder mit Zugriff auf diese Datei kann deine Passwörter und Notizen lesen. Möchtest du fortfahren?",
+        "cancel": "Abbrechen",
+        "confirm-export": "Ja, exportieren"
     },
     "warning": {
         "title": "Warnung",

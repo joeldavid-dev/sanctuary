@@ -254,6 +254,7 @@ export function showIDModal(mode, superuser) {
             togglePassword1.removeEventListener('click', togglePasswordAction);
             togglePassword2.removeEventListener('click', togglePasswordAction);
             togglePassword3.removeEventListener('click', togglePasswordAction);
+            window.sanctuaryAPI.removeAllListeners('import-card-progress');
             // Resetear el estado del modal
             modalContent.style.width = 'auto';
             modal.style.display = 'none';

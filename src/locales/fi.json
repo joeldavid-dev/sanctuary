@@ -56,11 +56,11 @@
         "export-notes": "Vie muistiinpanot",
         "format-export": "Valitse, missä muodossa haluat viedä tiedot:",
         "json-format": "JSON-muoto",
-        "json-format-info": "JSON-muoto vie tiedot salattuun tiedostoon, joka voidaan tuoda takaisin sovellukseen.",
+        "json-format-info": "Salattu ja tuotavissa takaisin sovellukseen.",
         "csv-format": "CSV-muoto",
-        "csv-format-info": "CSV-muoto vie tiedot salaamattomana laskentataulukkoon.",
+        "csv-format-info": "Salaamaton laskentataulukko.",
         "txt-format": "Tekstimuoto",
-        "txt-format-info": "Tekstimuoto vie tiedot luettavassa muodossa.",
+        "txt-format-info": "Salaamaton, luettava teksti.",
         "warning": "VAROITUS: Tietojen vieminen salaamattomassa muodossa voi vaarantaa turvallisuutesi ja yksityisyytesi. Säilytä viedyt tiedostot turvallisessa paikassa.",
         "export": "Vie",
         "export-success": "Tietosi on viety onnistuneesti.",
@@ -77,7 +77,12 @@
         "field-web": "Verkkosivusto",
         "field-note": "Muistiinpano",
         "field-content": "Sisältö",
-        "no-data": "Ei vietäviä tietoja."
+        "field-type": "Tyyppi",
+        "no-data": "Ei vietäviä tietoja.",
+        "unencrypted-warning-title": "Vie salaamattomana",
+        "unencrypted-warning-message": "Olet viemässä tietojasi salaamattomana. Kuka tahansa, jolla on pääsy tähän tiedostoon, voi lukea salasanasi ja muistiinpanosi. Haluatko jatkaa?",
+        "cancel": "Peruuta",
+        "confirm-export": "Kyllä, vie"
     },
     "warning": {
         "title": "Varoitus",

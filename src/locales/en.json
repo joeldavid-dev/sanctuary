@@ -56,11 +56,11 @@
         "export-notes": "Export notes",
         "format-export": "Select in which format you want to export the data:",
         "json-format": "JSON format",
-        "json-format-info": "The JSON format will export the data in an encrypted file that can be imported back into the application.",
+        "json-format-info": "Encrypted and reimportable into the app.",
         "csv-format": "CSV format",
-        "csv-format-info": "The CSV format will export the data to an unencrypted spreadsheet.",
+        "csv-format-info": "Unencrypted spreadsheet.",
         "txt-format": "Text format",
-        "txt-format-info": "The text format will export the data in a readable format.",
+        "txt-format-info": "Unencrypted readable text.",
         "warning": "WARNING: Exporting your data in an unencrypted format may compromise your security and privacy. Make sure to keep the exported files in a safe place.",
         "export": "Export",
         "export-success": "Your data has been exported successfully.",
@@ -77,7 +77,12 @@
         "field-web": "Website",
         "field-note": "Note",
         "field-content": "Content",
-        "no-data": "No data to export."
+        "field-type": "Type",
+        "no-data": "No data to export.",
+        "unencrypted-warning-title": "Export unencrypted",
+        "unencrypted-warning-message": "You are about to export your data unencrypted. Anyone with access to this file will be able to read your keys and notes. Do you want to continue?",
+        "cancel": "Cancel",
+        "confirm-export": "Yes, export"
     },
     "warning": {
         "title": "Warning",

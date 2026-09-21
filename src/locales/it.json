@@ -56,11 +56,11 @@
         "export-notes": "Esporta note",
         "format-export": "Seleziona in quale formato desideri esportare i dati:",
         "json-format": "Formato JSON",
-        "json-format-info": "Il formato JSON esporterà i dati in un file crittografato che può essere reimportato nell'applicazione.",
+        "json-format-info": "Crittografato e reimportabile nell'app.",
         "csv-format": "Formato CSV",
-        "csv-format-info": "Il formato CSV esporterà i dati in un foglio di calcolo non crittografato.",
+        "csv-format-info": "Foglio di calcolo non crittografato.",
         "txt-format": "Formato di testo",
-        "txt-format-info": "Il formato di testo esporterà i dati in un formato leggibile.",
+        "txt-format-info": "Testo leggibile non crittografato.",
         "warning": "ATTENZIONE: esportare i tuoi dati in un formato non crittografato può compromettere la tua sicurezza e privacy. Assicurati di conservare i file esportati in un luogo sicuro.",
         "export": "Esporta",
         "export-success": "I tuoi dati sono stati esportati con successo.",
@@ -77,7 +77,12 @@
         "field-web": "Sito web",
         "field-note": "Nota",
         "field-content": "Contenuto",
-        "no-data": "Nessun dato da esportare."
+        "field-type": "Tipo",
+        "no-data": "Nessun dato da esportare.",
+        "unencrypted-warning-title": "Esporta senza crittografia",
+        "unencrypted-warning-message": "Stai per esportare i tuoi dati senza crittografia. Chiunque abbia accesso a questo file potrà leggere le tue chiavi e note. Vuoi continuare?",
+        "cancel": "Annulla",
+        "confirm-export": "Sì, esporta"
     },
     "warning": {
         "title": "Avviso",

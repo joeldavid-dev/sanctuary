@@ -1,6 +1,7 @@
 /* Este modulo se encarga de mostrar un modal para exportar los datos del usuario. */
 
 import { replaceKeysInText } from "../utils/translationsUtils.js";
+import { showWarningModal } from "./modalWarning.js";
 
 export function showExportDataModal() {
     return new Promise(async (resolve, reject) => {
@@ -52,7 +53,22 @@ export function showExportDataModal() {
                 window.sanctuaryAPI.showWarning(warningTranslations['title'], translations['select-format-required']);
                 return;
             }
-            // Escuchar el progreso de importación de tarjetas
+
+            // CSV y TXT exportan los datos sin cifrar: pedir confirmación antes de continuar
+            if (formatInput.value === 'csv' || formatInput.value === 'txt') {
+                const confirmed = await showWarningModal(
+                    translations['unencrypted-warning-title'],
+                    translations['unencrypted-warning-message'],
+                    translations['confirm-export'],
+                    translations['cancel'],
+                );
+                if (!confirmed) return;
+            }
+
+            // Escuchar el progreso de importación de tarjetas. Se elimina cualquier
+            // listener previo (de un intento anterior en este mismo modal) para no
+            // acumular callbacks duplicados en el canal.
+            window.sanctuaryAPI.removeAllListeners('decrypt-elements-progress');
             window.sanctuaryAPI.on('decrypt-elements-progress', (progress) => {
                 exportBtn.textContent = `${progress}%`;
             });
@@ -86,6 +102,7 @@ export function showExportDataModal() {
         function cleanup() {
             closeModal.removeEventListener('click', close);
             exportBtn.removeEventListener('click', exportData);
+            window.sanctuaryAPI.removeAllListeners('decrypt-elements-progress');
             //Resetear el estado del modal
             modalContent.style.width = 'auto';
             modal.style.display = 'none';
@@ -124,6 +141,13 @@ function getModalHTML(translations) {
                         <div class="radio-ico"></div>
                         <p class="no-wrapped-text">${translations['json-format']}</p>
                         <p class="small-text">${translations['json-format-info']}</p>
+                    </label>
+
+                    <label class="option-radio radius-1 narrow-padding vertical-elem-area">
+                        <input id="export-csv" type="radio" name="export-format" value="csv">
+                        <div class="radio-ico"></div>
+                        <p class="no-wrapped-text">${translations['csv-format']}</p>
+                        <p class="small-text">${translations['csv-format-info']}</p>
                     </label>
 
                     <label class="option-radio radius-1 narrow-padding vertical-elem-area">

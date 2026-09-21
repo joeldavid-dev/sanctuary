@@ -56,11 +56,11 @@
         "export-notes": "メモをエクスポート",
         "format-export": "データをエクスポートする形式を選択してください：",
         "json-format": "JSON形式",
-        "json-format-info": "JSON形式は、アプリに再インポートできる暗号化されたファイルにデータをエクスポートします。",
+        "json-format-info": "暗号化済み、アプリに再インポート可能。",
         "csv-format": "CSV形式",
-        "csv-format-info": "CSV形式は、暗号化されていない表計算ファイルにデータをエクスポートします。",
+        "csv-format-info": "暗号化されていない表計算ファイル。",
         "txt-format": "テキスト形式",
-        "txt-format-info": "テキスト形式は、読み取り可能な形式でデータをエクスポートします。",
+        "txt-format-info": "暗号化されていない読みやすいテキスト。",
         "warning": "警告：暗号化されていない形式でデータをエクスポートすると、セキュリティとプライバシーが損なわれる可能性があります。エクスポートしたファイルは安全な場所に保管してください。",
         "export": "エクスポート",
         "export-success": "データが正常にエクスポートされました。",
@@ -77,7 +77,12 @@
         "field-web": "ウェブサイト",
         "field-note": "メモ",
         "field-content": "内容",
-        "no-data": "エクスポートするデータがありません。"
+        "field-type": "種類",
+        "no-data": "エクスポートするデータがありません。",
+        "unencrypted-warning-title": "暗号化せずにエクスポート",
+        "unencrypted-warning-message": "データを暗号化せずにエクスポートしようとしています。このファイルにアクセスできる人は誰でもキーやメモを読むことができます。続行しますか？",
+        "cancel": "キャンセル",
+        "confirm-export": "はい、エクスポートします"
     },
     "warning": {
         "title": "警告",

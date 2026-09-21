@@ -56,11 +56,11 @@
         "export-notes": "Exportera anteckningar",
         "format-export": "Välj i vilket format du vill exportera data:",
         "json-format": "JSON-format",
-        "json-format-info": "JSON-formatet exporterar data till en krypterad fil som kan importeras tillbaka till appen.",
+        "json-format-info": "Krypterad och kan importeras tillbaka till appen.",
         "csv-format": "CSV-format",
-        "csv-format-info": "CSV-formatet exporterar data till ett okrypterat kalkylblad.",
+        "csv-format-info": "Okrypterat kalkylblad.",
         "txt-format": "Textformat",
-        "txt-format-info": "Textformatet exporterar data i ett läsbart format.",
+        "txt-format-info": "Okrypterad, läsbar text.",
         "warning": "VARNING: Att exportera dina data i ett okrypterat format kan äventyra din säkerhet och integritet. Se till att förvara de exporterade filerna på en säker plats.",
         "export": "Exportera",
         "export-success": "Dina data har exporterats.",
@@ -77,7 +77,12 @@
         "field-web": "Webbplats",
         "field-note": "Anteckning",
         "field-content": "Innehåll",
-        "no-data": "Inga data att exportera."
+        "field-type": "Typ",
+        "no-data": "Inga data att exportera.",
+        "unencrypted-warning-title": "Exportera okrypterat",
+        "unencrypted-warning-message": "Du är på väg att exportera dina data okrypterat. Alla med åtkomst till den här filen kommer att kunna läsa dina lösenord och anteckningar. Vill du fortsätta?",
+        "cancel": "Avbryt",
+        "confirm-export": "Ja, exportera"
     },
     "warning": {
         "title": "Varning",

@@ -56,11 +56,11 @@
         "export-notes": "Eksporter notater",
         "format-export": "Velg i hvilket format du vil eksportere dataene:",
         "json-format": "JSON-format",
-        "json-format-info": "JSON-formatet eksporterer dataene til en kryptert fil som kan importeres tilbake til appen.",
+        "json-format-info": "Kryptert og kan importeres tilbake til appen.",
         "csv-format": "CSV-format",
-        "csv-format-info": "CSV-formatet eksporterer dataene til et ukryptert regneark.",
+        "csv-format-info": "Ukryptert regneark.",
         "txt-format": "Tekstformat",
-        "txt-format-info": "Tekstformatet eksporterer dataene i et lesbart format.",
+        "txt-format-info": "Ukryptert, lesbar tekst.",
         "warning": "ADVARSEL: Å eksportere dataene dine i et ukryptert format kan sette sikkerheten og personvernet ditt i fare. Sørg for å oppbevare de eksporterte filene på et trygt sted.",
         "export": "Eksporter",
         "export-success": "Dataene dine er eksportert.",
@@ -77,7 +77,12 @@
         "field-web": "Nettsted",
         "field-note": "Notat",
         "field-content": "Innhold",
-        "no-data": "Ingen data å eksportere."
+        "field-type": "Type",
+        "no-data": "Ingen data å eksportere.",
+        "unencrypted-warning-title": "Eksporter ukryptert",
+        "unencrypted-warning-message": "Du er i ferd med å eksportere dataene dine ukryptert. Alle med tilgang til denne filen vil kunne lese passordene og notatene dine. Vil du fortsette?",
+        "cancel": "Avbryt",
+        "confirm-export": "Ja, eksporter"
     },
     "warning": {
         "title": "Advarsel",

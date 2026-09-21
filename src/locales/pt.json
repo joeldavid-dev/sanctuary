@@ -56,11 +56,11 @@
         "export-notes": "Exportar notas",
         "format-export": "Selecione em qual formato deseja exportar os dados:",
         "json-format": "Formato JSON",
-        "json-format-info": "O formato JSON exportará os dados em um arquivo criptografado que pode ser importado novamente para o aplicativo.",
+        "json-format-info": "Criptografado e reimportável para o aplicativo.",
         "csv-format": "Formato CSV",
-        "csv-format-info": "O formato CSV exportará os dados para uma planilha sem criptografia.",
+        "csv-format-info": "Planilha sem criptografia.",
         "txt-format": "Formato de texto",
-        "txt-format-info": "O formato de texto exportará os dados em um formato legível.",
+        "txt-format-info": "Texto legível sem criptografia.",
         "warning": "CUIDADO: exportar seus dados em um formato não criptografado pode comprometer sua segurança e privacidade. Certifique-se de manter os arquivos exportados em um local seguro.",
         "export": "Exportar",
         "export-success": "Seus dados foram exportados com sucesso.",
@@ -77,7 +77,12 @@
         "field-web": "Site",
         "field-note": "Nota",
         "field-content": "Conteúdo",
-        "no-data": "Nenhum dado para exportar."
+        "field-type": "Tipo",
+        "no-data": "Nenhum dado para exportar.",
+        "unencrypted-warning-title": "Exportar sem criptografia",
+        "unencrypted-warning-message": "Você está prestes a exportar seus dados sem criptografia. Qualquer pessoa com acesso a este arquivo poderá ler suas chaves e notas. Deseja continuar?",
+        "cancel": "Cancelar",
+        "confirm-export": "Sim, exportar"
     },
     "warning": {
         "title": "Aviso",

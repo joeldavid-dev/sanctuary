@@ -1123,12 +1123,15 @@ ipcMain.handle('export-data', async (event, options) => {
     const exportTranslations = translations['export-data'];
 
     // Mostrar un cuadro de diálogo para elegir dónde guardar el archivo
+    const formatFilters = {
+        json: { name: 'JSON', extensions: ['json'] },
+        csv: { name: 'CSV', extensions: ['csv'] },
+        txt: { name: 'Text', extensions: ['txt'] },
+    };
     const { canceled, filePath } = await dialog.showSaveDialog({
         title: mainTranslations['export-dialog-title'],
         defaultPath: `sanctuary-export-${new Date().toISOString().slice(0, 10)}.${format}`,
-        filters: [format === 'json'
-            ? { name: 'JSON', extensions: ['json'] }
-            : { name: 'Text', extensions: ['txt'] }]
+        filters: [formatFilters[format]]
     });
     if (canceled || !filePath) {
         return { success: false, canceled: true };
@@ -1156,39 +1159,44 @@ ipcMain.handle('export-data', async (event, options) => {
         } else {
             const elementsToExport = await startProcessingElements("decrypt", cardsData, notesData, masterKey);
 
-            let content = `${constants.about.appName} - ${exportTranslations['file-header']}\n`;
-            content += `${exportTranslations['exported-at']}: ${new Date().toLocaleString()}\n`;
+            if (format === 'csv') {
+                const content = buildCsvContent(elementsToExport, exportCards, exportNotes, exportTranslations);
+                fs.writeFileSync(filePath, content, 'utf-8');
+            } else {
+                let content = `${constants.about.appName} - ${exportTranslations['file-header']}\n`;
+                content += `${exportTranslations['exported-at']}: ${new Date().toLocaleString()}\n`;
 
-            if (exportCards) {
-                content += `\n=== ${exportTranslations['keys-section-title']} ===\n\n`;
-                if (elementsToExport.cards.length === 0) {
-                    content += `${exportTranslations['no-data']}\n`;
-                } else {
-                    for (const card of elementsToExport.cards) {
-                        content += `${exportTranslations['field-name']}: ${card.name}\n`;
-                        content += `${exportTranslations['field-user']}: ${card.user ?? ''}\n`;
-                        content += `${exportTranslations['field-password']}: ${card.password}\n`;
-                        content += `${exportTranslations['field-web']}: ${card.web ?? ''}\n`;
-                        content += `${exportTranslations['field-note']}: ${card.note ?? ''}\n`;
-                        content += '-'.repeat(40) + '\n';
+                if (exportCards) {
+                    content += `\n=== ${exportTranslations['keys-section-title']} ===\n\n`;
+                    if (elementsToExport.cards.length === 0) {
+                        content += `${exportTranslations['no-data']}\n`;
+                    } else {
+                        for (const card of elementsToExport.cards) {
+                            content += `${exportTranslations['field-name']}: ${card.name}\n`;
+                            content += `${exportTranslations['field-user']}: ${card.user ?? ''}\n`;
+                            content += `${exportTranslations['field-password']}: ${card.password}\n`;
+                            content += `${exportTranslations['field-web']}: ${card.web ?? ''}\n`;
+                            content += `${exportTranslations['field-note']}: ${card.note ?? ''}\n`;
+                            content += '-'.repeat(40) + '\n';
+                        }
                     }
                 }
-            }
 
-            if (exportNotes) {
-                content += `\n=== ${exportTranslations['notes-section-title']} ===\n\n`;
-                if (elementsToExport.notes.length === 0) {
-                    content += `${exportTranslations['no-data']}\n`;
-                } else {
-                    for (const note of elementsToExport.notes) {
-                        content += `${exportTranslations['field-name']}: ${note.name}\n`;
-                        content += `${exportTranslations['field-content']}: ${note.content ?? ''}\n`;
-                        content += '-'.repeat(40) + '\n';
+                if (exportNotes) {
+                    content += `\n=== ${exportTranslations['notes-section-title']} ===\n\n`;
+                    if (elementsToExport.notes.length === 0) {
+                        content += `${exportTranslations['no-data']}\n`;
+                    } else {
+                        for (const note of elementsToExport.notes) {
+                            content += `${exportTranslations['field-name']}: ${note.name}\n`;
+                            content += `${exportTranslations['field-content']}: ${note.content ?? ''}\n`;
+                            content += '-'.repeat(40) + '\n';
+                        }
                     }
                 }
-            }
 
-            fs.writeFileSync(filePath, content, 'utf-8');
+                fs.writeFileSync(filePath, content, 'utf-8');
+            }
         }
 
         writeLog('Datos exportados exitosamente en: ' + filePath);
@@ -1198,6 +1206,37 @@ ipcMain.handle('export-data', async (event, options) => {
         return { success: false, error: error.message };
     }
 });
+
+// Escapa un valor para incluirlo como campo de una fila CSV (RFC 4180)
+function csvEscapeField(value) {
+    const text = value === null || value === undefined ? '' : String(value);
+    if (/[",\r\n]/.test(text)) {
+        return `"${text.replace(/"/g, '""')}"`;
+    }
+    return text;
+}
+
+// Construye el contenido de un archivo CSV a partir de tarjetas y notas ya descifradas.
+// Ambos tipos comparten una sola tabla, distinguidos por la columna "tipo".
+function buildCsvContent(elementsToExport, exportCards, exportNotes, t) {
+    const rows = [[
+        t['field-type'], t['field-name'], t['field-user'],
+        t['field-password'], t['field-web'], t['field-note'], t['field-content']
+    ]];
+
+    if (exportCards) {
+        for (const card of elementsToExport.cards) {
+            rows.push([t['keys-section-title'], card.name, card.user ?? '', card.password, card.web ?? '', card.note ?? '', '']);
+        }
+    }
+    if (exportNotes) {
+        for (const note of elementsToExport.notes) {
+            rows.push([t['notes-section-title'], note.name, '', '', '', '', note.content ?? '']);
+        }
+    }
+
+    return rows.map(row => row.map(csvEscapeField).join(',')).join('\r\n');
+}
 
 // Función para limpiar la caché de imagenes
 async function clearImageCache() {

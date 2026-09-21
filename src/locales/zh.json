@@ -56,11 +56,11 @@
         "export-notes": "导出笔记",
         "format-export": "选择要导出数据的格式：",
         "json-format": "JSON 格式",
-        "json-format-info": "JSON 格式会将数据导出为加密文件，可以重新导入应用程序。",
+        "json-format-info": "已加密，可重新导入应用。",
         "csv-format": "CSV 格式",
-        "csv-format-info": "CSV 格式会将数据导出为未加密的电子表格。",
+        "csv-format-info": "未加密的电子表格。",
         "txt-format": "文本格式",
-        "txt-format-info": "文本格式会以可读的形式导出数据。",
+        "txt-format-info": "未加密的可读文本。",
         "warning": "警告：以未加密格式导出数据可能会危及您的安全和隐私。请确保将导出的文件保存在安全的地方。",
         "export": "导出",
         "export-success": "您的数据已成功导出。",
@@ -77,7 +77,12 @@
         "field-web": "网站",
         "field-note": "备注",
         "field-content": "内容",
-        "no-data": "没有可导出的数据。"
+        "field-type": "类型",
+        "no-data": "没有可导出的数据。",
+        "unencrypted-warning-title": "导出未加密数据",
+        "unencrypted-warning-message": "您即将以未加密方式导出数据。任何有权访问此文件的人都可以读取您的密钥和笔记。是否继续？",
+        "cancel": "取消",
+        "confirm-export": "是，导出"
     },
     "warning": {
         "title": "警告",
