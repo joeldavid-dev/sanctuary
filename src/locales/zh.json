@@ -174,7 +174,8 @@
         "empty-command": "未输入任何命令",
         "placeholder-loading": "正在解锁你的密钥和笔记...",
         "language-changed": "语言更改成功。",
-        "order-by-date": "按日期",
+        "order-by-created-at": "按创建日期",
+        "order-by-updated-at": "按编辑日期",
         "order-by-name": "按名称",
         "order-by-color": "按颜色",
         "order-by-only-favorites": "仅收藏"

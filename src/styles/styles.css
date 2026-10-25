@@ -114,6 +114,26 @@ body::-webkit-scrollbar {
     -webkit-app-region: no-drag;
 }
 
+/* Amplía de forma invisible el área "no arrastrable" alrededor de un botón
+   que vive dentro de una zona draggable (barra de título, encabezado de
+   modal, etc). Sin esto, un mínimo movimiento del mouse al hacer clic puede
+   interpretarse como inicio de arrastre de la ventana en vez de un clic
+   -un comportamiento conocido de Electron en Linux-. No cambia el tamaño
+   visual del botón ni el espacio que ocupa en el layout, ya que se dibuja
+   con position:absolute por fuera de su caja. */
+.drag-safe {
+    position: relative;
+}
+
+.drag-safe::before {
+    content: '';
+    position: absolute;
+    /* 4px: suficiente margen de tolerancia sin solaparse con botones
+       vecinos cercanos (el gap mínimo entre ellos es de 10px). */
+    inset: -4px;
+    -webkit-app-region: no-drag;
+}
+
 ::selection {
     background: var(--app_contrast_dark);
     color: var(--app_light);

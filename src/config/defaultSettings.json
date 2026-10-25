@@ -13,7 +13,7 @@
     "customWallpaperPath": "none",
     "customWallpaperName": "none",
     "customWallpaperType": "none",
-    "orderBy": "date",
+    "orderBy": "created-at",
     "orderDirection": "asc",
     "lastPage": "keys",
     "runInBackground": false

@@ -303,6 +303,11 @@ function runSettingFixes() {
         setSetting('customWallpaperName', '');
         setSetting('customWallpaperType', '');
     }
+
+    // El criterio de ordenamiento "date" fue reemplazado por "created-at" (Versión 1.3.4)
+    if (getSetting('orderBy') === 'date') {
+        setSetting('orderBy', 'created-at');
+    }
 }
 
 // Leer las configuraciones y generar colores si esta configurado de esa manera.

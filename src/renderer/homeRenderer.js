@@ -60,7 +60,7 @@ let actualPage = '';
 let searchMode = 'none'; // Variable para controlar el modo de búsqueda
 let searchTerm = ''; // Término de búsqueda actual
 let orderDirection = 'asc'; // Variable para controlar la dirección del ordenamiento
-let orderBy = 'date'; // Variable para controlar el criterio de ordenamiento
+let orderBy = 'created-at'; // Variable para controlar el criterio de ordenamiento
 
 let selectedElementID = null; // Variable para almacenar el ID del elemento seleccionada
 let actualPreparedElements = []; // Lista que almacena los elementos mostrados en la vista
@@ -122,8 +122,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         deselectAllElements(); // Deseleccionar todos los elementos
 
         // Ordenar el contenido según el criterio seleccionado
-        if (orderBy === 'date') {
+        if (orderBy === 'created-at') {
             content.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        }
+        else if (orderBy === 'updated-at') {
+            // Si el elemento nunca fue editado, se usa su fecha de creación
+            content.sort((a, b) => new Date(a.updatedAt || a.createdAt) - new Date(b.updatedAt || b.createdAt));
         }
         else if (orderBy === 'name') {
             content.sort((a, b) => a.name.localeCompare(b.name));
@@ -330,7 +334,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (buttonPressed.id === 'order-btn') {
             // Limpiar el popup list
             popupList.innerHTML = '';
-            popupList.appendChild(createPopupOption('orderBy', 'date', translations['order-by-date']));
+            popupList.appendChild(createPopupOption('orderBy', 'created-at', translations['order-by-created-at']));
+            popupList.appendChild(createPopupOption('orderBy', 'updated-at', translations['order-by-updated-at']));
             popupList.appendChild(createPopupOption('orderBy', 'name', translations['order-by-name']));
             popupList.appendChild(createPopupOption('orderBy', 'color', translations['order-by-color']));
             popupList.appendChild(createPopupOption('orderBy', 'only-favorites', translations['order-by-only-favorites']));

@@ -174,7 +174,8 @@
         "empty-command": "Nessun comando inserito",
         "placeholder-loading": "Sblocco delle tue chiavi e note in corso...",
         "language-changed": "Lingua cambiata con successo.",
-        "order-by-date": "Per data",
+        "order-by-created-at": "Per data di creazione",
+        "order-by-updated-at": "Per data di modifica",
         "order-by-name": "Per nome",
         "order-by-color": "Per colore",
         "order-by-only-favorites": "Solo preferiti"

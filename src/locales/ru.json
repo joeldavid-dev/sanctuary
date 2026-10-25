@@ -174,7 +174,8 @@
         "empty-command": "Команда не введена",
         "placeholder-loading": "Разблокировка твоих ключей и заметок...",
         "language-changed": "Язык успешно изменен.",
-        "order-by-date": "По дате",
+        "order-by-created-at": "По дате создания",
+        "order-by-updated-at": "По дате изменения",
         "order-by-name": "По имени",
         "order-by-color": "По цвету",
         "order-by-only-favorites": "Только избранные"

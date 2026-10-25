@@ -174,7 +174,8 @@
         "empty-command": "Komentoa ei syötetty",
         "placeholder-loading": "Avataan avaimia ja muistiinpanoja...",
         "language-changed": "Kieli vaihdettu onnistuneesti.",
-        "order-by-date": "Päivämäärän mukaan",
+        "order-by-created-at": "Luontipäivän mukaan",
+        "order-by-updated-at": "Muokkauspäivän mukaan",
         "order-by-name": "Nimen mukaan",
         "order-by-color": "Värin mukaan",
         "order-by-only-favorites": "Vain suosikit"

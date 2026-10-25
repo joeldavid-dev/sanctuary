@@ -114,6 +114,7 @@ async function prepareCard(masterKey, encryptedCard) {
         salt: encryptedCard.salt,
         iv: encryptedCard.iv,
         createdAt: encryptedCard.created_at,
+        updatedAt: encryptedCard.updated_at,
     };
 }
 
@@ -261,6 +262,7 @@ async function prepareNote(masterKey, encryptedNote) {
         salt: encryptedNote.salt,
         iv: encryptedNote.iv,
         createdAt: encryptedNote.created_at,
+        updatedAt: encryptedNote.updated_at,
     };
 }
 

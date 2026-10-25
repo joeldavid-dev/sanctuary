@@ -174,7 +174,8 @@
         "empty-command": "Inget kommando angavs",
         "placeholder-loading": "Låser upp dina nycklar och anteckningar...",
         "language-changed": "Språk ändrat framgångsrikt.",
-        "order-by-date": "Efter datum",
+        "order-by-created-at": "Efter skapandedatum",
+        "order-by-updated-at": "Efter redigeringsdatum",
         "order-by-name": "Efter namn",
         "order-by-color": "Efter färg",
         "order-by-only-favorites": "Endast favoriter"
