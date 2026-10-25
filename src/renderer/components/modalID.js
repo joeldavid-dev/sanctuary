@@ -120,6 +120,7 @@ export function showIDModal(mode, superuser) {
             if (mode === 'create') {
                 if (isImporting) {
                     idDoneBtn.disabled = true;
+                    idDoneBtn.classList.add('disabled-progressing');
                     idDoneBtn.textContent = translations['importing'];
                     // Escuchar el progreso de importación de tarjetas
                     window.sanctuaryAPI.on('import-card-progress', (progress) => {
@@ -135,6 +136,7 @@ export function showIDModal(mode, superuser) {
                         window.sanctuaryAPI.showWarning(warningTranslations['title'], result.message);
                         userPass2.value = '';
                         idDoneBtn.disabled = false;
+                        idDoneBtn.classList.remove('disabled-progressing');
                         idDoneBtn.textContent = translations['done'];
                         userPass2.focus();
                     }
@@ -212,6 +214,7 @@ export function showIDModal(mode, superuser) {
                 else {
                     // Datos correctos, actualizar la contraseña
                     idDoneBtn.disabled = true;
+                    idDoneBtn.classList.add('disabled-progressing');
                     idDoneBtn.textContent = translations['start-change-password'];
                     // Escuchar el progreso de preparación de tarjetas
                     window.sanctuaryAPI.on('password-change-progress', (progress) => {

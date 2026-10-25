@@ -51,6 +51,8 @@
     "export-data": {
         "title": "{appName}-data",
         "export-data": "Eksporter data",
+        "step-data": "Data",
+        "step-format": "Format",
         "which-data-export": "Velg hvilke data du vil eksportere:",
         "export-keys": "Eksporter passord",
         "export-notes": "Eksporter notater",
@@ -82,7 +84,9 @@
         "unencrypted-warning-title": "Eksporter ukryptert",
         "unencrypted-warning-message": "Du er i ferd med å eksportere dataene dine ukryptert. Alle med tilgang til denne filen vil kunne lese passordene og notatene dine. Vil du fortsette?",
         "cancel": "Avbryt",
-        "confirm-export": "Ja, eksporter"
+        "confirm-export": "Ja, eksporter",
+        "next": "Neste",
+        "back": "Tilbake"
     },
     "warning": {
         "title": "Advarsel",

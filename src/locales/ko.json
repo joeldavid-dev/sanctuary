@@ -51,6 +51,8 @@
     "export-data": {
         "title": "{appName} 데이터",
         "export-data": "데이터 내보내기",
+        "step-data": "데이터",
+        "step-format": "형식",
         "which-data-export": "내보낼 데이터를 선택하세요:",
         "export-keys": "키 내보내기",
         "export-notes": "메모 내보내기",
@@ -82,7 +84,9 @@
         "unencrypted-warning-title": "암호화 없이 내보내기",
         "unencrypted-warning-message": "암호화되지 않은 상태로 데이터를 내보내려고 합니다. 이 파일에 접근할 수 있는 사람은 누구나 키와 메모를 읽을 수 있습니다. 계속하시겠습니까?",
         "cancel": "취소",
-        "confirm-export": "예, 내보내기"
+        "confirm-export": "예, 내보내기",
+        "next": "다음",
+        "back": "뒤로"
     },
     "warning": {
         "title": "경고",

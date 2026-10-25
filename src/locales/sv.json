@@ -51,6 +51,8 @@
     "export-data": {
         "title": "{appName}-data",
         "export-data": "Exportera data",
+        "step-data": "Data",
+        "step-format": "Format",
         "which-data-export": "Välj vilka data du vill exportera:",
         "export-keys": "Exportera lösenord",
         "export-notes": "Exportera anteckningar",
@@ -82,7 +84,9 @@
         "unencrypted-warning-title": "Exportera okrypterat",
         "unencrypted-warning-message": "Du är på väg att exportera dina data okrypterat. Alla med åtkomst till den här filen kommer att kunna läsa dina lösenord och anteckningar. Vill du fortsätta?",
         "cancel": "Avbryt",
-        "confirm-export": "Ja, exportera"
+        "confirm-export": "Ja, exportera",
+        "next": "Nästa",
+        "back": "Tillbaka"
     },
     "warning": {
         "title": "Varning",

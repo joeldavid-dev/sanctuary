@@ -51,6 +51,8 @@
     "export-data": {
         "title": "{appName}のデータ",
         "export-data": "データをエクスポート",
+        "step-data": "データ",
+        "step-format": "形式",
         "which-data-export": "エクスポートするデータを選択してください：",
         "export-keys": "キーをエクスポート",
         "export-notes": "メモをエクスポート",
@@ -82,7 +84,9 @@
         "unencrypted-warning-title": "暗号化せずにエクスポート",
         "unencrypted-warning-message": "データを暗号化せずにエクスポートしようとしています。このファイルにアクセスできる人は誰でもキーやメモを読むことができます。続行しますか？",
         "cancel": "キャンセル",
-        "confirm-export": "はい、エクスポートします"
+        "confirm-export": "はい、エクスポートします",
+        "next": "次へ",
+        "back": "戻る"
     },
     "warning": {
         "title": "警告",

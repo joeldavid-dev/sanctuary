@@ -51,6 +51,8 @@
     "export-data": {
         "title": "{appName}-tiedot",
         "export-data": "Vie tiedot",
+        "step-data": "Tiedot",
+        "step-format": "Muoto",
         "which-data-export": "Valitse, mitkä tiedot haluat viedä:",
         "export-keys": "Vie salasanat",
         "export-notes": "Vie muistiinpanot",
@@ -82,7 +84,9 @@
         "unencrypted-warning-title": "Vie salaamattomana",
         "unencrypted-warning-message": "Olet viemässä tietojasi salaamattomana. Kuka tahansa, jolla on pääsy tähän tiedostoon, voi lukea salasanasi ja muistiinpanosi. Haluatko jatkaa?",
         "cancel": "Peruuta",
-        "confirm-export": "Kyllä, vie"
+        "confirm-export": "Kyllä, vie",
+        "next": "Seuraava",
+        "back": "Takaisin"
     },
     "warning": {
         "title": "Varoitus",

@@ -51,6 +51,8 @@
     "export-data": {
         "title": "{appName} 数据",
         "export-data": "导出数据",
+        "step-data": "数据",
+        "step-format": "格式",
         "which-data-export": "选择要导出的数据：",
         "export-keys": "导出密钥",
         "export-notes": "导出笔记",
@@ -82,7 +84,9 @@
         "unencrypted-warning-title": "导出未加密数据",
         "unencrypted-warning-message": "您即将以未加密方式导出数据。任何有权访问此文件的人都可以读取您的密钥和笔记。是否继续？",
         "cancel": "取消",
-        "confirm-export": "是，导出"
+        "confirm-export": "是，导出",
+        "next": "下一步",
+        "back": "上一步"
     },
     "warning": {
         "title": "警告",

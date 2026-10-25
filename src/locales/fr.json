@@ -51,6 +51,8 @@
     "export-data": {
         "title": "Données de {appName}",
         "export-data": "Exporter les données",
+        "step-data": "Données",
+        "step-format": "Format",
         "which-data-export": "Sélectionnez les données que vous souhaitez exporter :",
         "export-keys": "Exporter les clés",
         "export-notes": "Exporter les notes",
@@ -82,7 +84,9 @@
         "unencrypted-warning-title": "Exporter sans chiffrement",
         "unencrypted-warning-message": "Vous êtes sur le point d'exporter vos données sans chiffrement. Toute personne ayant accès à ce fichier pourra lire vos clés et vos notes. Voulez-vous continuer ?",
         "cancel": "Annuler",
-        "confirm-export": "Oui, exporter"
+        "confirm-export": "Oui, exporter",
+        "next": "Suivant",
+        "back": "Retour"
     },
     "warning": {
         "title": "Avertissement",

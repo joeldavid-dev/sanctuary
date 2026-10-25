@@ -51,6 +51,8 @@
     "export-data": {
         "title": "{appName} Data",
         "export-data": "Export data",
+        "step-data": "Data",
+        "step-format": "Format",
         "which-data-export": "Select which data you want to export:",
         "export-keys": "Export keys",
         "export-notes": "Export notes",
@@ -82,7 +84,9 @@
         "unencrypted-warning-title": "Export unencrypted",
         "unencrypted-warning-message": "You are about to export your data unencrypted. Anyone with access to this file will be able to read your keys and notes. Do you want to continue?",
         "cancel": "Cancel",
-        "confirm-export": "Yes, export"
+        "confirm-export": "Yes, export",
+        "next": "Next",
+        "back": "Back"
     },
     "warning": {
         "title": "Warning",
