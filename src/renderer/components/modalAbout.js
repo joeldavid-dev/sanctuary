@@ -113,7 +113,7 @@ async function getModalHTML(translations, constants) {
             <img id="app-icon-about" src="../assets/ico/sanctuary.png" class="icon-25">
             <div class="vertical-flex centered minimal-spaced">
                 <div class="horizontal-flex minimal-spaced centered">
-                    <img src="../assets/ico/Logo.svg" class="logo-icon">
+                    <span class="svg-icon logo-icon icon-codaby"></span>
                     <p class="brand-text">${constants.about.brand}</p>
                 </div>
                 <p class="expresive-text ultra-text">${constants.about.appName}</p>
@@ -132,7 +132,7 @@ async function getModalHTML(translations, constants) {
             <div class="vertical-flex centered">
                 <button id="my-link-btn" class="action-btn btn-padding radius-1 horizontal-elem-area centered pulse-animation">
                     ${translations['my-link']}
-                    <img src="../assets/ico/feather/external-link.svg" class="mini-icon">
+                    <span class="svg-icon mini-icon icon-external-link"></span>
                 </button>
             </div>
         </div>
@@ -143,7 +143,7 @@ async function getModalHTML(translations, constants) {
             <div class="vertical-flex centered">
                 <button id="icons-link-btn" class="action-btn btn-padding radius-1 horizontal-elem-area centered">
                     ${replaceKeysInText(translations['icons-link'], { 'author': constants.icons.author })}
-                    <img src="../assets/ico/feather/external-link.svg" class="mini-icon">
+                    <span class="svg-icon mini-icon icon-external-link"></span>
                 </button>
             </div>
         </div>
@@ -159,7 +159,7 @@ async function getModalHTML(translations, constants) {
             <div class="vertical-flex centered">
                 <button id="illustrations-link-btn" class="action-btn btn-padding radius-1 horizontal-elem-area centered">
                     ${replaceKeysInText(translations['illustrations-link'], { 'author': constants.illustrations.author })}
-                    <img src="../assets/ico/feather/external-link.svg" class="mini-icon">
+                    <span class="svg-icon mini-icon icon-external-link"></span>
                 </button>
             </div>
         </div>

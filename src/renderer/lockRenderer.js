@@ -102,7 +102,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         const icon = event.currentTarget.firstElementChild;
 
         passwordInput.type = isPassword ? 'text' : 'password';
-        icon.src = isPassword ? '../assets/ico/feather/eye-off.svg' : '../assets/ico/feather/eye.svg';
+        icon.classList.toggle('icon-eye-off', isPassword);
+        icon.classList.toggle('icon-eye', !isPassword);
     });
 
     // Clic en el botón para abrir el modal de acerca de

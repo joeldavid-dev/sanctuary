@@ -345,7 +345,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Clic en el toggle de ordenamiento
         if (buttonPressed.id === 'sort-toggle') {
             orderDirection = orderDirection === 'asc' ? 'desc' : 'asc';
-            sortToggleIco.src = orderDirection === 'asc' ? '../assets/ico/feather/arrow-up.svg' : '../assets/ico/feather/arrow-down.svg';
+            sortToggleIco.classList.toggle('icon-arrow-up', orderDirection === 'asc');
+            sortToggleIco.classList.toggle('icon-arrow-down', orderDirection === 'desc');
             if (searchMode === 'searching') {
                 showContent(search(searchTerm));
             } else if (searchMode === 'none') {
@@ -382,7 +383,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         searchTerm = event.target.value.toLowerCase();
         if (searchTerm.length > 0) {
             // Cambiar el icono de búsqueda a "x"
-            if (searchMode === 'none') document.getElementById('search-clear-ico').src = '../assets/ico/feather/x.svg';
+            if (searchMode === 'none') document.getElementById('search-clear-ico').classList.replace('icon-search', 'icon-x');
             // Si el término de búsqueda comienza con '>>', se interpreta como un comando
             if (searchTerm.startsWith('>>')) {
                 searchMode = 'command'; // Cambiar el modo de búsqueda a "comando"
@@ -398,7 +399,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         } else {
             showContent(actualPreparedElements); // Mostrar todos los elementos si no hay término de búsqueda
             searchMode = 'none'; // Cambiar el modo de búsqueda a "ninguno"
-            document.getElementById('search-clear-ico').src = '../assets/ico/feather/search.svg'; // Cambiar el icono de búsqueda a "lupa"
+            document.getElementById('search-clear-ico').classList.replace('icon-x', 'icon-search'); // Cambiar el icono de búsqueda a "lupa"
         }
     });
 
@@ -431,7 +432,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (searchMode !== 'none') {
             searchInput.value = ''; // Limpiar el campo de búsqueda
             showContent(actualPreparedElements); // Mostrar todos los elementos
-            document.getElementById('search-clear-ico').src = '../assets/ico/feather/search.svg'; // Cambiar el icono de búsqueda a "lupa"
+            document.getElementById('search-clear-ico').classList.replace('icon-x', 'icon-search'); // Cambiar el icono de búsqueda a "lupa"
             if (searchMode === 'command') {
                 commandOptionsBar.style.display = 'none'; // Ocultar la barra de opciones
                 bottonBar.style.display = 'flex'; // Mostrar la barra de botones
@@ -930,7 +931,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         actualPage = await window.sanctuaryAPI.getSetting('lastPage');
         orderDirection = await window.sanctuaryAPI.getSetting('orderDirection');
         orderBy = await window.sanctuaryAPI.getSetting('orderBy');
-        sortToggleIco.src = orderDirection === 'asc' ? '../assets/ico/feather/arrow-up.svg' : '../assets/ico/feather/arrow-down.svg';
+        sortToggleIco.classList.toggle('icon-arrow-up', orderDirection === 'asc');
+        sortToggleIco.classList.toggle('icon-arrow-down', orderDirection === 'desc');
         createSettingsPage(superuser); // Crear la página de configuración
     }
 

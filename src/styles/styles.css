@@ -619,15 +619,6 @@ pre,
     transition-duration: 0s;
 }
 
-.action-btn img {
-    transition: filter var(--normal-animation) ease;
-}
-
-.action-btn:hover img {
-    filter: invert(1);
-    transition-duration: 0s;
-}
-
 .action-btn:disabled {
     font-size: 12px;
     background: var(--light_gray);
@@ -666,18 +657,9 @@ pre,
     cursor: pointer;
 }
 
-.option-btn img {
-    transition: filter var(--fast-animation) ease;
-}
-
 .option-btn:hover {
     background-color: var(--app_contrast_dark);
     color: var(--app_light);
-    transition-duration: 0s;
-}
-
-.option-btn:hover img {
-    filter: invert(1);
     transition-duration: 0s;
 }
 
@@ -712,13 +694,14 @@ pre,
     background-color: var(--app_contrast_dark);
 }
 
-.option-radio .radio-ico {
-    transition: filter var(--normal-animation) ease;
+.option-radio input:checked+.icon-radio {
+    mask-image: url('../assets/ico/feather/check-circle.svg');
+    -webkit-mask-image: url('../assets/ico/feather/check-circle.svg');
 }
 
-.option-radio input:checked+.radio-ico {
-    background-image: url('../assets/ico/feather/check-circle.svg');
-    filter: invert(1);
+.icon-radio {
+    mask-image: url('../assets/ico/feather/circle.svg');
+    -webkit-mask-image: url('../assets/ico/feather/circle.svg');
 }
 
 .option-checkbox {
@@ -745,7 +728,6 @@ pre,
 
 .option-checkbox input:checked+.checkbox-ico {
     background-image: url('../assets/ico/feather/check-square.svg');
-    filter: invert(1);
 }
 
 .option-input {
@@ -788,17 +770,9 @@ pre,
     cursor: pointer;
 }
 
-.option-btn-warning img {
-    transition: filter var(--fast-animation) ease;
-}
-
 .option-btn-warning:hover {
     background-color: var(--warning_red);
     color: white;
-}
-
-.option-btn-warning:hover img {
-    filter: invert(1);
 }
 
 .input-warning {
@@ -866,25 +840,6 @@ No tiene borde, al pasar el mouse por encima solo aparece el borde. */
     transition-duration: 0s;
 }
 
-/* Botón transparente para elementos que están sobre un fondo colorido.
-No tiene borde, al pasar el mouse por encima solo aparece el borde.
-Siempre es blanco para mejorar la visibilidad. */
-.transparent-btn-white {
-    width: min-content;
-    height: min-content;
-    background: transparent;
-    transition: var(--normal-animation);
-    cursor: pointer;
-    /* Hacer que el botón ocupe el espacio mínimo necesario */
-    display: flex;
-    align-items: center;
-}
-
-.transparent-btn-white:hover {
-    background-color: var(--dark_gray_hover);
-    transition-duration: 0s;
-}
-
 .transparent-radio {
     width: min-content;
     height: min-content;
@@ -903,15 +858,7 @@ Siempre es blanco para mejorar la visibilidad. */
 
 .transparent-radio:has(input:checked) {
     background-color: var(--app_contrast_dark);
-}
-
-.transparent-radio .normal-icon {
-    transition: filter var(--normal-animation) ease;
-}
-
-.transparent-radio input[type="radio"]:checked+.normal-icon {
-    filter: invert(1);
-    transition-duration: 0s;
+    color: var(--app_light);
 }
 
 .transparent-radio:hover {
@@ -968,18 +915,6 @@ input:checked+.slider::before {
     display: none;
     box-shadow: 0px 0px 30px 8px rgba(0, 0, 0, 0.20);
     max-height: 90dvh;
-}
-
-.radio-ico {
-    width: 15px;
-    height: 15px;
-    background-image: url('../assets/ico/feather/circle.svg');
-    /* Asegura que la imagen cubra todo el contenedor */
-    background-size: cover;
-    /* Centra la imagen */
-    background-position: center;
-    /* Evita que la imagen se repita */
-    background-repeat: no-repeat;
 }
 
 .checkbox-ico {
@@ -1047,12 +982,6 @@ input:checked+.slider::before {
     height: 20px;
 }
 
-.normal-icon-white {
-    width: 20px;
-    height: 20px;
-    filter: invert(1);
-}
-
 .logo-icon {
     width: 17px;
     height: 17px;
@@ -1063,10 +992,204 @@ input:checked+.slider::before {
     height: 15px;
 }
 
-.mini-icon-white {
-    width: 15px;
-    height: 15px;
-    filter: invert(1);
+/* Iconos SVG (negros) mostrados vía CSS mask en lugar de <img>: el color real lo
+   da background-color, así se puede usar cualquier color sin depender de filter:invert
+   (que solo permite alternar entre negro y blanco). El color por defecto es currentColor,
+   para que el icono siga automáticamente el color de texto de su contenedor (p. ej. en
+   botones, que ya cambian de color según el tema claro/oscuro). */
+.svg-icon {
+    display: inline-block;
+    flex-shrink: 0;
+    background-color: currentColor;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+}
+
+/* Variante siempre blanca, para iconos sobre fondos con imagen o video (como en
+   la pantalla de bloqueo), donde el color debe ser fijo sin importar el tema. */
+.svg-icon-white {
+    background-color: white;
+}
+
+/* Variante siempre negra, para iconos que antes no tenían darkmode-invert
+   (se mantenían negros sin importar el tema). */
+.svg-icon-black {
+    background-color: black;
+}
+
+/* Fuente de cada icono (mismos SVG de Feather usados en toda la app). */
+.icon-codaby {
+    mask-image: url('../assets/ico/Logo.svg');
+    -webkit-mask-image: url('../assets/ico/Logo.svg');
+}
+
+.icon-eye {
+    mask-image: url('../assets/ico/feather/eye.svg');
+    -webkit-mask-image: url('../assets/ico/feather/eye.svg');
+}
+
+.icon-eye-off {
+    mask-image: url('../assets/ico/feather/eye-off.svg');
+    -webkit-mask-image: url('../assets/ico/feather/eye-off.svg');
+}
+
+.icon-info {
+    mask-image: url('../assets/ico/feather/info.svg');
+    -webkit-mask-image: url('../assets/ico/feather/info.svg');
+}
+
+.icon-minus-circle {
+    mask-image: url('../assets/ico/feather/minus-circle.svg');
+    -webkit-mask-image: url('../assets/ico/feather/minus-circle.svg');
+}
+
+.icon-maximize {
+    mask-image: url('../assets/ico/feather/maximize.svg');
+    -webkit-mask-image: url('../assets/ico/feather/maximize.svg');
+}
+
+.icon-x-circle {
+    mask-image: url('../assets/ico/feather/x-circle.svg');
+    -webkit-mask-image: url('../assets/ico/feather/x-circle.svg');
+}
+
+.icon-message-square {
+    mask-image: url('../assets/ico/feather/message-square.svg');
+    -webkit-mask-image: url('../assets/ico/feather/message-square.svg');
+}
+
+.icon-external-link {
+    mask-image: url('../assets/ico/feather/external-link.svg');
+    -webkit-mask-image: url('../assets/ico/feather/external-link.svg');
+}
+
+.icon-lock {
+    mask-image: url('../assets/ico/feather/lock.svg');
+    -webkit-mask-image: url('../assets/ico/feather/lock.svg');
+}
+
+.icon-key {
+    mask-image: url('../assets/ico/feather/key.svg');
+    -webkit-mask-image: url('../assets/ico/feather/key.svg');
+}
+
+.icon-book {
+    mask-image: url('../assets/ico/feather/book.svg');
+    -webkit-mask-image: url('../assets/ico/feather/book.svg');
+}
+
+.icon-settings {
+    mask-image: url('../assets/ico/feather/settings.svg');
+    -webkit-mask-image: url('../assets/ico/feather/settings.svg');
+}
+
+.icon-arrow-down {
+    mask-image: url('../assets/ico/feather/arrow-down.svg');
+    -webkit-mask-image: url('../assets/ico/feather/arrow-down.svg');
+}
+
+.icon-arrow-up {
+    mask-image: url('../assets/ico/feather/arrow-up.svg');
+    -webkit-mask-image: url('../assets/ico/feather/arrow-up.svg');
+}
+
+.icon-search {
+    mask-image: url('../assets/ico/feather/search.svg');
+    -webkit-mask-image: url('../assets/ico/feather/search.svg');
+}
+
+.icon-x {
+    mask-image: url('../assets/ico/feather/x.svg');
+    -webkit-mask-image: url('../assets/ico/feather/x.svg');
+}
+
+.icon-chevron-down {
+    mask-image: url('../assets/ico/feather/chevron-down.svg');
+    -webkit-mask-image: url('../assets/ico/feather/chevron-down.svg');
+}
+
+.icon-edit {
+    mask-image: url('../assets/ico/feather/edit.svg');
+    -webkit-mask-image: url('../assets/ico/feather/edit.svg');
+}
+
+.icon-plus-circle {
+    mask-image: url('../assets/ico/feather/plus-circle.svg');
+    -webkit-mask-image: url('../assets/ico/feather/plus-circle.svg');
+}
+
+.icon-trash {
+    mask-image: url('../assets/ico/feather/trash.svg');
+    -webkit-mask-image: url('../assets/ico/feather/trash.svg');
+}
+
+.icon-trash-2 {
+    mask-image: url('../assets/ico/feather/trash-2.svg');
+    -webkit-mask-image: url('../assets/ico/feather/trash-2.svg');
+}
+
+.icon-alert-triangle {
+    mask-image: url('../assets/ico/feather/alert-triangle.svg');
+    -webkit-mask-image: url('../assets/ico/feather/alert-triangle.svg');
+}
+
+.icon-edit-2 {
+    mask-image: url('../assets/ico/feather/edit-2.svg');
+    -webkit-mask-image: url('../assets/ico/feather/edit-2.svg');
+}
+
+.icon-edit-3 {
+    mask-image: url('../assets/ico/feather/edit-3.svg');
+    -webkit-mask-image: url('../assets/ico/feather/edit-3.svg');
+}
+
+.icon-help-circle {
+    mask-image: url('../assets/ico/feather/help-circle.svg');
+    -webkit-mask-image: url('../assets/ico/feather/help-circle.svg');
+}
+
+.icon-download {
+    mask-image: url('../assets/ico/feather/download.svg');
+    -webkit-mask-image: url('../assets/ico/feather/download.svg');
+}
+
+.icon-globe {
+    mask-image: url('../assets/ico/feather/globe.svg');
+    -webkit-mask-image: url('../assets/ico/feather/globe.svg');
+}
+
+.icon-plus {
+    mask-image: url('../assets/ico/feather/plus.svg');
+    -webkit-mask-image: url('../assets/ico/feather/plus.svg');
+}
+
+.icon-file-text {
+    mask-image: url('../assets/ico/feather/file-text.svg');
+    -webkit-mask-image: url('../assets/ico/feather/file-text.svg');
+}
+
+.icon-code {
+    mask-image: url('../assets/ico/feather/code.svg');
+    -webkit-mask-image: url('../assets/ico/feather/code.svg');
+}
+
+.icon-table {
+    mask-image: url('../assets/ico/feather/table.svg');
+    -webkit-mask-image: url('../assets/ico/feather/table.svg');
+}
+
+.icon-unlock {
+    mask-image: url('../assets/ico/feather/unlock.svg');
+    -webkit-mask-image: url('../assets/ico/feather/unlock.svg');
+}
+
+.icon-arrow-left {
+    mask-image: url('../assets/ico/feather/arrow-left.svg');
+    -webkit-mask-image: url('../assets/ico/feather/arrow-left.svg');
 }
 
 /* Estilos para el modal */
@@ -1381,14 +1504,6 @@ input:checked+.slider::before {
     }
 }
 
-/* Estilos para los iconos dentro de opciones de radio/checkbox: se invierten
-   cuando la opción está seleccionada, igual que el resto del contenido. */
-.option-radio input:checked~img,
-.option-checkbox input:checked~img {
-    filter: invert(1);
-    transition: filter var(--normal-animation) ease;
-}
-
 /* Indicador de progreso (wizard) usado en modales de varios pasos, como exportar datos.
    Es una simple barra que se va rellenando según el paso actual. */
 .progress-bar {
@@ -1483,11 +1598,6 @@ input:checked+.slider::before {
     padding: var(--narrow-margin) var(--normal-margin);
 }
 
-.inline-banner img {
-    filter: invert(1);
-    flex-shrink: 0;
-}
-
 /* Estilos específicos para modo oscuro */
 @media (prefers-color-scheme: dark) {
     ::selection {
@@ -1506,10 +1616,6 @@ input:checked+.slider::before {
 
     .div-options {
         background-color: var(--dark_gray);
-    }
-
-    .logo-icon {
-        filter: invert(1);
     }
 
     .modal-content {
@@ -1534,21 +1640,12 @@ input:checked+.slider::before {
     }
 
     .action-btn {
-        color: white;
         background-color: var(--dark_gray);
-    }
-
-    .action-btn img {
-        filter: invert(1);
     }
 
     .action-btn:hover {
         color: var(--app_dark);
         background-color: var(--app_contrast_light);
-    }
-
-    .action-btn:hover img {
-        filter: invert(0);
     }
 
     .action-btn:disabled {
@@ -1561,25 +1658,13 @@ input:checked+.slider::before {
         background-color: var(--dark_gray);
     }
 
-    .option-btn img {
-        filter: invert(1);
-    }
-
     .option-btn:hover {
         background-color: var(--app_contrast_light);
         color: var(--app_dark);
     }
 
-    .option-btn:hover img {
-        filter: invert(0);
-    }
-
     .option-btn2:hover {
         border: dashed 1px var(--app_contrast_light);
-    }
-
-    .option-btn-warning img {
-        filter: invert(1);
     }
 
     .option-radio {
@@ -1589,14 +1674,6 @@ input:checked+.slider::before {
     .option-radio:has(input:checked) {
         color: var(--app_dark);
         background-color: var(--app_contrast_light);
-    }
-
-    .option-radio input:checked+.radio-ico {
-        filter: invert(0);
-    }
-
-    .radio-ico {
-        filter: invert(1);
     }
 
     .option-radio2:has(input:checked) {
@@ -1610,21 +1687,6 @@ input:checked+.slider::before {
     .option-checkbox:has(input:checked) {
         color: var(--app_dark);
         background-color: var(--app_contrast_light);
-    }
-
-    .option-checkbox input:checked+.checkbox-ico {
-        filter: invert(0);
-    }
-
-    .checkbox-ico {
-        filter: invert(1);
-    }
-
-    /* El icono dentro de la opción ya se invierte vía darkmode-invert; al
-       marcarla el fondo se vuelve claro, así que se revierte la inversión. */
-    .option-radio input:checked~img,
-    .option-checkbox input:checked~img {
-        filter: invert(0);
     }
 
     .progress-bar {
@@ -1671,10 +1733,7 @@ input:checked+.slider::before {
 
     .transparent-radio:has(input:checked) {
         background-color: var(--app_contrast_light);
-    }
-
-    .transparent-radio input[type="radio"]:checked+.normal-icon {
-        filter: invert(0);
+        color: var(--app_dark);
     }
 
     .transparent-radio:hover {
@@ -1705,9 +1764,5 @@ input:checked+.slider::before {
 
     .scrolleable::-webkit-scrollbar-thumb:hover {
         background: var(--app_contrast_light);
-    }
-
-    .darkmode-invert {
-        filter: invert(1);
     }
 }

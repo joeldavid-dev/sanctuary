@@ -92,21 +92,21 @@ function getSettingsHTML(translations, constants) {
             <div class="div-options vertical-elem-area narrow-padding external-radius-1">
                 <button id="edit-ID" class="option-btn radius-1 left-text horizontal-flex centered spaced">
                     ${translations['edit-ID']}
-                    <img src="../assets/ico/feather/edit-2.svg" class="mini-icon">
+                    <span class="svg-icon mini-icon icon-edit-2"></span>
                 </button>
                 <button id="edit-password" class="option-btn radius-1 left-text horizontal-flex centered spaced">
                     ${translations['edit-password']}
-                    <img src="../assets/ico/feather/edit-3.svg" class="mini-icon">
+                    <span class="svg-icon mini-icon icon-edit-3"></span>
                 </button>
                 
                 <button id="export-data" class="option-btn radius-1 left-text horizontal-flex centered spaced">
                     ${translations['export-data']}
-                    <img src="../assets/ico/feather/download.svg" class="mini-icon">
+                    <span class="svg-icon mini-icon icon-download"></span>
                 </button>
 
                 <button id="delete-ID" class="option-btn-warning radius-1 left-text horizontal-flex centered spaced">
                     ${translations['delete-ID']}
-                    <img src="../assets/ico/feather/trash-2.svg" class="mini-icon">
+                    <span class="svg-icon mini-icon icon-trash-2"></span>
                 </button>
             </div>
 
@@ -117,9 +117,9 @@ function getSettingsHTML(translations, constants) {
                         <p>${translations['app-language']}</p>
                         <div class="horizontal-elem-area centered">
                             <button id="choose-language" class="option-btn radius-1 left-text horizontal-elem-area centered">
-                                <img src="../assets/ico/feather/chevron-down.svg" class="mini-icon">
+                                <span class="svg-icon mini-icon icon-chevron-down"></span>
                             </button>
-                            <img src="../assets/ico/feather/globe.svg" class="mini-icon darkmode-invert">
+                            <span class="svg-icon mini-icon icon-globe"></span>
                         </div>
                     </div>
                 </div>
@@ -165,7 +165,7 @@ function getSettingsHTML(translations, constants) {
 
                     <button id="view-license" class="option-btn radius-1 left-text horizontal-flex centered spaced">
                         ${translations['view-license']}
-                        <img src="../assets/ico/feather/file-text.svg" class="mini-icon">
+                        <span class="svg-icon mini-icon icon-file-text"></span>
                     </button>
                 </div>
             </div>
@@ -201,7 +201,7 @@ function getCustomWallpaperBtnHTML() {
     customWallpaperBody.classList.add('option-btn', 'external-radius-1', 'nano-margin', 'wallpaper-icon', 'radius-1');
 
     customWallpaperBody.innerHTML = `
-        <img src="../assets/ico/feather/plus.svg" class="normal-icon">
+        <span class="svg-icon normal-icon icon-plus"></span>
     `;
     return customWallpaperBody;
 }

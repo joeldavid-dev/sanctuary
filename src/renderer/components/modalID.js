@@ -282,7 +282,7 @@ function getModalHTML(translations, replaceKeysInText, constants) {
                 <div class="password-field">
                     <input id="user-pass1" type="password" required>
                     <button id="togglePassword1">
-                        <img src="../assets/ico/feather/eye.svg" class="mini-icon darkmode-invert">
+                        <span class="svg-icon mini-icon icon-eye"></span>
                     </button>
                 </div>
             </div>
@@ -292,7 +292,7 @@ function getModalHTML(translations, replaceKeysInText, constants) {
                 <div class="password-field">
                     <input id="user-pass2" type="password" required>
                     <button id="togglePassword2">
-                        <img src="../assets/ico/feather/eye.svg" class="mini-icon darkmode-invert">
+                        <span class="svg-icon mini-icon icon-eye"></span>
                     </button>
                 </div>
             </div>
@@ -302,7 +302,7 @@ function getModalHTML(translations, replaceKeysInText, constants) {
                 <div class="password-field">
                     <input id="user-pass3" type="password" required>
                     <button id="togglePassword3">
-                        <img src="../assets/ico/feather/eye.svg" class="mini-icon darkmode-invert">
+                        <span class="svg-icon mini-icon icon-eye"></span>
                     </button>
                 </div>
             </div>
@@ -310,24 +310,25 @@ function getModalHTML(translations, replaceKeysInText, constants) {
             <div id="gender-container" class="vertical-elem-area">
                 <div class="horizontal-elem-area centered">
                     <label class="small-text">${translations['gender']}</label>
-                    <img src="../assets/ico/feather/help-circle.svg" class="mini-icon darkmode-invert" title="${replaceKeysInText(translations['gender-help'], { appName: constants.about.appName })}">
+                    <span class="svg-icon mini-icon icon-help-circle" title="${replaceKeysInText(translations['gender-help'], { appName: constants.about.appName })}">
+                    </span>
                 </div>
                 <div class="horizontal-flex spaced">
                     <label class="option-radio radius-1 minimal-padding horizontal-elem-area">
                         <input id="gender1" type="radio" name="gender" value="male">
-                        <div class="radio-ico"></div>
+                        <span class="svg-icon mini-icon icon-radio"></span>
                         <p class="small-text">${translations['gender-male']}</p>
                     </label>
     
                     <label class="option-radio radius-1 minimal-padding horizontal-elem-area">
                         <input id="gender2" type="radio" name="gender" value="female">
-                        <div class="radio-ico"></div>
+                        <span class="svg-icon mini-icon icon-radio"></span>
                         <p class="small-text">${translations['gender-female']}</p>
                     </label>
     
                     <label class="option-radio radius-1 minimal-padding horizontal-elem-area">
                         <input id="gender3" type="radio" name="gender" value="neutral">
-                        <div class="radio-ico"></div>
+                        <span class="svg-icon mini-icon icon-radio"></span>
                         <p class="small-text">${translations['gender-other']}</p>
                     </label>
                 </div>

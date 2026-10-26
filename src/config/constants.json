@@ -112,6 +112,7 @@
         "pink",
         "github",
         "green-cyan",
+        "color-test",
         "generate"
     ],
     "gruvbox": {
@@ -164,6 +165,16 @@
         "app_contrast_light": "rgb(25, 249, 216)",
         "app_contrast_dark": "rgb(8, 78, 68)"
     },
+    "color-test": {
+        "app_light": "rgb(250, 200, 0)",
+        "app_light_translucent": "rgba(250, 200, 0, 0.6)",
+        "app_light_overlay_ui": "rgba(250, 200, 0, 0.8)",
+        "app_dark": "rgb(73, 7, 110)",
+        "app_dark_translucent": "rgba(73, 7, 110, 0.6)",
+        "app_dark_overlay_ui": "rgba(73, 7, 110, 0.8)",
+        "app_contrast_light": "rgb(25, 249, 216)",
+        "app_contrast_dark": "rgb(8, 78, 68)"
+    },
     "oldSanctuaryKey": "120065-331450-300009-276166-92029-265686-292000-249548-309477-85124-301972-320490-99250-292792-93249-102400-278873-306799-264395-300956-287091-255610-306710-102720-290446-174340-101850-218284-266491-291804-271861-297925-294223-290602-93449-310572-102490-155025-141492-42624-",
     "available_commands": [
         "change-ID-gender:male | female | other",
@@ -182,6 +193,7 @@
         "set-theme:github",
         "set-theme:green-cyan",
         "set-theme:generate",
+        "set-theme:color-test",
         "show-log"
     ],
     "videoWallpapersSupported": [

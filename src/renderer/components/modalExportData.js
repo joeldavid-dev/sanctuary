@@ -192,13 +192,13 @@ function getDataStepHTML(translations, state) {
             <div class="horizontal-elem-area">
                 <label class="option-checkbox radius-1 narrow-padding horizontal-elem-area centered">
                     <input id="export-keys" type="checkbox" name="export-type" value="keys" ${state.exportCards ? 'checked' : ''}>
-                    <img src="../assets/ico/feather/key.svg" class="mini-icon darkmode-invert">
+                    <span class="svg-icon mini-icon icon-key"></span>
                     <p>${translations['export-keys']}</p>
                 </label>
 
                 <label class="option-checkbox radius-1 narrow-padding horizontal-elem-area centered">
                     <input id="export-notes" type="checkbox" name="export-type" value="notes" ${state.exportNotes ? 'checked' : ''}>
-                    <img src="../assets/ico/feather/file-text.svg" class="mini-icon darkmode-invert">
+                    <span class="svg-icon mini-icon icon-file-text"></span>
                     <p>${translations['export-notes']}</p>
                 </label>
             </div>
@@ -217,21 +217,21 @@ function getFormatStepHTML(translations, state) {
             <div class="horizontal-elem-area">
                 <label class="option-radio radius-1 narrow-padding vertical-elem-area">
                     <input id="export-json" type="radio" name="export-format" value="json" ${state.format === 'json' ? 'checked' : ''}>
-                    <img src="../assets/ico/feather/code.svg" class="normal-icon darkmode-invert">
+                    <span class="svg-icon normal-icon icon-code"></span>
                     <p class="no-wrapped-text">${translations['json-format']}</p>
                     <p class="small-text">${translations['json-format-info']}</p>
                 </label>
 
                 <label class="option-radio radius-1 narrow-padding vertical-elem-area">
                     <input id="export-csv" type="radio" name="export-format" value="csv" ${state.format === 'csv' ? 'checked' : ''}>
-                    <img src="../assets/ico/feather/table.svg" class="normal-icon darkmode-invert">
+                    <span class="svg-icon normal-icon icon-table"></span>
                     <p class="no-wrapped-text">${translations['csv-format']}</p>
                     <p class="small-text">${translations['csv-format-info']}</p>
                 </label>
 
                 <label class="option-radio radius-1 narrow-padding vertical-elem-area">
                     <input id="export-txt" type="radio" name="export-format" value="txt" ${state.format === 'txt' ? 'checked' : ''}>
-                    <img src="../assets/ico/feather/file-text.svg" class="normal-icon darkmode-invert">
+                    <span class="svg-icon normal-icon icon-file-text"></span>
                     <p class="no-wrapped-text">${translations['txt-format']}</p>
                     <p class="small-text">${translations['txt-format-info']}</p>
                 </label>
@@ -239,13 +239,13 @@ function getFormatStepHTML(translations, state) {
         </div>
 
         <div id="unencrypted-banner" class="inline-banner horizontal-elem-area centered ${state.format && state.format !== 'json' ? 'visible' : ''}">
-            <img src="../assets/ico/feather/unlock.svg" class="mini-icon">
+            <span class="svg-icon mini-icon icon-unlock"></span>
             <p class="small-text">${translations['warning']}</p>
         </div>
 
         <div class="horizontal-flex spaced">
             <button id="back-btn" class="option-btn radius-1 btn-padding horizontal-elem-area centered">
-                <img src="../assets/ico/feather/arrow-left.svg" class="mini-icon">
+                <span class="svg-icon mini-icon icon-arrow-left"></span>
                 ${translations['back']}
             </button>
             <button id="export-btn" class="action-btn ultra-radius big-btn-padding" ${!state.format ? 'disabled' : ''}>${translations['export']}</button>
